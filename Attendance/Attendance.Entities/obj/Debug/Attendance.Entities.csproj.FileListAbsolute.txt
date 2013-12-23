@@ -1,0 +1,5 @@
+E:\KrishnaProjects\Attendance\Attendance\Attendance.Entities\bin\Debug\Attendance.Entities.dll
+E:\KrishnaProjects\Attendance\Attendance\Attendance.Entities\bin\Debug\Attendance.Entities.pdb
+E:\KrishnaProjects\Attendance\Attendance\Attendance.Entities\obj\Debug\ResolveAssemblyReference.cache
+E:\KrishnaProjects\Attendance\Attendance\Attendance.Entities\obj\Debug\Attendance.Entities.dll
+E:\KrishnaProjects\Attendance\Attendance\Attendance.Entities\obj\Debug\Attendance.Entities.pdb

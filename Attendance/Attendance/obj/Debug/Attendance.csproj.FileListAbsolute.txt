@@ -1,0 +1,9 @@
+E:\KrishnaProjects\Attendance\Attendance\Attendance\bin\Attendance.dll
+E:\KrishnaProjects\Attendance\Attendance\Attendance\bin\Attendance.pdb
+E:\KrishnaProjects\Attendance\Attendance\Attendance\obj\Debug\ResolveAssemblyReference.cache
+E:\KrishnaProjects\Attendance\Attendance\Attendance\obj\Debug\Attendance.dll
+E:\KrishnaProjects\Attendance\Attendance\Attendance\obj\Debug\Attendance.pdb
+E:\KrishnaProjects\Attendance\Attendance\Attendance\bin\Attendance.BAL.dll
+E:\KrishnaProjects\Attendance\Attendance\Attendance\bin\Attendance.BAL.pdb
+E:\KrishnaProjects\Attendance\Attendance\Attendance\bin\Attendance.Entities.dll
+E:\KrishnaProjects\Attendance\Attendance\Attendance\bin\Attendance.Entities.pdb

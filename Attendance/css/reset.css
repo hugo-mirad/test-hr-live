@@ -1,0 +1,87 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, applet, object, iframe,
+html, body{	
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: top;
+	font:12px/18px Arial,Helvetica,sans-serif;
+	color:#333;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	vertical-align:top;
+}
+
+textarea{ resize:none; }
+
+.floatR{ float:right; }
+.floatL{ float:left; }
+.clear{ clear:both; height:0;overflow:hidden; }
+
+/* Custom widths */
+/*
+.box{ background:#fff; box-shadow:0 1px 1px rgba(0,0,0,0.15); }*/
+.box .inner{ margin:0 0 10px 0; }
+
+.wid100p{ width:100%; min-width:100%; }
+.w1000{ width:1000px; margin:0 auto; }
+/*
+.w60p{ width:60%; min-height:510px; background:#fff; border-radius:3px;}
+.w60p .inner{ height:470px; }
+.w35p{ width:38%; }
+.w35p .wid100p{ min-height:200px;  border-radius:3px; }
+
+
+.w35p .wid100p .inner { height:200px;  }
+*/
+/*
+
+.leftbox1{ width:220px; float:left; margin:10px 10px 10px 0;  }
+.midbox1{ width:520px; float:left; margin:10px; }
+.rightbox1{ width:220px; float:left ; margin:10px 0 10px 10px; }
+
+.midbox2{ width:760px; float:left;  margin:10px 10px 10px 0;  }
+*/
+.hed1{ font-size:18px; font-weight:bold; color:#473F3B; padding:0; margin:0 0 15px 0 }
+
+h1, h2, h3, h4{ text-transform:uppercase; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
