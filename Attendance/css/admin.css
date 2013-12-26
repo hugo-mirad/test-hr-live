@@ -497,3 +497,20 @@ h2.pageHeadding, .headding2{ padding:0; margin:0 0 10px 0;  width: 100%;
 {
 	margin-left:10px;
 }
+
+
+.table1 td,.table1 th
+{
+white-space: nowrap
+}
+
+/* Multiple Login     #FFDB99*/
+a.multipleLogin, .multipleLogin
+{
+	text-decoration: none;
+	background: url(../images/category.png) no-repeat right top;
+	background-size: 11%;
+	padding-right: 16px;
+}
+
+

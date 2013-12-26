@@ -34,7 +34,31 @@ namespace Attendance.BAL
 
 
         }
+        public DataTable GetMultipleDetailsByEmpID(DateTime StartDate, string empID)
+        {
+            DataSet ds = new DataSet();
 
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetMultipleLoginByempID]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@TdyDt", StartDate));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@empid", empID));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+
+
+        }
 
         public DataTable GetUsers(string Locationname,int sort)
         {

@@ -1003,9 +1003,9 @@ namespace Attendance
                     HiddenField hdnMonSignInFlag = (HiddenField)e.Row.FindControl("hdnMonSignInFlag");
                     if (hdnMonSignInFlag.Value == "True")
                     {
-                        e.Row.Cells[4].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[4].BackColor = System.Drawing.Color.Moccasin ;
                         lblMonIn.CssClass.Replace("greenTag", "");
-                        //lblMonIn.ForeColor = System.Drawing.Color.Orange;
+                        //lblMonIn.ForeColor = System.Drawing.Color.Moccasin ;
                     }
                     HiddenField hdnMonSigninNotes = (HiddenField)e.Row.FindControl("hdnMonSigninNotes");
 
@@ -1046,7 +1046,7 @@ namespace Attendance
 
                     if (hdnMonSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[5].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[5].BackColor = System.Drawing.Color.Moccasin ;
                         lblMonOut.CssClass.Replace("greenTag", "");
                     }
 
@@ -1082,8 +1082,8 @@ namespace Attendance
 
                     if (hdnTueSignInFlag.Value == "True")
                     {
-                        e.Row.Cells[9].BackColor = System.Drawing.Color.Orange;
-                        //lblTueIn.ForeColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[9].BackColor = System.Drawing.Color.Moccasin ;
+                        //lblTueIn.ForeColor = System.Drawing.Color.Moccasin ;
                         lblTueIn.CssClass.Replace("greenTag", "");
                     }
                     HiddenField hdnTueSigninNotes = (HiddenField)e.Row.FindControl("hdnTueSigninNotes");
@@ -1116,8 +1116,8 @@ namespace Attendance
 
                     if (hdnTueSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[10].BackColor = System.Drawing.Color.Orange;
-                        //lblTueOut.ForeColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[10].BackColor = System.Drawing.Color.Moccasin ;
+                        //lblTueOut.ForeColor = System.Drawing.Color.Moccasin ;
                         lblTueOut.CssClass.Replace("greenTag", "");
                     }
 
@@ -1160,9 +1160,9 @@ namespace Attendance
 
                     if (hdnWedSignInFlag.Value == "True")
                     {
-                        e.Row.Cells[14].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[14].BackColor = System.Drawing.Color.Moccasin ;
                         lblWedIn.CssClass.Replace("greenTag", "");
-                        // lblWedIn.ForeColor = System.Drawing.Color.Orange;
+                        // lblWedIn.ForeColor = System.Drawing.Color.Moccasin ;
                     }
 
                     HiddenField hdnWedSignInNotes = (HiddenField)e.Row.FindControl("hdnWedSignInNotes");
@@ -1197,9 +1197,9 @@ namespace Attendance
 
                     if (hdnWedSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[15].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[15].BackColor = System.Drawing.Color.Moccasin ;
                         lblWedOut.CssClass.Replace("greenTag", "");
-                        //lblWedOut.ForeColor = System.Drawing.Color.Orange;
+                        //lblWedOut.ForeColor = System.Drawing.Color.Moccasin ;
                     }
                     HiddenField hdnWedSignOutNotes = (HiddenField)e.Row.FindControl("hdnWedSignOutNotes");
                     if (hdnWedSignOutNotes.Value != "")
@@ -1241,9 +1241,9 @@ namespace Attendance
                     HiddenField hdnThuSignInFlag = (HiddenField)e.Row.FindControl("hdnThuSignInFlag");
                     if (hdnThuSignInFlag.Value == "True")
                     {
-                        e.Row.Cells[19].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[19].BackColor = System.Drawing.Color.Moccasin ;
                         lblThuIn.Attributes["class"] = "";
-                        //lblThuIn.ForeColor = System.Drawing.Color.Orange;
+                        //lblThuIn.ForeColor = System.Drawing.Color.Moccasin ;
                     }
                     HiddenField hdnThuSignInNotes = (HiddenField)e.Row.FindControl("hdnThuSignInNotes");
                     if (hdnThuSignInNotes.Value != "")
@@ -1271,7 +1271,7 @@ namespace Attendance
                     HiddenField hdnThuSignOutFlag = (HiddenField)e.Row.FindControl("hdnThuSignOutFlag");
                     if (hdnThuSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[20].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[20].BackColor = System.Drawing.Color.Moccasin ;
                         lblThuOut.CssClass.Replace("greenTag", "");
                     }
                     HiddenField hdnThuSignOutNotes = (HiddenField)e.Row.FindControl("hdnThuSignOutNotes");
@@ -1309,7 +1309,7 @@ namespace Attendance
                     HiddenField hdnFriSignInFlag = (HiddenField)e.Row.FindControl("hdnFriSignInFlag");
                     if (hdnFriSignInFlag.Value == "True")
                     {
-                        e.Row.Cells[24].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[24].BackColor = System.Drawing.Color.Moccasin ;
                         lblFriIn.CssClass.Replace("greenTag", "");
 
                     }
@@ -1340,7 +1340,7 @@ namespace Attendance
                     HiddenField hdnFriSignOutFlag = (HiddenField)e.Row.FindControl("hdnFriSignOutFlag");
                     if (hdnFriSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[25].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[25].BackColor = System.Drawing.Color.Moccasin ;
                         lblFriOut.CssClass.Replace("greenTag", "");
 
                     }
@@ -1383,11 +1383,11 @@ namespace Attendance
 
                     if (hdnSatSignInFlag.Value == "True")
                     {
-                        e.Row.Cells[29].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[29].BackColor = System.Drawing.Color.Moccasin ;
                         lblSatIn.CssClass.Replace("greenTag", "");
                     }
                     HiddenField hdnSatSignInNotes = (HiddenField)e.Row.FindControl("hdnSatSignInNotes");
-                    //lblSatIn.ForeColor = System.Drawing.Color.Orange;
+                    //lblSatIn.ForeColor = System.Drawing.Color.Moccasin ;
 
                     if (hdnSatSignInNotes.Value != "")
                     {
@@ -1416,7 +1416,7 @@ namespace Attendance
                     HiddenField hdnSatSignOutFlag = (HiddenField)e.Row.FindControl("hdnSatSignOutFlag");
                     if (hdnSatSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[30].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[30].BackColor = System.Drawing.Color.Moccasin ;
                         lblSatOut.CssClass.Replace("greenTag", "");
                     }
 
@@ -1460,9 +1460,9 @@ namespace Attendance
                     HiddenField hdnSunSignInNotes = (HiddenField)e.Row.FindControl("hdnSunSignInNotes");
                     if (hdnSunSignInNotes.Value == "True")
                     {
-                        e.Row.Cells[34].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[34].BackColor = System.Drawing.Color.Moccasin ;
                         lblSunIn.Attributes["class"] = "";
-                        // lblSunIn.ForeColor = System.Drawing.Color.Orange;
+                        // lblSunIn.ForeColor = System.Drawing.Color.Moccasin ;
                     }
 
                     if (hdnSunSignInNotes.Value != "")
@@ -1494,9 +1494,9 @@ namespace Attendance
                     HiddenField hdnSunSignOutFlag = (HiddenField)e.Row.FindControl("hdnSunSignOutFlag");
                     if (hdnSunSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[35].BackColor = System.Drawing.Color.Orange;
+                        e.Row.Cells[35].BackColor = System.Drawing.Color.Moccasin ;
                         lblSunOut.CssClass.Replace("greenTag", "");
-                        // lblSunOut.ForeColor = System.Drawing.Color.Orange;
+                        // lblSunOut.ForeColor = System.Drawing.Color.Moccasin ;
                     }
                     HiddenField hdnSunSignOutNotes = (HiddenField)e.Row.FindControl("hdnSunSignOutNotes");
 

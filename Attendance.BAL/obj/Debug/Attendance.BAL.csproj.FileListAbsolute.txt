@@ -54,3 +54,10 @@ D:\HrBizstridesNew(Dec20UP)\Attendance.BAL\bin\Debug\Attendance.Entities.pdb
 D:\HrBizstridesNew(Dec20UP)\Attendance.BAL\obj\Debug\ResolveAssemblyReference.cache
 D:\HrBizstridesNew(Dec20UP)\Attendance.BAL\obj\Debug\Attendance.BAL.dll
 D:\HrBizstridesNew(Dec20UP)\Attendance.BAL\obj\Debug\Attendance.BAL.pdb
+D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.BAL\bin\Debug\Attendance.BAL.dll
+D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.BAL\bin\Debug\Attendance.BAL.pdb
+D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.BAL\bin\Debug\Attendance.Entities.dll
+D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.BAL\bin\Debug\Attendance.Entities.pdb
+D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.BAL\obj\Debug\ResolveAssemblyReference.cache
+D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.BAL\obj\Debug\Attendance.BAL.dll
+D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.BAL\obj\Debug\Attendance.BAL.pdb

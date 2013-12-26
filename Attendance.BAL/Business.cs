@@ -342,6 +342,35 @@ namespace Attendance.BAL
              return success;
          }
 
+
+         public bool UpdateSignInSignOut(string EmpID, int LoguserID, string signIntime,string signOuttime,string loginnotes,string lououtnotes)
+         {
+
+             bool success = false;
+             try
+             {
+
+                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                 con.Open();
+                 SqlCommand command = new SqlCommand("[USP_UpdateLoginLogout]", con);
+                 command.CommandType = CommandType.StoredProcedure;
+                 command.Parameters.Add("@EmpID", SqlDbType.VarChar).Value = EmpID;
+                 command.Parameters.Add("@Loguserid", SqlDbType.Int).Value = LoguserID;
+                 command.Parameters.Add("@loginnotes", SqlDbType.VarChar).Value = loginnotes;
+                 command.Parameters.Add("@Logindate", SqlDbType.DateTime).Value = signIntime;
+                 command.Parameters.Add("@logoutnotes", SqlDbType.VarChar).Value = lououtnotes;
+                 command.Parameters.Add("@Logoutdate", SqlDbType.DateTime).Value = signOuttime;
+                 command.ExecuteNonQuery();
+                 con.Close();
+                 success = true;
+             }
+             catch (Exception ex)
+             {
+             }
+             return success;
+         }
+
+
          public bool UpdateSignOutTime(int Userid, int LoguserID, string signOuttime, string notes)
          {
 

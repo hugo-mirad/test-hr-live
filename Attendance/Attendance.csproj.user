@@ -9,7 +9,7 @@
           <NativeDebugging>False</NativeDebugging>
           <SQLDebugging>False</SQLDebugging>
           <PublishCopyOption>RunFiles</PublishCopyOption>
-          <PublishTargetLocation>C:\Users\hugo15\Desktop\AttanLiveDec17up\</PublishTargetLocation>
+          <PublishTargetLocation>C:\Users\hugo15\Desktop\AttanTestDec23\</PublishTargetLocation>
           <PublishDeleteAllFiles>False</PublishDeleteAllFiles>
           <PublishCopyAppData>True</PublishCopyAppData>
           <ExternalProgram>

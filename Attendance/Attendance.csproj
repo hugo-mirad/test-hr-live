@@ -93,12 +93,14 @@
     <Content Include="images2\cal_plus.gif" />
     <Content Include="images2\cal_reverse.gif" />
     <Content Include="images\Calendar_scheduleHS.png" />
+    <Content Include="images\category.png" />
     <Content Include="images\close.png" />
     <Content Include="images\content-back.png" />
     <Content Include="images\defaultUSer.jpg" />
     <Content Include="images\editBlock.png" />
     <Content Include="images\grad_top.jpg" />
     <Content Include="images\loading.gif" />
+    <Content Include="images\Multiple.png" />
     <Content Include="images\pic1.jpg" />
     <Content Include="images\pic10.jpg" />
     <Content Include="images\pic11.jpg" />
