@@ -404,7 +404,14 @@
 
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
     
+       <script type="text/javascript">
     
+        $(function(){
+            $('.popupHolder2').css('z-index','100002')
+            $('.popupContent2').css('z-index','100004')
+        })
+        
+    </script>
 
     <script type="text/javascript">
       function validPwd()
@@ -720,7 +727,7 @@ function clearDisposableItems( sender , args ) {
         <asp:UpdatePanel ID="up" runat="server">
             <ContentTemplate>
                 <asp:HiddenField runat="server" ID="hdnFreeze" />
-                <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
+                 <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
                     OnRowCreated="grdAttandence_RowCreated" CssClass="table1" OnRowCommand="grdAttandence_RowCommand">
                     <Columns>
                         <asp:TemplateField>
@@ -730,6 +737,8 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblID" runat="server" Text='<%#Eval("empid")%>'></asp:Label>
                             </ItemTemplate>
+                            <ItemStyle CssClass="bL" />
+                            <HeaderStyle CssClass="bL bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -737,21 +746,25 @@ function clearDisposableItems( sender , args ) {
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:Label ID="lblName" runat="server" Text='<%#Eval("Empname")%>'></asp:Label>
-                                <asp:Label ID="lblPName" runat="server"  Text='<%#Eval("PEmpname")%>' Visible="false"></asp:Label>
-                                <asp:Label ID="lblStartDate" runat="server" Text='<%#Eval("Startdate")%>' Visible="false"></asp:Label>
+                                <asp:Label ID="lblPName" runat="server" Text='<%#Eval("PEmpname")%>' Visible="false"></asp:Label>
                                 <asp:Label ID="lblTermDate" runat="server" Text='<%#Eval("Termdate")%>' Visible="false"></asp:Label>
+                                <asp:Label ID="lblStartDate" runat="server" Text='<%#Eval("Startdate")%>' Visible="false"></asp:Label>
                             </ItemTemplate>
+                            <HeaderStyle CssClass="bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblMonHeadSCIN" runat="server" Text="SchIn"></asp:Label>
+                                <asp:Label ID="lblMonHeadSCIN" runat="server" Text="SchIn-Schout"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblMonScIn" runat="server" Text='<%#Eval("MonSchIn")%>'></asp:Label>
+                                <asp:Label ID="lblMonScIn" runat="server" Text='<%#Eval("MonSchIn").ToString().Trim()%>'></asp:Label>
+                                <asp:Label ID="lblMonScOut" runat="server" Text='<%# " - "+Eval("MonSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnMonLunch" runat="server" Value='<%#Eval("MonLunch").ToString().Trim()%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
+                            <ItemStyle CssClass="col1 bL" />
+                            <HeaderStyle CssClass="bL" />
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--    <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblMonHeadSCout" runat="server" Text="SchOut"></asp:Label>
                             </HeaderTemplate>
@@ -759,20 +772,26 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblMonScOut" runat="server" Text='<%#Eval("MonSchOut")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblMonHeadIN" runat="server" Text="SignIn"></asp:Label>
+                                <asp:Label ID="lblMonHeadIN" runat="server" Text="In-Out"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblMonIn" runat="server" Font-Underline="False" Text='<%#Eval("MonSignIn")%>'
                                     CommandName="LoginMonEdit" CommandArgument='<%#Eval("MonLogUserID")%>'></asp:LinkButton>
                                 <asp:HiddenField ID="hdnMonSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "MonLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnMonSignInFlag" runat="server" Value='<%#Eval("MonLoginFlag")%>' />
+                                <asp:LinkButton ID="lblMonOut" runat="server" Font-Underline="False" Visible="false"
+                                    Text='<%#Eval("MonSignOut")%>' CommandName="LogOutMonEdit" CommandArgument='<%#Eval("MonLogUserID")%>'></asp:LinkButton>
+                                <asp:HiddenField ID="hdnMonSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "MonLogoutNotes"))%>' />
+                                <asp:HiddenField ID="hdnMonSignOutFlag" runat="server" Value='<%#Eval("MonLogoutFlag")%>' />
+                                <asp:HiddenField ID="hdnMonFreeze" runat="server" Value='<%#Eval("MonFreeze")%>' />
+                                <asp:HiddenField ID="hdnMonMultiple" runat="server" Value='<%# Eval("MonMultiple") %>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
+                            <ItemStyle CssClass="col1" Width="60" />
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%-- <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblMonHeadOut" runat="server" Text="SignOut"></asp:Label>
                             </HeaderTemplate>
@@ -784,7 +803,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnMonFreeze" runat="server" Value='<%#Eval("MonFreeze")%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblMonHeadHours" runat="server" Text="Hrs"></asp:Label>
@@ -792,27 +811,30 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblMonHours" runat="server" Font-Underline="False" Text='<%#Eval("MonHrs")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
+                            <ItemStyle CssClass="col1 bR" />
+                            <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblTueSCIN" runat="server" Text="SchIn"></asp:Label>
+                                <asp:Label ID="lblTueSCIN" runat="server" Text="SchIn-Schout"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblTueScIn" runat="server" Text='<%#Eval("TueSchIn")%>'></asp:Label>
+                                <asp:Label ID="lblTueScIn" runat="server" Text='<%#Eval("TueSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
+                                <asp:Label ID="lblTueScOut" runat="server" Text='<%# " - "+Eval("TueSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnTueLunch" runat="server" Value='<%#Eval("TueLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--      <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblTueSCout" runat="server" Text="SchOut"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblTueScOut" runat="server" Text='<%#Eval("TueSchOut")%>'></asp:Label>
+                              
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblTueIN" runat="server" Text="SignIn"></asp:Label>
+                                <asp:Label ID="lblTueIN" runat="server" Text="In-Out"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblTueIn" runat="server" Font-Underline="False" Text='<%#Eval("TueSignIn")%>'
@@ -820,9 +842,14 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnTueSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "TueLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnTueSignInFlag" runat="server" Value='<%#Eval("TueLoginFlag")%>' />
                                 <asp:HiddenField ID="hdnTueFreeze" runat="server" Value='<%#Eval("TueFreeze")%>' />
+                                <asp:LinkButton ID="lblTueOut" runat="server" Visible="false" Font-Underline="False"
+                                    Text='<%#Eval("TueSignOut")%>' CommandName="LogOutTueEdit" CommandArgument='<%#Eval("TueLogUserID")%>'></asp:LinkButton>
+                                <asp:HiddenField ID="hdnTueSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "TueLogoutNotes"))%>' />
+                                <asp:HiddenField ID="hdnTueSignOutFlag" runat="server" Value='<%#Eval("TueLogoutFlag")%>' />
+                                <asp:HiddenField ID="hdnTueMultiple" runat="server" Value='<%# Eval("TueMultiple") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--   <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblTueOut" runat="server" Text="SignOut"></asp:Label>
                             </HeaderTemplate>
@@ -832,7 +859,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnTueSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "TueLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnTueSignOutFlag" runat="server" Value='<%#Eval("TueLogoutFlag")%>' />
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblTueHeadHours" runat="server" Text="Hrs"></asp:Label>
@@ -840,17 +867,21 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblTueHours" runat="server" Text='<%#Eval("TueHrs")%>'></asp:Label>
                             </ItemTemplate>
+                            <ItemStyle CssClass="bR" />
+                            <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblWedSCIN" runat="server" Text="SchIn"></asp:Label>
+                                <asp:Label ID="lblWedSCIN" runat="server" Text="SchIn-Schout"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblWedScIn" runat="server" Text='<%#Eval("WedSchIn")%>'></asp:Label>
+                                <asp:Label ID="lblWedScIn" runat="server" Text='<%#Eval("WedSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
+                                <asp:Label ID="lblWedScOut" runat="server" Text='<%# " - "+Eval("WedSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnWedLunch" runat="server" Value='<%#Eval("WedLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--  <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblWedSCout" runat="server" Text="SchOut"></asp:Label>
                             </HeaderTemplate>
@@ -858,20 +889,25 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblWedScOut" runat="server" Text='<%#Eval("WedSchOut")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblWedIN" runat="server" Text="SignIn"></asp:Label>
+                                <asp:Label ID="lblWedIN" runat="server" Text="In-Out"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblWedIn" runat="server" Font-Underline="False" Text='<%#Eval("WedSignIn")%>'
                                     CommandName="LoginWedEdit" CommandArgument='<%#Eval("WedLogUserID")%>'></asp:LinkButton>
                                 <asp:HiddenField ID="hdnWedSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "WedLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnWedSignInFlag" runat="server" Value='<%#Eval("WedLoginFlag")%>' />
+                                <asp:LinkButton ID="lblWedOut" runat="server" Visible="false" Font-Underline="False"
+                                    Text='<%#Eval("WedSignOut")%>' CommandName="LogOutWedEdit" CommandArgument='<%#Eval("WedLogUserID")%>'></asp:LinkButton>
+                                <asp:HiddenField ID="hdnWedSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "WedLogoutNotes"))%>' />
+                                <asp:HiddenField ID="hdnWedSignOutFlag" runat="server" Value='<%#Eval("WedLogoutFlag")%>' />
+                                <asp:HiddenField ID="hdnWedMultiple" runat="server" Value='<%# Eval("WedMultiple") %>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%-- <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblWedOut" runat="server" Text="SignOut"></asp:Label>
                             </HeaderTemplate>
@@ -882,7 +918,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnWedSignOutFlag" runat="server" Value='<%#Eval("WedLogoutFlag")%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblWedHeadHours" runat="server" Text="Hrs"></asp:Label>
@@ -891,36 +927,44 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblWedHours" runat="server" Text='<%#Eval("WedHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnWedFreeze" runat="server" Value='<%#Eval("WedFreeze")%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
+                            <ItemStyle CssClass="col1 bR" />
+                            <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblThuSCIN" runat="server" Text="SchIn"></asp:Label>
+                                <asp:Label ID="lblThuSCIN" runat="server" Text="SchIn-Schout"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblThuScIn" runat="server" Text='<%#Eval("ThuSchIn")%>'></asp:Label>
+                                <asp:Label ID="lblThuScIn" runat="server" Text='<%#Eval("ThuSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
+                                <asp:Label ID="lblThuScOut" runat="server" Text='<%# " - "+Eval("ThuSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnThuLunch" runat="server" Value='<%#Eval("ThuLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--  <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblThuSCout" runat="server" Text="SchOut"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:Label ID="lblThuScOut" runat="server" Text='<%#Eval("ThuSchOut")%>'></asp:Label>
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblThuIN" runat="server" Text="SignIn"></asp:Label>
+                                <asp:Label ID="lblThuIN" runat="server" Text="In-Out"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblThuIn" runat="server" Font-Underline="False" Text='<%#Eval("ThuSignIn")%>'
                                     CommandName="LoginThuEdit" CommandArgument='<%#Eval("ThuLogUserID")%>'></asp:LinkButton>
                                 <asp:HiddenField ID="hdnThuSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "ThuLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnThuSignInFlag" runat="server" Value='<%#Eval("ThuLoginFlag")%>' />
+                                <asp:LinkButton ID="lblThuOut" runat="server" Visible="false" Font-Underline="False"
+                                    Text='<%#Eval("ThuSignOut")%>' CommandName="LogOutThuEdit" CommandArgument='<%#Eval("ThuLogUserID")%>'></asp:LinkButton>
+                                <asp:HiddenField ID="hdnThuSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "ThuLogoutNotes"))%>' />
+                                <asp:HiddenField ID="hdnThuSignOutFlag" runat="server" Value='<%#Eval("ThuLogoutFlag")%>' />
+                                <asp:HiddenField ID="hdnThuMultiple" runat="server" Value='<%# Eval("ThuMultiple") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--    <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblThuOut" runat="server" Text="SignOut"></asp:Label>
                             </HeaderTemplate>
@@ -930,7 +974,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnThuSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "ThuLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnThuSignOutFlag" runat="server" Value='<%#Eval("ThuLogoutFlag")%>' />
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblThuHEHours" runat="server" Text="Hrs"></asp:Label>
@@ -939,17 +983,21 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblThuHours" runat="server" Text='<%#Eval("ThuHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnThuFreeze" runat="server" Value='<%#Eval("ThuFreeze")%>' />
                             </ItemTemplate>
+                            <ItemStyle CssClass="bR" />
+                            <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblFriSCIN" runat="server" Text="SchIn"> </asp:Label>
+                                <asp:Label ID="lblFriSCIN" runat="server" Text="SchIn-Schout"> </asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblFriScIn" runat="server" Text='<%#Eval("FriSchIn")%>'></asp:Label>
+                                <asp:Label ID="lblFriScIn" runat="server" Text='<%#Eval("FriSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
+                                <asp:Label ID="lblFriScOut" runat="server" Text='<%# " - "+Eval("FriSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnFriLunch" runat="server" Value='<%#Eval("FriLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--    <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblFriSCout" runat="server" Text="SchOut"></asp:Label>
                             </HeaderTemplate>
@@ -957,20 +1005,25 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblFriScOut" runat="server" Text='<%#Eval("FriSchOut")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblFriIN" runat="server" Text="SignIn"></asp:Label>
+                                <asp:Label ID="lblFriIN" runat="server" Text="In-Out"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblFriIn" runat="server" Font-Underline="False" Text='<%#Eval("FriSignIn")%>'
                                     CommandName="LoginFriEdit" CommandArgument='<%#Eval("FriLogUserID")%>'></asp:LinkButton>
                                 <asp:HiddenField ID="hdnFriSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "FriLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnFriSignInFlag" runat="server" Value='<%#Eval("FriLoginFlag")%>' />
+                                <asp:LinkButton ID="lblFriOut" runat="server" Visible="false" Font-Underline="False"
+                                    Text='<%#Eval("FriSignOut")%>' CommandName="LogOutFriEdit" CommandArgument='<%#Eval("FriLogUserID")%>'></asp:LinkButton>
+                                <asp:HiddenField ID="hdnFriSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "FriLogoutNotes"))%>' />
+                                <asp:HiddenField ID="hdnFriSignOutFlag" runat="server" Value='<%#Eval("FriLogoutFlag")%>' />
+                                <asp:HiddenField ID="hdnFriMultiple" runat="server" Value='<%# Eval("FriMultiple") %>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--        <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblFriSCOut" runat="server" Text="SignOut"></asp:Label>
                             </HeaderTemplate>
@@ -981,7 +1034,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnFriSignOutFlag" runat="server" Value='<%#Eval("FriLogoutFlag")%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblFriHeadHours" runat="server" Text="Hrs"></asp:Label>
@@ -990,36 +1043,44 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblFriHours" runat="server" Text='<%#Eval("FriHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnFriFreeze" runat="server" Value='<%#Eval("FriFreeze")%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
+                            <ItemStyle CssClass="col1 bR" />
+                            <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblSatSCIN" runat="server" Text="SchIn"></asp:Label>
+                                <asp:Label ID="lblSatSCIN" runat="server" Text="SchIn-Schout"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblSatScIn" runat="server" Text='<%#Eval("SatSchIn")%>'></asp:Label>
+                                <asp:Label ID="lblSatScIn" runat="server" Text='<%#Eval("SatSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
+                                <asp:Label ID="lblSatScOut" runat="server" Text='<%# " - "+ Eval("SatSchOut").ToString().Trim()%>'></asp:Label>
+                                 <asp:HiddenField ID="hdnSatLunch" runat="server" Value='<%#Eval("SatLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%-- <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblSatSCout" runat="server" Text="SchOut"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:Label ID="lblSatScOut" runat="server" Text='<%#Eval("SatSchOut")%>'></asp:Label>
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblSatIN" runat="server" Text="SignIn"></asp:Label>
+                                <asp:Label ID="lblSatIN" runat="server" Text="In-Out"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblSatIn" runat="server" Font-Underline="False" Text='<%#Eval("SatSignIn")%>'
                                     CommandName="LoginSatEdit" CommandArgument='<%#Eval("SatLogUserID")%>'></asp:LinkButton>
                                 <asp:HiddenField ID="hdnSatSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SatLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSatSignInFlag" runat="server" Value='<%#Eval("SatLoginFlag")%>' />
+                                <asp:LinkButton ID="lblSatOut" runat="server" Visible="false" Font-Underline="False"
+                                    Text='<%#Eval("SatSignOut")%>' CommandName="LogOutSatEdit" CommandArgument='<%#Eval("SatLogUserID")%>'></asp:LinkButton>
+                                <asp:HiddenField ID="hdnSatSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SatLogoutNotes"))%>' />
+                                <asp:HiddenField ID="hdnSatSignOutFlag" runat="server" Value='<%#Eval("SatLogoutFlag")%>' />
+                                <asp:HiddenField ID="hdnSatMultiple" runat="server" Value='<%# Eval("SatMultiple") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--   <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblSatOut" runat="server" Text="SignOut"></asp:Label>
                             </HeaderTemplate>
@@ -1029,7 +1090,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnSatSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SatLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnSatSignOutFlag" runat="server" Value='<%#Eval("SatLogoutFlag")%>' />
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblSatHeadHours" runat="server" Text="Hrs"></asp:Label>
@@ -1038,17 +1099,21 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblSatHours" runat="server" Text='<%#Eval("SatHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnSatFreeze" runat="server" Value='<%#Eval("SatFreeze")%>' />
                             </ItemTemplate>
+                            <ItemStyle CssClass="bR" />
+                            <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblSunSCIN" runat="server" Text="SchIn"></asp:Label>
+                                <asp:Label ID="lblSunSCIN" runat="server" Text="SchIn-Schout"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblSunScIn" runat="server" Text='<%#Eval("SunSchIn")%>'></asp:Label>
+                                <asp:Label ID="lblSunScIn" runat="server" Text='<%#Eval("SunSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
+                                <asp:Label ID="lblSunScOut" runat="server" Text='<%# " - "+Eval("SunSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnSunLunch" runat="server" Value='<%#Eval("SunLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--   <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblSunSCout" runat="server" Text="SchOut"></asp:Label>
                             </HeaderTemplate>
@@ -1056,20 +1121,25 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblSunScOut" runat="server" Text='<%#Eval("SunSchOut")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblSunIN" runat="server" Text="SignIn"></asp:Label>
+                                <asp:Label ID="lblSunIN" runat="server" Text="In-Out"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblSunIn" runat="server" Font-Underline="False" Text='<%#Eval("SunSignIn")%>'
                                     CommandName="LoginSunEdit" CommandArgument='<%#Eval("SunLogUserID")%>'></asp:LinkButton>
                                 <asp:HiddenField ID="hdnSunSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SunLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSunSignInFlag" runat="server" Value='<%#Eval("SunLoginFlag")%>' />
+                                <asp:LinkButton ID="lblSunOut" runat="server" Visible="false" Font-Underline="False"
+                                    Text='<%#Eval("SunSignOut")%>' CommandName="LogOutSunEdit" CommandArgument='<%#Eval("SunLogUserID")%>'></asp:LinkButton>
+                                <asp:HiddenField ID="hdnSunSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SunLogoutNotes"))%>' />
+                                <asp:HiddenField ID="hdnSunSignOutFlag" runat="server" Value='<%#Eval("SunLogoutFlag")%>' />
+                                <asp:HiddenField ID="hdnSunMultiple" runat="server" Value='<%# Eval("SunMultiple") %>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                        <%--      <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblSunOut" runat="server" Text="SignOut"></asp:Label>
                             </HeaderTemplate>
@@ -1080,7 +1150,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnSunSignOutFlag" runat="server" Value='<%#Eval("SunLogoutFlag")%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblSunHeadHours" runat="server" Text="Hrs"></asp:Label>
@@ -1089,7 +1159,8 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblSunHours" runat="server" Text='<%#Eval("SunHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnSunFreeze" runat="server" Value='<%#Eval("SunFreeze")%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
+                            <ItemStyle CssClass="col1 bR" />
+                            <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -1098,7 +1169,8 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblPresent" runat="server" Text='<%#Eval("PresentDays")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="tdBack" HorizontalAlign="Center" />
+                            <ItemStyle CssClass="tdBack" />
+                            <HeaderStyle CssClass="bT" />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -1107,10 +1179,11 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblTotalHours" runat="server" Text='<%#Eval("TotalHours")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="tdBack" />
+                            <ItemStyle CssClass="tdBack bR" />
+                            <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                     </Columns>
-                </asp:GridView>
+                </asp:GridView> 
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="btnPrevious" EventName="Click" />
@@ -1781,6 +1854,158 @@ function clearDisposableItems( sender , args ) {
         </div>
     </div>
     <!--Change password popup End-->
+    
+    
+    
+    
+    
+    
+    <cc1:ModalPopupExtender ID="mdlMultipleLoginView" runat="server" BackgroundCssClass="popupHolder"
+        TargetControlID="hdnMultipleLoginView" PopupControlID="dvMultiplePopup" CancelControlID="lnkMultipleClose">
+    </cc1:ModalPopupExtender>
+    <asp:HiddenField ID="hdnMultipleLoginView" runat="server" />
+    <div id="dvMultiplePopup" runat="server" class="popContent" style="width: 500px;
+        display: none">
+        <h2>
+            <asp:UpdatePanel ID="UpdatePanel14" runat="server">
+                <ContentTemplate>
+                    <asp:Label ID="lblMultiplePopName" runat="server"></asp:Label>
+                    <asp:Label ID="lblMultipleDay" runat="server" CssClass="right"></asp:Label>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <span class="close">
+                <asp:LinkButton ID="lnkMultipleClose" runat="server"></asp:LinkButton></span>
+        </h2>
+        <div class="inner">
+            <div style="width:96%; margin:10px auto;">
+          <asp:UpdatePanel ID="UpdatePanel15" runat="server">
+          <ContentTemplate>
+            <asp:Repeater ID="rpMultiple" runat="server" 
+                onitemcommand="rpMultiple_ItemCommand" 
+                onitemdatabound="rpMultiple_ItemDataBound">
+             <HeaderTemplate>
+                <ul class="multipleLoginList" >
+             </HeaderTemplate>
+                <ItemTemplate>
+                <li>
+                   <fieldset class="popupFieldSet" style="margin-bottom:5px;">
+                     <legend>In-out</legend>
+                        <asp:LinkButton ID="lblMultipleSignIn" runat="server" Text='<%#Eval("Logindate") %>'
+                                Style="text-decoration: none" CommandArgument='<%#Eval("LogUserID") %>' CommandName="Multiple"></asp:LinkButton>
+                        <asp:LinkButton ID="lblMultipleSignOut" runat="server" Text='<%#Eval("Logoutdate") %>'
+                                Style="text-decoration: none" Visible="false"></asp:LinkButton>
+                                 <asp:HiddenField ID="hdnMultipleLoguserID" Value='<%#Eval("LogUserID") %>' runat="server" />
+                                 <asp:HiddenField ID="hdnMultipleSignIn" Value='<%#Eval("Logindate") %>' runat="server" />
+                                 <asp:HiddenField ID="hdnMultipleSignOut" Value='<%#Eval("Logoutdate") %>' runat="server" />
+                                 <asp:HiddenField ID="hdnMultipleSchOut" Value='<%#Eval("EndTime") %>' runat="server" />
+                                <asp:HiddenField ID="hdmMultipleSchIn" Value='<%#Eval("startTime") %>' runat="server" />
+                          
+                       </fieldset>
+                    </li>
+                 
+                </ItemTemplate>
+          <FooterTemplate> 
+          </ul>
+          </FooterTemplate>
+            </asp:Repeater>
+             </ContentTemplate>
+             </asp:UpdatePanel>  
+             <br /><div class="clear">&nbsp;</div>
+             </div>
+        </div>
+    </div>
+    
+    
+    <!--Multiple edit popup-->
+    
+      <cc1:ModalPopupExtender ID="mdlMultipleEditEditPopUp" BackgroundCssClass="popupHolder2"
+        runat="server" PopupControlID="MultipleEditPopup" CancelControlID="lnkMultipleEditOutClose"
+        TargetControlID="hdnMultipleEditpopup">
+    </cc1:ModalPopupExtender>
+    <asp:HiddenField ID="hdnMultipleEditpopup" runat="server" />
+    <div id="MultipleEditPopup" runat="server" class="popContent popupContent2" style="width: 400px;
+        display: none">
+        <h2>
+            <asp:UpdatePanel ID="UpdatePanelEdit" runat="server">
+                <ContentTemplate>
+                    <asp:Label ID="lblMultipleEditPopName" runat="server"></asp:Label>
+                    <asp:Label ID="lblMultipleEditDay" runat="server" CssClass="right"></asp:Label>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <span class="close">
+                <asp:LinkButton ID="lnkMultipleEditOutClose" runat="server"></asp:LinkButton></span>
+        </h2>
+        <div class="inner">
+            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                <tr>
+                    <td>
+                        <asp:UpdatePanel ID="UpdatePanelEdit1" runat="server">
+                            <ContentTemplate>
+                                <asp:Label ID="Label3" Text="Sign in time" runat="server"></asp:Label>
+                                <asp:HiddenField ID="hdnMultipleEmpID" runat="server" />
+                                <asp:HiddenField ID="hdnMultipleEditLogUserID" runat="server" />
+                                <asp:HiddenField ID="hdnMultipleSignInTime" runat="server" />
+                                <asp:HiddenField ID="hdnMultipleSignoutTime" runat="server" />
+                                <asp:HiddenField ID="hdnMultipleSchOutTime" runat="server" />
+                                <asp:HiddenField ID="hdnMultipleSignInHrs" runat="server" />
+                                <asp:HiddenField ID="hdnMultipleSignOutHrs" runat="server" />
+                                 <asp:HiddenField ID="hdnMultipleSchInTime" runat="server" />
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </td>
+                    <td>
+                        <asp:UpdatePanel ID="UpdatePanelEdit3" runat="server">
+                            <ContentTemplate>
+                                <asp:TextBox ID="txtMultipleSignIn" runat="server"></asp:TextBox>
+                                
+                                
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </td>
+                </tr>
+                <tr>
+                <td>
+                 <asp:Label ID="Label4" Text="Sign out time" runat="server"></asp:Label>
+                </td>
+                <td>
+                     <asp:UpdatePanel ID="UpdatePanel1out" runat="server">
+                     <ContentTemplate>
+                 <asp:TextBox ID="txtMultipleSignOut" runat="server"></asp:TextBox>
+                </ContentTemplate>
+                 </asp:UpdatePanel>
+                 </td>
+                 
+                </tr>
+
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <div style="display: inline-block">
+                            <asp:UpdatePanel ID="UpdatePanel16" runat="server">
+                                <ContentTemplate>
+                                    <asp:Button ID="btnMultipleUpdateOut" runat="server" Text="Update" OnClientClick="return validateSignInOut();"
+                                        CssClass="btn btn-danger" onclick="btnMultipleUpdateOut_Click" />
+                                </ContentTemplate>
+                              </asp:UpdatePanel>
+                        </div>
+                        <asp:Button ID="btnMultipleCancleOut" runat="server" Text="Cancel" CssClass="btn" OnClientClick="Multiplecancle();"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     </form>
 
    
@@ -1967,81 +2192,81 @@ function clearDisposableItems( sender , args ) {
                 
             var totalRO = $('.'+class1+' tr').length;
             var totalTD = $('.'+class1+' tr:eq(1) th').length;
-           //------------------------------------------------------------ 
-           $('.table1 tr:eq(1) th:eq(0), .table1 tr:eq(1) th:eq(1)').css('border','2px solid #888')
-           //$('.table1 tr td:eq(0), .table1 tr tdh:eq(1)')
-           $('.table1 tr').each(function(){
-                if($(this).index() != 0){
-                    $(this).children('td:eq(0)').css({'border-left':'2px solid #888', 'border-right':'2px solid #888'})
-                    $(this).children('td:eq(1)').css({'border-left':'2px solid #888', 'border-right':'2px solid #888'})
-                }
-                
-                $(this).children('td:last-child').addClass('bR')
-                $(this).children('th:last-child').addClass('bR')
-                
-           })
-           $('.table1 tr:eq(0) td:eq(0)').addClass('bL bT')
-           $('.table1 tr:eq(0) td:eq(1)').addClass(' bT bR')
-           $('.table1 tr:eq(0) td:last-child').css('border','2px solid #888');
-           //---------------------------------------------
+//           //------------------------------------------------------------ 
+//           $('.table1 tr:eq(1) th:eq(0), .table1 tr:eq(1) th:eq(1)').css('border','2px solid #888')
+//           //$('.table1 tr td:eq(0), .table1 tr tdh:eq(1)')
+//           $('.table1 tr').each(function(){
+//                if($(this).index() != 0){
+//                    $(this).children('td:eq(0)').css({'border-left':'2px solid #888', 'border-right':'2px solid #888'})
+//                    $(this).children('td:eq(1)').css({'border-left':'2px solid #888', 'border-right':'2px solid #888'})
+//                }
+//                
+//                $(this).children('td:last-child').addClass('bR')
+//                $(this).children('th:last-child').addClass('bR')
+//                
+//           })
+//           $('.table1 tr:eq(0) td:eq(0)').addClass('bL bT')
+//           $('.table1 tr:eq(0) td:eq(1)').addClass(' bT bR')
+//           $('.table1 tr:eq(0) td:last-child').css('border','2px solid #888');
+//           //---------------------------------------------
            
            
            
-            for(r=1; r<totalRO; r++){              
-                
-                            
-                if(r==1){
-                    start = 2;
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bL bT');
-                    $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bL'); 
-                    start++;
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bT');
-                    start++;
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bT');
-                    start++;
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bT');
-                    start++;
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bT bR');
-                    $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');
-                    
-                    start += 5             
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR'); 
-                    start += 5             
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR');  
-                    start += 5             
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR'); 
-                    start += 5             
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR');  
-                    start += 5             
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR'); 
-                    start += 5             
-                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR'); 
-                          
-                }
-                
-                start = 2;  
-                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bL'); 
-                start += 4             
-                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');  
-                
-                 
-                start += 5             
-                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR'); 
-                start += 5             
-                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');  
-                 start += 5             
-                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR'); 
-                start += 5             
-                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');  
-                 start += 5             
-                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR'); 
-                start += 5             
-                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');    
-                
-                
-                
-                         
-            }
+//            for(r=1; r<totalRO; r++){              
+//                
+//                            
+//                if(r==1){
+//                    start = 2;
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bL bT');
+//                    $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bL'); 
+//                    start++;
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bT');
+//                    start++;
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bT');
+//                    start++;
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bT');
+//                    start++;
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bT bR');
+//                    $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');
+//                    
+//                    start += 5             
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR'); 
+//                    start += 5             
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR');  
+//                    start += 5             
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR'); 
+//                    start += 5             
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR');  
+//                    start += 5             
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR'); 
+//                    start += 5             
+//                    $('.'+class1+' tr:eq('+r+') th:eq('+start+')').addClass('bR'); 
+//                          
+//                }
+//                
+//                start = 2;  
+//                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bL'); 
+//                start += 4             
+//                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');  
+//                
+//                 
+//                start += 5             
+//                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR'); 
+//                start += 5             
+//                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');  
+//                 start += 5             
+//                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR'); 
+//                start += 5             
+//                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');  
+//                 start += 5             
+//                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR'); 
+//                start += 5             
+//                $('.'+class1+' tr:eq('+r+') td:eq('+start+')').addClass('bR');    
+//                
+//                
+//                
+//                         
+//            }
             var len = $('.table1 tr').length-1;
             
             $('.table1 tr:eq('+len+') td').css({'background':'#ddd', 'border-top':'#888 1px solid'});
@@ -2075,6 +2300,16 @@ function clearDisposableItems( sender , args ) {
 	                timeFormat: "hh:mm TT"	                
                 });
                 
+                     
+                 $('#txtMultipleSignIn').timepicker({                    
+	                timeFormat: "hh:mm TT"	                
+                });
+                
+                 $('#txtMultipleSignOut').timepicker({                    
+	                timeFormat: "hh:mm TT"	                
+                });
+                
+                
             $('.table1 tr:last-child').remove();
             $('.table2 tr:last-child').remove();
             // $('.table3 tr:last-child').remove();
@@ -2086,7 +2321,7 @@ function clearDisposableItems( sender , args ) {
            
            // Counter    start     
            
-            var arr = [2,3,7,8,12,13,17,18,22,23,27,28,32,33];
+           var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
            
            for(kk=0;kk<arr.length; kk++){                
                 eval('var count'+arr[kk]+' = ' + 0 + ';');
@@ -2266,6 +2501,111 @@ function clearDisposableItems( sender , args ) {
     }
         
         
+          function  validateSignInOut()
+        {
+        
+        debugger
+        var valid=true;
+
+          var tim1 = $.trim($('#txtMultipleSignIn').val()).split(':')
+   
+        var tim1AMPM = tim1[1].substring(tim1[1].length - 2, tim1[1].length);
+        tim1[1] = tim1[1].substring(0, 2);
+         
+        var current_tim = $.trim($('#hdnMultipleSchInTime').val()).split(':')
+        var current_timAMPM = current_tim[1].substring(current_tim[1].length - 2, current_tim[1].length);
+        current_tim[1]=current_tim[1].substring(0,2);
+       
+     
+        var Stl = tim1[0] * 3600 + tim1[1] * 60;
+        var St2 = current_tim[0] * 3600 + current_tim[1] * 60;
+       
+       if($.trim($('#txtMultipleSignOut').val())!="")
+       {
+              var tim2 = $.trim($('#txtMultipleSignOut').val()).split(':')
+                  var tim2AMPM = tim2[1].substring(tim2[1].length - 2, tim2[1].length);
+                tim2[1] = tim2[1].substring(0, 2);
+                
+                    
+                if(tim2[0]==12)
+                {
+                  var St3 = tim2[1] * 60;
+                }
+                else
+                {
+                    St3 = tim2[0] * 3600 + tim2[1] * 60;
+                }
+                 if(tim2[0]<12&&(tim2AMPM.trim()=="PM"||tim2AMPM.trim()=="pm"||tim2AMPM.trim()=="Pm"))
+                {
+                 St3=St3+12*3600;
+                }
+                
+       }
+        
+         
+        var current_tim1 = $.trim($('#hdnMultipleSchOutTime').val()).split(':')
+        var current_tim1AMPM = current_tim1[1].substring(current_tim1[1].length - 2, current_tim1[1].length);
+        current_tim1[1]=current_tim1[1].substring(0,2);
+         if( current_tim1[0]==12)
+        {
+                St4= current_tim1[1] * 60;
+        }
+        else
+        {
+           var St4 = current_tim1[0] * 3600 + current_tim1[1] * 60;
+        }
+     
+        if(current_tim1[0]<12&&(current_tim1AMPM.trim()=="PM"||current_tim1AMPM.trim()=="pm"||current_tim1AMPM.trim()=="Pm"))
+        {
+           St4=St4+12*3600;
+        }
+        
+        if(tim1[0]<12&&(tim1AMPM.trim()=="PM"||tim1AMPM.trim()=="pm"||tim1AMPM.trim()=="Pm"))
+        {
+           Stl=Stl+12*3600;
+        }
+ 
+           if(current_tim[0]<12&&(current_timAMPM.trim()=="PM"||current_timAMPM.trim()=="pm"||current_timAMPM.trim()=="Pm"))
+        {
+           St2=St2+12*3600;
+        }
+        
+     
+           if((St3<Stl)&&($.trim($('#txtMultipleSignOut').val())!=""))
+         {
+          alert('Signout time should be greaterthan signin time');
+          valid=false;
+         
+          $('#txtMultipleSignOut').focus();
+          }
+       
+        
+        
+      if((Stl < (St2-1200))&&(tim1AMPM==current_timAMPM)){
+           var v=confirm('Sign in time is much earlier than schedule time...Are you sure to update..')
+           if(!v)
+           {
+              $('#txtMultipleSignIn').focus();
+              valid=false;
+           }
+           
+        }
+        
+          
+         if((St3 < (St4-1200))&&(tim2AMPM==current_tim1AMPM)){
+           var v=confirm('Sign out time is much earlier than schedule time...Are you sure to update..')
+           if(!v)
+           {
+              $('#txtMultipleSignOut').focus();
+              valid=false;
+           }
+
+        }
+        
+      
+        return valid;
+  
+        }
         
         
         

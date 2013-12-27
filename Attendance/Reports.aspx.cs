@@ -97,6 +97,8 @@ namespace Attendance
                             lnkUserMangement.Enabled = false;
                             lnkPayroll.ForeColor = System.Drawing.Color.Gray;
                             lnkPayroll.Enabled = false;
+                            ddlLocation.Visible = false;
+                            lblGrdLocaton.Visible = false;
                         }
                     }
                     else
@@ -1970,9 +1972,11 @@ namespace Attendance
                             grdAttendanceSingle.DataBind();
                             lnkUserMangement.ForeColor = System.Drawing.Color.Gray;
                             lnkUserMangement.Enabled = false;
-
+                            ddlLocation.Visible = false;
+                            lblGrdLocaton.Visible = false;
                             lnkPayroll.ForeColor = System.Drawing.Color.Gray;
                             lnkPayroll.Enabled = false;
+
                             //  lnkUserMangement.Style["display"] = "none";
                         }
                     }
@@ -2142,6 +2146,8 @@ namespace Attendance
                             lnkUserMangement.Enabled = false;
                             lnkPayroll.ForeColor = System.Drawing.Color.Gray;
                             lnkPayroll.Enabled = false;
+                            ddlLocation.Visible = false;
+                            lblGrdLocaton.Visible = false;
                         }
                     }
                     else
@@ -2297,7 +2303,7 @@ namespace Attendance
                             hdnMultipleSignoutTime.Value = dt1.Rows[0]["MonSignOut"].ToString() == "N/A" ? Convert.ToDateTime(dt1.Rows[0]["MonSignIn"]).ToString("MM/dd/yyyy") : Convert.ToDateTime(dt1.Rows[0]["MonSignOut"]).ToString("MM/dd/yyyy hh:mm tt").Trim();
                             txtMultipleSignIn.Text = dt1.Rows[0]["MonSignIn"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["MonSignIn"]).ToString("hh:mm tt").Trim();
                             txtMultipleSignOut.Text = dt1.Rows[0]["MonSignOut"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["MonSignOut"]).ToString("hh:mm tt").Trim();
-                            lblMultipleEditPopName.Text = lblName.Text.Trim();
+                            lblMultipleEditPopName.Text = dt1.Rows[0]["Empname"].ToString();
                             lblMultipleEditDay.Text = "Monday";
                             mdlMultipleEditEditPopUp.Show();
                         }
@@ -2334,7 +2340,7 @@ namespace Attendance
                     if (Loguserid != 0)
                     {
 
-                        hdnLogUserID.Value = Loguserid.ToString();
+                        hdnMultipleEditLogUserID.Value = Loguserid.ToString();
                         dv.RowFilter = "TueLogUserID=" + Loguserid;
                         DataTable dt1 = dv.ToTable();
 
@@ -2358,7 +2364,7 @@ namespace Attendance
                             hdnMultipleSignoutTime.Value = dt1.Rows[0]["TueSignOut"].ToString() == "N/A" ? Convert.ToDateTime(dt1.Rows[0]["TueSignIn"]).ToString("MM/dd/yyyy") : Convert.ToDateTime(dt1.Rows[0]["TueSignOut"]).ToString("MM/dd/yyyy hh:mm tt").Trim();
                             txtMultipleSignIn.Text = dt1.Rows[0]["TueSignIn"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["TueSignIn"]).ToString("hh:mm tt").Trim();
                             txtMultipleSignOut.Text = dt1.Rows[0]["TueSignOut"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["TueSignOut"]).ToString("hh:mm tt").Trim();
-                            lblMultipleEditPopName.Text = lblName.Text.Trim();
+                            lblMultipleEditPopName.Text = dt1.Rows[0]["Empname"].ToString();
                             lblMultipleEditDay.Text = "Tuesday";
                             mdlMultipleEditEditPopUp.Show();
                         }
@@ -2399,7 +2405,7 @@ namespace Attendance
                     if (Loguserid != 0)
                     {
 
-                        hdnLogUserID.Value = Loguserid.ToString();
+                        hdnMultipleEditLogUserID.Value = Loguserid.ToString();
                         dv.RowFilter = "WedLogUserID=" + Loguserid;
                         DataTable dt1 = dv.ToTable();
 
@@ -2422,7 +2428,7 @@ namespace Attendance
                             hdnMultipleSignoutTime.Value = dt1.Rows[0]["WedSignOut"].ToString() == "N/A" ? Convert.ToDateTime(dt1.Rows[0]["WedSignIn"]).ToString("MM/dd/yyyy") : Convert.ToDateTime(dt1.Rows[0]["WedSignOut"]).ToString("MM/dd/yyyy hh:mm tt").Trim();
                             txtMultipleSignIn.Text = dt1.Rows[0]["WedSignIn"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["WedSignIn"]).ToString("hh:mm tt").Trim();
                             txtMultipleSignOut.Text = dt1.Rows[0]["WedSignOut"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["WedSignOut"]).ToString("hh:mm tt").Trim();
-                            lblMultipleEditPopName.Text = lblName.Text.Trim();
+                            lblMultipleEditPopName.Text = dt1.Rows[0]["Empname"].ToString();
                             lblMultipleEditDay.Text = "Wednesday";
                             mdlMultipleEditEditPopUp.Show();
                         }
@@ -2462,7 +2468,7 @@ namespace Attendance
                     if (Loguserid != 0)
                     {
 
-                        hdnLogUserID.Value = Loguserid.ToString();
+                        hdnMultipleEditLogUserID.Value = Loguserid.ToString();
                         dv.RowFilter = "ThuLogUserID=" + Loguserid;
                         DataTable dt1 = dv.ToTable();
 
@@ -2485,7 +2491,7 @@ namespace Attendance
                             hdnMultipleSignoutTime.Value = dt1.Rows[0]["ThuSignOut"].ToString() == "N/A" ? Convert.ToDateTime(dt1.Rows[0]["ThuSignIn"]).ToString("MM/dd/yyyy") : Convert.ToDateTime(dt1.Rows[0]["ThuSignOut"]).ToString("MM/dd/yyyy hh:mm tt").Trim();
                             txtMultipleSignIn.Text = dt1.Rows[0]["ThuSignIn"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["ThuSignIn"]).ToString("hh:mm tt").Trim();
                             txtMultipleSignOut.Text = dt1.Rows[0]["ThuSignOut"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["ThuSignOut"]).ToString("hh:mm tt").Trim();
-                            lblMultipleEditPopName.Text = lblName.Text.Trim();
+                            lblMultipleEditPopName.Text = dt1.Rows[0]["Empname"].ToString();
                             lblMultipleEditDay.Text = "Thursday";
                             mdlMultipleEditEditPopUp.Show();
                         }
@@ -2525,7 +2531,7 @@ namespace Attendance
                     if (Loguserid != 0)
                     {
 
-                        hdnLogUserID.Value = Loguserid.ToString();
+                        hdnMultipleEditLogUserID.Value = Loguserid.ToString();
                         dv.RowFilter = "FriLogUserID=" + Loguserid;
                         DataTable dt1 = dv.ToTable();
 
@@ -2548,7 +2554,7 @@ namespace Attendance
                             hdnMultipleSignoutTime.Value = dt1.Rows[0]["FriSignOut"].ToString() == "N/A" ? Convert.ToDateTime(dt1.Rows[0]["FriSignIn"]).ToString("MM/dd/yyyy") : Convert.ToDateTime(dt1.Rows[0]["FriSignOut"]).ToString("MM/dd/yyyy hh:mm tt").Trim();
                             txtMultipleSignIn.Text = dt1.Rows[0]["FriSignIn"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["FriSignIn"]).ToString("hh:mm tt").Trim();
                             txtMultipleSignOut.Text = dt1.Rows[0]["FriSignOut"].ToString() == "N/A" ? "" : Convert.ToDateTime(dt1.Rows[0]["FriSignOut"]).ToString("hh:mm tt").Trim();
-                            lblMultipleEditPopName.Text = lblName.Text.Trim();
+                            lblMultipleEditPopName.Text = dt1.Rows[0]["Empname"].ToString();
                             lblMultipleEditDay.Text = "Friday";
                             mdlMultipleEditEditPopUp.Show();
                         }
@@ -2591,7 +2597,7 @@ namespace Attendance
                     if (Loguserid != 0)
                     {
 
-                        hdnLogUserID.Value = Loguserid.ToString();
+                        hdnMultipleEditLogUserID.Value = Loguserid.ToString();
                         dv.RowFilter = "SatLogUserID=" + Loguserid;
                         DataTable dt1 = dv.ToTable();
 
@@ -2655,7 +2661,7 @@ namespace Attendance
                     if (Loguserid != 0)
                     {
 
-                        hdnLogUserID.Value = Loguserid.ToString();
+                        hdnMultipleEditLogUserID.Value = Loguserid.ToString();
                         dv.RowFilter = "SunLogUserID=" + Loguserid;
                         DataTable dt1 = dv.ToTable();
 
@@ -4011,6 +4017,8 @@ namespace Attendance
                         lnkUserMangement.Enabled = false;
                         lnkPayroll.ForeColor = System.Drawing.Color.Gray;
                         lnkPayroll.Enabled = false;
+                        ddlLocation.Visible = false;
+                        lblGrdLocaton.Visible = false;
                     }
                 }
                 else
@@ -4504,11 +4512,11 @@ namespace Attendance
                     hdnMultipleSchOutTime.Value = dtnew.Rows[0]["EndTime"].ToString();
                     hdnMultipleSchInTime.Value = dtnew.Rows[0]["startTime"].ToString();
 
-                    hdnMultipleSignInHrs.Value = dtnew.Rows[0]["Logindate"].ToString() == "N/A" ? dtnew.Rows[0]["startTime"].ToString() : Convert.ToDateTime(dtnew.Rows[0]["Logindate"]).ToString("hh:mm tt").Trim();
-                    hdnMultipleSignOutHrs.Value = dtnew.Rows[0]["Logoutdate"].ToString() == "N/A" ? dtnew.Rows[0]["EndTime"].ToString() : Convert.ToDateTime(dtnew.Rows[0]["Logoutdate"]).ToString("hh:mm tt").Trim();
+                    hdnMultipleSignInHrs.Value = dtnew.Rows[0]["Logindate"].ToString() == "N/A" ? dtnew.Rows[0]["startTime"].ToString() : dtnew.Rows[0]["Logindate"].ToString() == ""?dtnew.Rows[0]["startTime"].ToString():Convert.ToDateTime(dtnew.Rows[0]["Logindate"]).ToString("hh:mm tt").Trim();
+                    hdnMultipleSignOutHrs.Value = dtnew.Rows[0]["Logoutdate"].ToString() == "N/A" ? dtnew.Rows[0]["EndTime"].ToString() : dtnew.Rows[0]["Logoutdate"].ToString() == ""?dtnew.Rows[0]["EndTime"].ToString():Convert.ToDateTime(dtnew.Rows[0]["Logoutdate"]).ToString("hh:mm tt").Trim();
 
-                    txtMultipleSignIn.Text = hdnMultipleSignInTime.Value == "N/A" ? "" : Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("hh:mm tt");
-                    txtMultipleSignOut.Text = hdnMultipleSignoutTime.Value == "N/A" ? "" : Convert.ToDateTime(hdnMultipleSignoutTime.Value).ToString("hh:mm tt");
+                    txtMultipleSignIn.Text = dtnew.Rows[0]["Logindate"].ToString() == "" ? "" : Convert.ToDateTime(dtnew.Rows[0]["Logindate"].ToString()).ToString("hh:mm tt");
+                    txtMultipleSignOut.Text = dtnew.Rows[0]["Logoutdate"].ToString() == "" ? "" : Convert.ToDateTime(dtnew.Rows[0]["Logoutdate"].ToString()).ToString("hh:mm tt");
                     mdlMultipleEditEditPopUp.Show();
                 }
             }

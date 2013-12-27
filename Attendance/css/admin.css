@@ -513,4 +513,5 @@ a.multipleLogin, .multipleLogin
 	padding-right: 16px;
 }
 
-
+.multipleLoginList{ margin:10px; padding:0   }
+.multipleLoginList li{ list-style:none; margin:0 10px 10px 0; float:left; width:47%; }

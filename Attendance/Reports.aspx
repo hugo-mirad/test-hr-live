@@ -403,7 +403,10 @@
             padding-top: 55px;
         }
     </style>
-     <script>
+     
+
+    <script src="js/jquery-1.8.3.min.js" ></script>
+    <script type="text/javascript">
     
         $(function(){
             $('.popupHolder2').css('z-index','100002')
@@ -411,8 +414,6 @@
         })
         
     </script>
-
-    <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
       function validPwd()
@@ -701,10 +702,7 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
-                      
-                        <h4>
-                        </h4>
-                      
+       
                     </h4>
                 </div>
             </ProgressTemplate>
@@ -1705,7 +1703,7 @@ function clearDisposableItems( sender , args ) {
         TargetControlID="hdnMultipleLoginView" PopupControlID="dvMultiplePopup" CancelControlID="lnkMultipleClose">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnMultipleLoginView" runat="server" />
-    <div id="dvMultiplePopup" runat="server" class="popContent" style="width: 400px;
+    <div id="dvMultiplePopup" runat="server" class="popContent" style="width: 500px;
         display: none">
         <h2>
             <asp:UpdatePanel ID="UpdatePanel14" runat="server">
@@ -1718,17 +1716,18 @@ function clearDisposableItems( sender , args ) {
                 <asp:LinkButton ID="lnkMultipleClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
+            <div style="width:96%; margin:10px auto;">
           <asp:UpdatePanel ID="UpdatePanel15" runat="server">
           <ContentTemplate>
             <asp:Repeater ID="rpMultiple" runat="server" 
                 onitemcommand="rpMultiple_ItemCommand" 
                 onitemdatabound="rpMultiple_ItemDataBound">
              <HeaderTemplate>
-                <ul>
+                <ul class="multipleLoginList" >
              </HeaderTemplate>
                 <ItemTemplate>
                 <li>
-                   <fieldset class="popupFieldSet" style="width:135px;padding:5px;">
+                   <fieldset class="popupFieldSet" style="margin-bottom:5px;">
                      <legend>In-out</legend>
                         <asp:LinkButton ID="lblMultipleSignIn" runat="server" Text='<%#Eval("Logindate") %>'
                                 Style="text-decoration: none" CommandArgument='<%#Eval("LogUserID") %>' CommandName="Multiple"></asp:LinkButton>
@@ -1742,7 +1741,7 @@ function clearDisposableItems( sender , args ) {
                           
                        </fieldset>
                     </li>
-                  <br />
+                 
                 </ItemTemplate>
           <FooterTemplate> 
           </ul>
@@ -1750,6 +1749,8 @@ function clearDisposableItems( sender , args ) {
             </asp:Repeater>
              </ContentTemplate>
              </asp:UpdatePanel>  
+             <br /><div class="clear">&nbsp;</div>
+             </div>
         </div>
     </div>
     
@@ -1825,10 +1826,7 @@ function clearDisposableItems( sender , args ) {
                                     <asp:Button ID="btnMultipleUpdateOut" runat="server" Text="Update" OnClientClick="return validateSignInOut();"
                                         CssClass="btn btn-danger" onclick="btnMultipleUpdateOut_Click" />
                                 </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnMultipleCancleOut" EventName="Click" />
-                                </Triggers>
-                            </asp:UpdatePanel>
+                              </asp:UpdatePanel>
                         </div>
                         <asp:Button ID="btnMultipleCancleOut" runat="server" Text="Cancel" CssClass="btn" OnClientClick="Multiplecancle();"/>
                     </td>
@@ -2500,8 +2498,14 @@ function clearDisposableItems( sender , args ) {
                   var tim2AMPM = tim2[1].substring(tim2[1].length - 2, tim2[1].length);
                 tim2[1] = tim2[1].substring(0, 2);
                 
-                   var St3 = tim2[0] * 3600 + tim2[1] * 60;
-                
+                if(tim2[0]==12)
+                {
+                  var St3 = tim2[1] * 60;
+                }
+                else
+                {
+                    St3 = tim2[0] * 3600 + tim2[1] * 60;
+                }
                  if(tim2[0]<12&&(tim2AMPM.trim()=="PM"||tim2AMPM.trim()=="pm"||tim2AMPM.trim()=="Pm"))
                 {
                  St3=St3+12*3600;
@@ -2513,7 +2517,16 @@ function clearDisposableItems( sender , args ) {
         var current_tim1 = $.trim($('#hdnMultipleSchOutTime').val()).split(':')
         var current_tim1AMPM = current_tim1[1].substring(current_tim1[1].length - 2, current_tim1[1].length);
         current_tim1[1]=current_tim1[1].substring(0,2);
-        var St4 = current_tim1[0] * 3600 + current_tim1[1] * 60;
+        if( current_tim1[0]==12)
+        {
+                St4= current_tim1[1] * 60;
+        }
+        else
+        {
+           var St4 = current_tim1[0] * 3600 + current_tim1[1] * 60;
+        }
+        
+        
      
         if(current_tim1[0]<12&&(current_tim1AMPM.trim()=="PM"||current_tim1AMPM.trim()=="pm"||current_tim1AMPM.trim()=="Pm"))
         {
@@ -2530,16 +2543,14 @@ function clearDisposableItems( sender , args ) {
            St2=St2+12*3600;
         }
         
-         if($.trim($('#txtMultipleSignOut').val())!="")
-       {
-        
-             if(St3<Stl)
+            
+           if((St3<Stl)&&($.trim($('#txtMultipleSignOut').val())!=""))
          {
           alert('Signout time should be greaterthan signin time');
           valid=false;
          
           $('#txtMultipleSignOut').focus();
-          }
+          
         }
   
         
@@ -2555,7 +2566,7 @@ function clearDisposableItems( sender , args ) {
         }
         
           
-        if((St3 < (St4-1200))&&(tim2AMPM==current_tim1AMPM)){
+       if((St3 < (St4-1200))&&(tim2AMPM==current_tim1AMPM)){
            var v=confirm('Sign out time is much earlier than schedule time...Are you sure to update..')
            if(!v)
            {

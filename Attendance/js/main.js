@@ -337,8 +337,34 @@ $(function() {
         //current_tim[2] = current_tim[2].substring(current_tim[2].length - 2, current_tim[2].length);
 
         //if (parseInt(tim1[0]) < parseInt(current_tim[0]) && parseInt(tim1[1]) <= parseInt(current_tim[1]) && tim1AMPM == current_timAMPM) { validTime = true } else { validTime = false }
-        var Stl = tim1[0] * 3600 + tim1[1] * 60;
-        var St2 = current_tim[0] * 3600 + current_tim[1] * 60;
+        
+        //var Stl = tim1[0] * 3600 + tim1[1] * 60;
+        //var St2 = current_tim[0] * 3600 + current_tim[1] * 60;
+        
+        // Assigned time
+            if(tim1[0] == 12){
+                var Stl =  tim1[1]*60;
+            }else{
+                var Stl =  tim1[0]*3600 + tim1[1]*60;
+            }
+            
+            // Actual Clock
+            if(current_tim[0] == 12){
+                var St2 =  current_tim[1]*60;
+            }else{
+                var St2 =  current_tim[0]*3600 + current_tim[1]*60;
+            }          
+            
+            
+            if(tim1AMPM=='PM'){
+                Stl += 43200;
+            }
+            if(current_timAMPM=='PM' ){
+                St2 += 43200;
+            }
+        
+        
+        
         if (Stl < St2 && tim1AMPM == current_timAMPM) { validTime = true } else { validTime = false }
 
                
