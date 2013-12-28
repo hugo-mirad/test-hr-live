@@ -723,7 +723,7 @@ function clearDisposableItems( sender , args ) {
         <asp:UpdatePanel ID="up" runat="server">
             <ContentTemplate>
                 <asp:HiddenField runat="server" ID="hdnFreeze" />
-                <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
+            <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
                     OnRowCreated="grdAttandence_RowCreated" CssClass="table1" OnRowCommand="grdAttandence_RowCommand">
                     <Columns>
                         <asp:TemplateField>
@@ -755,6 +755,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblMonScIn" runat="server" Text='<%#Eval("MonSchIn").ToString().Trim()%>'></asp:Label>
                                 <asp:Label ID="lblMonScOut" runat="server" Text='<%# " - "+Eval("MonSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnMonLunch" runat="server" Value='<%#Eval("MonLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1 bL" />
                             <HeaderStyle CssClass="bL" />
@@ -816,6 +817,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblTueScIn" runat="server" Text='<%#Eval("TueSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
                                 <asp:Label ID="lblTueScOut" runat="server" Text='<%# " - "+Eval("TueSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnTueLunch" runat="server" Value='<%#Eval("TueLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                         </asp:TemplateField>
                         <%--      <asp:TemplateField>
@@ -871,6 +873,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblWedScIn" runat="server" Text='<%#Eval("WedSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
                                 <asp:Label ID="lblWedScOut" runat="server" Text='<%# " - "+Eval("WedSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnWedLunch" runat="server" Value='<%#Eval("WedLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
@@ -930,6 +933,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblThuScIn" runat="server" Text='<%#Eval("ThuSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
                                 <asp:Label ID="lblThuScOut" runat="server" Text='<%# " - "+Eval("ThuSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnThuLunch" runat="server" Value='<%#Eval("ThuLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                         </asp:TemplateField>
                         <%--  <asp:TemplateField>
@@ -985,6 +989,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblFriScIn" runat="server" Text='<%#Eval("FriSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
                                 <asp:Label ID="lblFriScOut" runat="server" Text='<%# " - "+Eval("FriSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnFriLunch" runat="server" Value='<%#Eval("FriLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
@@ -1044,6 +1049,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblSatScIn" runat="server" Text='<%#Eval("SatSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
                                 <asp:Label ID="lblSatScOut" runat="server" Text='<%# " - "+ Eval("SatSchOut").ToString().Trim()%>'></asp:Label>
+                                 <asp:HiddenField ID="hdnSatLunch" runat="server" Value='<%#Eval("SatLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                         </asp:TemplateField>
                         <%-- <asp:TemplateField>
@@ -1099,6 +1105,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblSunScIn" runat="server" Text='<%#Eval("SunSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
                                 <asp:Label ID="lblSunScOut" runat="server" Text='<%# " - "+Eval("SunSchOut").ToString().Trim()%>'></asp:Label>
+                                <asp:HiddenField ID="hdnSunLunch" runat="server" Value='<%#Eval("SunLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
@@ -1172,7 +1179,7 @@ function clearDisposableItems( sender , args ) {
                             <HeaderStyle CssClass="bR bT" />
                         </asp:TemplateField>
                     </Columns>
-                </asp:GridView>
+                </asp:GridView> 
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="btnPrevious" EventName="Click" />
@@ -2079,7 +2086,7 @@ function clearDisposableItems( sender , args ) {
            
                // Counter    start     
            
-            var arr = [2,3,7,8,12,13,17,18,22,23,27,28,32,33];
+              var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
            
            for(kk=0;kk<arr.length; kk++){                
                 eval('var count'+arr[kk]+' = ' + 0 + ';');
@@ -2147,6 +2154,36 @@ function clearDisposableItems( sender , args ) {
         
         function style1(class1){
            // console.log(class1)
+            
+            var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
+           
+           for(kk=0;kk<arr.length; kk++){                
+                eval('var count'+arr[kk]+' = ' + 0 + ';');
+               // console.log(eval('var count'+arr[kk]+' = ' + 0 + ';'));
+           }
+           
+            
+            $('.table1 tr').each(function(){
+            
+                for(kk=0; kk<arr.length; kk++){
+                    var val1 = $.trim($(this).children('td:eq('+arr[kk]+')').children('span').text());
+                    if(val1 != null && val1 != '' && val1  != ' '){                   
+                        eval('count'+arr[kk]+'++');
+                    } 
+                }                
+            })
+//            
+                 var len = $('.table1 tr').length-1;
+             var $lastRow = $('.table1 tr:eq('+len+')');           
+            
+            $lastRow.addClass('bold1')
+            
+            for(kk=0; kk<arr.length; kk++){
+                $lastRow.children('td:eq('+arr[kk]+')').children('span').text( eval('count'+arr[kk]));
+            }           
+           
+            $lastRow.children('td').children('a').removeAttr('href');
+            // Counter    End     
             
             
             

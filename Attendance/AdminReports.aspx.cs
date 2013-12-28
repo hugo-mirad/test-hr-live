@@ -946,106 +946,184 @@ namespace Attendance
                     lblName.Attributes.Add("title", tip);
 
 
+                    Label lblMonScIn = (Label)e.Row.FindControl("lblMonScIn");
+                    Label lblTueScIn = (Label)e.Row.FindControl("lblTueScIn");
+                    Label lblWedScIn = (Label)e.Row.FindControl("lblWedScIn");
+                    Label lblThuScIn = (Label)e.Row.FindControl("lblThuScIn");
+                    Label lblFriScIn = (Label)e.Row.FindControl("lblFriScIn");
+                    Label lblSatScIn = (Label)e.Row.FindControl("lblSatScIn");
+                    Label lblSunScIn = (Label)e.Row.FindControl("lblSunScIn");
+
+
+                    Label lblMonScOut = (Label)e.Row.FindControl("lblMonScOut");
+                    Label lblTueScOut = (Label)e.Row.FindControl("lblTueScOut");
+                    Label lblWedScOut = (Label)e.Row.FindControl("lblWedScOut");
+                    Label lblThuScOut = (Label)e.Row.FindControl("lblThuScOut");
+                    Label lblFriScOut = (Label)e.Row.FindControl("lblFriScOut");
+                    Label lblSatScOut = (Label)e.Row.FindControl("lblSatScOut");
+                    Label lblSunScOut = (Label)e.Row.FindControl("lblSunScOut");
+
+                    HiddenField hdnSunLunch = (HiddenField)e.Row.FindControl("hdnSunLunch");
+                    HiddenField hdnMonLunch = (HiddenField)e.Row.FindControl("hdnMonLunch");
+                    HiddenField hdnTueLunch = (HiddenField)e.Row.FindControl("hdnTueLunch");
+                    HiddenField hdnWedLunch = (HiddenField)e.Row.FindControl("hdnWedLunch");
+                    HiddenField hdnThuLunch = (HiddenField)e.Row.FindControl("hdnThuLunch");
+                    HiddenField hdnFriLunch = (HiddenField)e.Row.FindControl("hdnFriLunch");
+                    HiddenField hdnSatLunch = (HiddenField)e.Row.FindControl("hdnSatLunch");
+
+
+                    string lunchTip1 = CreateLunchTable(hdnSunLunch.Value.Trim());
+                    lblSunScIn.Attributes.Add("class", "tooltip2");
+                    lblSunScIn.Attributes.Add("title", lunchTip1);
+                    lblSunScOut.Attributes.Add("class", "tooltip2");
+                    lblSunScOut.Attributes.Add("title", lunchTip1);
+
+
+
+
+                    lunchTip1 = CreateLunchTable(hdnMonLunch.Value.Trim());
+                    lblMonScIn.Attributes.Add("class", "tooltip2");
+                    lblMonScIn.Attributes.Add("title", lunchTip1);
+                    lblMonScOut.Attributes.Add("class", "tooltip2");
+                    lblMonScOut.Attributes.Add("title", lunchTip1);
+
+
+
+                    lunchTip1 = CreateLunchTable(hdnTueLunch.Value.Trim());
+                    lblTueScIn.Attributes.Add("class", "tooltip2");
+                    lblTueScIn.Attributes.Add("title", lunchTip1);
+                    lblTueScOut.Attributes.Add("class", "tooltip2");
+                    lblTueScOut.Attributes.Add("title", lunchTip1);
+
+
+                    lunchTip1 = CreateLunchTable(hdnWedLunch.Value.Trim());
+                    lblWedScIn.Attributes.Add("class", "tooltip2");
+                    lblWedScIn.Attributes.Add("title", lunchTip1);
+                    lblWedScOut.Attributes.Add("class", "tooltip2");
+                    lblWedScOut.Attributes.Add("title", lunchTip1);
+
+
+
+                    lunchTip1 = CreateLunchTable(hdnSatLunch.Value.Trim());
+                    lblSatScIn.Attributes.Add("class", "tooltip2");
+                    lblSatScIn.Attributes.Add("title", lunchTip1);
+                    lblSatScOut.Attributes.Add("class", "tooltip2");
+                    lblSatScOut.Attributes.Add("title", lunchTip1);
+
+                    lunchTip1 = CreateLunchTable(hdnThuLunch.Value.Trim());
+                    lblThuScIn.Attributes.Add("class", "tooltip2");
+                    lblThuScIn.Attributes.Add("title", lunchTip1);
+                    lblThuScOut.Attributes.Add("class", "tooltip2");
+                    lblThuScOut.Attributes.Add("title", lunchTip1);
+
+                    lunchTip1 = CreateLunchTable(hdnFriLunch.Value.Trim());
+                    lblFriScIn.Attributes.Add("class", "tooltip2");
+                    lblFriScIn.Attributes.Add("title", lunchTip1);
+                    lblFriScOut.Attributes.Add("class", "tooltip2");
+                    lblFriScOut.Attributes.Add("title", lunchTip1);
+
+
+
                     if ((Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["MonDate"]) < Convert.ToDateTime(lblStartDate.Text)))
                     {
-                        Label lblMonScIn = (Label)e.Row.FindControl("lblMonScIn");
-                        Label lblMonScOut = (Label)e.Row.FindControl("lblMonScOut");
+                       // Label lblMonScIn = (Label)e.Row.FindControl("lblMonScIn");
+                    //    Label lblMonScOut = (Label)e.Row.FindControl("lblMonScOut");
                         lblMonScIn.Text = "";
                         lblMonScOut.Text = "";
                     }
                     if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["TueDate"]) < Convert.ToDateTime(lblStartDate.Text))
                     {
-                        Label lblTueScIn = (Label)e.Row.FindControl("lblTueScIn");
-                        Label lblTueScOut = (Label)e.Row.FindControl("lblTueScOut");
+                     //   Label lblTueScIn = (Label)e.Row.FindControl("lblTueScIn");
+                       // Label lblTueScOut = (Label)e.Row.FindControl("lblTueScOut");
                         lblTueScIn.Text = "";
                         lblTueScOut.Text = "";
                     }
 
                     if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["WedDate"]) < Convert.ToDateTime(lblStartDate.Text))
                     {
-                        Label lblWedScIn = (Label)e.Row.FindControl("lblWedScIn");
-                        Label lblWedScOut = (Label)e.Row.FindControl("lblWedScOut");
+                      //  Label lblWedScIn = (Label)e.Row.FindControl("lblWedScIn");
+                     //   Label lblWedScOut = (Label)e.Row.FindControl("lblWedScOut");
                         lblWedScIn.Text = "";
                         lblWedScOut.Text = "";
                     }
 
                     if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["ThuDate"]) < Convert.ToDateTime(lblStartDate.Text))
                     {
-                        Label lblThuScIn = (Label)e.Row.FindControl("lblThuScIn");
-                        Label lblThuScOut = (Label)e.Row.FindControl("lblThuScOut");
+                      //  Label lblThuScIn = (Label)e.Row.FindControl("lblThuScIn");
+                      //  Label lblThuScOut = (Label)e.Row.FindControl("lblThuScOut");
                         lblThuScIn.Text = "";
                         lblThuScOut.Text = "";
                     }
                     if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["FriDate"]) < Convert.ToDateTime(lblStartDate.Text))
                     {
-                        Label lblFriScIn = (Label)e.Row.FindControl("lblFriScIn");
-                        Label lblFriScOut = (Label)e.Row.FindControl("lblFriScOut");
+                      //  Label lblFriScIn = (Label)e.Row.FindControl("lblFriScIn");
+                       // Label lblFriScOut = (Label)e.Row.FindControl("lblFriScOut");
                         lblFriScIn.Text = "";
                         lblFriScOut.Text = "";
                     }
                     if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SatDate"]) < Convert.ToDateTime(lblStartDate.Text))
                     {
-                        Label lblSatScIn = (Label)e.Row.FindControl("lblSatScIn");
-                        Label lblSatScOut = (Label)e.Row.FindControl("lblSatScOut");
+                       // Label lblSatScIn = (Label)e.Row.FindControl("lblSatScIn");
+                       // Label lblSatScOut = (Label)e.Row.FindControl("lblSatScOut");
                         lblSatScIn.Text = "";
                         lblSatScOut.Text = "";
                     }
                     if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SunDate"]) < Convert.ToDateTime(lblStartDate.Text))
                     {
-                        Label lblSunScIn = (Label)e.Row.FindControl("lblSunScIn");
-                        Label lblSunScOut = (Label)e.Row.FindControl("lblSunScOut");
+                       // Label lblSunScIn = (Label)e.Row.FindControl("lblSunScIn");
+                       // Label lblSunScOut = (Label)e.Row.FindControl("lblSunScOut");
                         lblSunScIn.Text = "";
                         lblSunScOut.Text = "";
                     }
 
                     if ((Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["MonDate"]) > Convert.ToDateTime(lblTermDate.Text)))
                     {
-                        Label lblMonScIn = (Label)e.Row.FindControl("lblMonScIn");
-                        Label lblMonScOut = (Label)e.Row.FindControl("lblMonScOut");
+                        //Label lblMonScIn = (Label)e.Row.FindControl("lblMonScIn");
+                      //  Label lblMonScOut = (Label)e.Row.FindControl("lblMonScOut");
                         lblMonScIn.Text = "";
                         lblMonScOut.Text = "";
                     }
                     if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["TueDate"]) > Convert.ToDateTime(lblTermDate.Text))
                     {
-                        Label lblTueScIn = (Label)e.Row.FindControl("lblTueScIn");
-                        Label lblTueScOut = (Label)e.Row.FindControl("lblTueScOut");
+                      //  Label lblTueScIn = (Label)e.Row.FindControl("lblTueScIn");
+                     //   Label lblTueScOut = (Label)e.Row.FindControl("lblTueScOut");
                         lblTueScIn.Text = "";
                         lblTueScOut.Text = "";
                     }
 
                     if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["WedDate"]) > Convert.ToDateTime(lblTermDate.Text))
                     {
-                        Label lblWedScIn = (Label)e.Row.FindControl("lblWedScIn");
-                        Label lblWedScOut = (Label)e.Row.FindControl("lblWedScOut");
+                      //  Label lblWedScIn = (Label)e.Row.FindControl("lblWedScIn");
+                      //  Label lblWedScOut = (Label)e.Row.FindControl("lblWedScOut");
                         lblWedScIn.Text = "";
                         lblWedScOut.Text = "";
                     }
 
                     if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["ThuDate"]) > Convert.ToDateTime(lblTermDate.Text))
                     {
-                        Label lblThuScIn = (Label)e.Row.FindControl("lblThuScIn");
-                        Label lblThuScOut = (Label)e.Row.FindControl("lblThuScOut");
+                      //  Label lblThuScIn = (Label)e.Row.FindControl("lblThuScIn");
+                      //  Label lblThuScOut = (Label)e.Row.FindControl("lblThuScOut");
                         lblThuScIn.Text = "";
                         lblThuScOut.Text = "";
                     }
                     if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["FriDate"]) > Convert.ToDateTime(lblTermDate.Text))
                     {
-                        Label lblFriScIn = (Label)e.Row.FindControl("lblFriScIn");
-                        Label lblFriScOut = (Label)e.Row.FindControl("lblFriScOut");
+                       // Label lblFriScIn = (Label)e.Row.FindControl("lblFriScIn");
+                       // Label lblFriScOut = (Label)e.Row.FindControl("lblFriScOut");
                         lblFriScIn.Text = "";
                         lblFriScOut.Text = "";
                     }
                     if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SatDate"]) > Convert.ToDateTime(lblTermDate.Text))
                     {
-                        Label lblSatScIn = (Label)e.Row.FindControl("lblSatScIn");
-                        Label lblSatScOut = (Label)e.Row.FindControl("lblSatScOut");
+                       // Label lblSatScIn = (Label)e.Row.FindControl("lblSatScIn");
+                      //  Label lblSatScOut = (Label)e.Row.FindControl("lblSatScOut");
                         lblSatScIn.Text = "";
                         lblSatScOut.Text = "";
                     }
                     if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SunDate"]) > Convert.ToDateTime(lblTermDate.Text))
                     {
-                        Label lblSunScIn = (Label)e.Row.FindControl("lblSunScIn");
-                        Label lblSunScOut = (Label)e.Row.FindControl("lblSunScOut");
+                     //   Label lblSunScIn = (Label)e.Row.FindControl("lblSunScIn");
+                      //  Label lblSunScOut = (Label)e.Row.FindControl("lblSunScOut");
                         lblSunScIn.Text = "";
                         lblSunScOut.Text = "";
                     }
@@ -3531,6 +3609,27 @@ namespace Attendance
             return strTransaction;
 
         }
+
+
+        private string CreateLunchTable(string Lunch)
+        {
+            string strTransaction = string.Empty;
+            strTransaction = "<table class=\"noPading\"  id=\"SalesStatus\" style=\"display: table; border-collapse:collapse;  width:100%; min-width:200px; text-align:left;   \">";
+            strTransaction += "<tr>";
+            strTransaction += "<td style=\"width:45%;\">";
+            strTransaction += "Lunch break:";
+            strTransaction += "</td>";
+            strTransaction += "<td>";
+            strTransaction += Lunch;
+            strTransaction += "</td>";
+            strTransaction += "</tr>";
+
+            strTransaction += "</table>";
+
+            return strTransaction;
+
+        }
+
         protected void grdWeeklyAttendance_RowCreated(object sender, GridViewRowEventArgs e)
         {
             try

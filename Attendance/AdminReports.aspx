@@ -2063,7 +2063,7 @@ function clearDisposableItems( sender , args ) {
             var count33 = 0;
            */
            
-           var arr = [2,3,7,8,12,13,17,18,22,23,27,28,32,33];
+             var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
            
            for(kk=0;kk<arr.length; kk++){
                 //var eval('count'+arr[kk]) = 0;
@@ -2178,6 +2178,88 @@ function clearDisposableItems( sender , args ) {
         
         function style1(class1){
            // console.log(class1)
+            
+            
+            
+            
+               var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
+           
+           for(kk=0;kk<arr.length; kk++){
+                //var eval('count'+arr[kk]) = 0;
+                eval('var count'+arr[kk]+' = ' + 0 + ';');
+           }
+           
+            
+            $('.table1 tr').each(function(){
+            
+                for(kk=0; kk<arr.length; kk++){
+                    var val1 = $.trim($(this).children('td:eq('+arr[kk]+')').children('span').text());
+                    if(val1 != null && val1 != '' && val1  != ' '){                   
+                        eval('count'+arr[kk]+'++');
+                    } 
+                }
+            /*
+                var val1 = $.trim($(this).children('td:eq(2)').children('span').text());
+                if(val1 != null && val1 != '' && val1  != ' '){ 
+                    count2++; 
+                } 
+                
+                var val1 = $.trim($(this).children('td:eq(3)').children('span').text());
+                if(val1 != null && val1 != '' && val1  != ' '){ 
+                    count3++; 
+                } 
+                
+                var val1 = $.trim($(this).children('td:eq(7)').children('span').text());
+                if(val1 != null && val1 != '' && val1  != ' '){ 
+                    count7++; 
+                }  
+                
+                var val1 = $.trim($(this).children('td:eq(8)').children('span').text());
+                if(val1 != null && val1 != '' && val1  != ' '){ 
+                    count8++; 
+                }   
+                
+                var val1 = $.trim($(this).children('td:eq(12)').children('span').text());
+                if(val1 != null && val1 != '' && val1  != ' '){ 
+                    count12++; 
+                }  
+                
+                var val1 = $.trim($(this).children('td:eq(13)').children('span').text());
+                if(val1 != null && val1 != '' && val1  != ' '){ 
+                    count13++; 
+                }  
+                */     
+            })
+            
+            var $lastRow = $('.table1 tr:last-child');
+            //console.log('Hi');
+            
+            
+            $lastRow.addClass('bold1')
+            
+            for(kk=0; kk<arr.length; kk++){
+                $lastRow.children('td:eq('+arr[kk]+')').children('span').text( eval('count'+arr[kk]));
+            }
+            
+            /*
+            $lastRow.children('td:eq(2)').children('span').text(count2)
+            $lastRow.children('td:eq(3)').children('span').text(count3);
+            $lastRow.children('td:eq(7)').children('span').text(count7);
+            $lastRow.children('td:eq(8)').children('span').text(count8);
+            $lastRow.children('td:eq(12)').children('span').text(count12);
+            $lastRow.children('td:eq(13)').children('span').text(count13);  
+            $lastRow.children('td:eq(17)').children('span').text(count12);
+            $lastRow.children('td:eq(18)').children('span').text(count13);  
+            $lastRow.children('td:eq(22)').children('span').text(count12);
+            $lastRow.children('td:eq(23)').children('span').text(count13);    
+            $lastRow.children('td:eq(27)').children('span').text(count12);
+            $lastRow.children('td:eq(28)').children('span').text(count13);  
+            $lastRow.children('td:eq(32)').children('span').text(count12);
+            $lastRow.children('td:eq(33)').children('span').text(count13);          
+            */
+            $lastRow.children('td').children('a').removeAttr('href');
+            
+            
             
             
             
