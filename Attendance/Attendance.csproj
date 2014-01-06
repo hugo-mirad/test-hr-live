@@ -92,6 +92,7 @@
     <Content Include="images2\cal_minus.gif" />
     <Content Include="images2\cal_plus.gif" />
     <Content Include="images2\cal_reverse.gif" />
+    <Content Include="images\black_arrow_big.png" />
     <Content Include="images\Calendar_scheduleHS.png" />
     <Content Include="images\category.png" />
     <Content Include="images\close.png" />
@@ -124,6 +125,7 @@
     <Content Include="js\jquery-ui-timepicker-addon.js" />
     <Content Include="js\jquery-ui.min.js" />
     <Content Include="js\jquery.tipsy.js" />
+    <Content Include="js\jquery.tools.min.js" />
     <Content Include="js\main.js" />
     <Content Include="js\overlib.js" />
     <Content Include="js\overlibmws.js" />

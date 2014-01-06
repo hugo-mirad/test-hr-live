@@ -1013,87 +1013,6 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.Button btnCancelPasscode;
         
         /// <summary>
-        /// mdlMultipleLoginView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender mdlMultipleLoginView;
-        
-        /// <summary>
-        /// hdnMultipleLoginView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleLoginView;
-        
-        /// <summary>
-        /// dvMultiplePopup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMultiplePopup;
-        
-        /// <summary>
-        /// UpdatePanel14 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel14;
-        
-        /// <summary>
-        /// lblMultiplePopName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMultiplePopName;
-        
-        /// <summary>
-        /// lblMultipleDay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMultipleDay;
-        
-        /// <summary>
-        /// lnkMultipleClose control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkMultipleClose;
-        
-        /// <summary>
-        /// UpdatePanel15 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel15;
-        
-        /// <summary>
-        /// rpMultiple control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpMultiple;
-        
-        /// <summary>
         /// mdlMultipleEditEditPopUp control.
         /// </summary>
         /// <remarks>
@@ -1119,33 +1038,6 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl MultipleEditPopup;
-        
-        /// <summary>
-        /// UpdatePanelEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanelEdit;
-        
-        /// <summary>
-        /// lblMultipleEditPopName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMultipleEditPopName;
-        
-        /// <summary>
-        /// lblMultipleEditDay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMultipleEditDay;
         
         /// <summary>
         /// lnkMultipleEditOutClose control.
@@ -1202,13 +1094,13 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSignInTime;
         
         /// <summary>
-        /// hdnMultipleSignoutTime control.
+        /// hdnMultipleSchInTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSignoutTime;
+        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSchInTime;
         
         /// <summary>
         /// hdnMultipleSchOutTime control.
@@ -1220,31 +1112,22 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSchOutTime;
         
         /// <summary>
-        /// hdnMultipleSignInHrs control.
+        /// hdnMultipleLength control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSignInHrs;
+        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleLength;
         
         /// <summary>
-        /// hdnMultipleSignOutHrs control.
+        /// hdnMultipleSignIns control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSignOutHrs;
-        
-        /// <summary>
-        /// hdnMultipleSchInTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSchInTime;
+        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSignIns;
         
         /// <summary>
         /// UpdatePanelEdit3 control.
@@ -1308,14 +1191,5 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnMultipleUpdateOut;
-        
-        /// <summary>
-        /// btnMultipleCancleOut control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMultipleCancleOut;
     }
 }

@@ -441,7 +441,28 @@ namespace Attendance.BAL
 
          }
 
-        }
+
+         public bool UpdateSignInSignOutDelete(int loguserId)
+         {
+             bool success = false;
+             try
+             {
+
+                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                 con.Open();
+                 SqlCommand command = new SqlCommand("[USP_DeleteLoginLogout]", con);
+                 command.CommandType = CommandType.StoredProcedure;
+                 command.Parameters.Add("@Loguserid", SqlDbType.Int).Value = loguserId;
+                 command.ExecuteNonQuery();
+                 con.Close();
+                 success = true;
+             }
+             catch (Exception ex)
+             {
+             }
+             return success;
+         }
+    }
        
 
     }

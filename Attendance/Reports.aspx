@@ -13,6 +13,18 @@
     <!-- <link rel="stylesheet" href="css/style.css" type="text/css" />  -->
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
+        
+        
+        .tooltip {
+        display: none;
+        background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
+        font-size: 12px;
+        height: 167px;
+        width: 320px;
+        padding: 25px;
+        color: #EEE;
+        }
+        
         body, html
         {
             font-family: Arial;
@@ -407,7 +419,7 @@
 
     <script src="js/jquery-1.8.3.min.js" ></script>
     <script type="text/javascript">
-    
+    var smultiple = [];
         $(function(){
             $('.popupHolder2').css('z-index','100002')
             $('.popupContent2').css('z-index','100004')
@@ -557,7 +569,7 @@
     <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server">
     </cc1:ToolkitScriptManager>
 
-    <script type="text/javascript" language="javascript">
+  <%--  <script type="text/javascript" language="javascript">
   Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(clearDisposableItems)
 
 
@@ -569,7 +581,7 @@ function clearDisposableItems( sender , args ) {
     //$get('<%=grdAttandence.ClientID%>').innerHTML="";
   }
 }
-    </script>
+    </script>--%>
 
     <div id="spinner">
         <h4>
@@ -723,8 +735,9 @@ function clearDisposableItems( sender , args ) {
         <asp:UpdatePanel ID="up" runat="server">
             <ContentTemplate>
                 <asp:HiddenField runat="server" ID="hdnFreeze" />
-            <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
-                    OnRowCreated="grdAttandence_RowCreated" CssClass="table1" OnRowCommand="grdAttandence_RowCommand">
+        <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
+                    OnRowCreated="grdAttandence_RowCreated" CssClass="table1" >
+                   <%-- --%>
                     <Columns>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -775,7 +788,10 @@ function clearDisposableItems( sender , args ) {
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblMonIn" runat="server" Font-Underline="False" Text='<%#Eval("MonSignIn")%>'
-                                    CommandName="LoginMonEdit" CommandArgument='<%#Eval("MonLogUserID")%>'></asp:LinkButton>
+                                   logUid='<%#Eval("MonLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("MonSchIn").ToString().Trim()%>' 
+                                    empid='<%#Eval("empid")%>'
+                                    schOut='<%#Eval("MonSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
+                                    <asp:HiddenField ID="hdnLoguserID" runat="server" Value='<%#Eval("MonLogUserID")%>' />
                                 <asp:HiddenField ID="hdnMonSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "MonLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnMonSignInFlag" runat="server" Value='<%#Eval("MonLoginFlag")%>' />
                                 <asp:LinkButton ID="lblMonOut" runat="server" Font-Underline="False" Visible="false"
@@ -834,7 +850,9 @@ function clearDisposableItems( sender , args ) {
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblTueIn" runat="server" Font-Underline="False" Text='<%#Eval("TueSignIn")%>'
-                                    CommandName="LoginTueEdit" CommandArgument='<%#Eval("TueLogUserID")%>'></asp:LinkButton>
+                                     logUid='<%#Eval("TueLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("TueSchIn").ToString().Trim()%>' 
+                                    empid='<%#Eval("empid")%>'
+                                    schOut='<%#Eval("TueSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnTueSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "TueLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnTueSignInFlag" runat="server" Value='<%#Eval("TueLoginFlag")%>' />
                                 <asp:HiddenField ID="hdnTueFreeze" runat="server" Value='<%#Eval("TueFreeze")%>' />
@@ -892,7 +910,9 @@ function clearDisposableItems( sender , args ) {
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblWedIn" runat="server" Font-Underline="False" Text='<%#Eval("WedSignIn")%>'
-                                    CommandName="LoginWedEdit" CommandArgument='<%#Eval("WedLogUserID")%>'></asp:LinkButton>
+                                     logUid='<%#Eval("WedLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("WedSchIn").ToString().Trim()%>' 
+                                    empid='<%#Eval("empid")%>'
+                                    schOut='<%#Eval("WedSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnWedSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "WedLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnWedSignInFlag" runat="server" Value='<%#Eval("WedLoginFlag")%>' />
                                 <asp:LinkButton ID="lblWedOut" runat="server" Visible="false" Font-Underline="False"
@@ -950,7 +970,9 @@ function clearDisposableItems( sender , args ) {
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblThuIn" runat="server" Font-Underline="False" Text='<%#Eval("ThuSignIn")%>'
-                                    CommandName="LoginThuEdit" CommandArgument='<%#Eval("ThuLogUserID")%>'></asp:LinkButton>
+                                     logUid='<%#Eval("ThuLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("ThuSchIn").ToString().Trim()%>' 
+                                    empid='<%#Eval("empid")%>'
+                                    schOut='<%#Eval("ThuSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnThuSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "ThuLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnThuSignInFlag" runat="server" Value='<%#Eval("ThuLoginFlag")%>' />
                                 <asp:LinkButton ID="lblThuOut" runat="server" Visible="false" Font-Underline="False"
@@ -1008,7 +1030,9 @@ function clearDisposableItems( sender , args ) {
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblFriIn" runat="server" Font-Underline="False" Text='<%#Eval("FriSignIn")%>'
-                                    CommandName="LoginFriEdit" CommandArgument='<%#Eval("FriLogUserID")%>'></asp:LinkButton>
+                                    logUid='<%#Eval("FriLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("FriSchIn").ToString().Trim()%>' 
+                                    empid='<%#Eval("empid")%>'
+                                    schOut='<%#Eval("FriSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnFriSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "FriLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnFriSignInFlag" runat="server" Value='<%#Eval("FriLoginFlag")%>' />
                                 <asp:LinkButton ID="lblFriOut" runat="server" Visible="false" Font-Underline="False"
@@ -1066,7 +1090,9 @@ function clearDisposableItems( sender , args ) {
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblSatIn" runat="server" Font-Underline="False" Text='<%#Eval("SatSignIn")%>'
-                                    CommandName="LoginSatEdit" CommandArgument='<%#Eval("SatLogUserID")%>'></asp:LinkButton>
+                                    logUid='<%#Eval("SatLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("SatSchIn").ToString().Trim()%>' 
+                                    empid='<%#Eval("empid")%>'
+                                    schOut='<%#Eval("SatSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnSatSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SatLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSatSignInFlag" runat="server" Value='<%#Eval("SatLoginFlag")%>' />
                                 <asp:LinkButton ID="lblSatOut" runat="server" Visible="false" Font-Underline="False"
@@ -1124,7 +1150,9 @@ function clearDisposableItems( sender , args ) {
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblSunIn" runat="server" Font-Underline="False" Text='<%#Eval("SunSignIn")%>'
-                                    CommandName="LoginSunEdit" CommandArgument='<%#Eval("SunLogUserID")%>'></asp:LinkButton>
+                                     logUid='<%#Eval("SunLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("SunSchIn").ToString().Trim()%>' 
+                                    empid='<%#Eval("empid")%>'
+                                    schOut='<%#Eval("SunSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnSunSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SunLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSunSignInFlag" runat="server" Value='<%#Eval("SunLoginFlag")%>' />
                                 <asp:LinkButton ID="lblSunOut" runat="server" Visible="false" Font-Underline="False"
@@ -1706,96 +1734,49 @@ function clearDisposableItems( sender , args ) {
     
     
     
-    <cc1:ModalPopupExtender ID="mdlMultipleLoginView" runat="server" BackgroundCssClass="popupHolder"
-        TargetControlID="hdnMultipleLoginView" PopupControlID="dvMultiplePopup" CancelControlID="lnkMultipleClose">
-    </cc1:ModalPopupExtender>
-    <asp:HiddenField ID="hdnMultipleLoginView" runat="server" />
-    <div id="dvMultiplePopup" runat="server" class="popContent" style="width: 500px;
-        display: none">
-        <h2>
-            <asp:UpdatePanel ID="UpdatePanel14" runat="server">
-                <ContentTemplate>
-                    <asp:Label ID="lblMultiplePopName" runat="server"></asp:Label>
-                    <asp:Label ID="lblMultipleDay" runat="server" CssClass="right"></asp:Label>
-                </ContentTemplate>
-            </asp:UpdatePanel>
-            <span class="close">
-                <asp:LinkButton ID="lnkMultipleClose" runat="server"></asp:LinkButton></span>
-        </h2>
-        <div class="inner">
-            <div style="width:96%; margin:10px auto;">
-          <asp:UpdatePanel ID="UpdatePanel15" runat="server">
-          <ContentTemplate>
-            <asp:Repeater ID="rpMultiple" runat="server" 
-                onitemcommand="rpMultiple_ItemCommand" 
-                onitemdatabound="rpMultiple_ItemDataBound">
-             <HeaderTemplate>
-                <ul class="multipleLoginList" >
-             </HeaderTemplate>
-                <ItemTemplate>
-                <li>
-                   <fieldset class="popupFieldSet" style="margin-bottom:5px;">
-                     <legend>In-out</legend>
-                        <asp:LinkButton ID="lblMultipleSignIn" runat="server" Text='<%#Eval("Logindate") %>'
-                                Style="text-decoration: none" CommandArgument='<%#Eval("LogUserID") %>' CommandName="Multiple"></asp:LinkButton>
-                        <asp:LinkButton ID="lblMultipleSignOut" runat="server" Text='<%#Eval("Logoutdate") %>'
-                                Style="text-decoration: none" Visible="false"></asp:LinkButton>
-                                 <asp:HiddenField ID="hdnMultipleLoguserID" Value='<%#Eval("LogUserID") %>' runat="server" />
-                                 <asp:HiddenField ID="hdnMultipleSignIn" Value='<%#Eval("Logindate") %>' runat="server" />
-                                 <asp:HiddenField ID="hdnMultipleSignOut" Value='<%#Eval("Logoutdate") %>' runat="server" />
-                                 <asp:HiddenField ID="hdnMultipleSchOut" Value='<%#Eval("EndTime") %>' runat="server" />
-                                <asp:HiddenField ID="hdmMultipleSchIn" Value='<%#Eval("startTime") %>' runat="server" />
-                          
-                       </fieldset>
-                    </li>
-                 
-                </ItemTemplate>
-          <FooterTemplate> 
-          </ul>
-          </FooterTemplate>
-            </asp:Repeater>
-             </ContentTemplate>
-             </asp:UpdatePanel>  
-             <br /><div class="clear">&nbsp;</div>
-             </div>
-        </div>
-    </div>
     
     
     <!--Multiple edit popup-->
+    <!--Multiple edit popup-->
     
-      <cc1:ModalPopupExtender ID="mdlMultipleEditEditPopUp" BackgroundCssClass="popupHolder2"
+      <cc1:ModalPopupExtender ID="mdlMultipleEditEditPopUp" BackgroundCssClass="popupHolder"
         runat="server" PopupControlID="MultipleEditPopup" CancelControlID="lnkMultipleEditOutClose"
         TargetControlID="hdnMultipleEditpopup">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnMultipleEditpopup" runat="server" />
-    <div id="MultipleEditPopup" runat="server" class="popContent popupContent2" style="width: 400px;
+    <div id="MultipleEditPopup" runat="server" class="popContent" style="width: 400px;
         display: none">
         <h2>
-            <asp:UpdatePanel ID="UpdatePanelEdit" runat="server">
-                <ContentTemplate>
-                    <asp:Label ID="lblMultipleEditPopName" runat="server"></asp:Label>
-                    <asp:Label ID="lblMultipleEditDay" runat="server" CssClass="right"></asp:Label>
-                </ContentTemplate>
-            </asp:UpdatePanel>
+            <span class="lblMultipleEditPopName"></span>&nbsp;&nbsp;
+            <span class="lblMultipleEditDay"></span>
+          
             <span class="close">
                 <asp:LinkButton ID="lnkMultipleEditOutClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+        
+            <div class="editSignIn" >
+                
+            </div>
+        
+            <table class="singleEdit" style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
-                    <td>
+                    <td style="width:115px;">
                         <asp:UpdatePanel ID="UpdatePanelEdit1" runat="server">
                             <ContentTemplate>
                                 <asp:Label ID="Label3" Text="Sign in time" runat="server"></asp:Label>
                                 <asp:HiddenField ID="hdnMultipleEmpID" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleEditLogUserID" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleSignInTime" runat="server" />
-                                <asp:HiddenField ID="hdnMultipleSignoutTime" runat="server" />
+                              <%--  <asp:HiddenField ID="hdnMultipleSignoutTime" runat="server" />--%>
+                                  <asp:HiddenField ID="hdnMultipleSchInTime" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleSchOutTime" runat="server" />
-                                <asp:HiddenField ID="hdnMultipleSignInHrs" runat="server" />
-                                <asp:HiddenField ID="hdnMultipleSignOutHrs" runat="server" />
-                                 <asp:HiddenField ID="hdnMultipleSchInTime" runat="server" />
+                              <%--  <asp:HiddenField ID="hdnMultipleSignInHrs" runat="server" />--%>
+                               <%-- <asp:HiddenField ID="hdnMultipleSignOutHrs" runat="server" />--%>
+                             
+                                <asp:HiddenField ID="hdnMultipleLength" runat="server" />
+                                <asp:HiddenField ID="hdnMultipleSignIns" runat="server" />
+                                 
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </td>
@@ -1810,37 +1791,40 @@ function clearDisposableItems( sender , args ) {
                     </td>
                 </tr>
                 <tr>
-                <td>
-                 <asp:Label ID="Label4" Text="Sign out time" runat="server"></asp:Label>
-                </td>
-                <td>
-                     <asp:UpdatePanel runat="server">
-                     <ContentTemplate>
-                 <asp:TextBox ID="txtMultipleSignOut" runat="server"></asp:TextBox>
-                </ContentTemplate>
-                 </asp:UpdatePanel>
-                 </td>
+                    <td>
+                        <asp:Label ID="Label4" Text="Sign out time" runat="server"></asp:Label>
+                    </td>
+                    <td>
+                             <asp:UpdatePanel ID="UpdatePanel1out" runat="server">
+                             <ContentTemplate>
+                         <asp:TextBox ID="txtMultipleSignOut" runat="server"></asp:TextBox>
+                        </ContentTemplate>
+                         </asp:UpdatePanel>
+                     </td>
                  
                 </tr>
-
+                </table>
+                 <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
+                    <td style="width:115px;">
                     <td>
                     </td>
                     <td>
                         <div style="display: inline-block">
                             <asp:UpdatePanel ID="UpdatePanel16" runat="server">
                                 <ContentTemplate>
-                                    <asp:Button ID="btnMultipleUpdateOut" runat="server" Text="Update" OnClientClick="return validateSignInOut();"
+                                    <asp:Button ID="btnMultipleUpdateOut" runat="server" Text="Update" OnClientClick="return GetMultiple();"
                                         CssClass="btn btn-danger" onclick="btnMultipleUpdateOut_Click" />
                                 </ContentTemplate>
                               </asp:UpdatePanel>
                         </div>
-                        <asp:Button ID="btnMultipleCancleOut" runat="server" Text="Cancel" CssClass="btn" OnClientClick="Multiplecancle();"/>
-                    </td>
+                        <input type="button" id="btnMultipleCancleOut" value="Cancel" Class="btn" />
+                        </td>
                 </tr>
             </table>
         </div>
     </div>
+ 
     
     
     
@@ -2055,6 +2039,9 @@ function clearDisposableItems( sender , args ) {
     <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
 
     <script type="text/javascript" src="js/jquery-ui-sliderAccess.js"></script>
+    
+    
+    <script src="js/jquery.tools.min.js" type="text/javascript"></script>
 
     <script type="text/javascript" language="javascript">
     
@@ -2125,29 +2112,185 @@ function clearDisposableItems( sender , args ) {
         
          $('.tooltip2').tipsy({html: true, gravity:'sw' });
             
-           $.widget("ui.tooltip", $.ui.tooltip, {
-                options: {
-                    content: function() {
-                        return $(this).prop('title');
-                    }
-                }
+         $('[rel=tooltip]').tooltip();
+            
+            
+            $('#btnMultipleCancleOut').click(function()
+            {
+            debugger
+             $find('mdlMultipleEditEditPopUp').hide();
             });
-
-            $('[rel=tooltip]').tooltip({
-                position: {
-                    my: "center bottom-20",
-                    at: "center top",
-                    using: function(position, feedback) {
-                        $(this).css(position);
-                        $("<div>")
-                             .addClass("arrow")
-                             .addClass(feedback.vertical)
-                             .addClass(feedback.horizontal)
-                             .appendTo(this);
-                    }
-                }
-            });
+  
+  
+           // For Single  -------------------------------------------------------------------------------
+                    $('#txtMultipleSignIn').live('focus',function(){
+                        if($(this).hasClass('hasDatepicker')){
+                            $(this).timepicker( "destroy" );
+                            $(this).removeClass("hasDatepicker")
+                        }
+                        
+                        //var cDate = $.trim($(this).attr('date')) 
+                        
+                        if( $.trim( $('#txtMultipleSignOut').val() )  == '' ){
+                            var maxTime = popDate+' 11:59 PM';  
+                        }else{
+                            var maxTime = popDate+' '+$.trim( $('#txtMultipleSignOut').val() );  
+                        }                                         
+                           
+                           $(this).timepicker({                   
+                                timeFormat: "hh:mm TT" ,
+                                maxDate: new Date(maxTime)                       
+                            });                         
+                    });
+                    
+                    
+                    $('#txtMultipleSignIn').live('change',function(){
+                        if( $.trim( $('#txtMultipleSignIn').val() )  == '' ){
+                            //var maxTime = popDate+' 12:00 AM';  
+                             $('#txtMultipleSignOut').val('')                            
+                            $('#txtMultipleSignOut').timepicker( "destroy" );
+                            $('#txtMultipleSignOut').removeClass("hasDatepicker")
+                        
+                        }
+                    })
+                    
+                    $('.sIn').live('change',function(){
+                        if( $.trim( $(this).val() ) == '' ){                            
+                            //var maxTime = popDate+' 12:00 AM'; 
+                            var $next = $(this).parent().next().children('input.sOut')
+                             $next.val('')                            
+                            $next.timepicker( "destroy" );
+                            $next.removeClass("hasDatepicker");                        
+                        }
+                    })
+                    
+                    
+                    $('#txtMultipleSignOut').live('focus',function(){
+                        if($(this).hasClass('hasDatepicker')){
+                            $(this).timepicker( "destroy" );
+                            $(this).removeClass("hasDatepicker")
+                        }
+                        
+                        var cDate = $.trim($(this).attr('date')) 
+                        
+                        
+                        
+                        
+                        if( $.trim( $('#txtMultipleSignIn').val() )  == '' ){
+                            //var maxTime = popDate+' 12:00 AM';  
+                             $(this).val('')
+                        }else{
+                            var maxTime = popDate+' '+$.trim( $('#txtMultipleSignIn').val() );  
+                            
+                             $(this).timepicker({                   
+                                timeFormat: "hh:mm TT" ,
+                                minDate: new Date(maxTime)                       
+                            });
+                        }                                         
+                           
+                        
+                        
+                        
+                                               
+                    });
+                    
+                    
+                    
+                    
+           // For Multiple  ----------------------------------------------------------------
+                    $('.sIn').live('focus',function(){
+                    
+                        if($(this).hasClass('hasDatepicker')){
+                            $(this).timepicker( "destroy" );
+                            $(this).removeClass("hasDatepicker")
+                        }
+                        
+                    
+                        if($(this).closest('tr').index() > 1){    
+                            var cDate = $.trim($(this).attr('date'))                    
+                            var minTime = cDate+' '+$(this).closest('tr').prev().children('td:eq(2)').children('input.sOut').val();
+                            //var maxTime = cDate+' '+$(this).parent().next().children('input.sOut').val(); 
+                            
+                            
+                             if($.trim($(this).parent().next().children('input.sOut').val()) == '' ){
+                                var maxTime = cDate+' 11:59 PM';  
+                           }else{
+                                var maxTime = cDate+' '+$(this).parent().next().children('input.sOut').val();  
+                           }
+                                                  
+                            $(this).timepicker({
+                                timeOnly: true,                   
+                                timeFormat: "hh:mm TT",                            
+                                minDate: new Date(minTime),
+                                maxDate: new Date(maxTime)             
+                            }); 
+                            
+                        }else{
+                           var cDate = $.trim($(this).attr('date'))  
+                           
+                           if($.trim($(this).parent().next().children('input.sOut').val()) == '' ){
+                                var maxTime = cDate+' 11:59 PM';  
+                           }else{
+                                var maxTime = cDate+' '+$(this).parent().next().children('input.sOut').val();  
+                           }                                         
+                           
+                           $(this).timepicker({                   
+                                timeFormat: "hh:mm TT" ,
+                                maxDate: new Date(maxTime)                       
+                            }); 
+                        }
+                       
+                   })
+               
+                    
+               
+                    $('.sOut').live('focus',function(){ 
+                        
+                        if($.trim($(this).parent().prev().children('input.sIn').val()) == ''){
+                            $(this).val('')
+                        }
+                        
+                        
+                         if($(this).hasClass('hasDatepicker')){
+                            $(this).timepicker( "destroy" );
+                            $(this).removeClass("hasDatepicker")
+                        }                  
+                        if($(this).closest('tr').index() <  ($(this).closest('table').find('tr').length-1)){    
+                            var cDate = $.trim($(this).attr('date'));  
+                            
+                            if($.trim($(this).parent().prev().children('input.sIn').val()) == ''){
+                                $(this).val('')
+                            }else{  
+                                              
+                                var minTime = cDate+' '+$(this).parent().prev().children('input.sIn').val();
+                                var maxTime = cDate+' '+$(this).closest('tr').next().children('td:eq(1)').children('input.sIn').val();                      
+                                $(this).timepicker({
+                                    timeOnly: true,                   
+                                    timeFormat: "hh:mm TT",                            
+                                    minDate: new Date(minTime),
+                                    maxDate: new Date(maxTime)             
+                                }); 
+                            }
+                            
+                        }else{
+                           var cDate = $.trim($(this).attr('date'));    
+                           if($.trim($(this).parent().prev().children('input.sIn').val()) == ''){
+                                $(this).val('')
+                            }else{               
+                               var minTime = cDate+' '+$.trim($(this).parent().prev().children('input.sIn').val());                              
+                               
+                               $(this).timepicker({   
+                                    minDate: new Date(minTime),                
+                                    timeFormat: "hh:mm TT"                     
+                                }); 
+                            }
+                        } 
+                   })
+                
+            
+            
         })
+          
           
             //$('#grdAttandence tr').last().children().css({ 'background':'#CCC'})
             // $('#grdAttendanceSingle tr').last().children().css({ 'background':'#CCC'})
@@ -2155,33 +2298,35 @@ function clearDisposableItems( sender , args ) {
         function style1(class1){
            // console.log(class1)
             
-            var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
+             var arr = [2,5,8,11,14,17,20];
            
-           for(kk=0;kk<arr.length; kk++){                
+           for(kk=0;kk<arr.length; kk++){
+                //var eval('count'+arr[kk]) = 0;
                 eval('var count'+arr[kk]+' = ' + 0 + ';');
-               // console.log(eval('var count'+arr[kk]+' = ' + 0 + ';'));
            }
            
             
             $('.table1 tr').each(function(){
             
                 for(kk=0; kk<arr.length; kk++){
-                    var val1 = $.trim($(this).children('td:eq('+arr[kk]+')').children('span').text());
+                    var val1 = $.trim($(this).children('td:eq('+arr[kk]+')').children('span:first').text());
                     if(val1 != null && val1 != '' && val1  != ' '){                   
                         eval('count'+arr[kk]+'++');
                     } 
-                }                
+                }               
             })
-//            
-                 var len = $('.table1 tr').length-1;
-             var $lastRow = $('.table1 tr:eq('+len+')');           
+            
+            var $lastRow = $('.table1 tr:last-child');
+            //console.log('Hi');
+            
             
             $lastRow.addClass('bold1')
             
             for(kk=0; kk<arr.length; kk++){
-                $lastRow.children('td:eq('+arr[kk]+')').children('span').text( eval('count'+arr[kk]));
-            }           
-           
+                $lastRow.children('td:eq('+arr[kk]+')').children('span').remove()
+                $lastRow.children('td:eq('+arr[kk]+')').prepend('<span>'+eval('count'+arr[kk])+'</span>')
+            }            
+            
             $lastRow.children('td').children('a').removeAttr('href');
             // Counter    End     
             
@@ -2192,9 +2337,6 @@ function clearDisposableItems( sender , args ) {
                 $('.table1 tr:eq(0) td:eq('+i+')').css({'border':'#888 2px solid'})
             } 
             
-//            for(i=2; i<9; i++){
-//                $('.table2 tr:eq(0) td:eq('+i+')').css({'border':'#888 2px solid'})
-//            }    
                 
             var totalRO = $('.'+class1+' tr').length;
             var totalTD = $('.'+class1+' tr:eq(1) th').length;
@@ -2309,30 +2451,16 @@ function clearDisposableItems( sender , args ) {
                  $('#txtSignOut').timepicker({                    
 	                timeFormat: "hh:mm TT"	                
                 });
-                
-                
-                 $('#txtMultipleSignIn').timepicker({                    
-	                timeFormat: "hh:mm TT"	                
-                });
-                
-                 $('#txtMultipleSignOut').timepicker({                    
-	                timeFormat: "hh:mm TT"	                
-                });
-                
-              
-           // $('.table1 tr:last-child').remove();
+  
             $('.table2 tr:last-child').remove();
-            // $('.table3 tr:last-child').remove();
-            //$('#grdAttandence tr').last().children().css({'background':'#CCC'})
-            //$('#grdAttendanceSingle tr').last().children().css({ 'background':'#CCC'})
+         
            style1('table1')
-          // style1('table2')
-           
+       
               // Counter    start     
+           var arr = [2,5,8,11,14,17,20];
            
-            var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
-           
-           for(kk=0;kk<arr.length; kk++){                
+           for(kk=0;kk<arr.length; kk++){
+                //var eval('count'+arr[kk]) = 0;
                 eval('var count'+arr[kk]+' = ' + 0 + ';');
            }
            
@@ -2340,50 +2468,28 @@ function clearDisposableItems( sender , args ) {
             $('.table1 tr').each(function(){
             
                 for(kk=0; kk<arr.length; kk++){
-                    var val1 = $.trim($(this).children('td:eq('+arr[kk]+')').children('span').text());
+                    var val1 = $.trim($(this).children('td:eq('+arr[kk]+')').children('span:first').text());
                     if(val1 != null && val1 != '' && val1  != ' '){                   
                         eval('count'+arr[kk]+'++');
                     } 
-                }                
+                }               
             })
             
-                 var len = $('.table1 tr').length-1;
-             var $lastRow = $('.table1 tr:eq('+len+')');           
+            var $lastRow = $('.table1 tr:last-child');
+            //console.log('Hi');
+            
             
             $lastRow.addClass('bold1')
             
             for(kk=0; kk<arr.length; kk++){
-                $lastRow.children('td:eq('+arr[kk]+')').children('span').text( eval('count'+arr[kk]));
-            }           
-           
+                $lastRow.children('td:eq('+arr[kk]+')').children('span').remove()
+                $lastRow.children('td:eq('+arr[kk]+')').prepend('<span>'+eval('count'+arr[kk])+'</span>')
+            }            
+            
             $lastRow.children('td').children('a').removeAttr('href');
             // Counter    End     
-            
-           
-           
-           $.widget("ui.tooltip", $.ui.tooltip, {
-                options: {
-                    content: function() {
-                        return $(this).prop('title');
-                    }
-                }
-            });
-
-            $('[rel=tooltip]').tooltip({
-                position: {
-                    my: "center bottom-20",
-                    at: "center top",
-                    using: function(position, feedback) {
-                        $(this).css(position);
-                        $("<div>")
-                             .addClass("arrow")
-                             .addClass(feedback.vertical)
-                             .addClass(feedback.horizontal)
-                             .appendTo(this);
-                    }
-                }
-            });
-           
+ 
+             $('[rel=tooltip]').tooltip();
            
         }
       
@@ -2617,6 +2723,241 @@ function clearDisposableItems( sender , args ) {
         return valid;
   
         }
+        
+        
+       var popDate=''; 
+          function editPopup(e)
+        {
+        debugger
+             $this = e;
+         /*
+          hdnMultipleSchInTime,hdnMultipleSchOutTime,
+          
+          hdnMultipleSignInTime,hdnMultipleSignInHrs,
+          
+         hdnMultipleSignoutTime,hdnMultipleSignOutHrs,
+         txtMultipleSignIn,
+         txtMultipleSignOut,
+         lblMultipleEditPopName,lblMultipleEditDay
+         */
+         var empid= $this.attr('empid');
+         var empName = $this.attr('empname');
+         var logUid = $this.attr('loguid');
+         var scIn =  $this.attr('schin')
+         var scOut = $this.attr('schout')
+         var cDate =  $this.attr('date')
+         var dum = $this.attr('smultiple');
+         popDate = cDate;
+         
+         
+         $('.lblMultipleEditPopName').text(empName);
+          $('.lblMultipleEditDay').text(cDate);
+         $('#hdnMultipleSignInTime').val(cDate);
+         $('#hdnMultipleSchInTime').val(scIn);
+         $('#hdnMultipleSchOutTime').val(scOut);
+         
+         var dum2 = [];
+         if(dum != '0'){
+             $('.singleEdit').hide();
+              $('.editSignIn').show();
+            var dum2 = dum.split(',');
+            smultiple = [];
+            for(i=0; i<dum2.length-1; i++){
+                var dd= dum2[i].split('*')
+                smultiple.push(dd);
+            }
+            
+            
+            
+            
+            // DIV editSignIn
+          
+             var obj=[];
+            var li = '<table class="tablePop"><tr><th style="width:40px;">&nbsp;</th><th>Sign in time</th><th>Sign out time</th></tr>';           
+            
+            for(i=0; i<smultiple.length; i++){
+                //smultiple[i][0];
+                //smultiple[i][1];
+                //smultiple[i][2];
+
+                li += '<tr>';
+                li += '<td>'+(i+1)+'</td>';  
+                //var id = "txtMultipleSignIn";
+               
+                li += '<td><input type="text" class="timeInput sIn" date="'+cDate+'" logId="'+smultiple[i][0]+'" id="txtMultipleSignIn'+i+'" value="'+smultiple[i][1]+'"  /></td>' 
+                li += '<td><input type="text" class="timeInput sOut" date="'+cDate+'" logId="'+smultiple[i][0]+'" id="txtMultipleSignOut'+i+'" value="'+smultiple[i][2]+'"/></td>'  
+                li += '</tr>';      
+                
+            }
+            
+            $('#hdnMultipleLength').val(smultiple.length)
+            
+            li += '</table>';
+            
+            $('.editSignIn').html(li);           
+           
+            
+            //editSignIn mdlMultipleEditEditPopUp                
+           
+         }else{
+            $('#hdnMultipleLength').val(0)
+             $('.singleEdit').show();
+              $('.editSignIn').hide();
+             //console.log(logUid)
+             if(logUid && logUid != ''){           
+                var dum = $this.text().split('-');
+                dum[0] = $.trim(dum[0]);
+                dum[1] = $.trim(dum[1]);
+                $('#txtMultipleSignIn').val(dum[0]);
+                
+                if(dum[1] != 'N/A')
+                $('#txtMultipleSignOut').val(dum[1])
+                else
+                $('#txtMultipleSignOut').val('')
+                $('#hdnMultipleEditLogUserID').val(logUid);
+               
+                
+             }else{
+                $('#txtMultipleSignOut').val('');
+                $('#txtMultipleSignOut').val('');
+                $('#hdnMultipleEditLogUserID').val(0);
+               
+                $('#hdnMultipleEmpID').val(empid); 
+             }
+         }
+         
+         $find('mdlMultipleEditEditPopUp').show();
+         hideSpinner();        
+         
+        
+         return true;
+         
+         
+         
+        }
+        
+       
+      function GetMultiple()
+      {
+    
+      var valid=true;
+    
+       var scIn=$('#hdnMultipleSchInTime').val();
+       var scOut=$('#hdnMultipleSchOutTime').val();
+       
+        scIn = scIn.replace(/AM/g, " AM");
+        scIn = scIn.replace(/PM/g, " PM");
+
+           //var str = SchEnd.toString();
+        scOut = scOut.replace(/AM/g, " AM");
+        scOut = scOut.replace(/PM/g, " PM");  
+
+          var i = 0;
+        var str = '';
+         $('.tablePop input[type=text]').each(function(){
+            var val = $.trim($(this).val());
+            if($.trim($(this).val())==''){
+                val = 'N/A';
+            }
+            
+            if(i%2 == 0){
+                str +=$(this).attr('logId')+'-'+val+'-';
+            }else{
+                str +=val+'*';
+            }
+            i++;             
+         })
+         
+         
+        // alert(str);
+        $('#hdnMultipleSignIns').val(str);   
+ 
+ 
+     if($('.singleEdit').is(':visible')){
+        
+      if($('#txtMultipleSignIn')!=null && $('#txtMultipleSignOut')!=null)
+      {
+       
+           if($.trim($('#txtMultipleSignIn').val())!="")
+           {
+                if((Date.parse($.trim($('#hdnMultipleSignInTime').val())+" "+scIn)-1200)>Date.parse($.trim($('#hdnMultipleSignInTime').val())+" "+$.trim($('#txtMultipleSignIn').val())))
+                {
+                 var v=confirm('Sign in time is much earlier than schedule time...Are you sure to update..')
+                       if(!v)
+                       {
+                          $('#txtMultipleSignIn').focus();
+                          valid=false;
+                       }
+                }
+           }
+           if($.trim($('#txtMultipleSignOut').val())!="")
+           {
+                if((Date.parse($.trim($('#hdnMultipleSignInTime').val())+" "+scOut)-1200)>Date.parse($.trim($('#hdnMultipleSignInTime').val())+" "+$.trim($('#txtMultipleSignOut').val())))
+                {
+                 var v=confirm('Sign out time is much earlier than schedule time...Are you sure to update..')
+                   if(!v)
+                   {
+                      $('#txtMultipleSignOut').focus();
+                      valid=false;
+                   }
+                   
+                }
+           }
+       
+       }
+     }
+     
+   
+    if($('.editSignIn input').length > 0)
+    {
+        var firstInput = $('.editSignIn input:first').val();
+        var lastInput = $('.editSignIn input:last').val();
+        
+        if(firstInput !="")
+           {
+                if((Date.parse($.trim($('#hdnMultipleSignInTime').val())+" "+scIn)-1200)>Date.parse($.trim($('#hdnMultipleSignInTime').val())+" "+firstInput))
+                {
+                 var v=confirm('Sign in time is much earlier than schedule time...Are you sure to update..')
+                       if(!v)
+                       {
+                          $('.editSignIn input:first').focus();
+                          valid=false;
+                       }
+                }
+           }
+           if(lastInput !="")
+           {
+                if((Date.parse($.trim($('#hdnMultipleSignInTime').val())+" "+scOut)-1200)>Date.parse($.trim($('#hdnMultipleSignInTime').val())+" "+lastInput))
+                {
+                 var v=confirm('Sign out time is much earlier than schedule time...Are you sure to update..')
+                   if(!v)
+                   {
+                      $('.editSignIn input:last').focus();
+                      valid=false;
+                   }
+                   
+                }
+           }
+        
+        
+    }
+       
+       
+
+        return valid;
+      }
+       
+       
+        
+    function getHM(str,i){
+        var arr = str.split(':');
+        if(i==1){
+          arr = arr[1].split(' ');
+          
+        }
+        return(arr[0]);
+        
+    }
         
         
         

@@ -20,13 +20,13 @@ function dragFun() {
         revert: "invalid",
         drag: function() {
             $('.dummyPopup').fadeIn(100);
-            $('.boxC1, .boxC2').addClass('activeDiv');
+            $('.boxC1, .boxC2, .boxC4').addClass('activeDiv');
             $('.boxC1').css('z-index', '32');
-            $('.boxC2').css('z-index', '31');
+            $('.boxC2, .boxC4').css('z-index', '31');
         },
         stop: function() {
             $('.dummyPopup').fadeOut(50);
-            $('.boxC1, .boxC2').removeClass('activeDiv');
+            $('.boxC1, .boxC2, .boxC4').removeClass('activeDiv');
         }
 
     });
@@ -434,74 +434,27 @@ $(function() {
     });
     
     
-    /*
-    $("#drop1").droppable({ accept: "#drop2 .user", drop: function(event, ui) {
+    
+    $("#drop3").droppable({ accept: "#origin .user", drop: function(event, ui) {
         //console.log(dragged, origRevertDuration, origRevertValue)			
         var validTime = false;
         var dropped = ui.draggable;
         //console.log(dropped.index());
         userLoc1 = dropped.index();
         dropped.attr('currentObj', true)
-        var droppedOn = $("#drop1");
+        var droppedOn = $("#drop3");
         $(dropped).detach().css({ top: 0, left: 0 }).appendTo(droppedOn);
 
-        //$('#subm').val('Sign in');
-        $(' .popContent h2').html('<span>Signing in for </span>' + dropped.find('input:eq(0)').val())
-        $('#lblLIError').text('');
-        $('.popContent #txtUserID').val(dropped.find('input:eq(1)').val())
-        $('.popContent #txtNpte').text('');
-        $('.popContent #userPass').text('');
-        var path = $.trim(dropped.find('img').attr('src'));
-        if (path && path.length > 5) {
-            $('.popContent .userThumb').attr('src', dropped.find('img').attr('src'));
-        } else {
-            $('.popContent .userThumb').attr('src', 'images/defaultUSer.jpg');
-        }
-
-        
-
-        if (dropped.hasClass('lateTime')) {
-            validTime = false;
-        } else {
-            validTime = true;
-        }
-
-        if (validTime == false) {
-            $('#ReLoginPopup').addClass('error1')
-            lateTime = true;
-        } else {
-            $('#ReLoginPopup').removeClass('error1');
-            lateTime = true;
-        }
+       
 
 
-
-        //$('#loginPopup, #mdlLoginpopup').show();
-        $find('mdlReLoginPopup').show();
-        //$find('mdlLoginpopup').show();
-
-        $('#userPass').val('').focus();
-        $('#subm').click(function() {
-            if ($.trim($('#userPass').val().length) < 1) {
-                alert('Enter passcode');
-                $('#subm, #cancel, #userPass, #txtNpte').removeAttr('disabled');
-                $('#userPass').focus();
-                return false;
-            }
-            else {
-                //$('#cancel, #userPass, #txtNpte').attr('disabled', true);
-            }
-        })
-
-
-
-        $('#Button1').click(function() {
-            $('#ReLoginPopup').hide();
-            var dropped = $("#drop1").find('li[currentobj=true]');
+       
+            /*
+            var dropped = $("#origin").find('li[currentobj=true]');
             //console.log(dropped)
             dropped.removeAttr('currentobj')
             //console.log(dropped)		
-            var droppedOn = $('#drop2');
+            var droppedOn = $('#drop3');
             var obj = $(dropped).detach().css({ top: 0, left: 0 }); //.appendTo(droppedOn);
             //droppedOn.children('li:eq(' + (userLoc1 - 1) + ')').after(obj);
             //console.log('userLoc1: ' + userLoc1)
@@ -510,25 +463,24 @@ $(function() {
             } else {
                 droppedOn.children('li:eq(' + (userLoc1 - 1) + ')').after(obj);
             }
+            */
 
+           // $('#txtUserID, #txtNpte, #userPass').val('')
+            //$('.popContent .userThumb').attr('src', 'images/defaultUSer.jpg');
 
-            $('#txtUserID, #txtNpte, #userPass').val('')
-            $('.popContent .userThumb').attr('src', 'images/defaultUSer.jpg');
-
-            $('.dummyPopup').fadeOut('fast');
-            $('.boxC1, .boxC2').removeClass('activeDiv');
+           // $('.dummyPopup').fadeOut('fast');
+            $('.boxC1, .boxC2, .boxC4').removeClass('activeDiv');
             //alert(Duplicate);
             if ($('#Duplicate').val() == 'true') {
                 pageRefresh();
             }
 
-
-        })
+       
 
 
     }
     });
-    */
+   
 
 
 })

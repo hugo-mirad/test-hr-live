@@ -5,6 +5,8 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Collections.Generic;
+using System.Collections;
 namespace Attendance.BAL
 {
     public class Report
@@ -34,28 +36,38 @@ namespace Attendance.BAL
 
 
         }
-        public DataTable GetMultipleDetailsByEmpID(DateTime StartDate, string empID)
+        public List<Attendance.Entities.MultipleLogininfo> GetMultipleDetailsByEmpID(DateTime StartDate, string empID)
         {
-            DataSet ds = new DataSet();
-
+            List<Attendance.Entities.MultipleLogininfo> obj = new List<Attendance.Entities.MultipleLogininfo>();
             try
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
-                SqlCommand cmd = new SqlCommand();
-                SqlDataAdapter da = new SqlDataAdapter("[USP_GetMultipleLoginByempID]", con);
-                da.SelectCommand.Parameters.Add(new SqlParameter("@TdyDt", StartDate));
-                da.SelectCommand.Parameters.Add(new SqlParameter("@empid", empID));
-                da.SelectCommand.CommandType = CommandType.StoredProcedure;
-                da.Fill(ds);
+                SqlCommand cmd = new SqlCommand("[USP_GetMultipleLoginByempID]", con);
+                con.Open();
+                cmd.Parameters.Add(new SqlParameter("@TdyDt", StartDate));
+                cmd.Parameters.Add(new SqlParameter("@empid", empID));
+                cmd.CommandType=CommandType.StoredProcedure;
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Attendance.Entities.MultipleLogininfo objInfo = new Attendance.Entities.MultipleLogininfo();
+                    objInfo.LoginDate = dr["Logindate"].ToString() == "" ? "" : dr["Logindate"].ToString() == "NULL" ? "" : Convert.ToDateTime(dr["Logindate"].ToString()).ToString("MM/dd/yyyy")=="01/01/1900"?"":Convert.ToDateTime(dr["Logindate"].ToString()).ToString("hh:mm tt");
+                    objInfo.LogoutDate = dr["Logoutdate"].ToString() == "" ? "" : dr["Logoutdate"].ToString() == "NULL" ? "" : Convert.ToDateTime(dr["Logoutdate"].ToString()).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(dr["Logoutdate"].ToString()).ToString("hh:mm tt"); ;
+                    objInfo.Loguserid = Convert.ToInt32(dr["LogUserID"]);
+                    objInfo.SchStart = dr["startTime"].ToString();
+                    objInfo.SchEnd = dr["EndTime"].ToString();
+                    obj.Add(objInfo);
+                }
+               con.Close();
 
-                DataTable dt = ds.Tables[0];
+               
 
             }
             catch (Exception ex)
             {
             }
 
-            return ds.Tables[0];
+            return obj;
 
 
         }

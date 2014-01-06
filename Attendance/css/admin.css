@@ -515,3 +515,21 @@ a.multipleLogin, .multipleLogin
 
 .multipleLoginList{ margin:10px; padding:0   }
 .multipleLoginList li{ list-style:none; margin:0 10px 10px 0; float:left; width:47%; }
+
+
+.tablePop{ border-collapse:collapse; background:#fff; border:none; width:90%; margin:10px auto; }
+.tablePop th{ font-size:13px; font-weight:bold; text-align:left; }
+.tablePop td{ padding:5px 2px; }
+.tablePop td input[type=text]{width:90%; margin:0; }
+
+.ui-tooltip-content ul, .tooltip ul{
+	margin: 10px;
+padding: 0;
+font-weight: bold;
+	}
+	.tooltip{ z-index:99; }
+.ui-tooltip-content	legend, .tooltip legend{ margin:0; padding:5px ; font-size:13px; font-weight:bold; line-height:23px; border:none; display:inline-block; width:auto; background:none; color:#fff }
+
+.tooltip, .tooltip td, .tooltip span, .tooltip div{ color:#eee; }
+.tooltip fieldset{ padding:0 10px 10px 10px; }
+.tooltip ul{ margin:0 ; }

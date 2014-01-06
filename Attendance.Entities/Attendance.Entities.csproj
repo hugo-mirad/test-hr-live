@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="EmergencyContactInfo.cs" />
     <Compile Include="Entities.cs" />
+    <Compile Include="MultipleLogininfo.cs" />
     <Compile Include="PettyCashInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserInfo.cs" />

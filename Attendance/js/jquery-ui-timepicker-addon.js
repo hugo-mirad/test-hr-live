@@ -153,6 +153,8 @@
 		* Create a new Timepicker instance
 		*/
 		_newInst: function ($input, opts) {
+		    //console.log($input, opts);
+		   
 			var tp_inst = new Timepicker(),
 				inlineSettings = {},
 				fns = {},

@@ -46,8 +46,8 @@ var serverOffset = serverTime - getClientTime();
 
 function getClientTime() {
     var time = new Date($.trim($('#lblDate2').text()));
-    // console.log(time.getMinutes());
-    return (time.getHours() * 60 * 60) + (time.getMinutes() * 60) + (time.getSeconds());
+       // console.log(time.getMinutes());
+        return (time.getHours() * 60 * 60) + (time.getMinutes() * 60) + (time.getSeconds());
 }
 
 
@@ -63,32 +63,45 @@ var increment = 0;
 function updateClock() {
     // lblTime lblDate
 
-    var serverTime = getClientTime() + increment;
+     var serverTime = getClientTime() + increment; 
     increment++;
-
+    
     var currentHours = Math.floor(serverTime / 60 / 60);
-    var currentMinutes = Math.floor((serverTime / 60) % (currentHours * 60));   
+    //var currentMinutes = Math.floor(serverTime / 60 % (currentHours * 60));
+    if(currentHours > 0){
+        var currentMinutes = Math.floor((serverTime / 60) % (currentHours * 60));
+    }else{
+        var currentMinutes = Math.floor(serverTime / 60);
+    }
     var currentSeconds = Math.floor(serverTime % 60);
-
-   
+    
+    //console.log('serverTime: '+serverTime+ ' -currentHours:'+currentHours+' - currentMinutes: '+ currentMinutes)
     // Pad the minutes and seconds with leading zeros, if required
-    currentMinutes = (currentMinutes < 10 ? "0" : "") + currentMinutes;
-    currentSeconds = (currentSeconds < 10 ? "0" : "") + currentSeconds;
+    currentMinutes = ( currentMinutes < 10 ? "0" : "" ) + currentMinutes;
+    currentSeconds = ( currentSeconds < 10 ? "0" : "" ) + currentSeconds;
 
     // Choose either "AM" or "PM" as appropriate
-    var timeOfDay = (currentHours < 12) ? "AM" : "PM";
+    var timeOfDay = ( currentHours < 12 ) ? "AM" : "PM";
+    
+   
 
     // Convert the hours component to 12-hour format if needed
-    currentHours = (currentHours > 12) ? currentHours - 12 : currentHours;
+    currentHours = ( currentHours > 12 ) ? currentHours - 12 : currentHours;
 
     // Convert an hours component of "0" to "12"
-    currentHours = (currentHours == 0) ? 12 : currentHours;
+    currentHours = ( currentHours == 0 ) ? 12 : currentHours;
+    
+    
+     if(timeOfDay == 'AM' && currentHours == 12 ){
+        currentHours = "00";
+    }
+    
 
     // Compose the string for display
     var currentTimeString = currentHours + ":" + currentMinutes + ":" + currentSeconds + " " + timeOfDay;
-
-
-    $(".cTime b").html(currentTimeString);
+    
+    
+    $(".cTime b").html(currentTimeString); 
 }
 
 $(function () {

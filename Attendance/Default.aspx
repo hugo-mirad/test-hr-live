@@ -312,7 +312,7 @@ h2 .close a
                 <tr>
                     <td style="vertical-align: top;">
                         <!-- Left Total Users List Start  -->
-                        <div class="bor boxC1" style="margin: 0 5px;">
+                        <div class="bor boxC1" style="margin: 0 5px; height:auto; margin-bottom:10px; min-height:40%; ">
                             <h2 class="one" style="background: #fff; color: #2286c1; border-bottom: #2286c1 1px solid;">
                                 SCHEDULED <span>(<b></b>)</span></h2>
                             <div class="inner ">
@@ -340,11 +340,31 @@ h2 .close a
                                         </ul>
                                     </FooterTemplate>
                                 </asp:Repeater>
+                                 <div class="clear">
+                                &nbsp;</div>
                             </div>
                             <div class="clear">
                                 &nbsp;</div>
                         </div>
                         <!-- Left Total Users List End  -->
+                        
+                        
+                        <!-- Left Leave Users Start  -->
+                         <div class="bor boxC4" style="margin: 0 5px; height:35%; min-height:30%;">
+                         <h2 class="two" style="background: #fff; color: #888; border-bottom: #888 1px solid;">
+                                On Leave<span>(<b></b>)</span></h2>
+                                 <div class="inner ">
+                                      <ul class="users" id="drop3">
+                                        
+                                      </ul>
+                                       <div class="clear">
+                                &nbsp;</div>
+                                 </div>
+                                  <div class="clear">
+                                &nbsp;</div>
+                         </div>
+                        <!-- Left Leave Users End  -->
+                        
                     </td>
                     <td style="vertical-align: top;">
                         <!-- Mid Users List Start  -->

@@ -20,8 +20,9 @@ h2{ font-size:18px; font-weight:normal; font-family:"Century Gothic"; text-trans
 .boxC1{ background:#EFF9FF; }
 .boxC2 { background:#EFD }
 .boxC3 { background:#FFF2E4 }
+.boxC4 { background:#eee }
 
-.boxC1, .boxC2, .boxC3 { height:98%; min-height:98%; display:table; width:96%  }
+.boxC1, .boxC2, .boxC3, .boxC4 { height:98%; min-height:98%; display:block; margin:0 10px;  }
 
 .users{ display:block; position:relative; min-height:100%; list-style:none; margin:0; padding:0; }
 .users .user{ background:#fff; border:#ccc 3px solid; width:70px; height:70px; float:left; margin:3px; position:relative; z-index:10; cursor:pointer; }
