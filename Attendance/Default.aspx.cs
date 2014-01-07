@@ -545,5 +545,16 @@ namespace Attendance
         {
             mdlManagerPopup1.Hide();
         }
+
+        protected void LeaveSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 }

@@ -6,41 +6,101 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
+     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/reset.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/UI.css" />
     <link rel="stylesheet" href="css/inputs.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
+    
+    
     <!-- 
 <link href='http://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Wallpoet' rel='stylesheet' type='text/css'>
 -->
-
-
-<style>
-
-h2 .close
-{
-	float:right;
-	
-	text-decoration:none;
-	font-size:20px;
-	color:Red;
-	width:24px;
-	height:24px;
-}
-h2 .close a
-{
-	
-	font-weight:normal;
-	text-decoration:none;
-	font-size:25px;
-	color:Red;
-	width:24px;
-	height:24px;
-	display:block;
-	background:url(../images/close.png) 0 0 no-repeat;
-}
-</style>
+    <style>
+        h2 .close
+        {
+            float: right;
+            text-decoration: none;
+            font-size: 20px;
+            color: Red;
+            width: 24px;
+            height: 24px;
+        }
+        h2 .close a
+        {
+            font-weight: normal;
+            text-decoration: none;
+            font-size: 25px;
+            color: Red;
+            width: 24px;
+            height: 24px;
+            display: block;
+            background: url(../images/close.png) 0 0 no-repeat;
+        }
+        
+        
+        
+        
+        /* css for timepicker */.ui-datepicker .ui-datepicker
+        {
+            margin-bottom: 8px;
+        }
+        .ui-datepicker dl
+        {
+            text-align: left;
+        }
+        .ui-datepicker dl dt
+        {
+            float: left;
+            clear: left;
+            padding: 0 0 0 5px;
+        }
+        .ui-datepicker dl dd
+        {
+            margin: 0 10px 10px 45%;
+        }
+        .ui-datepicker td
+        {
+            font-size: 90%;
+        }
+        .ui-tpicker-grid-label
+        {
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+        .ui-datepicker-rtl
+        {
+            direction: rtl;
+        }
+        .ui-datepicker-rtl dl
+        {
+            text-align: right;
+            padding: 0 5px 0 0;
+        }
+        .ui-datepicker-rtl dl dt
+        {
+            float: right;
+            clear: right;
+        }
+        .ui-datepicker-rtl dl dd
+        {
+            margin: 0 45% 10px 10px;
+        }
+       
+       .ui-datepicker span{ width:auto; min-width:16px;;  }
+       
+       
+       .ui-widget-content.ui-datepicker {
+	        border: 1px solid #aaaaaa;
+	        background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
+	        color: #222222;
+        }
+       
+        
+    </style>
 
     <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 
@@ -265,8 +325,12 @@ h2 .close a
     </script>
 
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    
+    
 
     <script type="text/javascript" src="js/main.js"></script>
+    
+    
 
 </head>
 <body>
@@ -312,7 +376,7 @@ h2 .close a
                 <tr>
                     <td style="vertical-align: top;">
                         <!-- Left Total Users List Start  -->
-                        <div class="bor boxC1" style="margin: 0 5px; height:auto; margin-bottom:10px; min-height:40%; ">
+                        <div class="bor boxC1" style="margin: 0 5px; height: auto; margin-bottom: 10px; min-height: 40%;">
                             <h2 class="one" style="background: #fff; color: #2286c1; border-bottom: #2286c1 1px solid;">
                                 SCHEDULED <span>(<b></b>)</span></h2>
                             <div class="inner ">
@@ -340,31 +404,27 @@ h2 .close a
                                         </ul>
                                     </FooterTemplate>
                                 </asp:Repeater>
-                                 <div class="clear">
-                                &nbsp;</div>
+                                <div class="clear">
+                                    &nbsp;</div>
                             </div>
                             <div class="clear">
                                 &nbsp;</div>
                         </div>
                         <!-- Left Total Users List End  -->
-                        
-                        
                         <!-- Left Leave Users Start  -->
-                         <div class="bor boxC4" style="margin: 0 5px; height:35%; min-height:30%;">
-                         <h2 class="two" style="background: #fff; color: #888; border-bottom: #888 1px solid;">
-                                On Leave<span>(<b></b>)</span></h2>
-                                 <div class="inner ">
-                                      <ul class="users" id="drop3">
-                                        
-                                      </ul>
-                                       <div class="clear">
+                        <div class="bor boxC4" style="margin: 0 5px; height: 35%; min-height: 30%;">
+                            <h2 class="two" style="background: #fff; color: #888; border-bottom: #888 1px solid;">
+                                On Approved Leave<span>(<b></b>)</span></h2>
+                            <div class="inner ">
+                                <ul class="users" id="drop3">
+                                </ul>
+                                <div class="clear">
+                                    &nbsp;</div>
+                            </div>
+                            <div class="clear">
                                 &nbsp;</div>
-                                 </div>
-                                  <div class="clear">
-                                &nbsp;</div>
-                         </div>
+                        </div>
                         <!-- Left Leave Users End  -->
-                        
                     </td>
                     <td style="vertical-align: top;">
                         <!-- Mid Users List Start  -->
@@ -451,8 +511,8 @@ h2 .close a
         <h2>
             <asp:Label Text="Signing in for" runat="server"></asp:Label>
             <asp:Label ID="lblLIName" runat="server"></asp:Label>
-              <span class="close">
-                <asp:LinkButton ID="lnkClose" runat="server" onclick="lnkClose_Click"></asp:LinkButton></span>
+            <span class="close">
+                <asp:LinkButton ID="lnkClose" runat="server" OnClick="lnkClose_Click"></asp:LinkButton></span>
         </h2>
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
@@ -514,13 +574,12 @@ h2 .close a
         PopupControlID="logoutPopup" CancelControlID="cancel2" TargetControlID="hdnPopLogout">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnPopLogout" runat="server" />
-   
     <div id="logoutPopup" runat="server" class="popContent" style="width: 450px; display: none">
         <h2>
             <asp:Label Text="Signing out for" runat="server"></asp:Label>
             <asp:Label ID="lblLOName" runat="server"></asp:Label>
-               <span class="close">
-                <asp:LinkButton ID="lnkLOClose" runat="server" onclick="lnkLOClose_Click"></asp:LinkButton></span>
+            <span class="close">
+                <asp:LinkButton ID="lnkLOClose" runat="server" OnClick="lnkLOClose_Click"></asp:LinkButton></span>
         </h2>
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
@@ -544,7 +603,7 @@ h2 .close a
                                 <td>
                                     <div style="display: inline-block">
                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                            <ContentTemplate>   
+                                            <ContentTemplate>
                                                 <asp:Button ID="logout" runat="server" Text="Sign out" Enabled="true" class="btn btn-danger"
                                                     OnClick="logout_Click" />
                                                 <div style="display: none">
@@ -577,26 +636,18 @@ h2 .close a
             </table>
         </div>
     </div>
-    
-    
-    
     <!-- Login Again -->
-    
-    
-    
-   
     <!--Managerpopup start -->
     <cc1:ModalPopupExtender ID="mdlManagerPopup1" BackgroundCssClass="popupHolder" runat="server"
         PopupControlID="managerPopup1" CancelControlID="cancel3" TargetControlID="hdnPopManager">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnPopManager" runat="server" />
-    
     <div id="managerPopup1" runat="server" class="popContent" style="width: 400px; display: none">
         <h2>
             <asp:Label ID="Label4" Text="Signing out for" runat="server"></asp:Label>
             <asp:Label ID="Label5" runat="server"></asp:Label>
-              <span class="close">
-                <asp:LinkButton ID="lnkMNClose" runat="server" onclick="lnkMNClose_Click" ></asp:LinkButton></span>
+            <span class="close">
+                <asp:LinkButton ID="lnkMNClose" runat="server" OnClick="lnkMNClose_Click"></asp:LinkButton></span>
         </h2>
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
@@ -608,9 +659,8 @@ h2 .close a
                         <table style="border-collapse: collapse;" class="loginForm">
                             <tr>
                                 <td>
-                                   Emp ID <span class="must">*</span><br />
+                                    Emp ID <span class="must">*</span><br />
                                     <asp:TextBox ID="txtUserIdM" runat="server"></asp:TextBox>
-                                 
                                 </td>
                             </tr>
                             <tr>
@@ -630,7 +680,7 @@ h2 .close a
                                     <asp:UpdatePanel ID="UpdatePanel5" runat="server">
                                         <ContentTemplate>
                                             <asp:Label ID="lblErrorM" runat="server" ForeColor="red"></asp:Label>
-                                               <asp:HiddenField ID="hdnManageUserID" runat="server" />
+                                            <asp:HiddenField ID="hdnManageUserID" runat="server" />
                                         </ContentTemplate>
                                     </asp:UpdatePanel>
                                 </td>
@@ -656,49 +706,143 @@ h2 .close a
             </table>
         </div>
     </div>
-    
-    
-         <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="UpdatePanel6"
-            DisplayAfter="0">
-            <ProgressTemplate>
-                <div id="spinner">
-                    <h4>
-                        <div>
-                            Processing
-                            <img src="images/loading.gif" />
-                        </div>                       
-                </div>
-            </ProgressTemplate>
-        </asp:UpdateProgress>
-        
-        
-         <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="Updt1"
-            DisplayAfter="0">
-            <ProgressTemplate>
-                <div id="spinner">
-                    <h4>
-                        <div>
-                            Processing
-                            <img src="images/loading.gif" />
-                        </div>                       
-                </div>
-            </ProgressTemplate>
-        </asp:UpdateProgress>
-        
-         <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel1"
-            DisplayAfter="0">
-            <ProgressTemplate>
-                <div id="spinner">
-                    <h4>
-                        <div>
-                            Processing
-                            <img src="images/loading.gif" />
-                        </div>                       
-                </div>
-            </ProgressTemplate>
-        </asp:UpdateProgress>
-    
-    
+    <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="UpdatePanel6"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="Updt1"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel1"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <!---Applying for leave start-->
+    <cc1:ModalPopupExtender ID="mdlApplyingLeave" BackgroundCssClass="popupHolder" runat="server"
+        PopupControlID="dvApplyingLeave" CancelControlID="lnkleaveClose" TargetControlID="hdnLeavePop">
+    </cc1:ModalPopupExtender>
+    <asp:HiddenField ID="hdnLeavePop" runat="server" />
+    <div id="dvApplyingLeave" runat="server" class="popContent" style="width: 450px;
+        display: none">
+        <h2>
+            <asp:Label ID="Label1" Text="Applying Leave for" runat="server"></asp:Label>
+            <asp:Label ID="Label2" runat="server"></asp:Label>
+            <span class="close">
+                <asp:LinkButton ID="lnkleaveClose" runat="server"></asp:LinkButton></span>
+        </h2>
+        <div class="inner">
+            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                <tr>
+                    <td style="width: 40%; vertical-align: top;">
+                        <table style="border-collapse: collapse;" class="loginForm" width="100%">
+                            <tr>
+                                <td>
+                                    <img src="images/defaultUSer.jpg" class="userThumb" style="width: 140px;" />
+                                </td>
+                            </tr>
+                            <tr id="leaveEmp" runat="server" style="display: none;">
+                                <td>
+                                    <asp:Label ID="lblLeaveEmp" runat="server" Text="EmpID  <span class='must'>*</span>"
+                                       ></asp:Label>
+                                    <br />
+                                    <asp:TextBox ID="txtLeaveEmpID" runat="server"  Style="width: 140px;"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Pass code<span class="must">*</span><br />
+                                    <asp:TextBox ID="txtLeavePassCode" runat="server" TextMode="Password" Style="width: 140px;"></asp:TextBox>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 2%;">
+                        &nbsp;
+                    </td>
+                    <td style="vertical-align: top">
+                        <table style="border-collapse: collapse;" class="loginForm">
+                            <tr>
+                                <td style="vertical-align: top">
+                                    <div style="float: right; padding-right: 12px;">
+                                        <label class="rdLabel"><input type="radio" id="rdSelf" name="LeaveIdentity" runat="server" value="Self" checked="true"  />Self</label>
+                                        <label class="rdLabel"><input type="radio" id="rdOther" name="LeaveIdentity" runat="server" value="Other" />Other</label>
+                                    </div>
+                                    <br />
+                                    From date <span class="must">*</span><br />
+                                    <asp:TextBox ID="txtFromDt" runat="server" Style="width: 223px;"></asp:TextBox>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    To date <span class="must">*</span><br />
+                                    <asp:TextBox ID="txtToDt" runat="server" Style="width: 223px;"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Reason <span class="must">*</span><br />
+                                    <asp:TextBox ID="txtReason" runat="server" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Label ID="lblLeaveError" runat="server" ForeColor="red"></asp:Label>
+                                            <asp:HiddenField ID="hdnLeaveUserID" runat="server" />
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                </td>
+                            </tr>
+                            <tr>
+                  
+                    <td>
+                        <div style="display: inline-block">
+                            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                <ContentTemplate>
+                                    <asp:Button ID="LeaveSubmit" runat="server" Text="Submit" Enabled="true" class="btn btn-danger"
+                                        OnClick="LeaveSubmit_Click" />
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
+                        &nbsp;
+                        <input id="LeaveCancel" type="button" value="Cancel" class="btn" runat="server" />
+                    </td>
+                </tr>
+                        </table>
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+    </div>
+    <!---Applying for leave end-->
 
     <script type="text/javascript" language="javascript">
     

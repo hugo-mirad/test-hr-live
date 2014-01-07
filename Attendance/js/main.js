@@ -116,7 +116,56 @@ $(window).load(function() {
 
 $(function() {
 
+// --------------------------------------- Leave form Defaults and events  Start ------------------
+        $('#txtFromDt').live('focus', function(){
+             if($(this).hasClass('hasDatepicker')){
+                $(this).datepicker( "destroy" );
+                $(this).removeClass("hasDatepicker")
+            }  
+            
+             $('#txtFromDt').datepicker({	        
+	            minDate: se,
+	            maxDate: 30
+            });            
+            
+        })       
+        
+       $('#txtFromDt').live('change', function(){
+            $('#txtToDt').val('');           
+       });
+       
+       
+       $('#txtToDt').live('focus', function(){
+             if($(this).hasClass('hasDatepicker')){
+                $(this).datepicker( "destroy" );
+                $(this).removeClass("hasDatepicker")
+             }  
+            
+            $('#txtToDt').datepicker({	        
+                minDate: $('#txtFromDt').val(),
+                maxDate: 30
+            });
+            
+        }) 
+        
+        
+         $('input[name=LeaveIdentity]:radio').live('change', function(){
+            $('#leaveEmp #txtLeaveEmpID').val('');
+            
+            if($('#rdSelf').is(':checked')){           
+                $('#leaveEmp').hide();                
+            }else{
+                 $('#leaveEmp').show();                
+            }
+        });
+        
+        
+        // --------------------------------------- Leave form Defaults and events  End ------------------
+        
+        
+        
 
+  
     $('.user, .refresh').live('mouseenter', function() {
         clearInterval(tt);
         //console.log('Stop Timer');
@@ -334,12 +383,7 @@ $(function() {
 
         var current_tim = $.trim($('.cTime b').text()).split(':')
         var current_timAMPM = current_tim[2].substring(current_tim[2].length - 2, current_tim[2].length);
-        //current_tim[2] = current_tim[2].substring(current_tim[2].length - 2, current_tim[2].length);
-
-        //if (parseInt(tim1[0]) < parseInt(current_tim[0]) && parseInt(tim1[1]) <= parseInt(current_tim[1]) && tim1AMPM == current_timAMPM) { validTime = true } else { validTime = false }
         
-        //var Stl = tim1[0] * 3600 + tim1[1] * 60;
-        //var St2 = current_tim[0] * 3600 + current_tim[1] * 60;
         
         // Assigned time
             if(tim1[0] == 12){
@@ -365,9 +409,7 @@ $(function() {
         
         
         
-        if (Stl < St2 && tim1AMPM == current_timAMPM) { validTime = true } else { validTime = false }
-
-               
+        if (Stl < St2 && tim1AMPM == current_timAMPM) { validTime = true } else { validTime = false }               
        
         if (validTime == false) {
             $('#logoutPopup').addClass('error1')
@@ -435,45 +477,84 @@ $(function() {
     
     
     
-    $("#drop3").droppable({ accept: "#origin .user", drop: function(event, ui) {
+    $("#drop3").droppable({ accept: "#origin .user, #drop1 .user, #drop2 .user", drop: function(event, ui) {
         //console.log(dragged, origRevertDuration, origRevertValue)			
+        event.preventDefault();
         var validTime = false;
         var dropped = ui.draggable;
-        //console.log(dropped.index());
-        userLoc1 = dropped.index();
+        var droppedParent = dropped.parent().attr('id');
+        console.log(droppedParent);
+        userLoc2 = dropped.index();
+       
+        
         dropped.attr('currentObj', true)
         var droppedOn = $("#drop3");
         $(dropped).detach().css({ top: 0, left: 0 }).appendTo(droppedOn);
-
-       
-
-
-       
-            /*
-            var dropped = $("#origin").find('li[currentobj=true]');
+        
+        
+        
+        
+         $('#dvApplyingLeave h2').html('<span>APPLYING LEAVE FOR </span>' + dropped.find('input:eq(0)').val())
+        $('#lblLOError').text('');
+        $('#dvApplyingLeave #hdnLeaveUserID').val(dropped.find('input:eq(1)').val())
+        
+        var path = $.trim(dropped.find('img').attr('src'));
+        //console.log(path);
+        if (path && path.length > 5) {
+            $('#dvApplyingLeave .userThumb').attr('src', path);
+        } else {
+            $('#dvApplyingLeave .userThumb').attr('src', 'images/defaultUSer.jpg');
+        }        
+        $find('mdlApplyingLeave').show();
+        
+        
+        
+        
+        
+        // LeaveCancel Click event 
+        $('#LeaveCancel').click(function(){         
+              
+           var dropped = $("#drop3").find('li[currentobj=true]');
             //console.log(dropped)
-            dropped.removeAttr('currentobj')
-            //console.log(dropped)		
-            var droppedOn = $('#drop3');
+            dropped.removeAttr('currentobj');
+            var droppedOn = '';
+            droppedOn = $('#'+droppedParent);
+            //console.log(droppedParent);
+            //$(dropped).detach().css({ top: 0, left: 0 }).appendTo(droppedOn);
+
             var obj = $(dropped).detach().css({ top: 0, left: 0 }); //.appendTo(droppedOn);
-            //droppedOn.children('li:eq(' + (userLoc1 - 1) + ')').after(obj);
-            //console.log('userLoc1: ' + userLoc1)
-            if (userLoc1 == 0) {
+
+            if (userLoc2 == 0) {
                 droppedOn.prepend(obj);
             } else {
-                droppedOn.children('li:eq(' + (userLoc1 - 1) + ')').after(obj);
-            }
-            */
+                droppedOn.children('li:eq(' + (userLoc2 - 1) + ')').after(obj);
+            }           
+            
+            $('.popContent .userThumb').attr('src', 'images/defaultUSer.jpg');
+            
+            
+            $('#txtFromDt, #txtToDt, #txtLeaveEmpID, #txtLeavePassCode, #txtReason').val('');            
+            $('#rdSelf').attr('checked',true).change();            
+            $('#rdOther').attr('checked',false);            
+            $find('mdlApplyingLeave').hide();               
+            
 
-           // $('#txtUserID, #txtNpte, #userPass').val('')
-            //$('.popContent .userThumb').attr('src', 'images/defaultUSer.jpg');
-
-           // $('.dummyPopup').fadeOut('fast');
+            $('.dummyPopup').fadeOut('fast');
             $('.boxC1, .boxC2, .boxC4').removeClass('activeDiv');
-            //alert(Duplicate);
-            if ($('#Duplicate').val() == 'true') {
-                pageRefresh();
-            }
+            
+            
+            
+        }); 
+              
+        
+        
+       
+        
+        
+        
+       
+           
+            
 
        
 

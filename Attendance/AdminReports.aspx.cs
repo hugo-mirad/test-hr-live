@@ -474,6 +474,9 @@ namespace Attendance
 
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
+                                                    dtAttandence.Rows[j]["SunLoginNotes"] = dtAttandence.Rows[j]["SunLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    dtAttandence.Rows[j]["SunSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["SunMultiple"] = "True";
@@ -505,7 +508,7 @@ namespace Attendance
 
                                                 // dtAttandence.Rows[j]["SunHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["SunLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                dtAttandence.Rows[j]["SunLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                                //dtAttandence.Rows[j]["SunLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 // dtAttandence.Rows[j]["SunLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
                                                 dtAttandence.Rows[j]["SunLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
                                                 dtAttandence.Rows[j]["SunLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
@@ -531,6 +534,9 @@ namespace Attendance
                                                 }
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
+                                                    dtAttandence.Rows[j]["MonLoginNotes"] = dtAttandence.Rows[j]["MonLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    dtAttandence.Rows[j]["MonSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["MonSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["MonMultiple"] = "True";
@@ -561,7 +567,7 @@ namespace Attendance
 
                                                 //  dtAttandence.Rows[j]["MonHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["MonLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                dtAttandence.Rows[j]["MonLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                               // dtAttandence.Rows[j]["MonLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 //dtAttandence.Rows[j]["MonLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
                                                 dtAttandence.Rows[j]["MonLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
                                                 dtAttandence.Rows[j]["MonLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
@@ -577,18 +583,17 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["TueSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
                                                 if (dtAttandence.Rows[j]["TueSignOut"].ToString() != "" && dtAttandence.Rows[j]["TueSignOut"].ToString() != "N/A")
                                                 {
-
                                                     TueSignOutCnt = TueSignOutCnt + 1;
-
-
                                                 }
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
+                                                    dtAttandence.Rows[j]["TueLoginNotes"] = dtAttandence.Rows[j]["TueLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    dtAttandence.Rows[j]["TueSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["TueSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["TueMultiple"] = "True";
                                                     }
-
                                                     if (dt1.Rows[k]["total hours worked"].ToString() == "")
                                                     {
                                                         dtAttandence.Rows[j]["TueHrs"] = "N/A";
@@ -608,14 +613,13 @@ namespace Attendance
                                                             dtAttandence.Rows[j]["TueHrs"] = ((Convert.ToDouble(dtAttandence.Rows[j]["TueHrs"])) + (Convert.ToDouble(dt1.Rows[k]["total hours worked"].ToString().Trim()))).ToString();
                                                         }
                                                     }
-
                                                 }
 
 
 
                                                 //dtAttandence.Rows[j]["TueHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["TueLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                dtAttandence.Rows[j]["TueLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                               // dtAttandence.Rows[j]["TueLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 // dtAttandence.Rows[j]["TueLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
                                                 dtAttandence.Rows[j]["TueLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
                                                 dtAttandence.Rows[j]["TueLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
@@ -638,6 +642,9 @@ namespace Attendance
 
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
+                                                    dtAttandence.Rows[j]["WedLoginNotes"] = dtAttandence.Rows[j]["WedLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    dtAttandence.Rows[j]["WedSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["WedSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["WedMultiple"] = "True";
@@ -667,7 +674,7 @@ namespace Attendance
 
                                                 // dtAttandence.Rows[j]["WedHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["WedLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                dtAttandence.Rows[j]["WedLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                              //  dtAttandence.Rows[j]["WedLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 //   dtAttandence.Rows[j]["WedLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
                                                 dtAttandence.Rows[j]["WedLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
                                                 dtAttandence.Rows[j]["WedLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
@@ -690,6 +697,10 @@ namespace Attendance
 
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
+
+                                                    dtAttandence.Rows[j]["ThuSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["ThuSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["ThuLoginNotes"] = dtAttandence.Rows[j]["ThuLoginNotes"].ToString() + "<br>" + dt1.Rows[k]["loginnotes"].ToString() + "<br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["ThuMultiple"] = "True";
@@ -739,6 +750,9 @@ namespace Attendance
                                                 }
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
+                                                    dtAttandence.Rows[j]["FriLoginNotes"] = dtAttandence.Rows[j]["FriLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    dtAttandence.Rows[j]["FriSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["FriSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count-1]["Logoutdate"].ToString().Trim();
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["FriMultiple"] = "True";
@@ -768,7 +782,7 @@ namespace Attendance
 
                                                 //dtAttandence.Rows[j]["FriHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["FriLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                dtAttandence.Rows[j]["FriLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                                //dtAttandence.Rows[j]["FriLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 // dtAttandence.Rows[j]["FriLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
                                                 dtAttandence.Rows[j]["FriLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
                                                 dtAttandence.Rows[j]["FriLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
@@ -791,6 +805,9 @@ namespace Attendance
 
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
+                                                    dtAttandence.Rows[j]["SatLoginNotes"] = dtAttandence.Rows[j]["SatLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    dtAttandence.Rows[j]["SatSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["SatSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
 
                                                     if (dt1.Rows.Count > 1)
                                                     {
@@ -821,7 +838,7 @@ namespace Attendance
 
                                                 //dtAttandence.Rows[j]["SatHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["SatLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                dtAttandence.Rows[j]["SatLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                                //dtAttandence.Rows[j]["SatLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 // dtAttandence.Rows[j]["SatLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
                                                 dtAttandence.Rows[j]["SatLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
                                                 dtAttandence.Rows[j]["SatLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
