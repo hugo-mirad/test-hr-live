@@ -30,7 +30,7 @@ function dragFun() {
         }
 
     });
-
+    /*
     $("#drop1 .user").draggable({
         cursor: "Move",
         revert: "invalid",
@@ -45,19 +45,19 @@ function dragFun() {
             $('.boxC2, .boxC3').removeClass('activeDiv');
         }
     });
-    
+    */
     $("#drop1 .user").draggable({
         cursor: "Move",
         revert: "invalid",
         drag: function() {
             $('.dummyPopup').fadeIn(100);
-            $('.boxC2, .boxC3').addClass('activeDiv');
+            $('.boxC2, .boxC3, .boxC4').addClass('activeDiv');
             $('.boxC2').css('z-index', '31');
-            $('.boxC3').css('z-index', '30');
+            $('.boxC3, .boxC4').css('z-index', '30');
         },
         stop: function() {
             $('.dummyPopup').fadeOut(50);
-            $('.boxC2, .boxC3').removeClass('activeDiv');
+            $('.boxC2, .boxC3, .boxC4').removeClass('activeDiv');
         }
     });
     
@@ -68,13 +68,28 @@ function dragFun() {
         revert: "invalid",
         drag: function() {
             $('.dummyPopup').fadeIn(100);
-            $('.boxC2, .boxC3').addClass('activeDiv');
+            $('.boxC2, .boxC3, .boxC4').addClass('activeDiv');
             $('.boxC2').css('z-index', '30');
-            $('.boxC3').css('z-index', '31');
+            $('.boxC3, .boxC4').css('z-index', '31');
         },
         stop: function() {
             $('.dummyPopup').fadeOut(50);
-            $('.boxC2, .boxC3').removeClass('activeDiv');
+            $('.boxC2, .boxC3, .boxC4').removeClass('activeDiv');
+        }
+    });
+    
+     $("#drop3 .user").draggable({
+        cursor: "Move",
+        revert: "invalid",
+        drag: function() {
+            $('.dummyPopup').fadeIn(100);
+            $('.boxC2, .boxC4').addClass('activeDiv');
+            $('.boxC2').css('z-index', '30');
+            $('.boxC4').css('z-index', '31');
+        },
+        stop: function() {
+            $('.dummyPopup').fadeOut(50);
+            $('.boxC2,.boxC4').removeClass('activeDiv');
         }
     });
     
@@ -85,6 +100,8 @@ function dragFun() {
 }
 
 $(window).load(function() {
+//    $('.boxC4').height($('.boxC2').height() - ($('.boxC1').height()+10));
+    
     $('.user img').each(function() {
 
         if ($(this).attr('src').length <= 5) {
@@ -246,19 +263,19 @@ $(function() {
     dragFun();
 
 
-    $("#drop1").droppable({ accept: "#origin .user, #drop2 .user", drop: function(event, ui) {
+    $("#drop1").droppable({ accept: "#origin .user, #drop2 .user, #drop3 .user", drop: function(event, ui) {
         			
         var validTime = false;
         var dropped = ui.draggable;
         //console.log(dropped.parent().attr('id'));
-        var parentID = dropped.parent().attr('id');
+        droppedParent2 = dropped.parent().attr('id');
         userLoc1 = dropped.index();
         dropped.attr('currentObj', true)
-        var droppedOn = $("#"+parentID+"");
+        var droppedOn = $("#"+droppedParent2+"");
         $(dropped).detach().css({ top: 0, left: 0 }).appendTo(droppedOn);
         
         
-        if(parentID =="origin"){        
+        if(droppedParent2 =="origin" || droppedParent2 =="drop3"){        
             $('#subm').val('Sign in');
             $(' .popContent h2').html('<span>Signing in for </span>' + dropped.find('input:eq(0)').val())
         }else{
@@ -317,15 +334,19 @@ $(function() {
         $('#cancel').click(function() {
             $('#loginPopup').hide();
             
-            var dropped = $("#"+parentID+"").find('li[currentobj=true]');
+            var dropped = $("#"+droppedParent2+"").find('li[currentobj=true]');
             //console.log(dropped)
             dropped.removeAttr('currentobj')
             //console.log(dropped)	
-            if(parentID =="origin"){      	
+            /*
+            if(droppedParent2 =="origin"){      	
                 var droppedOn = $('#origin');
             }else{
                 var droppedOn = $('#drop2');
             }
+            */
+            var droppedOn = $('#'+droppedParent2);
+            
             var obj = $(dropped).detach().css({ top: 0, left: 0 }); //.appendTo(droppedOn);
             //droppedOn.children('li:eq(' + (userLoc1 - 1) + ')').after(obj);
             //console.log('userLoc1: ' + userLoc1)
@@ -482,10 +503,9 @@ $(function() {
         event.preventDefault();
         var validTime = false;
         var dropped = ui.draggable;
-        var droppedParent = dropped.parent().attr('id');
-        console.log(droppedParent);
-        userLoc2 = dropped.index();
-       
+        droppedParent4 = dropped.parent().attr('id');
+        //console.log(droppedParent);
+        userLoc2 = dropped.index();       
         
         dropped.attr('currentObj', true)
         var droppedOn = $("#drop3");
@@ -511,14 +531,25 @@ $(function() {
         
         
         
-        // LeaveCancel Click event 
-        $('#LeaveCancel').click(function(){         
-              
+            
+        
+    }
+    });
+   
+   
+   
+   
+    // LeaveCancel Click event 
+        $('#LeaveCancel').click(function(event){         
+           event.preventDefault();
+           event.stopPropagation();
            var dropped = $("#drop3").find('li[currentobj=true]');
             //console.log(dropped)
-            dropped.removeAttr('currentobj');
-            var droppedOn = '';
-            droppedOn = $('#'+droppedParent);
+            dropped.removeAttr('currentobj');          
+            
+                droppedOn = $('#'+droppedParent4); 
+            
+            
             //console.log(droppedParent);
             //$(dropped).detach().css({ top: 0, left: 0 }).appendTo(droppedOn);
 
@@ -530,42 +561,28 @@ $(function() {
                 droppedOn.children('li:eq(' + (userLoc2 - 1) + ')').after(obj);
             }           
             
-            $('.popContent .userThumb').attr('src', 'images/defaultUSer.jpg');
-            
+            $('.popContent .userThumb').attr('src', 'images/defaultUSer.jpg');            
             
             $('#txtFromDt, #txtToDt, #txtLeaveEmpID, #txtLeavePassCode, #txtReason').val('');            
             $('#rdSelf').attr('checked',true).change();            
             $('#rdOther').attr('checked',false);            
-            $find('mdlApplyingLeave').hide();               
+            $find('mdlApplyingLeave').hide();              
             
-
             $('.dummyPopup').fadeOut('fast');
             $('.boxC1, .boxC2, .boxC4').removeClass('activeDiv');
             
             
             
-        }); 
-              
-        
-        
-       
-        
-        
-        
-       
-           
-            
-
-       
-
-
-    }
-    });
+        });  
    
 
 
 })
 
+var droppedParent1;
+var droppedParent2;
+var droppedParent3;
+var droppedParent4;
 
 function Duplicate() {
     Duplicate = true;

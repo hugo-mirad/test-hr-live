@@ -420,7 +420,29 @@ namespace Attendance.BAL
 
          }
 
+         public DataTable GetLeaveStatus()
+         {
+             DataSet ds = new DataSet();
 
+             try
+             {
+                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                 SqlCommand cmd = new SqlCommand();
+                 SqlDataAdapter da = new SqlDataAdapter("USP_GetLeaveStatus", con);
+
+                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                 da.Fill(ds);
+
+                 DataTable dt = ds.Tables[0];
+
+             }
+             catch (Exception ex)
+             {
+             }
+
+             return ds.Tables[0];
+
+         }
          public DataSet GetTimeZoneInfoByLocName(string LocationName)
          {
              try
@@ -462,6 +484,34 @@ namespace Attendance.BAL
              }
              return success;
          }
+
+         public DataSet SaveLeaveRequestDetails(int UserID,string EmpID,DateTime FromDt,DateTime ToDt,DateTime CurrentDt,string Reason,string Passcode)
+         {
+             DataSet dsLoginDet = new DataSet();
+             try
+             {
+                 SqlDataAdapter daLogin = new SqlDataAdapter("[USP_AddleaveDetails]", connectionString);
+                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@UserID", UserID));
+                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@Fromdate", FromDt));
+                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@Todate",ToDt));
+                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@RequestedDt", CurrentDt));
+                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@EmpID", EmpID));
+                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@PassCode", Passcode));
+                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@Reason", Reason));
+                 daLogin.SelectCommand.CommandType = CommandType.StoredProcedure;
+                 daLogin.Fill(dsLoginDet);
+                 return dsLoginDet;
+
+             }
+             catch (Exception ex)
+             {
+                 throw ex;
+             }
+             return dsLoginDet;
+
+
+         }
+
     }
        
 

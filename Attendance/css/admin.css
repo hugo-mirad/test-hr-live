@@ -368,11 +368,11 @@ font-size: 13px; margin-left:10px; }
 .menu2{ margin:0 25px 0 0; list-style:none; float:right; }
 .menu2 li{ width:auto; position:relative; z-index:20; height:28px;  }
 .menu2 li a{ text-decoration:none; color:#fff; display:block; font-weight:bold; padding:2px 0 0 0 ; }
-.menu2 li ul{ display:none; position:absolute; z-index:21; left:0; top:25px; background:#444; box-shadow:3px 3px 3px rgba(0,0,0,0.2);
+.menu2 li ul{ display:none; position:absolute; z-index:21; left: -157px; top:25px; background:#444; box-shadow:3px 3px 3px rgba(0,0,0,0.2);
               margin:0; padding:0;
-}
+ min-width: 200px;}
 .menu2 li li{ margin:0; padding:0 }
-.menu2 li li a{ font-size:12px; width:134px; color:#55B355; text-align:left; padding:4px 10px; text-decoration:none; font-weight:normal; }
+.menu2 li li a{ font-size:12px; display:block;  color:#55B355; text-align:left; padding:4px 10px; text-decoration:none; font-weight:normal; }
 .menu2 li li a:hover{ background:#222; color:#61FF61; }
 .menu2 li:hover ul{ display:block; }
 .clear.h51{ margin-bottom:2px; }
@@ -533,4 +533,3 @@ font-weight: bold;
 .tooltip, .tooltip td, .tooltip span, .tooltip div{ color:#eee; }
 .tooltip fieldset{ padding:0 10px 10px 10px; }
 .tooltip ul{ margin:0 ; }
-

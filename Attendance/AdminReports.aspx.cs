@@ -534,7 +534,7 @@ namespace Attendance
                                                 }
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
-                                                    dtAttandence.Rows[j]["MonLoginNotes"] = dtAttandence.Rows[j]["MonLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    dtAttandence.Rows[j]["MonLoginNotes"] =dtAttandence.Rows[j]["MonLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["MonSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["MonSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
                                                     if (dt1.Rows.Count > 1)
@@ -3173,7 +3173,7 @@ namespace Attendance
                                     if (dtname.Rows.Count > 0)
                                     {
                                         // dtAttandence.Rows[i]["Week" + (j + 1)] = dtname.Rows[0]["weeklyhrs"].ToString();
-                                        dtAttandence.Rows[i]["Week" + (j + 1)] = dtname.Rows[0]["weeklyhrs"].ToString() == "NULL" ? "" : dtname.Rows[0]["weeklyhrs"].ToString() == "" ? "" : GeneralFunction.CalNumericToint(Convert.ToDouble(dtname.Rows[0]["weeklyhrs"].ToString())).ToString();
+                                        dtAttandence.Rows[i]["Week" + (j + 1)] = dtname.Rows[0]["weeklyhrs"].ToString() == "NULL" ? "" : dtname.Rows[0]["weeklyhrs"].ToString() == "" ? "" : dtname.Rows[0]["weeklyhrs"].ToString();
                                         dtAttandence.Rows[i]["Days" + (j + 1)] = dtname.Rows[0]["days"].ToString() == "NULL" ? 0 : dtname.Rows[0]["days"].ToString() == "" ? 0 : Convert.ToInt32(dtname.Rows[0]["days"].ToString());
                                     }
                                 }
@@ -3185,10 +3185,10 @@ namespace Attendance
 
                 }
 
-                int TotalHrs1 = 0;
-                int TotalHrs2 = 0;
-                int TotalHrs3 = 0;
-                int TotalHrs4 = 0;
+                Double TotalHrs1 = 0;
+                Double TotalHrs2 = 0;
+                Double TotalHrs3 = 0;
+                Double TotalHrs4 = 0;
                 int TotalDays = 0;
                 int Days1 = 0;
                 int Days2 = 0;
@@ -3199,16 +3199,16 @@ namespace Attendance
                 dtAttandence.Columns.Add("Days");
                 for (int i = 0; i < dtAttandence.Rows.Count - 1; i++)
                 {
-                    TotalHrs1 = TotalHrs1 + ((dtAttandence.Rows[i]["Week1"].ToString() == "Null") ? 0 : (dtAttandence.Rows[i]["Week1"].ToString() == "") ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Week1"]));
-                    TotalHrs2 = TotalHrs2 + (dtAttandence.Rows[i]["Week2"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week2"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Week2"]));
-                    TotalHrs3 = TotalHrs3 + ((dtAttandence.Rows[i]["Week3"].ToString() == "Null" ? 0 : (dtAttandence.Rows[i]["Week3"].ToString() == "") ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Week3"])));
-                    TotalHrs4 = TotalHrs4 + (dtAttandence.Rows[i]["Week4"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week4"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Week4"]));
+                    TotalHrs1 = TotalHrs1 + ((dtAttandence.Rows[i]["Week1"].ToString() == "Null") ? 0 : (dtAttandence.Rows[i]["Week1"].ToString() == "") ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Week1"]));
+                    TotalHrs2 = TotalHrs2 + (dtAttandence.Rows[i]["Week2"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week2"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Week2"]));
+                    TotalHrs3 = TotalHrs3 + ((dtAttandence.Rows[i]["Week3"].ToString() == "Null" ? 0 : (dtAttandence.Rows[i]["Week3"].ToString() == "") ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Week3"])));
+                    TotalHrs4 = TotalHrs4 + (dtAttandence.Rows[i]["Week4"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week4"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Week4"]));
 
-                    int WeekHrs = ((dtAttandence.Rows[i]["Week1"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week1"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Week1"])) +
-                                                     (dtAttandence.Rows[i]["Week2"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week2"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Week2"])) +
-                                                     (dtAttandence.Rows[i]["Week3"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week3"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Week3"])) +
-                                                     (dtAttandence.Rows[i]["Week4"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week4"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Week4"])));
-                    dtAttandence.Rows[i]["Totalhrs"] = WeekHrs == 0 ? "" : GeneralFunction.ConverttoTime(WeekHrs).ToString();
+                    Double WeekHrs = ((dtAttandence.Rows[i]["Week1"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week1"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Week1"])) +
+                                                     (dtAttandence.Rows[i]["Week2"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week2"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Week2"])) +
+                                                     (dtAttandence.Rows[i]["Week3"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week3"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Week3"])) +
+                                                     (dtAttandence.Rows[i]["Week4"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Week4"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Week4"])));
+                    dtAttandence.Rows[i]["Totalhrs"] = WeekHrs == 0 ? "" : GeneralFunction.CalDoubleToTime(WeekHrs).ToString();
                     dtAttandence.Rows[i]["Days"] = (dtAttandence.Rows[i]["Days1"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days1"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days1"]))
                              + (dtAttandence.Rows[i]["Days2"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days2"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days2"]))
                              + (dtAttandence.Rows[i]["Days3"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days3"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days3"]))
@@ -3227,7 +3227,7 @@ namespace Attendance
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Week2"] = TotalHrs2 == 0 ? "" : TotalHrs2.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Week3"] = TotalHrs3 == 0 ? "" : TotalHrs3.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Week4"] = TotalHrs4 == 0 ? "" : TotalHrs4.ToString();
-                int SUM = TotalHrs1 + TotalHrs2 + TotalHrs3 + TotalHrs4;
+                Double SUM = TotalHrs1 + TotalHrs2 + TotalHrs3 + TotalHrs4;
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["empid"] = "<b>Totals</b>";
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days"] = TotalDays;
 
@@ -3237,7 +3237,7 @@ namespace Attendance
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days4"] = Days4;
 
 
-                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Totalhrs"] = SUM == 0 ? "" : GeneralFunction.ConverttoTime(SUM).ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Totalhrs"] = SUM == 0 ? "" : GeneralFunction.CalDoubleToTime(SUM).ToString();
             }
             catch (Exception ex)
             {
@@ -3297,7 +3297,7 @@ namespace Attendance
                                     if (dtname.Rows.Count > 0)
                                     {
                                         // dtAttandence.Rows[i]["Month" + (j + 1)] = dtname.Rows[0]["weeklyhrs"].ToString();
-                                        dtAttandence.Rows[i]["Month" + (j + 1)] = dtname.Rows[0]["weeklyhrs"].ToString() == "NULL" ? "" : dtname.Rows[0]["weeklyhrs"].ToString() == "" ? "" : GeneralFunction.CalNumericToint(Convert.ToDouble(dtname.Rows[0]["weeklyhrs"].ToString())).ToString();
+                                        dtAttandence.Rows[i]["Month" + (j + 1)] = dtname.Rows[0]["weeklyhrs"].ToString() == "NULL" ? "" : dtname.Rows[0]["weeklyhrs"].ToString() == "" ? "" : dtname.Rows[0]["weeklyhrs"].ToString();
                                         dtAttandence.Rows[i]["Days" + (j + 1)] = dtname.Rows[0]["days"].ToString() == "NULL" ? 0 : dtname.Rows[0]["days"].ToString() == "" ? 0 : Convert.ToInt32(dtname.Rows[0]["days"].ToString());
                                     }
                                 }
@@ -3311,12 +3311,12 @@ namespace Attendance
 
                 }
 
-                int TotalHrs1 = 0;
-                int TotalHrs2 = 0;
-                int TotalHrs3 = 0;
-                int TotalHrs4 = 0;
-                int TotalHrs5 = 0;
-                int TotalHrs6 = 0;
+                Double TotalHrs1 = 0;
+                Double TotalHrs2 = 0;
+                Double TotalHrs3 = 0;
+                Double TotalHrs4 = 0;
+                Double TotalHrs5 = 0;
+                Double TotalHrs6 = 0;
                 int TotalDays = 0;
                 int Days1 = 0;
                 int Days2 = 0;
@@ -3330,22 +3330,22 @@ namespace Attendance
 
                 for (int i = 0; i < dtAttandence.Rows.Count - 1; i++)
                 {
-                    TotalHrs1 = TotalHrs1 + ((dtAttandence.Rows[i]["Month1"].ToString() == "Null") ? 0 : (dtAttandence.Rows[i]["Month1"].ToString() == "") ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month1"]));
-                    TotalHrs2 = TotalHrs2 + (dtAttandence.Rows[i]["Month2"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month2"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month2"]));
-                    TotalHrs3 = TotalHrs3 + ((dtAttandence.Rows[i]["Month3"].ToString() == "Null" ? 0 : (dtAttandence.Rows[i]["Month3"].ToString() == "") ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month3"])));
-                    TotalHrs4 = TotalHrs4 + (dtAttandence.Rows[i]["Month4"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month4"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month4"]));
-                    TotalHrs5 = TotalHrs5 + (dtAttandence.Rows[i]["Month5"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month5"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month5"]));
-                    TotalHrs6 = TotalHrs6 + (dtAttandence.Rows[i]["Month6"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month6"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month6"]));
+                    TotalHrs1 = TotalHrs1 + ((dtAttandence.Rows[i]["Month1"].ToString() == "Null") ? 0 : (dtAttandence.Rows[i]["Month1"].ToString() == "") ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month1"]));
+                    TotalHrs2 = TotalHrs2 + (dtAttandence.Rows[i]["Month2"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month2"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month2"]));
+                    TotalHrs3 = TotalHrs3 + ((dtAttandence.Rows[i]["Month3"].ToString() == "Null" ? 0 : (dtAttandence.Rows[i]["Month3"].ToString() == "") ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month3"])));
+                    TotalHrs4 = TotalHrs4 + (dtAttandence.Rows[i]["Month4"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month4"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month4"]));
+                    TotalHrs5 = TotalHrs5 + (dtAttandence.Rows[i]["Month5"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month5"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month5"]));
+                    TotalHrs6 = TotalHrs6 + (dtAttandence.Rows[i]["Month6"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month6"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month6"]));
 
-                    int WeekHrs = ((dtAttandence.Rows[i]["Month1"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month1"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month1"]))) +
-                                                     (dtAttandence.Rows[i]["Month2"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month2"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month2"])) +
-                                                     (dtAttandence.Rows[i]["Month3"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month3"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month3"])) +
-                                                     (dtAttandence.Rows[i]["Month4"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month4"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month4"])) +
-                                                     (dtAttandence.Rows[i]["Month5"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month5"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month5"])) +
-                                                     (dtAttandence.Rows[i]["Month6"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month6"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Month6"]));
+                    Double WeekHrs = ((dtAttandence.Rows[i]["Month1"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month1"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month1"]))) +
+                                                     (dtAttandence.Rows[i]["Month2"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month2"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month2"])) +
+                                                     (dtAttandence.Rows[i]["Month3"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month3"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month3"])) +
+                                                     (dtAttandence.Rows[i]["Month4"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month4"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month4"])) +
+                                                     (dtAttandence.Rows[i]["Month5"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month5"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month5"])) +
+                                                     (dtAttandence.Rows[i]["Month6"].ToString() == "Null" ? 0 : dtAttandence.Rows[i]["Month6"].ToString() == "" ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month6"]));
 
 
-                    dtAttandence.Rows[i]["Totalhrs"] = WeekHrs == 0 ? "" : GeneralFunction.ConverttoTime(WeekHrs);
+                    dtAttandence.Rows[i]["Totalhrs"] = WeekHrs == 0 ? "" : GeneralFunction.CalDoubleToTime(WeekHrs);
                     dtAttandence.Rows[i]["Days"] = (dtAttandence.Rows[i]["Days1"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days1"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days1"]))
                               + (dtAttandence.Rows[i]["Days2"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days2"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days2"]))
                               + (dtAttandence.Rows[i]["Days3"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days3"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days3"]))
@@ -3371,8 +3371,8 @@ namespace Attendance
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month6"] = TotalHrs6 == 0 ? "" : TotalHrs6.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["empid"] = "<b>Totals</b>";
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days"] = TotalDays;
-                int sum = TotalHrs1 + TotalHrs2 + TotalHrs3 + TotalHrs4 + TotalHrs5 + TotalHrs6;
-                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Totalhrs"] = sum == 0 ? "" : GeneralFunction.ConverttoTime(sum);
+                Double sum = TotalHrs1 + TotalHrs2 + TotalHrs3 + TotalHrs4 + TotalHrs5 + TotalHrs6;
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Totalhrs"] = sum == 0 ? "" : GeneralFunction.CalDoubleToTime(sum);
             }
             catch (Exception ex)
             {
@@ -3516,18 +3516,7 @@ namespace Attendance
         {
             try
             {
-                //if (e.Row.RowType == DataControlRowType.Header)
-                //{
-
-                //    Label lblWeek1Head = (Label)e.Row.FindControl("lblWeek1Head");
-                //    lblWeek1Head.Text = "Wk of " + Convert.ToDateTime(hdnWeeklyStartDt.Value).ToString("MM/dd/yyyy");
-                //    Label lblWeek2Head = (Label)e.Row.FindControl("lblWeek2Head");
-                //    lblWeek2Head.Text = "Wk of " + Convert.ToDateTime(hdnWeeklyStartDt.Value).AddDays(7).ToString("MM/dd/yyyy");
-                //    Label lblWeek3Head = (Label)e.Row.FindControl("lblWeek3Head");
-                //    lblWeek3Head.Text = "Wk of " + Convert.ToDateTime(hdnWeeklyStartDt.Value).AddDays(14).ToString("MM/dd/yyyy");
-                //    Label lblWeek4Head = (Label)e.Row.FindControl("lblWeek4Head");
-                //    lblWeek4Head.Text = "Wk of " + Convert.ToDateTime(hdnWeeklyStartDt.Value).AddDays(21).ToString("MM/dd/yyyy");
-                //}
+               
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
 
@@ -3539,16 +3528,16 @@ namespace Attendance
                     lblTotal.Text = lblTotal.Text == "0" ? "" : lblTotal.Text;
 
                     Label lblWeek1 = (Label)e.Row.FindControl("lblWeek1");
-                    lblWeek1.Text = lblWeek1.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblWeek1.Text));
+                    lblWeek1.Text = lblWeek1.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblWeek1.Text));
 
                     Label lblWeek2 = (Label)e.Row.FindControl("lblWeek2");
-                    lblWeek2.Text = lblWeek2.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblWeek2.Text));
+                    lblWeek2.Text = lblWeek2.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblWeek2.Text));
 
                     Label lblWeek3 = (Label)e.Row.FindControl("lblWeek3");
-                    lblWeek3.Text = lblWeek3.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblWeek3.Text));
+                    lblWeek3.Text = lblWeek3.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblWeek3.Text));
 
                     Label lblWeek4 = (Label)e.Row.FindControl("lblWeek4");
-                    lblWeek4.Text = lblWeek4.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblWeek4.Text));
+                    lblWeek4.Text = lblWeek4.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblWeek4.Text));
 
                     Label lblDays = (Label)e.Row.FindControl("lblDays");
                     lblDays.Text = lblDays.Text == "0" ? "" : lblDays.Text;
@@ -3612,25 +3601,7 @@ namespace Attendance
         }
         protected void grdMonthlyAttendance_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            //if (e.Row.RowType == DataControlRowType.Header)
-            //{
-
-            //    Label lblMonth1Head = (Label)e.Row.FindControl("lblMonth1Head");
-            //    lblMonth1Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).ToString("yyyy");
-            //    Label lblMonth2Head = (Label)e.Row.FindControl("lblMonth2Head");
-            //    lblMonth2Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(1).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(1).ToString("yyyy");
-            //    Label lblMonth3Head = (Label)e.Row.FindControl("lblMonth3Head");
-            //    lblMonth3Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(2).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(2).ToString("yyyy");
-            //    Label lblMonth4Head = (Label)e.Row.FindControl("lblMonth4Head");
-            //    lblMonth4Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(3).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(3).ToString("yyyy");
-            //    Label lblMonth5Head = (Label)e.Row.FindControl("lblMonth5Head");
-            //    lblMonth5Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(4).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(4).ToString("yyyy");
-            //    Label lblMonth6Head = (Label)e.Row.FindControl("lblMonth6Head");
-            //    lblMonth6Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(5).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(5).ToString("yyyy");
-
-
-
-            //}
+            
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
 
@@ -3642,22 +3613,22 @@ namespace Attendance
                 lblTotal.Text = lblTotal.Text == "0" ? "" : lblTotal.Text;
 
                 Label lblMonth1 = (Label)e.Row.FindControl("lblMonth1");
-                lblMonth1.Text = lblMonth1.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblMonth1.Text));
+                lblMonth1.Text = lblMonth1.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblMonth1.Text));
 
                 Label lblMonth2 = (Label)e.Row.FindControl("lblMonth2");
-                lblMonth2.Text = lblMonth2.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblMonth2.Text));
+                lblMonth2.Text = lblMonth2.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblMonth2.Text));
 
                 Label lblMonth3 = (Label)e.Row.FindControl("lblMonth3");
-                lblMonth2.Text = lblMonth2.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblMonth2.Text));
+                lblMonth2.Text = lblMonth2.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblMonth2.Text));
 
                 Label lblMonth4 = (Label)e.Row.FindControl("lblMonth4");
-                lblMonth4.Text = lblMonth4.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblMonth4.Text));
+                lblMonth4.Text = lblMonth4.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblMonth4.Text));
 
                 Label lblMonth5 = (Label)e.Row.FindControl("lblMonth5");
-                lblMonth5.Text = lblMonth5.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblMonth5.Text));
+                lblMonth5.Text = lblMonth5.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblMonth5.Text));
 
                 Label lblMonth6 = (Label)e.Row.FindControl("lblMonth6");
-                lblMonth6.Text = lblMonth6.Text == "" ? "" : GeneralFunction.ConverttoTime(Convert.ToInt32(lblMonth6.Text));
+                lblMonth6.Text = lblMonth6.Text == "" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblMonth6.Text));
 
                 Label lblDays = (Label)e.Row.FindControl("lblDays");
                 lblDays.Text = lblDays.Text == "0" ? "" : lblDays.Text;

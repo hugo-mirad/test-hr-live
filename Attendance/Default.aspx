@@ -279,7 +279,7 @@
         
        //Managerpopup- Start
         function validateSubmit() {
-        debugger
+        //debugger
           var valid=true;
 
 
@@ -316,10 +316,11 @@
        //Managerpopup- End
         
         
-     
-    
-    
-    
+     function showLeaveSuccess()
+     {
+       alert('Leave request updated successfully');
+       location.reload();
+     }
 
    
     </script>
@@ -376,7 +377,7 @@
                 <tr>
                     <td style="vertical-align: top;">
                         <!-- Left Total Users List Start  -->
-                        <div class="bor boxC1" style="margin: 0 5px; height: auto; margin-bottom: 10px; min-height: 40%;">
+                        <div class="bor boxC1" style="margin: 0 5px; ">
                             <h2 class="one" style="background: #fff; color: #2286c1; border-bottom: #2286c1 1px solid;">
                                 SCHEDULED <span>(<b></b>)</span></h2>
                             <div class="inner ">
@@ -412,17 +413,44 @@
                         </div>
                         <!-- Left Total Users List End  -->
                         <!-- Left Leave Users Start  -->
-                        <div class="bor boxC4" style="margin: 0 5px; height: 35%; min-height: 30%;">
+                        <div style="display:none">
+                        <div class="bor boxC4" style="margin: 0 5px; min-height: 30%;">
                             <h2 class="two" style="background: #fff; color: #888; border-bottom: #888 1px solid;">
                                 On Approved Leave<span>(<b></b>)</span></h2>
                             <div class="inner ">
-                                <ul class="users" id="drop3">
-                                </ul>
+                               <asp:Repeater ID="rpLeave" runat="server" OnItemDataBound="rpEmp_ItemDataBound" >
+                                    <HeaderTemplate>
+                                       <ul class="users ui-droppable" id="drop3">
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <li class="user" rel="tooltip">
+                                            <asp:Image ID="imgPicture" runat="server" oncontextmenu="return false" ImageUrl='<%#Eval("PhotoLink") %>' />
+                                            <%-- <div style="z-index:1000" >
+                                          <asp:Label  ID="lblFirstName" runat="server" style="text-align:center" Text='<%#Eval("FirstName")%>'></asp:Label>                                     
+                                         </div>--%>
+                                            <asp:HiddenField ID="hdnFirstName" runat="server" Value='<%#String.Concat(Eval("FirstName"),"  ",Eval("LastName").ToString()) %>' />
+                                            <asp:HiddenField ID="hdnUserID" runat="server" Value='<%#Eval("UserID") %>' />
+                                            <asp:HiddenField ID="hdnStartTime1" runat="server" Value='<%#Eval("StartTime") %>' />
+                                            <asp:HiddenField ID="hdnEndTime1" runat="server" Value='<%#Eval("EndTime") %>' />
+                                            <asp:HiddenField ID="hdnFromDt" runat="server" Value='<%# Bind("Fromdate", "{0:MM/dd/yyyy}") %>' />
+                                            <asp:HiddenField ID="hdnTodt" runat="server" Value='<%# Bind("Todate", "{0:MM/dd/yyyy}") %>'/>
+                                            <asp:HiddenField ID="hdnApprovedStatus" runat="server" Value='<%#Eval("Status") %>' />
+                                            <h3 style="display: none">
+                                                <asp:Label ID="hdnDeptName1" runat="server" Text='<%#Eval("DeptName") %>'></asp:Label>
+                                                <asp:Label ID="hdnDesignation" CssClass="degi" runat="server" Value='<%#Eval("designation") %>'></asp:Label>
+                                            </h3>
+                                        </li>
+                                    </ItemTemplate>
+                                    <FooterTemplate>
+                                        </ul>
+                                    </FooterTemplate>
+                                </asp:Repeater>
                                 <div class="clear">
                                     &nbsp;</div>
                             </div>
                             <div class="clear">
                                 &nbsp;</div>
+                        </div>
                         </div>
                         <!-- Left Leave Users End  -->
                     </td>
@@ -826,7 +854,7 @@
                         <div style="display: inline-block">
                             <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                                 <ContentTemplate>
-                                    <asp:Button ID="LeaveSubmit" runat="server" Text="Submit" Enabled="true" class="btn btn-danger"
+                                    <asp:Button ID="LeaveSubmit" runat="server" Text="Submit" Enabled="true" class="btn btn-danger" OnClientClick="return validLeave();"
                                         OnClick="LeaveSubmit_Click" />
                                 </ContentTemplate>
                             </asp:UpdatePanel>
@@ -1200,13 +1228,42 @@ function updateClock ( )
         });
         
         
-    }
+         $('#drop3 .user').each(function() {
+             var title = "<span class='center'>" + $(this).children('input:eq(0)').val() + "</span><br><span class='centerHed'> "+$(this).children('h3').children('span').text()+"</span> <br><span>On Leave: </span>" + $(this).children('input:eq(4)').val()  + " - " + $(this).children('input:eq(5)').val() + "<br><span>Status: </span>" + $(this).children('input:eq(6)').val() + "";
+             $(this).attr('title', title);
+             
+             if($.trim($(this).children('input:eq(6)').val()) == 'Approved')
+             {
+                $(this).addClass('Approved')
+             }else{
+                $(this).addClass('Open')
+             }
+             
+         });
+        
+        
+    }  
+    
+    
+    
   
  }
 
 $(function(){
+//    $('.boxC4').height($('.boxC2').height() - ($('.boxC1').height()+10));
    setInterval('updateClock()', 1000);
+   
+   
+   
+   
+   
+//   $( window ).resize(function() {
+//      $('.boxC4').height($('.boxC2').height() - ($('.boxC1').height()+10))
+//   });
+   
 });
+
+
 
 
 function showSpinner() {
@@ -1215,6 +1272,53 @@ function showSpinner() {
 function hideSpinner() {
     $('#spinner').hide();
 }
+
+function validLeave()
+{
+  var valid=true;
+  if($.trim($('#txtFromDt').val())=='')
+  {
+   alert('Please enter from date');
+   $('#txtFromDt').focus();
+   valid=false;
+  }
+   if($.trim($('#txtToDt').val())=='')
+  {
+   alert('Please enter to date');
+     $('#txtToDt').focus();
+   valid=false;
+  }
+  if($.trim($('#txtReason').val())=='')
+  {
+   alert('Please enter reason');
+    $('#txtReason').focus();
+   valid=false;
+  }
+  
+   if($('#rdOther').checked)
+  {
+    if($.trim($('#txtLeaveEmpID').val())=='')
+   {
+   alert('Please enter employee id');
+      $('#txtLeaveEmpID').focus();
+   valid=false;
+   }
+  }
+  
+   if($.trim($('#txtLeavePassCode').val())=='')
+   {
+    alert('Please enter passcode');
+     $('#txtLeavePassCode').focus();
+    valid=false;
+   }
+  
+  return valid;
+  
+  
+}
+
+
+
 
     </script>
 

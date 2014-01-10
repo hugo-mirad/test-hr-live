@@ -1554,40 +1554,27 @@ function clearDisposableItems( sender , args ) {
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblHeadSchIn" runat="server" Text="SchIn"></asp:Label>
+                                <asp:Label ID="lblHeadSchIn" runat="server" Text="Schedule"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblScIn" runat="server" Text='<%#Eval("SchIn")%>'></asp:Label>
+                                <asp:Label ID="lblScIn" runat="server" Text='<%#Eval("SchIn")+"-"+Eval("SchOut")%>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
-                                <asp:Label ID="lblHeadSCout" runat="server" Text="SchOut"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblScOut" runat="server" Text='<%#Eval("SchOut")%>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblHeadIN" runat="server" Text="SignIn"></asp:Label>
+                                <asp:Label ID="lblHeadIN" runat="server" Text="SignIn-Out"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:Label ID="lblSignIn" runat="server" Font-Underline="False" Text='<%#Eval("SignIn")%>'></asp:Label>
-                                <asp:HiddenField ID="hdnSigninNotes" runat="server" Value='<%#Eval("LoginNotes")%>' />
+                                <asp:Label ID="lblSignOut" runat="server" Font-Underline="False" Visible="false" Text='<%#Eval("SignOut")%>'></asp:Label>
+                                <asp:HiddenField ID="hdnMultiple" runat="server" Value='<%#Eval("Multiple")%>' />
+                                <asp:HiddenField ID="hdnSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "LoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSignInFlag" runat="server" Value='<%#Eval("LoginFlag")%>' />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblHeadOut" runat="server" Text="SignOut"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblSignOut" runat="server" Font-Underline="False" Text='<%#Eval("SignOut")%>'></asp:Label>
-                                <asp:HiddenField ID="hdnSignOutNotes" runat="server" Value='<%#Eval("LogoutNotes")%>' />
+                            <%--    <asp:HiddenField ID="hdnSignOutNotes" runat="server" Value='<%#Eval("LogoutNotes")%>' />--%>
                                 <asp:HiddenField ID="hdnSignOutFlag" runat="server" Value='<%#Eval("LogoutFlag")%>' />
                             </ItemTemplate>
                         </asp:TemplateField>
+                    
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblMonHeadHours" runat="server" Text="Hrs"></asp:Label>
@@ -2117,7 +2104,7 @@ function clearDisposableItems( sender , args ) {
             
             $('#btnMultipleCancleOut').click(function()
             {
-            debugger
+           // debugger
              $find('mdlMultipleEditEditPopUp').hide();
             });
   

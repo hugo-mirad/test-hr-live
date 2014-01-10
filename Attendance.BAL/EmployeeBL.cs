@@ -176,5 +176,59 @@ namespace Attendance.BAL
             return ID;
         }
 
+
+        public DataTable GetLeaveDetailsByLoction(string LocationName,DateTime Startdate,DateTime EndDate,int ApprovedStatusID)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetAllLeaveRequestDetailsByLocation]", con);
+
+                da.SelectCommand.Parameters.Add(new SqlParameter("@LocatinName", LocationName));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Startdate", Startdate));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Enddate", EndDate));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@ApproveStatusID", ApprovedStatusID));
+           
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
+
+
+        public bool UpdateLeaveRequest(int LeaveID, int ApprovedBy, int ApprovedStatus, string LeaveNotes,DateTime CurrentDt)
+        {
+            bool success = false;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                con.Open();
+                SqlCommand command = new SqlCommand("[USP_UpdateLeaveRequestDetails]", con);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.Add("@ApprovedBy", SqlDbType.Int).Value = ApprovedBy;
+                command.Parameters.Add("@ApprovedDt", SqlDbType.DateTime).Value = CurrentDt;
+                command.Parameters.Add("@ApprovesStatusID", SqlDbType.Int).Value = ApprovedStatus;
+                command.Parameters.Add("@notes", SqlDbType.VarChar).Value = LeaveNotes;
+                command.Parameters.Add("@LeaveID", SqlDbType.Int).Value = LeaveID;
+                command.ExecuteNonQuery();
+                con.Close();
+                success = true;
+            }
+            catch (Exception ex)
+            {
+            }
+            return success;
+        }
     }
 }

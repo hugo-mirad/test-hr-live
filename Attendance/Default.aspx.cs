@@ -80,6 +80,10 @@ namespace Attendance
                         rpEmp.DataSource = dsImages;
                         rpEmp.DataBind();
 
+
+                        rpLeave.DataSource = dsImages.Tables[1];
+                        rpLeave.DataBind();
+
                         DataSet dsImages1 = new DataSet();
                         dsImages1 = business.BindLogin(LocationName, CurentDatetime);
                         Session["LoginEmployee"] = dsImages1;
@@ -550,7 +554,65 @@ namespace Attendance
         {
             try
             {
+                Business obj = new Business();
+                string timezone = "";
 
+                if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                {
+                    timezone = "Eastern Standard Time";
+                }
+                else
+                {
+                    timezone = "India Standard Time";
+
+                }
+                DateTime CurrentDt = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+
+                
+                if (rdSelf.Checked)
+                {
+                    int UserID = Convert.ToInt32(hdnLeaveUserID.Value);
+                    DateTime FromDt = Convert.ToDateTime(txtFromDt.Text);
+                    DateTime ToDt = Convert.ToDateTime(txtToDt.Text);
+                    string Passcode = txtLeavePassCode.Text.ToString();
+                    string Reason = txtReason.Text ==""?"":GeneralFunction.ToProperNotes(txtReason.Text);
+                    string EmpID = "";
+
+                    DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
+                        
+                    }
+                    else
+                    {
+                        lblLeaveError.Text="Invalid passcode";
+                        lblLeaveError.Visible = true;
+                    }
+
+                }
+                else if(rdOther.Checked)
+                {
+                    int UserID = Convert.ToInt32(hdnLeaveUserID.Value);
+                    DateTime FromDt = Convert.ToDateTime(txtFromDt.Text);
+                    DateTime ToDt = Convert.ToDateTime(txtToDt.Text);
+                    string Passcode = txtLeavePassCode.Text.ToString();
+                    string Reason = txtReason.Text == "" ? "" : GeneralFunction.ToProperNotes(txtReason.Text);
+                    string EmpID = txtLeaveEmpID.Text;
+                    DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Leave request updated successfully');", true);
+                       
+                    }
+                    else
+                    {
+                        lblLeaveError.Text = "Invalid employee id and passcode";
+                        lblLeaveError.Visible = true;
+                    }
+
+                }
             }
             catch (Exception ex)
             {
