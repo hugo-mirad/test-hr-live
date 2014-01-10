@@ -723,6 +723,20 @@ function clearDisposableItems( sender , args ) {
                 </asp:UpdatePanel>
             </div>
         </div>
+        
+            <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel16"
+            DisplayAfter="0">
+            <ProgressTemplate>
+                <div id="spinner">
+                    <h4>
+                        <div>
+                            Processing
+                            <img src="images/loading.gif" />
+                        </div>
+                        <h4>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
         <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="upbtns"
             DisplayAfter="0">
             <ProgressTemplate>

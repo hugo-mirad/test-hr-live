@@ -3161,7 +3161,8 @@ namespace Attendance
         }
         private string CreateSignInTable(string Employeename, string SignInNotes, string s)
         {
-
+            SignInNotes = HttpUtility.HtmlDecode(SignInNotes).Replace("</br>", "");
+            SignInNotes = HttpUtility.HtmlDecode(SignInNotes).Replace("<br/>", "");
             string strTransaction = string.Empty;
             if (SignInNotes.Trim() != "" || s.Trim() != "")
             {
