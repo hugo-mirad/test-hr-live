@@ -79,14 +79,7 @@ namespace Attendance
                 ddlLeaveApprove.DataTextField = "Status";
                 ddlLeaveApprove.DataValueField = "StatusID";
                 ddlLeaveApprove.DataBind();
-                
-
-
-            }
-
-
-
-
+             }
             catch (Exception ex)
             {
             }
@@ -274,7 +267,12 @@ namespace Attendance
 
         protected void grdUsers_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         protected void grdUsers_RowCommand(object sender, GridViewCommandEventArgs e)

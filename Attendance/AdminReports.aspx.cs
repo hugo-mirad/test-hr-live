@@ -477,6 +477,12 @@ namespace Attendance
                                                     dtAttandence.Rows[j]["SunLoginNotes"] = dtAttandence.Rows[j]["SunLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["SunSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"] == "True")
+                                                    {
+                                                        dtAttandence.Rows[j]["SunLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
+                                                        dtAttandence.Rows[j]["SunLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
+                                                    }
+                                                    
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["SunMultiple"] = "True";
@@ -508,11 +514,6 @@ namespace Attendance
 
                                                 // dtAttandence.Rows[j]["SunHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["SunLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                //dtAttandence.Rows[j]["SunLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
-                                                // dtAttandence.Rows[j]["SunLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                                dtAttandence.Rows[j]["SunLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
-                                                dtAttandence.Rows[j]["SunLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
-
                                                 dtAttandence.Rows[j]["SunFreeze"] = dt1.Rows[0]["Freeze"].ToString();
 
                                                 break;
@@ -537,6 +538,13 @@ namespace Attendance
                                                     dtAttandence.Rows[j]["MonLoginNotes"] =dtAttandence.Rows[j]["MonLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["MonSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["MonSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+
+                                                    if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"] == "True")
+                                                    {
+                                                        dtAttandence.Rows[j]["MonLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
+                                                        dtAttandence.Rows[j]["MonLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
+                                                    }
+
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["MonMultiple"] = "True";
@@ -569,8 +577,7 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["MonLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                // dtAttandence.Rows[j]["MonLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 //dtAttandence.Rows[j]["MonLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                                dtAttandence.Rows[j]["MonLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
-                                                dtAttandence.Rows[j]["MonLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
+                                              
                                                 dtAttandence.Rows[j]["MonFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
 
@@ -590,6 +597,13 @@ namespace Attendance
                                                     dtAttandence.Rows[j]["TueLoginNotes"] = dtAttandence.Rows[j]["TueLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["TueSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["TueSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+
+                                                    if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"] == "True")
+                                                    {
+                                                        dtAttandence.Rows[j]["TueLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
+                                                        dtAttandence.Rows[j]["TueLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
+                                                    }
+
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["TueMultiple"] = "True";
@@ -621,8 +635,7 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["TueLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                // dtAttandence.Rows[j]["TueLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 // dtAttandence.Rows[j]["TueLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                                dtAttandence.Rows[j]["TueLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
-                                                dtAttandence.Rows[j]["TueLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
+                                               
                                                 dtAttandence.Rows[j]["TueFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break; // TODO: might not be correct. Was : Exit Select
                                             case DayOfWeek.Wednesday:
@@ -632,12 +645,14 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["WedLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
                                                 dtAttandence.Rows[j]["WedSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                 dtAttandence.Rows[j]["WedSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
+
+                                              
+
+
                                                 if (dtAttandence.Rows[j]["WedSignOut"].ToString() != "" && dtAttandence.Rows[j]["WedSignOut"].ToString() != "N/A")
                                                 {
 
                                                     WedSignOutCnt = WedSignOutCnt + 1;
-
-
                                                 }
 
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
@@ -645,6 +660,13 @@ namespace Attendance
                                                     dtAttandence.Rows[j]["WedLoginNotes"] = dtAttandence.Rows[j]["WedLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["WedSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["WedSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+
+                                                    if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"] == "True")
+                                                    {
+                                                        dtAttandence.Rows[j]["WedLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
+                                                        dtAttandence.Rows[j]["WedLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
+                                                    }
+                                                    
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["WedMultiple"] = "True";
@@ -676,8 +698,7 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["WedLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                               //  dtAttandence.Rows[j]["WedLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 //   dtAttandence.Rows[j]["WedLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                                dtAttandence.Rows[j]["WedLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
-                                                dtAttandence.Rows[j]["WedLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
+                                              
                                                 dtAttandence.Rows[j]["WedFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                             case DayOfWeek.Thursday:
@@ -701,6 +722,13 @@ namespace Attendance
                                                     dtAttandence.Rows[j]["ThuSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["ThuSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["ThuLoginNotes"] = dtAttandence.Rows[j]["ThuLoginNotes"].ToString() + "<br>" + dt1.Rows[k]["loginnotes"].ToString() + "<br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString() == "True")
+                                                    {
+                                                        dtAttandence.Rows[j]["ThuLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
+                                                        dtAttandence.Rows[j]["ThuLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
+                                                    }
+
+                                                    
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["ThuMultiple"] = "True";
@@ -733,8 +761,7 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["ThuLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 dtAttandence.Rows[j]["ThuLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 //dtAttandence.Rows[j]["ThuLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                                dtAttandence.Rows[j]["ThuLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
-                                                dtAttandence.Rows[j]["ThuLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
+                                               
                                                 dtAttandence.Rows[j]["ThuFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                             case DayOfWeek.Friday:
@@ -753,6 +780,13 @@ namespace Attendance
                                                     dtAttandence.Rows[j]["FriLoginNotes"] = dtAttandence.Rows[j]["FriLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["FriSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["FriSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count-1]["Logoutdate"].ToString().Trim();
+                                                    if (dt1.Rows[0]["loginflag"].ToString() == "True" || dt1.Rows[0]["logoutflag"].ToString() == "True")
+                                                    {
+                                                        dtAttandence.Rows[j]["FriLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
+                                                        dtAttandence.Rows[j]["FriLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
+                                                    }
+
+                                                    
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["FriMultiple"] = "True";
@@ -784,8 +818,7 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["FriLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 //dtAttandence.Rows[j]["FriLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 // dtAttandence.Rows[j]["FriLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                                dtAttandence.Rows[j]["FriLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
-                                                dtAttandence.Rows[j]["FriLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
+                                              
                                                 dtAttandence.Rows[j]["FriFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                             case DayOfWeek.Saturday:
@@ -808,6 +841,12 @@ namespace Attendance
                                                     dtAttandence.Rows[j]["SatLoginNotes"] = dtAttandence.Rows[j]["SatLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["SatSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["SatSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+
+                                                    if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString()=="True")
+                                                     {
+                                                          dtAttandence.Rows[j]["SatLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
+                                                          dtAttandence.Rows[j]["SatLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
+                                                     }
 
                                                     if (dt1.Rows.Count > 1)
                                                     {
@@ -838,10 +877,8 @@ namespace Attendance
 
                                                 //dtAttandence.Rows[j]["SatHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["SatLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                //dtAttandence.Rows[j]["SatLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
-                                                // dtAttandence.Rows[j]["SatLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                                dtAttandence.Rows[j]["SatLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
-                                                dtAttandence.Rows[j]["SatLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
+                                             
+                                               
                                                 dtAttandence.Rows[j]["SatFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                         }
@@ -1147,7 +1184,8 @@ namespace Attendance
                     }
 
                     HiddenField hdnMonSignInFlag = (HiddenField)e.Row.FindControl("hdnMonSignInFlag");
-                    if (hdnMonSignInFlag.Value == "True")
+                    HiddenField hdnMonSignOutFlag=(HiddenField)e.Row.FindControl("hdnMonSignOutFlag");
+                    if (hdnMonSignInFlag.Value == "True" || hdnMonSignOutFlag.Value=="True")
                     {
                         e.Row.Cells[3].BackColor = System.Drawing.Color.Moccasin;
                         lblMonIn.CssClass.Replace("greenTag", "");
@@ -1218,12 +1256,11 @@ namespace Attendance
 
 
                     HiddenField hdnTueSignInFlag = (HiddenField)e.Row.FindControl("hdnTueSignInFlag");
-
-                    if (hdnTueSignInFlag.Value == "True")
+                    HiddenField hdnTueSignOutFlag = (HiddenField)e.Row.FindControl("hdnTueSignOutFlag");
+                    if (hdnTueSignInFlag.Value == "True" || hdnTueSignOutFlag.Value=="True")
                     {
                         e.Row.Cells[6].BackColor = System.Drawing.Color.Moccasin;
-                        //lblTueIn.ForeColor = System.Drawing.Color.Moccasin ;
-                        lblTueIn.CssClass.Replace("greenTag", "");
+                        
                     }
                     HiddenField hdnTueSigninNotes = (HiddenField)e.Row.FindControl("hdnTueSigninNotes");
                     HiddenField hdnTueMultiple = (HiddenField)e.Row.FindControl("hdnTueMultiple");
@@ -1293,8 +1330,8 @@ namespace Attendance
                     }
 
                     HiddenField hdnWedSignInFlag = (HiddenField)e.Row.FindControl("hdnWedSignInFlag");
-
-                    if (hdnWedSignInFlag.Value == "True")
+                    HiddenField hdnWedSignOutFlag = (HiddenField)e.Row.FindControl("hdnWedSignOutFlag");
+                    if (hdnWedSignInFlag.Value == "True" || hdnWedSignOutFlag.Value=="True")
                     {
                         e.Row.Cells[9].BackColor = System.Drawing.Color.Moccasin;
                         lblWedIn.CssClass.Replace("greenTag", "");
@@ -1371,7 +1408,9 @@ namespace Attendance
 
 
                     HiddenField hdnThuSignInFlag = (HiddenField)e.Row.FindControl("hdnThuSignInFlag");
-                    if (hdnThuSignInFlag.Value == "True")
+
+                    HiddenField hdnThuSignOutFlag = (HiddenField)e.Row.FindControl("hdnThuSignOutFlag");
+                    if (hdnThuSignInFlag.Value == "True" || hdnThuSignOutFlag.Value == "True")
                     {
                         e.Row.Cells[12].BackColor = System.Drawing.Color.Moccasin;
                         lblThuIn.Attributes["class"] = "";
@@ -1440,7 +1479,8 @@ namespace Attendance
                     }
 
                     HiddenField hdnFriSignInFlag = (HiddenField)e.Row.FindControl("hdnFriSignInFlag");
-                    if (hdnFriSignInFlag.Value == "True")
+                    HiddenField hdnFriSignOutFlag = (HiddenField)e.Row.FindControl("hdnFriSignOutFlag");
+                    if (hdnFriSignInFlag.Value == "True" || hdnFriSignOutFlag.Value == "True")
                     {
                         e.Row.Cells[15].BackColor = System.Drawing.Color.Moccasin;
                         lblFriIn.CssClass.Replace("greenTag", "");
@@ -1513,7 +1553,8 @@ namespace Attendance
                         }
                     }
 
-                    if (hdnSatSignInFlag.Value == "True")
+                    HiddenField hdnSatSignOutFlag = (HiddenField)e.Row.FindControl("hdnSatSignOutFlag");
+                    if (hdnSatSignInFlag.Value == "True" || hdnSatSignOutFlag.Value == "True")
                     {
                         e.Row.Cells[18].BackColor = System.Drawing.Color.Moccasin;
                         lblSatIn.CssClass.Replace("greenTag", "");
@@ -1585,14 +1626,17 @@ namespace Attendance
                     }
 
                     HiddenField hdnSunSignInFlag = (HiddenField)e.Row.FindControl("hdnSunSignInFlag");
+                    HiddenField hdnSunSignOutFlag = (HiddenField)e.Row.FindControl("hdnSunSignOutFlag");
 
-                    HiddenField hdnSunSignInNotes = (HiddenField)e.Row.FindControl("hdnSunSignInNotes");
-                    if (hdnSunSignInNotes.Value.Trim() == "True")
+                    if (hdnSunSignInFlag.Value == "True" || hdnSunSignOutFlag.Value == "True")
                     {
                         e.Row.Cells[21].BackColor = System.Drawing.Color.Moccasin;
-                        lblSunIn.Attributes["class"] = "";
-                        // lblSunIn.ForeColor = System.Drawing.Color.Moccasin ;
+                        lblSatIn.CssClass.Replace("greenTag", "");
                     }
+
+
+                    HiddenField hdnSunSignInNotes = (HiddenField)e.Row.FindControl("hdnSunSignInNotes");
+                 
                     HiddenField hdnSunMultiple = (HiddenField)e.Row.FindControl("hdnSunMultiple");
                     if (hdnSunMultiple.Value == "True")
                     {

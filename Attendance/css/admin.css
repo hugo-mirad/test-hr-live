@@ -508,9 +508,15 @@ white-space: nowrap
 a.multipleLogin, .multipleLogin
 {
 	text-decoration: none;
-	background: url(../images/category.png) no-repeat right top;
+	/* background: url(../images/category.png) no-repeat right top;	
 	background-size: 11%;
 	padding-right: 16px;
+	*/
+	background: url(../images/errorBlock.png) no-repeat 103% -14%;
+background-size: 11%;
+padding-right: 4px;
+display: block;
+margin-right: -4px;
 }
 
 .multipleLoginList{ margin:10px; padding:0   }

@@ -99,6 +99,7 @@
     <Content Include="images\content-back.png" />
     <Content Include="images\defaultUSer.jpg" />
     <Content Include="images\editBlock.png" />
+    <Content Include="images\errorBlock.png" />
     <Content Include="images\grad_top.jpg" />
     <Content Include="images\loading.gif" />
     <Content Include="images\Multiple.png" />

@@ -61,10 +61,13 @@
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                         </li>
+                                       <div style="display:none">
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
                                                 PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                                
                                         </li>
+                                        </div>
                                     </ul>
                                 </li>
                             </ul>
