@@ -418,7 +418,6 @@ namespace Attendance
                     else
                     {
 
-
                         lblLOName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                         lblLOError.Text = "Invalid passcode";
                         mdlLogoutPopup.Show();

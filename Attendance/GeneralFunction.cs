@@ -362,5 +362,17 @@ namespace Attendance
             }
             return proper;
         }
+
+
+        //public static bool GetHoliday(DataTable dt, DateTime dayt)
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+        //}
     }
 }

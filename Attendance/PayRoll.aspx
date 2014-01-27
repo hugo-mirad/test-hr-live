@@ -162,6 +162,9 @@
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkUserMangement" Text="Employee Management" 
                                                 onclick="lnkUserMangement_Click" ></asp:LinkButton></li>
+                                          <li>
+                                            <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                        </li> 
                                         <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
                                                 <ContentTemplate>
@@ -368,6 +371,13 @@
                     &nbsp;
                  
                     &nbsp;
+                    <asp:Label ID="lblGrdLocaton" runat="server" Text="Location"></asp:Label></b>&nbsp;&nbsp;
+                            <asp:DropDownList ID="ddlLocation" runat="server" AutoPostBack="true" Width="83px"
+                                Height="23px" AppendDataBoundItems="true" OnSelectedIndexChanged="ddlLocation_SelectedIndexChanged">
+                                <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                            </asp:DropDownList>
+                    
+                    
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>

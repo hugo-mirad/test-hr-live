@@ -30,7 +30,7 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ToolkitScriptManager ScriptManager1;
-        
+        protected global::System.Web.UI.WebControls.LinkButton lnkLeavemangement;
         /// <summary>
         /// comanyname control.
         /// </summary>
@@ -102,6 +102,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkUserMangement;
+        
+        /// <summary>
+        /// lnkLeaveApproval control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkLeaveApproval;
         
         /// <summary>
         /// ppp control.
@@ -462,6 +471,24 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnGo;
+        
+        /// <summary>
+        /// lblGrdLocaton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGrdLocaton;
+        
+        /// <summary>
+        /// ddlLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLocation;
         
         /// <summary>
         /// btnPDF control.

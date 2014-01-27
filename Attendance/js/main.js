@@ -257,6 +257,7 @@ $(function() {
     $('.one span b').text($('#origin li').length);
     $('.two span b').text($('#drop1 li').length);
     $('.three span b').text($('#drop2 li').length);
+    $('.four span b').text($('#drop3 li').length);
 
 
 

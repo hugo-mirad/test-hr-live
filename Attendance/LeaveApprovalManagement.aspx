@@ -12,7 +12,35 @@
     <link rel="stylesheet" type="text/css" href="css/UI.css" />
     <link rel="stylesheet" href="css/inputs.css" type="text/css" />
     <link href="css/admin.css" rel="stylesheet" type="text/css" />
+     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <script src="js/jquery.tools.min.js" type="text/javascript"></script>
+    
+     <script type="text/javascript">
+      $(window).load(function(){
+       $('[rel=tooltip]').tooltip();
+      });
+     
+     function pageLoad()
+     {
+       $('[rel=tooltip]').tooltip();
+     }
+     
+     </script>
+     
+     <style type="text/css">
+      .tooltip {
+        display: none;
+        background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
+        font-size: 12px;
+        height: 167px;
+        width: 320px;
+        padding: 25px;
+        color: #EEE;
+        }
+     </style>
+     
     <title>Untitled Page</title>
+    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -47,6 +75,9 @@
                                             <asp:LinkButton ID="lnkPayroll" runat="server" Text="Payroll Report" PostBackUrl="PayRoll.aspx"></asp:LinkButton></li>
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkUserMangement" Text="Employee Management" OnClick="lnkUserMangement_Click"></asp:LinkButton></li>
+                                         <li>
+                                            <asp:LinkButton runat="server" ID="LinkButton1" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                        </li> 
                                         <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
                                                 <ContentTemplate>
@@ -216,7 +247,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
                             <ItemTemplate>
-                                <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")%>'></asp:Label>
+                                <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")+" "+Eval("lastname")%>'></asp:Label>
                                 <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("lastname")%>' Visible="false"></asp:Label>
                                 <asp:HiddenField ID="hdnPhoto" runat="server" Value='<%#Eval("photolink")%>' />
                             </ItemTemplate>
@@ -248,7 +279,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Notes">
                             <ItemTemplate>
-                                <asp:Label ID="lblNotes" runat="server" Text='<%#Eval("Notes")%>'></asp:Label>
+                                <asp:Label ID="lblNotes" runat="server" Text='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "Notes"))%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle Width="130" />
                         </asp:TemplateField>
@@ -503,8 +534,7 @@ function validPop(){
 
      var str = '';
      var len = 0;  
-     
-    $('#grdUsers input[type=checkbox]:not(.selectAll)').each(function(){
+      $('#grdUsers input[type=checkbox]:not(.selectAll)').each(function(){
         if($(this).is(':checked')){
             str += $(this).parent().attr('leaveid')+',';
             len++;

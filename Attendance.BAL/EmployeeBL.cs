@@ -230,5 +230,142 @@ namespace Attendance.BAL
             }
             return success;
         }
+
+        public DataTable GetEmpPaidleavesDetailsByLocation(int location)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[Usp_GetPaidLeaveDetailsByLocation]", con);
+
+                da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", location));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
+
+
+        public bool UpdatePaidLeaveByLeaveID(int LeaveAvail, int Maxleave, int paildLeavID,int Enterby, string notes, DateTime CurrentDt,string IP,int PaidLeaveUserID)
+        {
+            bool success = false;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                con.Open();
+                SqlCommand command = new SqlCommand("[USP_UpdatePaidLeavesDetials]", con);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.Add("@LeaveAvail", SqlDbType.Int).Value = LeaveAvail;
+                command.Parameters.Add("@CurrentDt", SqlDbType.DateTime).Value = CurrentDt;
+                command.Parameters.Add("@MaxLeave", SqlDbType.Int).Value = Maxleave;
+                command.Parameters.Add("@Notes", SqlDbType.VarChar).Value = notes;
+                command.Parameters.Add("@PaidLeaveID", SqlDbType.Int).Value = paildLeavID;
+                command.Parameters.Add("@EnterBY", SqlDbType.Int).Value = Enterby;
+                command.Parameters.Add("@IPAddress", SqlDbType.VarChar).Value = IP;
+                command.Parameters.Add("@PaidLeaveUserID", SqlDbType.Int).Value = PaidLeaveUserID;
+                command.ExecuteNonQuery();
+                con.Close();
+                success = true;
+            }
+            catch (Exception ex)
+            {
+            }
+            return success;
+        }
+        public DataTable GetSelectedEmpByLocDept(string LocationName, string Dept)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetSelectedEmployeeByLocDept]", con);
+
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Location", LocationName));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Dept", Dept));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
+
+        public bool SaveandGetHolidayDet(bool ISHoliday, DateTime HolidayDt, int locID, int DeptID, int userid, int EnterBy, DateTime EnterDt, string IP, string Holidayname)
+        {
+
+            bool success = false;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                con.Open();
+                SqlCommand command = new SqlCommand("[USP_SaveHolidayDetails]", con);
+                command.CommandType = CommandType.StoredProcedure;
+
+
+                command.Parameters.Add(new SqlParameter("@Holidayname", Holidayname));
+                command.Parameters.Add(new SqlParameter("@IsHoliday", ISHoliday));
+                command.Parameters.Add(new SqlParameter("@HolidayDate", HolidayDt));
+                command.Parameters.Add(new SqlParameter("@LocationID", locID));
+                command.Parameters.Add(new SqlParameter("@DeptID", DeptID));
+                command.Parameters.Add(new SqlParameter("@userid", userid));
+                command.Parameters.Add(new SqlParameter("@EnteredBy", EnterBy));
+                command.Parameters.Add(new SqlParameter("@EnteredDate", EnterDt));
+                command.Parameters.Add(new SqlParameter("@Ipaddress", IP));
+                command.ExecuteNonQuery();
+                con.Close();
+                success = true;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return success;
+        }
+
+        public DataTable GetHolidayDetByLoc(DateTime startDt,DateTime EndDt,int locationID)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetHolidayDet]", con);
+
+                da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", locationID));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@StartDate", startDt));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));
+              
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
+    
     }
 }

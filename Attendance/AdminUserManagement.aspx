@@ -887,6 +887,16 @@
                                             <li>
                                                 <asp:LinkButton runat="server" ID="lnkUserMangement" Text="Employee Management" PostBackUrl="AdminUserManagement.aspx"></asp:LinkButton></li>
                                             <li>
+                                                <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
+                                                    PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                            </li>
+                                              <li>
+                                                <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management"
+                                                    PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
+                                            </li>
+                                            
+                                            
+                                            <li>
                                                 <asp:UpdatePanel ID="ppp" runat="server">
                                                     <ContentTemplate>
                                                         <asp:LinkButton runat="server" ID="lnkChangepwd" Text="Change Password" OnClick="lnkChangepwd_Click"></asp:LinkButton>
@@ -1028,7 +1038,7 @@
                                 <asp:LinkButton ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"
                                     CommandArgument='<%#Eval("userid")%>'></asp:LinkButton>
                             </ItemTemplate>
-                              <ItemStyle Width="50" />
+                            <ItemStyle Width="50" />
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
                             <%--   <HeaderTemplate>
@@ -1038,7 +1048,6 @@
                                 <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")%>'></asp:Label>
                                 <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("lastname")%>' Visible="false"></asp:Label>
                                 <asp:HiddenField ID="hdnPhoto" runat="server" Value='<%#Eval("photolink")%>' />
-                                 
                             </ItemTemplate>
                             <ItemStyle Width="150" />
                         </asp:TemplateField>
@@ -1049,7 +1058,7 @@
                             <ItemTemplate>
                                 <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("JoiningDate", "{0:MM/dd/yyyy}") %>'></asp:Label>
                             </ItemTemplate>
-                             <ItemStyle Width="60" />
+                            <ItemStyle Width="60" />
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
                             <%--   <HeaderTemplate>
@@ -1058,7 +1067,7 @@
                             <ItemTemplate>
                                 <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}") %>'></asp:Label>
                             </ItemTemplate>
-                             <ItemStyle Width="60" />
+                            <ItemStyle Width="60" />
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="TermReason">
                             <%-- <HeaderTemplate>
@@ -1067,7 +1076,7 @@
                             <ItemTemplate>
                                 <asp:Label ID="lblTermReason" runat="server" Text='<%#Eval("TermReason")%>'></asp:Label>
                             </ItemTemplate>
-                             <ItemStyle Width="130" />
+                            <ItemStyle Width="130" />
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="DeptName" HeaderText="Department">
                             <%--  <HeaderTemplate>
@@ -1076,7 +1085,7 @@
                             <ItemTemplate>
                                 <asp:Label ID="lblDept" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
                             </ItemTemplate>
-                             <ItemStyle Width="130" />
+                            <ItemStyle Width="130" />
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="designation" HeaderText="Designation">
                             <%--  <HeaderTemplate>
@@ -1094,7 +1103,7 @@
                             <ItemTemplate>
                                 <asp:Label ID="lblActvie" runat="server" Text='<%#Eval("IsActive")%>'></asp:Label>
                             </ItemTemplate>
-                               <ItemStyle Width="50" />
+                            <ItemStyle Width="50" />
                         </asp:TemplateField>
                         <%--  <asp:TemplateField>
                     <HeaderTemplate>
@@ -1122,7 +1131,7 @@
                 <asp:LinkButton ID="lnkClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-           <table style="width: 99%;">
+            <table style="width: 99%;">
                 <tr>
                     <td style="width: 712px;">
                         &nbsp;
@@ -1150,18 +1159,16 @@
                             </asp:UpdatePanel>
                         </div>
                         <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancel_Click" />
-                        
                     </td>
                 </tr>
                 <tr>
-                <td colspan="3" style="float: right;margin-right: 27px;">
-                     <asp:UpdatePanel ID="uppp" runat="server">
+                    <td colspan="3" style="float: right; margin-right: 27px;">
+                        <asp:UpdatePanel ID="uppp" runat="server">
                             <ContentTemplate>
                                 <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
                             </ContentTemplate>
                         </asp:UpdatePanel>
-                
-                </td>
+                    </td>
                 </tr>
             </table>
             <div class="scrollBlock">
@@ -1216,11 +1223,14 @@
                                                 <asp:TextBox ID="txtBusinessLasst" runat="server" MaxLength="50" TabIndex="4"></asp:TextBox>
                                             </td>
                                         </tr>
-                        </table> </fieldset>
+                                    </table>
+                                </fieldset>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">&nbsp;</td>
+                            <td colspan="5">
+                                &nbsp;
+                            </td>
                         </tr>
                         <tr>
                             <td style="width: 114px;">
@@ -1330,15 +1340,15 @@
                         </tr>
                     </table>
                 </div>
-              <h4 class="ppHed acc">
+                <h4 class="ppHed acc">
                     US employee/contractor tax details <span class="pls">+</span></h4>
                 <div class="ppHedContent">
                     <table style="width: 90%; border-collapse: collapse; margin-left: 10px;">
                         <tr>
                             <td style="width: 49%">
-                                <table style="width: 99%;vertical-align:top;">
+                                <table style="width: 99%; vertical-align: top;">
                                     <tr>
-                                        <td style="width: 100px;vertical-align:top">
+                                        <td style="width: 100px; vertical-align: top">
                                             Street
                                         </td>
                                         <td>
@@ -1386,12 +1396,12 @@
                             <td style="width: 5%">
                             </td>
                             <td>
-                                <table style="width: 99%;vertical-align:top;">
+                                <table style="width: 99%; vertical-align: top;">
                                     <tr>
-                                        <td style="width: 150px;vertical-align:top">
+                                        <td style="width: 150px; vertical-align: top">
                                             Filling status
                                         </td>
-                                        <td >
+                                        <td>
                                             <asp:RadioButton ID="rdMarriedSingle" runat="server" GroupName="MaritalStatus" Checked="true"
                                                 TabIndex="15" />Single &nbsp;&nbsp;
                                             <asp:RadioButton ID="rdMarried" runat="server" GroupName="MaritalStatus" TabIndex="16" />Married

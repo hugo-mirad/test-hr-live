@@ -699,6 +699,9 @@
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkUserMangement" Text="Employee Management" OnClick="lnkUserMangement_Click"></asp:LinkButton></li>
                                         <li>
+                                            <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                        </li> 
+                                        <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
                                                 <ContentTemplate>
                                                     <asp:LinkButton runat="server" ID="lnkChangepwd" Text="Change Password" OnClick="lnkChangepwd_Click"></asp:LinkButton>

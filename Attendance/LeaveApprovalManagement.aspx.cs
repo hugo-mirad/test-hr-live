@@ -16,6 +16,7 @@ namespace Attendance
 {
     public partial class LeaveApprovalManagement : System.Web.UI.Page
     {
+        public GeneralFunction objFun = new GeneralFunction();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["LocationName"] != null)
@@ -63,7 +64,6 @@ namespace Attendance
                 }
             }
         }
-
         private void GetStatus()
         {
             try
@@ -84,7 +84,6 @@ namespace Attendance
             {
             }
         }
-
         private void GetLeavesDetails(string p, DateTime startdate, DateTime Enddate, int AppovedStatusID)
         {
             try
@@ -112,8 +111,6 @@ namespace Attendance
             {
             }
         }
-
-
         protected void lnkChangepwd_Click(object sender, EventArgs e)
         {
             try
@@ -129,7 +126,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPwd_Click(object sender, EventArgs e)
         {
             txtOldpwd.Text = "";
@@ -137,7 +133,6 @@ namespace Attendance
             txtConfirmPwd.Text = "";
             mdlChangePwd.Hide();
         }
-
         protected void btnUpdatePwd_Click(object sender, EventArgs e)
         {
             try
@@ -166,7 +161,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnUpdatePassCode_Click(object sender, EventArgs e)
         {
             try
@@ -193,7 +187,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPasscode_Click(object sender, EventArgs e)
         {
             txtOldpasscode.Text = "";
@@ -201,7 +194,6 @@ namespace Attendance
             txtConfirmPasscode.Text = "";
             mdlChangePasscode.Hide();
         }
-
         protected void lnkChangePasscode_Click(object sender, EventArgs e)
         {
             try
@@ -223,7 +215,6 @@ namespace Attendance
             Session.Abandon();
             Response.Redirect("Default.aspx");
         }
-
         protected void lnkReport_Click(object sender, EventArgs e)
         {
             if (Session["IsAdmin"].ToString() == "True")
@@ -246,7 +237,6 @@ namespace Attendance
                 Response.Redirect("UserManagement.aspx");
             }
         }
-
         protected void grdUsers_Sorting(object sender, GridViewSortEventArgs e)
         {
             try
@@ -264,22 +254,32 @@ namespace Attendance
                 throw ex;
             }
         }
-
         protected void grdUsers_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
             {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+
+                    Label lblNotes = (Label)e.Row.FindControl("lblNotes");
+                    Label lblEmpFirstname = (Label)e.Row.FindControl("lblEmpFirstname");
+                    if (lblNotes.Text.Trim() != "")
+                    {
+                        string sTable = sTable = CreateSignInTable(lblEmpFirstname.Text, lblNotes.Text);
+                        lblNotes.Attributes.Add("rel", "tooltip");
+                        lblNotes.Attributes.Add("title", sTable);
+                    }
+                    lblNotes.Text = GeneralFunction.WrapTextByMaxCharacters(lblNotes.Text, 20);
+                }
             }
             catch (Exception ex)
             {
             }
         }
-
         protected void grdUsers_RowCommand(object sender, GridViewCommandEventArgs e)
         {
 
         }
-
         protected void ddlSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -293,14 +293,12 @@ namespace Attendance
             }
 
         }
-
         protected void lnkUpdate_Click(object sender, EventArgs e)
         {
             ddlLeaveApprove.SelectedIndex = 0;
             txtLeaveNotes.Text = "";
             mdlLeaveStatusUpdate.Show();
         }
-
         protected void btnLeeaveApproveUpdate_Click(object sender, EventArgs e)
         {
             try
@@ -311,7 +309,6 @@ namespace Attendance
                     string[] recordID = Records.Split(',');
                     for (int i = 0; i < recordID.Length-1; i++)
                     {
-
                     string timezone = "";
                     if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
                     {
@@ -320,20 +317,15 @@ namespace Attendance
                     else
                     {
                         timezone = "India Standard Time";
-
                     }
                     DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
 
-
                     int LeaveID = Convert.ToInt32(recordID[i]);
-                    string notes = GeneralFunction.ToProperNotes(txtLeaveNotes.Text)+ Environment.NewLine+
-                                   "Updated by " + Session["EmpName"].ToString().Trim() + " at " + ISTTime+Environment.NewLine+"****************";  
+                    string notes = txtLeaveNotes.Text.Trim() == "" ? "" : GeneralFunction.ToProperNotes(txtLeaveNotes.Text) + "<br/>" +
+                                   "Updated by " + Session["EmpName"].ToString().Trim() + " at " + ISTTime + "<br/>" + "********************** <br/>";  
                         
                     int ApprovedStatusID = Convert.ToInt32(ddlLeaveApprove.SelectedValue);
                     int ApprovedBy = Convert.ToInt32(Session["UserID"]);
-
-
-
                     EmployeeBL obj = new EmployeeBL();
                     bool bnew = obj.UpdateLeaveRequest(LeaveID, ApprovedBy, ApprovedStatusID, notes, ISTTime);
                    }
@@ -342,13 +334,11 @@ namespace Attendance
                 mdlLeaveStatusUpdate.Hide();
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
                 GetLeavesDetails(lblLocation.Text, Convert.ToDateTime(ViewState["StartMonth"]), Convert.ToDateTime(ViewState["EndMonth"]), StatusID);
-
             }
             catch (Exception ex)
             {
             }
         }
-
         protected void btnPrevious_Click(object sender, EventArgs e)
         {
             try
@@ -383,7 +373,6 @@ namespace Attendance
 
             }
         }
-
         protected void btnCurrent_Click(object sender, EventArgs e)
         {
             try
@@ -418,7 +407,6 @@ namespace Attendance
             }
 
         }
-
         protected void btnNext_Click(object sender, EventArgs e)
         {
             try
@@ -449,6 +437,39 @@ namespace Attendance
             {
 
             }
+
+        }
+        private string CreateSignInTable(string Employeename, string SignInNotes)
+        {
+            SignInNotes = HttpUtility.HtmlDecode(SignInNotes).Replace("</br>", "\n");
+            SignInNotes = HttpUtility.HtmlDecode(SignInNotes).Replace("<br/>", "\n");
+            string strTransaction = string.Empty;
+            if (SignInNotes.Trim() != "" )
+            {
+                strTransaction = "<div style=\"height:143px;overflow-y:scroll;overflow-x:hidden;\">";
+
+                strTransaction += "<table class=\"noPading\"  id=\"SalesStatus\" style=\"display: table; border-collapse:collapse;  width:100%; color:#eee; \">";
+                strTransaction += "<tr id=\"CampaignsTitle1\" >";
+                strTransaction += "<td align=\"center\" colspan=\"2\" >";
+                strTransaction += "<b style=\"text-align:center; display:block\"  >" + Employeename + "</b>";
+                strTransaction += "</td>";
+                strTransaction += "</tr>";
+                if (SignInNotes.Trim() != "")
+                {
+                    strTransaction += "<tr>";
+                    strTransaction += "<td style=\"width:150px;\">";
+                    strTransaction += "<fieldset style=\"margin:0 15px 0 0;border:#ccc 1px dashed;\"><legend>Notes</legend>";
+                    strTransaction += "<div>";
+                    strTransaction += HttpUtility.HtmlDecode(SignInNotes).Replace("<br/>", "\n");
+                    strTransaction += "</div>";
+                    strTransaction += "</fieldset>";
+                    strTransaction += "</td>";
+                    strTransaction += "</tr>";
+                }
+                strTransaction += "</table>";
+                strTransaction += "</div>";
+            }
+            return strTransaction;
 
         }
 

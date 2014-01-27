@@ -631,6 +631,17 @@ function clearDisposableItems( sender , args ) {
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkUserMangement" Text="Employee Management" PostBackUrl="AdminUserManagement.aspx"></asp:LinkButton></li>
                                         <li>
+                                            <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                        </li> 
+                                         <li>
+                                                <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management"
+                                                    PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
+                                            </li>
+                                             <li>
+                                                <asp:LinkButton runat="server" ID="lnkHolidayManagement" Text="Holiday Management"
+                                                    PostBackUrl="HolidayManagement.aspx"></asp:LinkButton>
+                                            </li>
+                                        <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
                                                 <ContentTemplate>
                                                     <asp:LinkButton runat="server" ID="lnkChangepwd" Text="Change Password" OnClick="lnkChangepwd_Click"></asp:LinkButton>
@@ -644,11 +655,9 @@ function clearDisposableItems( sender , args ) {
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                         </li>
-                                      <div style="display:none">
-                                        <li>
-                                            <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
-                                        </li>   
-                                        </div>
+                                   <%--   <div style="display:none">--%>
+                                          
+                                       <%-- </div>--%>
                                     </ul>
                                 </li>
                             </ul>
@@ -804,16 +813,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemStyle CssClass="col1 bL" />
                             <HeaderStyle CssClass="bL" />
                         </asp:TemplateField>
-                        <%--    <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblMonHeadSCout" runat="server" Text="SchOut"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblMonScOut" runat="server" Text='<%#Eval("MonSchOut")%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>--%>
-                        <asp:TemplateField>
+                          <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblMonHeadIN" runat="server" Text="In-Out"></asp:Label>
                             </HeaderTemplate>
@@ -834,19 +834,6 @@ function clearDisposableItems( sender , args ) {
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" Width="60" />
                         </asp:TemplateField>
-                        <%-- <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblMonHeadOut" runat="server" Text="SignOut"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:LinkButton ID="lblMonOut" runat="server" Font-Underline="False" Text='<%#Eval("MonSignOut")%>'
-                                    CommandName="LogOutMonEdit" CommandArgument='<%#Eval("MonLogUserID")%>'></asp:LinkButton>
-                                <asp:HiddenField ID="hdnMonSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "MonLogoutNotes"))%>' />
-                                <asp:HiddenField ID="hdnMonSignOutFlag" runat="server" Value='<%#Eval("MonLogoutFlag")%>' />
-                                <asp:HiddenField ID="hdnMonFreeze" runat="server" Value='<%#Eval("MonFreeze")%>' />
-                            </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblMonHeadHours" runat="server" Text="Hrs"></asp:Label>
@@ -867,14 +854,6 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnTueLunch" runat="server" Value='<%#Eval("TueLunch").ToString().Trim()%>' />
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <%--      <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblTueSCout" runat="server" Text="SchOut"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                              
-                            </ItemTemplate>
-                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblTueIN" runat="server" Text="In-Out"></asp:Label>

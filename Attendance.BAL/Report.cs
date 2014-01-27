@@ -418,7 +418,7 @@ namespace Attendance.BAL
             return ds;
         }
 
-        public DataSet GetPayrollReport(DateTime startdate, DateTime EndDate, int userid)
+        public DataSet GetPayrollReport(DateTime startdate, DateTime EndDate, int userid, string LocationName)
         {
             DataSet ds = new DataSet();
 
@@ -430,6 +430,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", startdate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@endDate", EndDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@LocationName", LocationName));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
 

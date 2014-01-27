@@ -1057,7 +1057,7 @@ namespace Attendance
             {
                 int sort = Convert.ToInt32(ddlSelect.SelectedItem.Value);
                 GetUserDetails(sort,ddlLocation.SelectedItem.Text.ToString().Trim());
-          }
+           }
             catch (Exception ex)
             {
             }

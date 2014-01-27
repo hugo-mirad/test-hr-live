@@ -377,7 +377,7 @@
                 <tr>
                     <td style="vertical-align: top;">
                         <!-- Left Total Users List Start  -->
-                        <div class="bor boxC1" style="margin: 0 5px; ">
+                        <div class="bor boxC1" style="margin: 0 5px; height:auto; max-height:auto; min-height:auto   ">
                             <h2 class="one" style="background: #fff; color: #2286c1; border-bottom: #2286c1 1px solid;">
                                 SCHEDULED <span>(<b></b>)</span></h2>
                             <div class="inner ">
@@ -413,9 +413,9 @@
                         </div>
                         <!-- Left Total Users List End  -->
                         <!-- Left Leave Users Start  -->
-                        <div style="display:none">
-                        <div class="bor boxC4" style="margin: 0 5px; min-height: 30%;">
-                            <h2 class="two" style="background: #fff; color: #888; border-bottom: #888 1px solid;">
+                      <%--  <div style="display:none">--%>
+                        <div class="bor boxC4" style="margin: 10px 5px 0 5px; ">
+                            <h2 class="four" style="background: #fff; color: #888; border-bottom: #888 1px solid;">
                                 On Approved Leave<span>(<b></b>)</span></h2>
                             <div class="inner ">
                                <asp:Repeater ID="rpLeave" runat="server" OnItemDataBound="rpEmp_ItemDataBound" >
@@ -451,7 +451,7 @@
                             <div class="clear">
                                 &nbsp;</div>
                         </div>
-                        </div>
+                      <%--  </div>--%>
                         <!-- Left Leave Users End  -->
                     </td>
                     <td style="vertical-align: top;">
@@ -1250,16 +1250,34 @@ function updateClock ( )
  }
 
 $(function(){
-//    $('.boxC4').height($('.boxC2').height() - ($('.boxC1').height()+10));
-   setInterval('updateClock()', 1000);
+
+    setInterval('updateClock()', 1000);
+    
+    
+    
+    // Comment Start   --------------------
+    
+    if($('.boxC4 #drop3 li').length > 10){
+        $('.boxC1').height(($('.boxC2').height()*(55/100))-10)
+        $('.boxC4').height(($('.boxC2').height()*(45/100)))
+    }else{
+        $('.boxC1').height(($('.boxC2').height()*(65/100))-10)
+        $('.boxC4').height(($('.boxC2').height()*(35/100)))
+    }   
+   
+    $( window ).resize(function() {
+        if($('.boxC4 #drop3 li').length > 10){
+            $('.boxC1').height(($('.boxC2').height()*(55/100))-10)
+            $('.boxC4').height(($('.boxC2').height()*(45/100)))
+        }else{
+            $('.boxC1').height(($('.boxC2').height()*(65/100))-10)
+            $('.boxC4').height(($('.boxC2').height()*(35/100)))
+        }
+   });
    
    
+   // Comment End   --------------------
    
-   
-   
-//   $( window ).resize(function() {
-//      $('.boxC4').height($('.boxC2').height() - ($('.boxC1').height()+10))
-//   });
    
 });
 

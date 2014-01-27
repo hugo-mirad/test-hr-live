@@ -84,6 +84,7 @@
     <Content Include="EmployeDetails.aspx" />
     <Content Include="EmployeeList.aspx" />
     <Content Include="encryptpwd.aspx" />
+    <Content Include="HolidayManagement.aspx" />
     <Content Include="images2\cal.gif" />
     <Content Include="images2\cal_close.gif" />
     <Content Include="images2\cal_fastforward.gif" />
@@ -132,6 +133,7 @@
     <Content Include="js\overlibmws.js" />
     <Content Include="css\images\ui-icons_222222_256x240.png" />
     <Content Include="LeaveApprovalManagement.aspx" />
+    <Content Include="LeaveManagement.aspx" />
     <Content Include="Manage.aspx" />
     <Content Include="ManagersReport.aspx" />
     <Content Include="PayRoll.aspx" />
@@ -335,12 +337,26 @@
     </Compile>
     <Compile Include="GeneralFunction.cs" />
     <Compile Include="GridSorting.cs" />
+    <Compile Include="HolidayManagement.aspx.cs">
+      <DependentUpon>HolidayManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HolidayManagement.aspx.designer.cs">
+      <DependentUpon>HolidayManagement.aspx</DependentUpon>
+    </Compile>
     <Compile Include="LeaveApprovalManagement.aspx.cs">
       <DependentUpon>LeaveApprovalManagement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="LeaveApprovalManagement.aspx.designer.cs">
       <DependentUpon>LeaveApprovalManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LeaveManagement.aspx.cs">
+      <DependentUpon>LeaveManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LeaveManagement.aspx.designer.cs">
+      <DependentUpon>LeaveManagement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Manage.aspx.cs">
       <DependentUpon>Manage.aspx</DependentUpon>

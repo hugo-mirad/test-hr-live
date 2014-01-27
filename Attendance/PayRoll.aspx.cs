@@ -79,13 +79,29 @@ namespace Attendance
                     {
                         lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                     }
-                    if(Session["LocationName"].ToString()=="INBH"||Session["LocationName"].ToString()=="INDG")
+                  
+
+                    getLocations();
+                    ddlLocation.SelectedIndex = (ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(Session["LocationName"].ToString())));
+
+                    if (ddlLocation.SelectedItem.Text.ToString().Trim() == "INBH" || ddlLocation.SelectedItem.Text.ToString().Trim() == "INDG")
                     {
                         grdPayRoll.Columns[8].Visible = false;
                         grdPayRoll.Columns[9].Visible = false;
                     }
 
-                    GetReport(EndDate, StartDate.AddDays(-1), userid);
+                    if (Session["IsAdmin"].ToString() == "True")
+                    {
+                        GetReport(EndDate, StartDate.AddDays(-1), 0, lblLocation.Text.Trim());
+                        lblGrdLocaton.Visible = true;
+                        ddlLocation.Visible = true;
+                    }
+                    else
+                    {
+                        GetReport(EndDate, StartDate.AddDays(-1), userid, lblLocation.Text.Trim());
+                        lblGrdLocaton.Visible = false;
+                        ddlLocation.Visible = false;
+                    }
                     BindListOfNewEmployee();
                     BindListofChanges();
 
@@ -223,12 +239,12 @@ namespace Attendance
             }
         }
 
-        private void GetReport(DateTime StartDate, DateTime EndTime, int userid)
+        private void GetReport(DateTime StartDate, DateTime EndTime, int userid,string Location)
         {
             try
             {
                 Attendance.BAL.Report obj = new Report();
-                DataSet ds = obj.GetPayrollReport(StartDate, EndTime, userid);
+                DataSet ds = obj.GetPayrollReport(StartDate, EndTime, userid,Location);
                 lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
                 GetEditHistory(StartDate, EndTime);
                 lblTotal.Text = ds.Tables[0].Rows[0]["LocDescriptiom"].ToString().Trim()==""?"Employee record count: " + ds.Tables[0].Rows.Count.ToString().Trim(): ds.Tables[0].Rows[0]["LocDescriptiom"].ToString().Trim() +"  location; Employee record count: " + ds.Tables[0].Rows.Count.ToString().Trim();
@@ -262,7 +278,34 @@ namespace Attendance
                     lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                 }
 
-                GetReport(StartDate, EndTime, userid);
+
+                if (Session["IsAdmin"].ToString() == "True")
+                {
+                    GetReport(StartDate, EndTime, 0, ddlLocation.SelectedItem.Text.Trim());
+                    lblGrdLocaton.Visible = true;
+                    ddlLocation.Visible = true;
+
+                    if (ddlLocation.SelectedItem.Text.ToString().Trim() == "INBH" || ddlLocation.SelectedItem.Text.ToString().Trim() == "INDG")
+                    {
+                        grdPayRoll.Columns[8].Visible = false;
+                        grdPayRoll.Columns[9].Visible = false;
+                    }
+                    else
+                    {
+                        grdPayRoll.Columns[8].Visible = true;
+                        grdPayRoll.Columns[9].Visible = true;
+                    }
+
+
+                }
+                else
+                {
+                    GetReport(StartDate, EndTime, userid, "");
+                    lblGrdLocaton.Visible = false;
+                    ddlLocation.Visible = false;
+                }
+
+              // GetReport(StartDate, EndTime, userid,ddlLocation.SelectedItem.Text.Trim());
                 BindListOfNewEmployee();
                 BindListofChanges();
 
@@ -723,6 +766,81 @@ namespace Attendance
             else
             {
                 Response.Redirect("UserManagement.aspx");
+            }
+        }
+
+
+        protected void ddlLocation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int userid = Convert.ToInt32(Session["UserID"]);
+
+                DateTime StartDate = Convert.ToDateTime(txtFromDate.Text);
+                DateTime EndTime = Convert.ToDateTime(txtToDate.Text);
+                ViewState["StartRptDt"] = StartDate;
+                ViewState["EndRptDt"] = EndTime;
+                Attendance.BAL.Report obj = new Report();
+                DateTime Count = obj.GetFreezedDate(EndTime, Session["LocationName"].ToString());
+                if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
+                {
+                    lblFreeze.Text = "";
+                }
+                else
+                {
+                    lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
+                }
+
+
+                if (Session["IsAdmin"].ToString() == "True")
+                {
+                    GetReport(StartDate, EndTime, 0, ddlLocation.SelectedItem.Text.Trim());
+                    lblGrdLocaton.Visible = true;
+                    ddlLocation.Visible = true;
+
+                    if (ddlLocation.SelectedItem.Text.ToString().Trim() == "INBH" || ddlLocation.SelectedItem.Text.ToString().Trim() == "INDG")
+                    {
+                        grdPayRoll.Columns[8].Visible = false;
+                        grdPayRoll.Columns[9].Visible = false;
+                    }
+                    else
+                    {
+                        grdPayRoll.Columns[8].Visible = true;
+                        grdPayRoll.Columns[9].Visible = true;
+                    }
+
+                }
+                else
+                {
+                    GetReport(StartDate, EndTime, userid, "");
+                    lblGrdLocaton.Visible = false;
+                    ddlLocation.Visible = false;
+                }
+
+                // GetReport(StartDate, EndTime, userid,ddlLocation.SelectedItem.Text.Trim());
+                BindListOfNewEmployee();
+                BindListofChanges();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+
+        private void getLocations()
+        {
+            try
+            {
+                Attendance.BAL.Report obj = new Report();
+                DataTable dt = obj.GetLocations();
+                ddlLocation.DataSource = dt;
+                ddlLocation.DataTextField = "LocationName";
+                ddlLocation.DataValueField = "LocationId";
+                ddlLocation.DataBind();
+            }
+            catch (Exception ex)
+            {
+
             }
         }
     }
