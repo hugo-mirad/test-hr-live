@@ -693,3 +693,30 @@ line-height: 5em
 }
 
 div.picker div.header span { color:#fff;  }
+
+.atnHoliday{ background:#AFAFAF; text-align:center;}
+.atnHoliday a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
+
+.atnUnLeave{ background:#F7CC7D; text-align:center;}
+.atnUnLeave a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
+
+.atnLeave{ background:#BDF3BD; text-align:center;}
+.atnLeave a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
+
+.atnSun{ background:#ddd; text-align:center;}
+.atnSun a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
+
+.atnEdit{background-color:#FFB125; text-align:center;}
+ td.atnEdit.greenTag, tr td.atnEdit.greenTag, table tr td.atnEdit.greenTag, .atnEdit.greenTag{ background-color:#FFB125; background-image: url(../images/editBlock.png); background-position: -17px -17px; background-repeat: no-repeat; }
+.atnEdit a{  text-align:center; }
+
+
+
+
+/*
+.atnHoliday{ background:#AFAFAF; text-align:center;}
+.atnHoliday a{ color:#fff; font-weight:bold; font-size:12px; text-align:center; }
+*/
+
+
+

@@ -578,14 +578,22 @@ namespace Attendance
                     string EmpID = "";
 
                     DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
-                    if (ds.Tables[0].Rows.Count > 0)
+                    if (ds.Tables.Count > 0)
                     {
-                        System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
-                        
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
+
+                        }
+                        else
+                        {
+                            lblLeaveError.Text = "Invalid passcode";
+                            lblLeaveError.Visible = true;
+                        }
                     }
                     else
                     {
-                        lblLeaveError.Text="Invalid passcode";
+                        lblLeaveError.Text = "Invalid passcode";
                         lblLeaveError.Visible = true;
                     }
 
@@ -600,10 +608,19 @@ namespace Attendance
                     string EmpID = txtLeaveEmpID.Text;
                     DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
 
-                    if (ds.Tables[0].Rows.Count > 0)
+                    if (ds.Tables.Count > 0)
                     {
-                        System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Leave request updated successfully');", true);
-                       
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
+
+                        }
+                        else
+                        {
+                            lblLeaveError.Text = "Invalid employee id and passcode";
+                            lblLeaveError.Visible = true;
+                        }
+
                     }
                     else
                     {

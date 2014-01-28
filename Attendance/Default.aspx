@@ -734,6 +734,21 @@
             </table>
         </div>
     </div>
+    
+      <asp:UpdateProgress ID="UpdateProgress3" runat="server" AssociatedUpdatePanelID="UpdatePanel4"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    
+    
     <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="UpdatePanel6"
         DisplayAfter="0">
         <ProgressTemplate>
@@ -795,7 +810,7 @@
                             </tr>
                             <tr id="leaveEmp" runat="server" style="display: none;">
                                 <td>
-                                    <asp:Label ID="lblLeaveEmp" runat="server" Text="EmpID  <span class='must'>*</span>"
+                                    <asp:Label ID="lblLeaveEmp" runat="server" Text="EmpID  <span class='must'>*</span> (Other)"
                                        ></asp:Label>
                                     <br />
                                     <asp:TextBox ID="txtLeaveEmpID" runat="server"  Style="width: 140px;"></asp:TextBox>
@@ -803,7 +818,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Pass code<span class="must">*</span><br />
+                                    Pass code<span class="must">*</span> (Other)<br />
                                     <asp:TextBox ID="txtLeavePassCode" runat="server" TextMode="Password" Style="width: 140px;"></asp:TextBox>
                                 </td>
                             </tr>

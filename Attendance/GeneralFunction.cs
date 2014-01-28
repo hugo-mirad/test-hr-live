@@ -112,12 +112,12 @@ namespace Attendance
             string total = "";
             try
             {
-                if(timenum!="")
+                if (timenum != "")
                 {
-                string[] time1 = timenum.Split('.');
-                int Hrs = Convert.ToInt32(time1[0]);
-                Double min = Convert.ToDouble(time1[1]) * 0.006;
-                total = (Hrs + ":" + min).ToString();
+                    string[] time1 = timenum.Split('.');
+                    int Hrs = Convert.ToInt32(time1[0]);
+                    Double min = Convert.ToDouble(time1[1]) * 0.006;
+                    total = (Hrs + ":" + min).ToString();
                 }
             }
             catch (Exception ex)
@@ -155,7 +155,7 @@ namespace Attendance
                         (ss.Substring(1, ss.Length - 1) + ' ');
                     }
 
-                }  
+                }
             }
             return sProper;
         }
@@ -188,7 +188,7 @@ namespace Attendance
             if (s != "")
             {
                 s = s.ToString().ToLower();
-               
+
                 if (s.Length > 0)
                 {
                     sProper += char.ToUpper(s[0]);
@@ -196,7 +196,7 @@ namespace Attendance
                     (s.Substring(1, s.Length - 1));
                 }
             }
-         
+
             return sProper;
         }
 
@@ -236,21 +236,21 @@ namespace Attendance
 
 
 
-        public static string FormatCurrency(object strValue,string Location)
+        public static string FormatCurrency(object strValue, string Location)
         {
 
             string strPrice = strValue.ToString();
-            string text ="";
+            string text = "";
             decimal parsed = decimal.Parse(strPrice, CultureInfo.InvariantCulture);
             if (Location.ToUpper() == "USMP" || Location.ToUpper() == "USWB")
             {
-                text=parsed.ToString("C0", new System.Globalization.CultureInfo("en-US"));
+                text = parsed.ToString("C0", new System.Globalization.CultureInfo("en-US"));
             }
 
             else
             {
                 CultureInfo hindi = new CultureInfo("hi-IN");
-                 text = string.Format(hindi, "{0:C0}", parsed);
+                text = string.Format(hindi, "{0:C0}", parsed);
             }
             return text;
         }
@@ -261,7 +261,7 @@ namespace Attendance
             if (obj != "")
             {
                 string[] obj1 = obj.Split('.');
-                proper = ((obj1[0].Length == 1 ? ("0" + obj1[0]).Trim() : obj1[0]).Trim() + ":" + obj1[1]).Trim(); 
+                proper = ((obj1[0].Length == 1 ? ("0" + obj1[0]).Trim() : obj1[0]).Trim() + ":" + obj1[1]).Trim();
             }
             return proper;
         }
@@ -274,7 +274,7 @@ namespace Attendance
             {
                 int i = (int)Math.Truncate(timeNum);
                 int f = (int)Math.Round(100 * Math.Abs(timeNum - i));
-              
+
                 total = i * 60 + f;
             }
             catch (Exception ex)
@@ -293,8 +293,8 @@ namespace Attendance
                 int f = (int)Math.Round(100 * Math.Abs(timeNum - i));
                 double min = f * 0.6;
                 f = (int)Math.Round(min);
-                
-                total = (i<10?("0"+i).ToString():i.ToString())+":"+(f<10?("0"+f.ToString()):f.ToString());
+
+                total = (i < 10 ? ("0" + i).ToString() : i.ToString()) + ":" + (f < 10 ? ("0" + f.ToString()) : f.ToString());
             }
             catch (Exception ex)
             {
@@ -303,38 +303,39 @@ namespace Attendance
         }
 
         public static string ConverttoTime(int obj)
-        {string totalHrs="";
-        if (obj != 0)
         {
-            int hrs = obj / 60;
-            int minutes = obj % 60;
-            string hrs1 = "";
-            string min="";
-            if (minutes < 10)
+            string totalHrs = "";
+            if (obj != 0)
             {
-                 min = "0" + minutes.ToString();
+                int hrs = obj / 60;
+                int minutes = obj % 60;
+                string hrs1 = "";
+                string min = "";
+                if (minutes < 10)
+                {
+                    min = "0" + minutes.ToString();
+                }
+                else
+                {
+                    min = minutes.ToString();
+                }
+
+                if (hrs < 10)
+                {
+                    hrs1 = "0" + hrs.ToString();
+                }
+                else
+                {
+                    hrs1 = hrs.ToString();
+
+                }
+                totalHrs = hrs1.Trim() + ":" + min;
+
             }
             else
             {
-                 min = minutes.ToString();
+                totalHrs = "00:00";
             }
-
-            if (hrs < 10)
-            {
-                 hrs1 = "0" + hrs.ToString();
-            }
-            else
-            {
-                 hrs1 =hrs.ToString();
-                
-            }
-            totalHrs = hrs1.Trim()+ ":" +min;
-
-        }
-        else
-        {
-            totalHrs = "00:00";
-        }
             return totalHrs;
         }
 
@@ -374,5 +375,38 @@ namespace Attendance
         //    {
         //    }
         //}
+
+
+        public static string GetColor(string name, string flag)
+        {
+
+
+            string c = "";
+            if (name != "")
+            {
+                switch (name)
+                {
+                    case "H":
+                         c=" atnHoliday";
+                         break;
+                        
+                    case "L":
+                        if (flag == "Approved")
+                        {
+                            c= " atnLeave";
+                        }
+                        else if (flag == "Open")
+                        {
+                            c= " atnUnLeave";
+                        }
+                        break;
+                    case "D":
+                        c= " atnSun";
+                        break;
+                 }
+            }
+            return c;
+        }
+
     }
 }

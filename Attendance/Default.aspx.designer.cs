@@ -590,6 +590,15 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.HiddenField HiddenField3;
         
         /// <summary>
+        /// UpdateProgress3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress UpdateProgress3;
+        
+        /// <summary>
         /// Progress control.
         /// </summary>
         /// <remarks>
