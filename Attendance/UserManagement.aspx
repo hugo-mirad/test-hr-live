@@ -786,6 +786,17 @@
                                             <li>
                                                 <asp:LinkButton runat="server" ID="lnkUserMangement" Text="Employee Management" OnClick="lnkUserMangement_Click"></asp:LinkButton></li>
                                             <li>
+                                                <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
+                                                    PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                            </li>
+                                            <li>
+                                                <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
+                                            </li>
+                                            <li>
+                                                <asp:LinkButton runat="server" ID="lnkHolidayManagement" Text="Holiday Management"
+                                                    PostBackUrl="HolidayManagement.aspx"></asp:LinkButton>
+                                            </li>
+                                            <li>
                                                 <asp:UpdatePanel ID="ppp" runat="server">
                                                     <ContentTemplate>
                                                         <asp:LinkButton runat="server" ID="lnkChangepwd" Text="Change Password" OnClick="lnkChangepwd_Click"></asp:LinkButton>
@@ -1014,18 +1025,16 @@
                             </asp:UpdatePanel>
                         </div>
                         <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancel_Click" />
-                        
                     </td>
                 </tr>
                 <tr>
-                <td colspan="3" style="float: right;margin-right: 27px;">
-                     <asp:UpdatePanel ID="uppp" runat="server">
+                    <td colspan="3" style="float: right; margin-right: 27px;">
+                        <asp:UpdatePanel ID="uppp" runat="server">
                             <ContentTemplate>
                                 <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
                             </ContentTemplate>
                         </asp:UpdatePanel>
-                
-                </td>
+                    </td>
                 </tr>
             </table>
             <div class="scrollBlock">
@@ -1080,11 +1089,14 @@
                                                 <asp:TextBox ID="txtBusinessLasst" runat="server" MaxLength="50" TabIndex="4"></asp:TextBox>
                                             </td>
                                         </tr>
-                        </table> </fieldset>
+                                    </table>
+                                </fieldset>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5">&nbsp;</td>
+                            <td colspan="5">
+                                &nbsp;
+                            </td>
                         </tr>
                         <tr>
                             <td style="width: 114px;">
@@ -1194,15 +1206,15 @@
                         </tr>
                     </table>
                 </div>
-              <h4 class="ppHed acc">
+                <h4 class="ppHed acc">
                     US employee/contractor tax details <span class="pls">+</span></h4>
                 <div class="ppHedContent">
                     <table style="width: 90%; border-collapse: collapse; margin-left: 10px;">
                         <tr>
                             <td style="width: 49%">
-                                <table style="width: 99%;vertical-align:top;">
+                                <table style="width: 99%; vertical-align: top;">
                                     <tr>
-                                        <td style="width: 100px;vertical-align:top">
+                                        <td style="width: 100px; vertical-align: top">
                                             Street
                                         </td>
                                         <td>
@@ -1250,12 +1262,12 @@
                             <td style="width: 5%">
                             </td>
                             <td>
-                                <table style="width: 99%;vertical-align:top;">
+                                <table style="width: 99%; vertical-align: top;">
                                     <tr>
-                                        <td style="width: 150px;vertical-align:top">
+                                        <td style="width: 150px; vertical-align: top">
                                             Filling status
                                         </td>
-                                        <td >
+                                        <td>
                                             <asp:RadioButton ID="rdMarriedSingle" runat="server" GroupName="MaritalStatus" Checked="true"
                                                 TabIndex="15" />Single &nbsp;&nbsp;
                                             <asp:RadioButton ID="rdMarried" runat="server" GroupName="MaritalStatus" TabIndex="16" />Married

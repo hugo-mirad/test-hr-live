@@ -288,6 +288,10 @@
                                             <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
                                         </li>
                                         <li>
+                                            <asp:LinkButton runat="server" ID="lnkHolidayManagement" Text="Holiday Management"
+                                                PostBackUrl="HolidayManagement.aspx"></asp:LinkButton>
+                                        </li>
+                                        <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
                                                 <ContentTemplate>
                                                     <asp:LinkButton runat="server" ID="lnkChangepwd" Text="Change Password" OnClick="lnkChangepwd_Click"></asp:LinkButton>
@@ -487,7 +491,7 @@
     </div>
     <table style="width: 618px; margin: 20px auto;">
         <tr>
-            <td style="vertical-align: top; width:400px">
+            <td style="vertical-align: top; width: 400px">
                 <asp:UpdatePanel ID="uphol" runat="server">
                     <ContentTemplate>
                         <div class="picker">
@@ -538,12 +542,12 @@
                 </asp:UpdatePanel>
             </td>
             <td style="vertical-align: top">
-                    <ul  class="colors">
-                        <li><span class="colorCodes" style="background:#F0F8FF" >&nbsp;</span>Working Day</li>
-                        <li><span class="colorCodes" style="background:#4FC1E9" >&nbsp;</span>Holiday</li>
-                        <li><span class="colorCodes" style="background:#F6F8FA" >&nbsp;</span>Sunday</li>
-                        <li><span class="colorCodes" style="background:#FFF9AE;" >&nbsp;</span>Current Day</li>
-                    </ul>
+                <ul class="colors">
+                    <li><span class="colorCodes" style="background: #F0F8FF">&nbsp;</span>Working Day</li>
+                    <li><span class="colorCodes" style="background: #4FC1E9">&nbsp;</span>Holiday</li>
+                    <li><span class="colorCodes" style="background: #F6F8FA">&nbsp;</span>Sunday</li>
+                    <li><span class="colorCodes" style="background: #FFF9AE;">&nbsp;</span>Current Day</li>
+                </ul>
             </td>
         </tr>
     </table>
@@ -553,7 +557,7 @@
     <asp:HiddenField ID="hdnHoliday" runat="server" />
     <div id="dvHoliday" runat="server" class="popContent" style="width: 400px; display: none">
         <h2>
-         <span class="lblHDay"></span>
+            <span class="lblHDay"></span>
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
                     <asp:HiddenField ID="hdnHolidayDt" runat="server" />

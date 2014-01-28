@@ -13,11 +13,17 @@
     <!-- <link rel="stylesheet" href="css/style.css" type="text/css" /> -->
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="css/admin.css" rel="stylesheet" type="text/css" />
+
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+
     <script src="js/jquery-ui.min.js" type="text/javascript"></script>
+
     <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+
     <script type="text/javascript" src="js/jquery-ui-sliderAccess.js"></script>
-      <script src="js/jquery.tools.min.js" type="text/javascript"></script>
+
+    <script src="js/jquery.tools.min.js" type="text/javascript"></script>
+
     <style type="text/css">
         .table1 td
         {
@@ -49,22 +55,19 @@
         {
             white-space: nowrap;
         }
-        
-         .tooltip {
-        display: none;
-        background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
-        font-size: 12px;
-        height: 167px;
-        width: 320px;
-        padding: 25px;
-        color: #EEE;
+        .tooltip
+        {
+            display: none;
+            background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
+            font-size: 12px;
+            height: 167px;
+            width: 320px;
+            padding: 25px;
+            color: #EEE;
         }
     </style>
-    
-    
-  
-    
-     <script type="text/javascript">
+
+    <script type="text/javascript">
       $(window).load(function(){
        $('[rel=tooltip]').tooltip();
       });
@@ -74,7 +77,8 @@
        $('[rel=tooltip]').tooltip();
      }
      
-     </script>
+    </script>
+
 </head>
 <body>
     <form id="form1" runat="server">
@@ -123,6 +127,10 @@
                                         </li>
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
+                                        </li>
+                                        <li>
+                                            <asp:LinkButton runat="server" ID="lnkHolidayManagement" Text="Holiday Management"
+                                                PostBackUrl="HolidayManagement.aspx"></asp:LinkButton>
                                         </li>
                                         <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
@@ -296,7 +304,7 @@
     </div>
     <!--Change password popup End-->
     <h2 class="pageHeadding">
-         Leave management
+        Leave management
     </h2>
     <div style="display: inline-block; margin-left: 10px;">
         <asp:UpdatePanel ID="UpdateLocation" runat="server">
@@ -310,128 +318,119 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>
-    
-      <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdateLocation"
-            DisplayAfter="0">
-            <ProgressTemplate>
-                <div id="spinner">
-                    <h4>
-                        <div>
-                            Processing
-                            <img src="images/loading.gif" />
-                        </div>
-                      </h4>
-                </div>
-            </ProgressTemplate>
-        </asp:UpdateProgress>
-     <asp:UpdatePanel ID="upgrd" runat="server">
-            <ContentTemplate>
-                <div>
-                    <asp:Label ID="lblTotal" runat="server" Style="font-size: 11px; font-weight: bold;
-                        margin-left: 10px;"></asp:Label>
-                    &nbsp;
-                </div>
-                <input style="width: 91px" id="txthdnSortOrder" type="hidden" runat="server" enableviewstate="true" />
-                <input style="width: 40px" id="txthdnSortColumnId" type="hidden" runat="server" enableviewstate="true" />
-                <asp:GridView ID="grdUsers" runat="server" AutoGenerateColumns="false" 
-                    CssClass="table1" DataKeyNames="PaidLeaveID"
-                    Style="width: 997px;" OnRowCommand="grdUsers_RowCommand" OnRowDataBound="grdUsers_RowDataBound"
-                    AllowSorting="True" OnSorting="grdUsers_Sorting" 
-                    onrowediting="grdUsers_RowEditing" 
-                    onrowcancelingedit="grdUsers_RowCancelingEdit" 
-                    onrowupdating="grdUsers_RowUpdating" >
-                    <Columns>
-                        <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
-                             <ItemTemplate>
-                                <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("EMPID")%>'></asp:Label>
-                                   <asp:HiddenField ID="hdnUserid" runat="server" Value='<%#Eval("Userid")%>' />
-                            </ItemTemplate>
-                            <ItemStyle Width="50" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
-                             <ItemTemplate>
-                                <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")+" "+Eval("lastname")%>'></asp:Label>
-                               <%-- <asp:HiddenField ID="hdnPhoto" runat="server" Value='<%#Eval("photolink")%>' />--%>
-                            </ItemTemplate>
-                            <ItemStyle Width="150" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
-                             <ItemTemplate>
-                                <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("JoiningDate", "{0:MM/dd/yyyy}") %>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="60" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
-                            <ItemTemplate>
-                                <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}") %>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="60" />
-                        </asp:TemplateField>
-                       
-                        <asp:TemplateField SortExpression="deptname" HeaderText="Department">
-                            <%--  <HeaderTemplate>
+    <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdateLocation"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+                </h4>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <asp:UpdatePanel ID="upgrd" runat="server">
+        <ContentTemplate>
+            <div>
+                <asp:Label ID="lblTotal" runat="server" Style="font-size: 11px; font-weight: bold;
+                    margin-left: 10px;"></asp:Label>
+                &nbsp;
+            </div>
+            <input style="width: 91px" id="txthdnSortOrder" type="hidden" runat="server" enableviewstate="true" />
+            <input style="width: 40px" id="txthdnSortColumnId" type="hidden" runat="server" enableviewstate="true" />
+            <asp:GridView ID="grdUsers" runat="server" AutoGenerateColumns="false" CssClass="table1"
+                DataKeyNames="PaidLeaveID" Style="width: 997px;" OnRowCommand="grdUsers_RowCommand"
+                OnRowDataBound="grdUsers_RowDataBound" AllowSorting="True" OnSorting="grdUsers_Sorting"
+                OnRowEditing="grdUsers_RowEditing" OnRowCancelingEdit="grdUsers_RowCancelingEdit"
+                OnRowUpdating="grdUsers_RowUpdating">
+                <Columns>
+                    <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
+                        <ItemTemplate>
+                            <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("EMPID")%>'></asp:Label>
+                            <asp:HiddenField ID="hdnUserid" runat="server" Value='<%#Eval("Userid")%>' />
+                        </ItemTemplate>
+                        <ItemStyle Width="50" />
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
+                        <ItemTemplate>
+                            <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")+" "+Eval("lastname")%>'></asp:Label>
+                            <%-- <asp:HiddenField ID="hdnPhoto" runat="server" Value='<%#Eval("photolink")%>' />--%>
+                        </ItemTemplate>
+                        <ItemStyle Width="150" />
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
+                        <ItemTemplate>
+                            <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("JoiningDate", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                        </ItemTemplate>
+                        <ItemStyle Width="60" />
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
+                        <ItemTemplate>
+                            <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}") %>'></asp:Label>
+                        </ItemTemplate>
+                        <ItemStyle Width="60" />
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="deptname" HeaderText="Department">
+                        <%--  <HeaderTemplate>
                                 <asp:LinkButton ID="lblHeadDepartment" runat="server" Text="Department"></asp:LinkButton>
                             </HeaderTemplate>--%>
-                            <ItemTemplate>
-                                <asp:Label ID="lblDept" runat="server" Text='<%#Eval("deptname")%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="120" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="LeavesAvailable" HeaderText="LeavesAvailable">
-                            <%--  <HeaderTemplate>
+                        <ItemTemplate>
+                            <asp:Label ID="lblDept" runat="server" Text='<%#Eval("deptname")%>'></asp:Label>
+                        </ItemTemplate>
+                        <ItemStyle Width="120" />
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="LeavesAvailable" HeaderText="LeavesAvailable">
+                        <%--  <HeaderTemplate>
                                 <asp:LinkButton ID="lblHeadDesignation" runat="server" Text="Designation"></asp:LinkButton>
                             </HeaderTemplate>--%>
-                            <ItemTemplate>
-                                <asp:Label ID="lblLeavesAvailable" runat="server" Text='<%#Eval("LeavesAvailable")%>'></asp:Label>
-                            </ItemTemplate>
-                            <EditItemTemplate>
+                        <ItemTemplate>
+                            <asp:Label ID="lblLeavesAvailable" runat="server" Text='<%#Eval("LeavesAvailable")%>'></asp:Label>
+                        </ItemTemplate>
+                        <EditItemTemplate>
                             <asp:TextBox ID="txtLeavAvailable" runat="server" Text='<%#Eval("LeavesAvailable")%>'></asp:TextBox>
-                            </EditItemTemplate>
-                            <ItemStyle Width="30" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="LeavesAvailableDt" HeaderText="LeavesAvailableDt">
-                            <%-- <HeaderTemplate>
+                        </EditItemTemplate>
+                        <ItemStyle Width="30" />
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="LeavesAvailableDt" HeaderText="LeavesAvailableDt">
+                        <%-- <HeaderTemplate>
                                 <asp:LinkButton ID="lblHeadActive" runat="server" Text="Active"></asp:LinkButton>
                             </HeaderTemplate>--%>
-                            <ItemTemplate>
-                                <asp:Label ID="lblLeavesAvailableDt" runat="server" Text='<%#Bind("LeavesAvailableDt","{0:MM/dd/yyyy}") %>'></asp:Label>
-                            </ItemTemplate>
-                         <%--     <EditItemTemplate>
+                        <ItemTemplate>
+                            <asp:Label ID="lblLeavesAvailableDt" runat="server" Text='<%#Bind("LeavesAvailableDt","{0:MM/dd/yyyy}") %>'></asp:Label>
+                        </ItemTemplate>
+                        <%--     <EditItemTemplate>
                              <asp:TextBox ID="txtLeavAvailableDt" runat="server" Text='<%#Bind("LeavesAvailableDt","{0:MM/dd/yyyy}") %>'></asp:TextBox>
                             </EditItemTemplate>--%>
-                            
-                            <ItemStyle Width="50" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="MonthlyMaxEligible" HeaderText="MonthlyMaxEligible">
-                            <%-- <HeaderTemplate>
+                        <ItemStyle Width="50" />
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="MonthlyMaxEligible" HeaderText="MonthlyMaxEligible">
+                        <%-- <HeaderTemplate>
                                 <asp:LinkButton ID="lblHeadActive" runat="server" Text="Active"></asp:LinkButton>
                             </HeaderTemplate>--%>
-                            <ItemTemplate>
-                                <asp:Label ID="lblMaxEligible" runat="server" Text='<%#Eval("MonthlyMaxEligible")%>'></asp:Label>
-                            </ItemTemplate>
-                            <EditItemTemplate>
-                              <asp:TextBox ID="txtMaxEligible" runat="server" Text='<%#Eval("MonthlyMaxEligible")%>'></asp:TextBox>
-                            </EditItemTemplate>
-                            <ItemStyle Width="30" />
-                        </asp:TemplateField>
-                        
-                          <asp:TemplateField HeaderText="Notes">
-                            <ItemTemplate>
-                                <asp:Label ID="lblNotes" runat="server" Text='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "Notes"))%>'></asp:Label>
-                            </ItemTemplate>
-                            
-                             <EditItemTemplate>
-                              <asp:TextBox ID="txtNotes" TextMode="MultiLine" Rows="3" runat="server" ></asp:TextBox>
-                            </EditItemTemplate>
-                            <ItemStyle Width="140" />
-                        </asp:TemplateField>
-                        <asp:CommandField ShowEditButton="true" ItemStyle-Width="30"/>
-                       
-                    </Columns>
-                </asp:GridView>
-            </ContentTemplate>       
-        </asp:UpdatePanel>
-    
+                        <ItemTemplate>
+                            <asp:Label ID="lblMaxEligible" runat="server" Text='<%#Eval("MonthlyMaxEligible")%>'></asp:Label>
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtMaxEligible" runat="server" Text='<%#Eval("MonthlyMaxEligible")%>'></asp:TextBox>
+                        </EditItemTemplate>
+                        <ItemStyle Width="30" />
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Notes">
+                        <ItemTemplate>
+                            <asp:Label ID="lblNotes" runat="server" Text='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "Notes"))%>'></asp:Label>
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtNotes" TextMode="MultiLine" Rows="3" runat="server"></asp:TextBox>
+                        </EditItemTemplate>
+                        <ItemStyle Width="140" />
+                    </asp:TemplateField>
+                    <asp:CommandField ShowEditButton="true" ItemStyle-Width="30" />
+                </Columns>
+            </asp:GridView>
+        </ContentTemplate>
+    </asp:UpdatePanel>
     </form>
 </body>
 </html>

@@ -12,10 +12,12 @@
     <link rel="stylesheet" type="text/css" href="css/UI.css" />
     <link rel="stylesheet" href="css/inputs.css" type="text/css" />
     <link href="css/admin.css" rel="stylesheet" type="text/css" />
-     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+
+    <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+
     <script src="js/jquery.tools.min.js" type="text/javascript"></script>
-    
-     <script type="text/javascript">
+
+    <script type="text/javascript">
       $(window).load(function(){
        $('[rel=tooltip]').tooltip();
       });
@@ -25,22 +27,21 @@
        $('[rel=tooltip]').tooltip();
      }
      
-     </script>
-     
-     <style type="text/css">
-      .tooltip {
-        display: none;
-        background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
-        font-size: 12px;
-        height: 167px;
-        width: 320px;
-        padding: 25px;
-        color: #EEE;
+    </script>
+
+    <style type="text/css">
+        .tooltip
+        {
+            display: none;
+            background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
+            font-size: 12px;
+            height: 167px;
+            width: 320px;
+            padding: 25px;
+            color: #EEE;
         }
-     </style>
-     
+    </style>
     <title>Untitled Page</title>
-    
 </head>
 <body>
     <form id="form1" runat="server">
@@ -75,9 +76,17 @@
                                             <asp:LinkButton ID="lnkPayroll" runat="server" Text="Payroll Report" PostBackUrl="PayRoll.aspx"></asp:LinkButton></li>
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkUserMangement" Text="Employee Management" OnClick="lnkUserMangement_Click"></asp:LinkButton></li>
-                                         <li>
-                                            <asp:LinkButton runat="server" ID="LinkButton1" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
-                                        </li> 
+                                        <li>
+                                            <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
+                                                PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                        </li>
+                                        <li>
+                                            <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
+                                        </li>
+                                        <li>
+                                            <asp:LinkButton runat="server" ID="lnkHolidayManagement" Text="Holiday Management"
+                                                PostBackUrl="HolidayManagement.aspx"></asp:LinkButton>
+                                        </li>
                                         <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
                                                 <ContentTemplate>
@@ -92,13 +101,7 @@
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                         </li>
-                                       <div style="display:none">
-                                        <li>
-                                            <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
-                                                PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
-                                                
-                                        </li>
-                                        </div>
+                                        
                                     </ul>
                                 </li>
                             </ul>
@@ -137,16 +140,14 @@
                     AppendDataBoundItems="true" AutoPostBack="true">
                     <asp:ListItem Value="0">All</asp:ListItem>
                 </asp:DropDownList>
-                
-               
-                <asp:Button ID="lnkUpdate" runat="server" Text="Update" CssClass="btn btn-danger w996"  style="margin-left: 815px" OnClientClick="return validPop();"
-            OnClick="lnkUpdate_Click"></asp:Button>
-            
-             <div style="display:none">
-                <input type="button" id="lnkUpdate2" value="Update" CssClass="btn btn-danger w996" /> </div>
+                <asp:Button ID="lnkUpdate" runat="server" Text="Update" CssClass="btn btn-danger w996"
+                    Style="margin-left: 815px" OnClientClick="return validPop();" OnClick="lnkUpdate_Click">
+                </asp:Button>
+                <div style="display: none">
+                    <input type="button" id="lnkUpdate2" value="Update" cssclass="btn btn-danger w996" />
+                </div>
             </ContentTemplate>
         </asp:UpdatePanel>
-        
     </div>
     <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="upSelect"
         DisplayAfter="0">
@@ -157,13 +158,11 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                   
                 </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    
-      <asp:UpdateProgress ID="up189" runat="server" AssociatedUpdatePanelID="upLeaveUpdate111"
+    <asp:UpdateProgress ID="up189" runat="server" AssociatedUpdatePanelID="upLeaveUpdate111"
         DisplayAfter="0">
         <ProgressTemplate>
             <div id="spinner">
@@ -172,14 +171,11 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    
                 </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    
-    
-     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upbtns"
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upbtns"
         DisplayAfter="0">
         <ProgressTemplate>
             <div id="spinner">
@@ -188,30 +184,24 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                   
                 </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-      <div style="margin-bottom: 6px;">
-            <div style="display: inline-block; width: 1007px">
-                <asp:UpdatePanel ID="upbtns" runat="server">
-                    <ContentTemplate>
-                        <asp:Button ID="btnPrevious" runat="server" Text="Previous" 
-                            CssClass="btn btn-danger btn-small" onclick="btnPrevious_Click"
-                             />&nbsp;
-                        <asp:Button ID="btnCurrent" runat="server" Text="Current" 
-                            CssClass="btn btn-danger btn-small" onclick="btnCurrent_Click"
-                           />&nbsp;
-                        <asp:Button ID="btnNext" runat="server" Text="Next" 
-                            CssClass="btn btn-danger btn-small" onclick="btnNext_Click"
-                            />&nbsp;
-                       
-                    </ContentTemplate>
-                </asp:UpdatePanel>
-            </div>
+    <div style="margin-bottom: 6px;">
+        <div style="display: inline-block; width: 1007px">
+            <asp:UpdatePanel ID="upbtns" runat="server">
+                <ContentTemplate>
+                    <asp:Button ID="btnPrevious" runat="server" Text="Previous" CssClass="btn btn-danger btn-small"
+                        OnClick="btnPrevious_Click" />&nbsp;
+                    <asp:Button ID="btnCurrent" runat="server" Text="Current" CssClass="btn btn-danger btn-small"
+                        OnClick="btnCurrent_Click" />&nbsp;
+                    <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
+                        OnClick="btnNext_Click" />&nbsp;
+                </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
-    
+    </div>
     <div>
         <asp:UpdatePanel ID="upgrd" runat="server">
             <ContentTemplate>
@@ -223,16 +213,14 @@
                 <asp:HiddenField ID="hdnChkRecords" runat="server" />
                 <input style="width: 91px" id="txthdnSortOrder" type="hidden" runat="server" enableviewstate="true" />
                 <input style="width: 40px" id="txthdnSortColumnId" type="hidden" runat="server" enableviewstate="true" />
-               
-                
                 <asp:GridView ID="grdUsers" runat="server" AutoGenerateColumns="false" CssClass="table1"
                     Style="width: 990px;" OnRowCommand="grdUsers_RowCommand" OnRowDataBound="grdUsers_RowDataBound"
                     AllowSorting="True" OnSorting="grdUsers_Sorting">
                     <Columns>
-                        <asp:TemplateField >
-                        <HeaderTemplate>
-                            <input id="selectAll" class="selectAll" type="checkbox" runat="server"  />
-                        </HeaderTemplate>
+                        <asp:TemplateField>
+                            <HeaderTemplate>
+                                <input id="selectAll" class="selectAll" type="checkbox" runat="server" />
+                            </HeaderTemplate>
                             <ItemTemplate>
                                 <asp:CheckBox ID="chkRecord" runat="server" LeaveID='<%#Eval("LeaveID")%>' />
                             </ItemTemplate>
@@ -240,8 +228,7 @@
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
                             <ItemTemplate>
-                                <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"
-                                    ></asp:Label>
+                                <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"></asp:Label>
                             </ItemTemplate>
                             <ItemStyle Width="50" />
                         </asp:TemplateField>
@@ -285,7 +272,8 @@
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-                 <h4 style="text-align:center"><asp:Label ID="lblError" runat="server" Visible="false" ></asp:Label></h4>
+                <h4 style="text-align: center">
+                    <asp:Label ID="lblError" runat="server" Visible="false"></asp:Label></h4>
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="ddlSelect" EventName="SelectedIndexChanged" />
@@ -433,16 +421,15 @@
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
-                    <td width"30px;">
+                    <td style="width: 30px;">
                         Approve Status<span class="must">*</span>
                     </td>
                     <td>
                         <div style="display: inline-block; margin-left: 10px;">
                             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                 <ContentTemplate>
-                                    <asp:DropDownList ID="ddlLeaveApprove" runat="server" 
-                                        OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged" AppendDataBoundItems="true"
-                                        AutoPostBack="true">
+                                    <asp:DropDownList ID="ddlLeaveApprove" runat="server" OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged"
+                                        AppendDataBoundItems="true" AutoPostBack="true">
                                         <asp:ListItem Value="0">All</asp:ListItem>
                                     </asp:DropDownList>
                                 </ContentTemplate>
@@ -451,11 +438,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width"30px;">
+                    <td style="width: 30px;">
                         Notes
                     </td>
-                     <td>
-                        <asp:TextBox ID="txtLeaveNotes" runat="server" MaxLength="250" TextMode="MultiLine" Rows="5" ></asp:TextBox>
+                    <td>
+                        <asp:TextBox ID="txtLeaveNotes" runat="server" MaxLength="250" TextMode="MultiLine"
+                            Rows="5"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -466,8 +454,7 @@
                             <asp:UpdatePanel ID="upLeaveUpdate111" runat="server">
                                 <ContentTemplate>
                                     <asp:Button ID="btnLeeaveApproveUpdate" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validLeaveApprove();" 
-                                        onclick="btnLeeaveApproveUpdate_Click" />
+                                        OnClientClick="return validLeaveApprove();" OnClick="btnLeeaveApproveUpdate_Click" />
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
@@ -568,7 +555,5 @@ function validLeaveApprove(){
 
 
 </script>
-
-
 
 </html>

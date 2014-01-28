@@ -699,8 +699,16 @@
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkUserMangement" Text="Employee Management" OnClick="lnkUserMangement_Click"></asp:LinkButton></li>
                                         <li>
-                                            <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
-                                        </li> 
+                                            <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
+                                                PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
+                                        </li>
+                                        <li>
+                                            <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
+                                        </li>
+                                        <li>
+                                            <asp:LinkButton runat="server" ID="lnkHolidayManagement" Text="Holiday Management"
+                                                PostBackUrl="HolidayManagement.aspx"></asp:LinkButton>
+                                        </li>
                                         <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
                                                 <ContentTemplate>
@@ -1289,7 +1297,7 @@
                         Old password
                     </td>
                     <td>
-                      <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                        <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -2233,18 +2241,12 @@
             </table>
         </div>
     </div>
-    
-    
-    
-    
-    
-    
-    
-      <cc1:ModalPopupExtender ID="mdlResetPasscode" runat="server" BackgroundCssClass="popupHolder"
+    <cc1:ModalPopupExtender ID="mdlResetPasscode" runat="server" BackgroundCssClass="popupHolder"
         CancelControlID="lnkResetPasscodeClose" TargetControlID="hdnResetPasscode" PopupControlID="Resetpasscodepopup">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnResetPasscode" runat="server" />
-    <div id="Resetpasscodepopup" runat="server" class="popContent" style="width: 400px; display: none">
+    <div id="Resetpasscodepopup" runat="server" class="popContent" style="width: 400px;
+        display: none">
         <h2>
             <asp:UpdatePanel ID="UpdatePanelreset" runat="server">
                 <ContentTemplate>
@@ -2256,7 +2258,7 @@
         </h2>
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                 <tr>
+                <tr>
                     <td>
                         New passcode<span class="must">*</span>
                         <br />
@@ -2273,8 +2275,6 @@
                     <td>
                         <asp:TextBox ID="txtResetConfirmPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
                     </td>
-                   
-                
                 </tr>
                 <tr>
                     <td>
@@ -2284,29 +2284,26 @@
                             <asp:UpdatePanel ID="ResetUpdatePanel12" runat="server">
                                 <ContentTemplate>
                                     <asp:Button ID="btnResetPassCode" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validResetPasscode();" 
-                                        onclick="btnResetPassCode_Click"/>
+                                        OnClientClick="return validResetPasscode();" OnClick="btnResetPassCode_Click" />
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnResetCancelPasscode" EventName="Click" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
-                        <asp:Button ID="btnResetCancelPasscode" runat="server" Text="Cancel" 
-                            CssClass="btn" onclick="btnResetCancelPasscode_Click" />
+                        <asp:Button ID="btnResetCancelPasscode" runat="server" Text="Cancel" CssClass="btn"
+                            OnClick="btnResetCancelPasscode_Click" />
                     </td>
                 </tr>
             </table>
         </div>
     </div>
-    
-    
-    
     <cc1:ModalPopupExtender ID="mdlResetPassword" runat="server" BackgroundCssClass="popupHolder"
         CancelControlID="lnkResetPasswordClose" TargetControlID="hdnResetPassword" PopupControlID="ResetPasswordpopup">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnResetPassword" runat="server" />
-    <div id="ResetPasswordpopup" runat="server" class="popContent" style="width: 400px; display: none">
+    <div id="ResetPasswordpopup" runat="server" class="popContent" style="width: 400px;
+        display: none">
         <h2>
             <asp:UpdatePanel ID="UpdatePanel6" runat="server">
                 <ContentTemplate>
@@ -2318,7 +2315,7 @@
         </h2>
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                 <tr>
+                <tr>
                     <td>
                         New Password<span class="must">*</span>
                         <br />
@@ -2344,30 +2341,24 @@
                             <asp:UpdatePanel ID="UpdatePanel7" runat="server">
                                 <ContentTemplate>
                                     <asp:Button ID="btnResetPassword" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validResetPassword();" 
-                                        onclick="btnResetPassword_Click"/>
+                                        OnClientClick="return validResetPassword();" OnClick="btnResetPassword_Click" />
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnResetCancelPassword" EventName="Click" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
-                        <asp:Button ID="btnResetCancelPassword" runat="server" Text="Cancel" 
-                            CssClass="btn" onclick="btnResetCancelPassword_Click" />
+                        <asp:Button ID="btnResetCancelPassword" runat="server" Text="Cancel" CssClass="btn"
+                            OnClick="btnResetCancelPassword_Click" />
                     </td>
                 </tr>
             </table>
         </div>
     </div>
-    
-    
     </form>
-    
-  
-    
-    
 </body>
-  <script type="text/javascript">
+
+<script type="text/javascript">
   
    function validResetPasscode()
    {
@@ -2451,9 +2442,6 @@
    
   
   
-  </script>
-
-
-
+</script>
 
 </html>

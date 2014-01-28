@@ -30,7 +30,7 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.ToolkitScriptManager ScriptManager1;
-        protected global::System.Web.UI.WebControls.LinkButton lnkLeavemangement;
+        
         /// <summary>
         /// comanyname control.
         /// </summary>
@@ -111,6 +111,24 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkLeaveApproval;
+        
+        /// <summary>
+        /// lnkLeavemangement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkLeavemangement;
+        
+        /// <summary>
+        /// lnkHolidayManagement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkHolidayManagement;
         
         /// <summary>
         /// ppp control.

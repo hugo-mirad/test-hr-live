@@ -626,6 +626,11 @@ function clearDisposableItems( sender , args ) {
                                                 <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management"
                                                     PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
                                             </li>
+                                             
+                                        <li>
+                                            <asp:LinkButton runat="server" ID="lnkHolidayManagement" Text="Holiday Management"
+                                                PostBackUrl="HolidayManagement.aspx"></asp:LinkButton>
+                                        </li>
                                         <li>
                                             <asp:UpdatePanel ID="ppp" runat="server">
                                                 <ContentTemplate>
