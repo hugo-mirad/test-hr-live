@@ -826,6 +826,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnMonSignOutFlag" runat="server" Value='<%#Eval("MonLogoutFlag")%>' />
                                 <asp:HiddenField ID="hdnMonFreeze" runat="server" Value='<%#Eval("MonFreeze")%>' />
                                 <asp:HiddenField ID="hdnMonMultiple" runat="server" Value='<%# Eval("MonMultiple") %>' />
+                                 <asp:HiddenField ID="hdnMonLvStatus" runat="server" Value='<%#Eval("MonLvStatus") %>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" Width="60" />
                         </asp:TemplateField>
@@ -887,6 +888,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnTueSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "TueLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnTueSignOutFlag" runat="server" Value='<%#Eval("TueLogoutFlag")%>' />
                                 <asp:HiddenField ID="hdnTueMultiple" runat="server" Value='<%# Eval("TueMultiple") %>' />
+                                  <asp:HiddenField ID="hdnTueLvStatus" runat="server" Value='<%#Eval("TueLvStatus") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
                         <%--   <asp:TemplateField>
@@ -946,6 +948,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnWedSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "WedLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnWedSignOutFlag" runat="server" Value='<%#Eval("WedLogoutFlag")%>' />
                                 <asp:HiddenField ID="hdnWedMultiple" runat="server" Value='<%# Eval("WedMultiple") %>' />
+                                <asp:HiddenField ID="hdnWedLvStatus" runat="server" Value='<%#Eval("WedLvStatus") %>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
@@ -1006,6 +1009,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnThuSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "ThuLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnThuSignOutFlag" runat="server" Value='<%#Eval("ThuLogoutFlag")%>' />
                                 <asp:HiddenField ID="hdnThuMultiple" runat="server" Value='<%# Eval("ThuMultiple") %>' />
+                                <asp:HiddenField ID="hdnThuLvStatus" runat="server" Value='<%#Eval("ThuLvStatus") %>' />
                             </ItemTemplate>
                         </asp:TemplateField>
                         <%--    <asp:TemplateField>
@@ -1066,6 +1070,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnFriSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "FriLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnFriSignOutFlag" runat="server" Value='<%#Eval("FriLogoutFlag")%>' />
                                 <asp:HiddenField ID="hdnFriMultiple" runat="server" Value='<%# Eval("FriMultiple") %>' />
+                                <asp:HiddenField ID="hdnFriLvStatus" runat="server" Value='<%#Eval("FriLvStatus") %>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>
@@ -1126,6 +1131,8 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnSatSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SatLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnSatSignOutFlag" runat="server" Value='<%#Eval("SatLogoutFlag")%>' />
                                 <asp:HiddenField ID="hdnSatMultiple" runat="server" Value='<%# Eval("SatMultiple") %>' />
+                                <asp:HiddenField ID="hdnSatLvStatus" runat="server" Value='<%#Eval("SatLvStatus") %>' />
+                                
                             </ItemTemplate>
                         </asp:TemplateField>
                         <%--   <asp:TemplateField>
@@ -1186,6 +1193,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnSunSignOutNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SunLogoutNotes"))%>' />
                                 <asp:HiddenField ID="hdnSunSignOutFlag" runat="server" Value='<%#Eval("SunLogoutFlag")%>' />
                                 <asp:HiddenField ID="hdnSunMultiple" runat="server" Value='<%# Eval("SunMultiple") %>' />
+                                <asp:HiddenField ID="hdnSunLvStatus" runat="server" Value='<%#Eval("SunLvStatus") %>' />
                             </ItemTemplate>
                             <ItemStyle CssClass="col1" />
                         </asp:TemplateField>

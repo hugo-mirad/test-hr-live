@@ -395,7 +395,7 @@ namespace Attendance
                         {
                             c= " atnLeave";
                         }
-                        else if (flag == "Open")
+                        else 
                         {
                             c= " atnUnLeave";
                         }

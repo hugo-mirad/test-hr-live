@@ -257,6 +257,11 @@ namespace Attendance
             }
         }
 
+
+      
+
+
+
         protected void btnGo_Click(object sender, EventArgs e)
         {
             try
@@ -308,13 +313,13 @@ namespace Attendance
               // GetReport(StartDate, EndTime, userid,ddlLocation.SelectedItem.Text.Trim());
                 BindListOfNewEmployee();
                 BindListofChanges();
-
-
+             
+               
             }
             catch (Exception ex)
             {
             }
-        }
+        } 
         private void BindListofChanges()
         {
 

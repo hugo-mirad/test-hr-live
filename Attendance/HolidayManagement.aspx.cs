@@ -55,7 +55,17 @@ namespace Attendance
                     DateTime MonthEnd = MonthStart.AddMonths(1).AddSeconds(-1);
                     int locationID = Convert.ToInt32(ddlLocation.SelectedItem.Value);
                     Session["HCurrentDay"] = TodayDate;
-                   
+
+
+                    if (Session["IsAdmin"].ToString() == "True")
+                    {
+                        ddlLocation.Enabled = true;
+                    }
+                    else
+                    {
+                        ddlLocation.Enabled = false;
+                    }
+
 
                     //Session["MonthHolStart"]), Convert.ToDateTime(Session["MonthHolEnd"]
                     Session["MonthHolStart"] = MonthStart;
