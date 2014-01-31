@@ -88,7 +88,6 @@ D:\HrBizstridesNew(Dec20UP)\Attendance\bin\itextsharp.xml
 D:\HrBizstridesNew(Dec20UP)\Attendance\obj\Debug\ResolveAssemblyReference.cache
 D:\HrBizstridesNew(Dec20UP)\Attendance\obj\Debug\Attendance.dll
 D:\HrBizstridesNew(Dec20UP)\Attendance\obj\Debug\Attendance.pdb
-D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\obj\Debug\ResolveAssemblyReference.cache
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\bin\Attendance.dll
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\bin\Attendance.pdb
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\bin\Attendance.BAL.dll
@@ -97,5 +96,6 @@ D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\bin\itextsharp.dll
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\bin\Attendance.Entities.pdb
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\bin\Attendance.BAL.pdb
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\bin\itextsharp.xml
+D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\obj\Debug\ResolveAssemblyReference.cache
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\obj\Debug\Attendance.dll
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance\obj\Debug\Attendance.pdb

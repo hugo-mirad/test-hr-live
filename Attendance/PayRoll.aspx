@@ -406,6 +406,8 @@
                             &nbsp;
                             <asp:Label ID="lblReportDate" runat="server" style="float:right;margin-right:92px;"></asp:Label>
                             </div>
+                           
+                            
                             <asp:GridView runat="server" AutoGenerateColumns="false" ID="grdPayRoll" CssClass="table1"
                                 OnRowDataBound="grdPayRoll_RowDataBound" BorderWidth="1" CellPadding="0" CellSpacing="0"
                                 Width="800px">
@@ -497,6 +499,109 @@
                                     </asp:TemplateField>
                                 </Columns>
                             </asp:GridView>
+                            
+                            
+                            <asp:GridView runat="server" AutoGenerateColumns="false" ID="grdPayRollIndia" CssClass="table1"
+                                OnRowDataBound="grdPayRollIndia_RowDataBound" BorderWidth="1" CellPadding="0" CellSpacing="0"
+                                Width="800px">
+                                <Columns>
+                                    <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
+                                        <%--  <HeaderTemplate>
+                                <asp:LinkButton ID="lblHeadEmpID" runat="server" Text="EmpID"></asp:LinkButton>
+                            </HeaderTemplate>--%>
+                                        <ItemTemplate>
+                                            <asp:HiddenField ID="hdnUserID" runat="server" Value='<%#Eval("empid")%>' />
+                                            <asp:HiddenField ID="hdnEmpuserid" runat="server" Value='<%#Eval("userid")%>' />
+                                            <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
+                                        <%--   <HeaderTemplate>
+                                <asp:LinkButton ID="lblHeadEmpFirstname" runat="server" Text="Firstname"></asp:LinkButton>
+                            </HeaderTemplate>--%>
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("PEmpname")%>'></asp:Label>
+                                            <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("Empname")%>' Visible="false"></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
+                                        <%--<HeaderTemplate>
+                                <asp:LinkButton ID="lblHeadStarted" runat="server" Text="StartedDt"></asp:LinkButton>
+                            </HeaderTemplate>--%>
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("Startdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
+                                        <%--   <HeaderTemplate>
+                                <asp:LinkButton ID="lblHeadTerminated" runat="server" Text="TerminatedDt"></asp:LinkButton>
+                            </HeaderTemplate>--%>
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("Termdate","{0:MM/dd/yyyy}") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="DeptName" HeaderText="Department">
+                                        <%--  <HeaderTemplate>
+                                <asp:LinkButton ID="lblHeadDepartment" runat="server" Text="Department"></asp:LinkButton>
+                            </HeaderTemplate>--%>
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblDept" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="EmployeeType" HeaderText="Type">
+                                        <%--  <HeaderTemplate>
+                                <asp:LinkButton ID="lblHeadDesignation" runat="server" Text="Designation"></asp:LinkButton>
+                            </HeaderTemplate>--%>
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblEmployeetype" runat="server" Text='<%#Eval("MasterEmpType")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="Location" HeaderText="Location">
+                                        <%-- <HeaderTemplate>
+                                <asp:LinkButton ID="lblHeadActive" runat="server" Text="Active"></asp:LinkButton>
+                            </HeaderTemplate>--%>
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblLocation" runat="server" Text='<%#Eval("LocationName")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="Workingdays" HeaderText="WorkingDays">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblWorkingDays" runat="server" Text='<%#Eval("Workingdays")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                     <asp:TemplateField SortExpression="Present" HeaderText="AttendDays">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblAttendDays" runat="server" Text='<%#Eval("Present")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                     <asp:TemplateField SortExpression="Leaves" HeaderText="Leaves">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblLeaves" runat="server" Text='<%#Eval("Leaves")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    
+                                    <asp:TemplateField SortExpression="Holidays" HeaderText="Holidays">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblHolidays" runat="server" Text='<%#Eval("Holidays")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    
+                                    
+                                    <asp:TemplateField SortExpression="Isnew" HeaderText="IsNew">
+                                        
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblIsNew" runat="server"></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="IsChanges" HeaderText="IsChanges">
+                                      <ItemTemplate>
+                                            <asp:Label ID="lblIsChanges" runat="server"></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                            
+                            
                             <table cellpadding="0" cellspacing="0" width="900">
                                 <tr>
                                     <td style="height: 30px;">

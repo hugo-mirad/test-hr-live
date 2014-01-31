@@ -16,6 +16,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
 using System.IO;
 using System.Net.Mail;
+using System.Data.SqlClient;
 
 
 
@@ -59,13 +60,6 @@ namespace Attendance
                     DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
                     DateTime EndDate = StartDate.AddDays(-14);
 
-                    ViewState["StartRptDt"] = EndDate;
-                    ViewState["EndRptDt"] = StartDate.AddDays(-1);
-
-
-                    txtToDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
-                    txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
-
                     int userid = Convert.ToInt32(Session["UserID"]);
 
 
@@ -84,23 +78,83 @@ namespace Attendance
                     getLocations();
                     ddlLocation.SelectedIndex = (ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(Session["LocationName"].ToString())));
 
-                    if (ddlLocation.SelectedItem.Text.ToString().Trim() == "INBH" || ddlLocation.SelectedItem.Text.ToString().Trim() == "INDG")
-                    {
-                        grdPayRoll.Columns[8].Visible = false;
-                        grdPayRoll.Columns[9].Visible = false;
-                    }
 
+                    DateTime CurrentDate = Convert.ToDateTime(ISTTime.ToString("MM/dd/yyyy"));
+                    DateTime MonthStart = CurrentDate.AddDays(1 - CurrentDate.Day);
+                    DateTime MonthEnd = MonthStart.AddMonths(1).AddSeconds(-1);
                     if (Session["IsAdmin"].ToString() == "True")
                     {
-                        GetReport(EndDate, StartDate.AddDays(-1), 0, lblLocation.Text.Trim());
+
+                        if (ddlLocation.SelectedItem.Text.Trim() == "INBH" || ddlLocation.SelectedItem.Text.Trim() == "INDG")
+                        {
+                            ViewState["StartRptDt"] = MonthStart;
+                            ViewState["EndRptDt"] = MonthEnd;
+
+                            txtToDate.Text = MonthEnd.ToString("MM/dd/yyyy");
+                            txtFromDate.Text = MonthStart.ToString("MM/dd/yyyy");
+
+
+                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                            lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
+                            GetEditHistory(MonthStart, MonthEnd);
+                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                            grdPayRollIndia.DataSource = dt;
+                            grdPayRollIndia.DataBind();
+
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                            
+                        }
+                        else
+                        {
+                            txtToDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
+                            txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
+                            ViewState["StartRptDt"] = EndDate;
+                            ViewState["EndRptDt"] = StartDate.AddDays(-1);
+                            GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim());
+                        }
+                        
                         lblGrdLocaton.Visible = true;
                         ddlLocation.Visible = true;
                     }
                     else
                     {
-                        GetReport(EndDate, StartDate.AddDays(-1), userid, lblLocation.Text.Trim());
-                        lblGrdLocaton.Visible = false;
-                        ddlLocation.Visible = false;
+
+
+                        if (lblLocation.Text.Trim() == "INBH" || lblLocation.Text.Trim() == "INDG")
+                        {
+                            ViewState["StartRptDt"] = MonthStart;
+                            ViewState["EndRptDt"] = MonthEnd;
+
+                            txtToDate.Text = MonthEnd.ToString("MM/dd/yyyy");
+                            txtFromDate.Text = MonthStart.ToString("MM/dd/yyyy");
+
+
+                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                            lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
+                            GetEditHistory(MonthStart, MonthEnd);
+                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                            grdPayRollIndia.DataSource = dt;
+                            grdPayRollIndia.DataBind();
+
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+
+                        }
+                        else
+                        {
+                            txtToDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
+                            txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
+                            ViewState["StartRptDt"] = EndDate;
+                            ViewState["EndRptDt"] = StartDate.AddDays(-1);
+                            GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim());
+                        }
+
+                        lblGrdLocaton.Visible = true;
+                        ddlLocation.Enabled = false;
+
                     }
                     BindListOfNewEmployee();
                     BindListofChanges();
@@ -251,6 +305,10 @@ namespace Attendance
                 lblReportDate.Text="Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim()+"</b>";
                 grdPayRoll.DataSource = ds.Tables[0];
                 grdPayRoll.DataBind();
+
+                grdPayRollIndia.DataSource = null;
+                grdPayRollIndia.DataBind();
+
             }
             catch (Exception ex)
             {
@@ -258,10 +316,186 @@ namespace Attendance
         }
 
 
+
+        private DataTable GetReportIndia(DateTime StartDate, DateTime EndTime,int LocationID)
+        {
+
+            DataTable dtPayroll = new DataTable();
+            dtPayroll.Columns.Add("empid", typeof(string));
+            dtPayroll.Columns.Add("Empname", typeof(string));
+            dtPayroll.Columns.Add("PEmpname", typeof(string));
+            dtPayroll.Columns.Add("Termdate", typeof(DateTime));
+            dtPayroll.Columns.Add("Startdate", typeof(DateTime));
+            dtPayroll.Columns.Add("DeptName", typeof(string));
+            dtPayroll.Columns.Add("LocationName", typeof(string));
+            dtPayroll.Columns.Add("MasterEmpType", typeof(string));
+            dtPayroll.Columns.Add("LocDescriptiom", typeof(string));
+
+            dtPayroll.Columns.Add("userid", typeof(string));
+            dtPayroll.Columns.Add("Workingdays", typeof(int));
+            dtPayroll.Columns.Add("Present", typeof(double));
+            dtPayroll.Columns.Add("paidLeaves", typeof(int));
+            dtPayroll.Columns.Add("Leaves", typeof(int));
+            dtPayroll.Columns.Add("Holidays", typeof(int));
+
+            try
+            {
+                DataSet ds=new DataSet();
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_FnAdmin]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", LocationID));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDate));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndTime));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+                int days = Convert.ToInt32(EndTime.ToString("dd"));
+                if (ds.Tables.Count > 0)
+                {
+                    if (ds.Tables.Count > 1)
+                    {
+                        for (int j = 0; j < ds.Tables[0].Rows.Count; j++)
+                        {
+                            dtPayroll.Rows.Add();
+                            DataTable dt = ds.Tables[1];
+                            DataView dv = dt.DefaultView;
+                            DataTable dtname = new DataTable();
+                            DateTime NextDate = GeneralFunction.GetNextDayOfWeekDate(StartDate);
+
+                            DataTable dtL = ds.Tables[2];
+                            DataView dvL = dtL.DefaultView;
+                            DataTable dtLeave = new DataTable();
+
+                            DataTable dtH = ds.Tables[3];
+                            DataView dvH = dtH.DefaultView;
+                            DataTable dtHoliday = new DataTable();
+
+                            dv.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
+                            dtname = dv.ToTable();
+
+                            dvL.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
+                            dtLeave = dvL.ToTable();
+
+                            dvH.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
+                            dtHoliday = dvH.ToTable();
+
+                            int holidays = 0;
+                            int leaves = 0;
+                            double present = 0.0;
+
+
+
+                            dtPayroll.Rows[j]["userid"] = ds.Tables[0].Rows[j]["userid"].ToString();
+                            dtPayroll.Rows[j]["empid"] = ds.Tables[0].Rows[j]["empid"].ToString();
+                            dtPayroll.Rows[j]["Empname"] = ds.Tables[0].Rows[j]["firstName"].ToString() + " " + ds.Tables[0].Rows[j]["lastname"].ToString();
+                            dtPayroll.Rows[j]["PEmpname"] = ds.Tables[0].Rows[j]["PfirstName"].ToString() + " " + ds.Tables[0].Rows[j]["Plastname"].ToString();
+                            dtPayroll.Rows[j]["Termdate"] = ds.Tables[0].Rows[j]["Termdate"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : ds.Tables[0].Rows[j]["Termdate"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(Convert.ToDateTime(ds.Tables[0].Rows[j]["Termdate"]).ToString("MM/dd/yyyy"));
+                            dtPayroll.Rows[j]["Startdate"] = ds.Tables[0].Rows[j]["Startdate"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : ds.Tables[0].Rows[j]["Startdate"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(Convert.ToDateTime(ds.Tables[0].Rows[j]["Startdate"]).ToString("MM/dd/yyyy"));
+                            dtPayroll.Rows[j]["DeptName"] = ds.Tables[0].Rows[j]["DeptName"].ToString() == "NULL" ? "" : ds.Tables[0].Rows[j]["DeptName"].ToString();
+                            dtPayroll.Rows[j]["LocationName"] = ds.Tables[0].Rows[j]["LocationName"].ToString() == "NULL" ? "" : ds.Tables[0].Rows[j]["LocationName"].ToString();
+                            dtPayroll.Rows[j]["MasterEmpType"] = ds.Tables[0].Rows[j]["EmpType"].ToString() == "NULL" ? "" : ds.Tables[0].Rows[j]["EmpType"].ToString();
+                            dtPayroll.Rows[j]["LocDescriptiom"] = ds.Tables[0].Rows[j]["LocDescriptiom"].ToString() == "NULL" ? "" : ds.Tables[0].Rows[j]["LocDescriptiom"].ToString();
+                            if (dtname.Rows.Count > 0)
+                            {
+                                DateTime startDate = StartDate;
+                                DateTime nextdate = NextDate;
+
+                                for (int i = 0; i < days; i++)
+                                {
+                                    DataView dv1 = dtname.DefaultView;
+                                    dv1.RowFilter = "Logindate >= #" + startDate + "# and Logindate<#" + nextdate + "#";
+                                    DataTable dt1 = dv1.ToTable();
+
+                                    DataView dL = dtLeave.DefaultView;
+                                    dL.RowFilter = "Fromdate<=#" + startDate + "# and #" + startDate + "#<=Todate";
+                                    DataTable dtLvResult = dL.ToTable();
+
+                                    DataView dH = dtHoliday.DefaultView;
+                                    dH.RowFilter = "HolidayDate >= #" + startDate + "# and HolidayDate<#" + nextdate + "#";
+                                    DataTable dtHolResult = dH.ToTable();
+                                    if (dtHolResult.Rows.Count > 0)
+                                    {
+                                        holidays += 1;
+                                    }
+                                    if (dt1.Rows.Count > 0)
+                                    {
+                                        double dayhrs = 0.0;
+                                        for (int k = 0; k < dt1.Rows.Count; k++)
+                                        {
+                                            if (dt1.Rows[k]["total hours worked"].ToString() == "")
+                                            {
+                                                dayhrs += 0.0;
+                                            }
+                                            else
+                                            {
+                                                dayhrs += Convert.ToDouble(dt1.Rows[k]["total hours worked"].ToString());
+                                            }
+                                        }
+                                        if (dayhrs > 5)
+                                        {
+                                            present += 1;
+                                        }
+                                        else if (dayhrs > 3 && dayhrs < 5)
+                                        {
+                                            present += 0.5;
+                                        }
+                                        else
+                                        {
+                                            leaves += 1;
+                                        }
+                                    }
+                                    else if (dtHolResult.Rows.Count <= 0 && dtLvResult.Rows.Count > 0)
+                                    {
+                                        leaves += 1;
+                                    }
+                                    dL.RowFilter = null;
+                                    dH.RowFilter = null;
+                                    dv1.RowFilter = null;
+                                    startDate = nextdate;
+                                    nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
+                                }
+                            }
+                            else if (dtHoliday.Rows.Count > 0)
+                            {
+                                DateTime startDate = StartDate;
+                                DateTime nextdate = NextDate;
+                                for (int i = 0; i < days; i++)
+                                {
+                                    DataView dH = dtHoliday.DefaultView;
+                                    dH.RowFilter = "HolidayDate >= #" + startDate + "# and HolidayDate<#" + nextdate + "#";
+                                    DataTable dtHolResult = dH.ToTable();
+                                    DataView dL = dtLeave.DefaultView;
+                                    dL.RowFilter = "Fromdate<=#" + startDate + "# and #" + startDate + "#<=Todate";
+                                    DataTable dtLvResult = dL.ToTable();
+                                    if (dtHolResult.Rows.Count > 0)
+                                    {
+                                        holidays += 1;
+                                    }
+                                    else
+                                    {
+                                        leaves += 1;
+                                    }
+                                    dL.RowFilter = null;
+                                    dH.RowFilter = null;
+                                    startDate = nextdate;
+                                    nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
+                                }
+                            }
+                            dtPayroll.Rows[j]["Present"] = present;
+                            dtPayroll.Rows[j]["Workingdays"] = days - holidays;
+                            dtPayroll.Rows[j]["Leaves"] = leaves;
+                            dtPayroll.Rows[j]["Holidays"] = holidays;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return dtPayroll;
+        }
       
-
-
-
         protected void btnGo_Click(object sender, EventArgs e)
         {
             try
@@ -286,22 +520,37 @@ namespace Attendance
 
                 if (Session["IsAdmin"].ToString() == "True")
                 {
-                    GetReport(StartDate, EndTime, 0, ddlLocation.SelectedItem.Text.Trim());
-                    lblGrdLocaton.Visible = true;
-                    ddlLocation.Visible = true;
 
-                    if (ddlLocation.SelectedItem.Text.ToString().Trim() == "INBH" || ddlLocation.SelectedItem.Text.ToString().Trim() == "INDG")
+                    if (ddlLocation.SelectedItem.Text.Trim() == "INBH" || ddlLocation.SelectedItem.Text.Trim() == "INDG")
                     {
-                        grdPayRoll.Columns[8].Visible = false;
-                        grdPayRoll.Columns[9].Visible = false;
+
+                        txtToDate.Text = StartDate.ToString("MM/dd/yyyy");
+                        txtFromDate.Text = EndTime.ToString("MM/dd/yyyy");
+
+
+                        DataTable dt = GetReportIndia(StartDate, EndTime, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
+                        GetEditHistory(StartDate, EndTime);
+                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                        grdPayRollIndia.DataSource = dt;
+                        grdPayRollIndia.DataBind();
+
+                        grdPayRoll.DataSource = null;
+                        grdPayRoll.DataBind();
+
                     }
                     else
                     {
-                        grdPayRoll.Columns[8].Visible = true;
-                        grdPayRoll.Columns[9].Visible = true;
+                        txtToDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
+                        txtFromDate.Text = EndTime.ToString("MM/dd/yyyy");
+                        ViewState["StartRptDt"] = EndTime;
+                        ViewState["EndRptDt"] = StartDate.AddDays(-1);
+                        GetReport(EndTime, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim());
                     }
 
-
+                    lblGrdLocaton.Visible = true;
+                    ddlLocation.Visible = true;
                 }
                 else
                 {
@@ -799,27 +1048,68 @@ namespace Attendance
 
                 if (Session["IsAdmin"].ToString() == "True")
                 {
-                    GetReport(StartDate, EndTime, 0, ddlLocation.SelectedItem.Text.Trim());
-                    lblGrdLocaton.Visible = true;
-                    ddlLocation.Visible = true;
-
-                    if (ddlLocation.SelectedItem.Text.ToString().Trim() == "INBH" || ddlLocation.SelectedItem.Text.ToString().Trim() == "INDG")
+                    if (ddlLocation.SelectedItem.Text.Trim() == "INBH" || ddlLocation.SelectedItem.Text.Trim() == "INDG")
                     {
-                        grdPayRoll.Columns[8].Visible = false;
-                        grdPayRoll.Columns[9].Visible = false;
+                        ViewState["StartRptDt"] = StartDate;
+                        ViewState["EndRptDt"] = EndTime;
+
+                        txtToDate.Text = EndTime.ToString("MM/dd/yyyy");
+                        txtFromDate.Text = StartDate.ToString("MM/dd/yyyy");
+
+
+                        DataTable dt = GetReportIndia(StartDate, EndTime, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
+                        GetEditHistory(StartDate, EndTime);
+                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                        grdPayRollIndia.DataSource = dt;
+                        grdPayRollIndia.DataBind();
+
+                        grdPayRoll.DataSource = null;
+                        grdPayRoll.DataBind();
+
                     }
                     else
                     {
-                        grdPayRoll.Columns[8].Visible = true;
-                        grdPayRoll.Columns[9].Visible = true;
+                        GetReport(StartDate, EndTime, 0, ddlLocation.SelectedItem.Text.Trim());
                     }
 
+                    lblGrdLocaton.Visible = true;
+                    ddlLocation.Visible = true;
                 }
                 else
                 {
-                    GetReport(StartDate, EndTime, userid, "");
-                    lblGrdLocaton.Visible = false;
-                    ddlLocation.Visible = false;
+                    if (lblLocation.Text.Trim() == "INBH" || lblLocation.Text.Trim() == "INDG")
+                    {
+                        ViewState["StartRptDt"] = StartDate;
+                        ViewState["EndRptDt"] = EndTime;
+
+                        txtToDate.Text = EndTime.ToString("MM/dd/yyyy");
+                        txtFromDate.Text = StartDate.ToString("MM/dd/yyyy");
+
+
+                        DataTable dt = GetReportIndia(StartDate, EndTime, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
+                        GetEditHistory(StartDate, EndTime);
+                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                        grdPayRollIndia.DataSource = dt;
+                        grdPayRollIndia.DataBind();
+
+                        grdPayRoll.DataSource = null;
+                        grdPayRoll.DataBind();
+
+                    }
+                    else
+                    {
+                        GetReport(StartDate, EndTime, userid, "");
+                    }
+
+                    lblGrdLocaton.Visible = true;
+                    ddlLocation.Enabled = false;
+
+                   
+                   
                 }
 
                 // GetReport(StartDate, EndTime, userid,ddlLocation.SelectedItem.Text.Trim());
@@ -846,6 +1136,60 @@ namespace Attendance
             catch (Exception ex)
             {
 
+            }
+        }
+
+        protected void grdPayRollIndia_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            DataSet dsEdit = Session["EditHistory"] as DataSet;
+            DataTable dt = dsEdit.Tables[0];
+            try
+            {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+
+                  
+
+                    Label lblEmpID = (Label)e.Row.FindControl("lblEmpID");
+
+                    Label lblEmpFirstname = (Label)e.Row.FindControl("lblEmpFirstname");
+
+                    Label lblStartedDate = (Label)e.Row.FindControl("lblStartedDate");
+                    lblStartedDate.Text = lblStartedDate.Text == "01/01/1900" ? "" : (lblStartedDate.Text);
+
+                    Label lblTerminatedDate = (Label)e.Row.FindControl("lblTerminatedDate");
+                    lblTerminatedDate.Text = lblTerminatedDate.Text == "01/01/1900" ? "" : lblTerminatedDate.Text;
+
+
+                    DateTime Start = Convert.ToDateTime(ViewState["StartRptDt"]);
+                    DateTime End = Convert.ToDateTime(ViewState["EndRptDt"]);
+
+                    if (lblStartedDate.Text != "" && (Convert.ToDateTime(lblStartedDate.Text) >= Start && Convert.ToDateTime(lblStartedDate.Text) <= End))
+                    {
+                        HiddenField hdnEmpuserid = (HiddenField)e.Row.FindControl("hdnEmpuserid");
+                        Label lblIsNew = (Label)e.Row.FindControl("lblIsNew");
+                        lblIsNew.Text = "Yes";
+                        CreateNewEmployeeList(Convert.ToInt32(hdnEmpuserid.Value));
+
+                    }
+                    else
+                    {
+                        HiddenField hdnEmpuserid = (HiddenField)e.Row.FindControl("hdnEmpuserid");
+                        DataView dv = dt.DefaultView;
+                        dv.RowFilter = "RecordID=" + Convert.ToInt32(hdnEmpuserid.Value);
+                        DataTable dt1 = dv.ToTable();
+                        if (dt1.Rows.Count > 0)
+                        {
+                            Label lblIsChanges = (Label)e.Row.FindControl("lblIsChanges");
+                            lblIsChanges.Text = "Yes";
+                            CreateListOFChanges(lblEmpFirstname.Text, hdnEmpuserid.Value, dt1, lblEmpID.Text);
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
             }
         }
     }
