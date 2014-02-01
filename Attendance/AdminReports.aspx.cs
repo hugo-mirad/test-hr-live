@@ -2252,8 +2252,6 @@ namespace Attendance
                         grdMonthlyAttendance.DataBind();
                     }
 
-
-
                 }
 
                 else if (ddlReportType.SelectedItem.Value == "2")
@@ -2319,8 +2317,6 @@ namespace Attendance
                         btnNext.CssClass = "btn btn-danger btn-small enabled";
                         btnNext.Enabled = true;
                     }
-
-
 
                     DateTime NextWeekStart = GeneralFunction.GetFirstDayOfWeekDate(NextWeek);
                     DateTime NextWeekEnd = GeneralFunction.GetLastDayOfWeekDate(NextWeek);
@@ -3352,7 +3348,7 @@ namespace Attendance
                     DateTime todayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
 
                     // DateTime startOfMonth = new DateTime(todayDate.Year, todayDate.Month, 1);
-                    DateTime startDate = GeneralFunction.GetFirstDayOfWeekDate(todayDate);
+                    DateTime startDate = todayDate;
                     DateTime StartDate = startDate.AddDays(1 - startDate.Day);
                     ViewState["StartMonth"] = StartDate.AddMonths(-6);
                     ViewState["CurrentMonth"] = StartDate.AddMonths(-6);
@@ -3762,7 +3758,7 @@ namespace Attendance
                     DateTime todayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
 
                     // DateTime startOfMonth = new DateTime(todayDate.Year, todayDate.Month, 1);
-                    DateTime startDate = GeneralFunction.GetFirstDayOfWeekDate(todayDate);
+                    DateTime startDate = todayDate;
                     DateTime StartDate = startDate.AddDays(1 - startDate.Day);
                     ViewState["StartMonth"] = StartDate.AddMonths(-6);
                     ViewState["CurrentMonth"] = StartDate.AddMonths(-6);

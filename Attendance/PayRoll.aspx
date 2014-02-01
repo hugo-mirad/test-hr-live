@@ -368,11 +368,12 @@
         </asp:UpdatePanel>
     </h2>
     <div style="display: inline-block;margin-left: 20px;">
-        <b>From date</b> &nbsp;<asp:TextBox ID="txtFromDate" runat="server" Width="150"></asp:TextBox>
-        &nbsp;&nbsp; <b>To date</b> &nbsp;<asp:TextBox ID="txtToDate" runat="server" Width="150"></asp:TextBox>
+       
         <div style="display: inline-block;">
             <asp:UpdatePanel ID="up2" runat="server">
                 <ContentTemplate>
+                  <b>From date</b> &nbsp;<asp:TextBox ID="txtFromDate" runat="server" Width="150"></asp:TextBox>
+        &nbsp;&nbsp; <b>To date</b> &nbsp;<asp:TextBox ID="txtToDate" runat="server" Width="150"></asp:TextBox>
                     <asp:Button ID="btnGo" runat="server" Text="Go" OnClick="btnGo_Click" OnClientClick="return validateDate();"
                         CssClass="btn btn-danger btn-small right" />
                     &nbsp;
@@ -574,17 +575,37 @@
                                             <asp:Label ID="lblAttendDays" runat="server" Text='<%#Eval("Present")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    
+                                     <asp:TemplateField SortExpression="PaidLeavesStDt" HeaderText="PaidLeavesStDt">
+                                      <ItemTemplate>
+                                            <asp:Label ID="lblPaidLvsStDate" runat="server" Text='<%# Bind("PaidLeaveStartDt", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    
+                                     <asp:TemplateField SortExpression="LeavesAvailable" HeaderText="PaidLeavesEarned">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblLeavesAvailable" runat="server" Text='<%#Eval("LeavesAvailable")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    
                                      <asp:TemplateField SortExpression="Leaves" HeaderText="Leaves">
                                      <ItemTemplate>
                                             <asp:Label ID="lblLeaves" runat="server" Text='<%#Eval("Leaves")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     
-                                    <asp:TemplateField SortExpression="Holidays" HeaderText="Holidays">
+                                     <asp:TemplateField SortExpression="PaidLeavesBalanced" HeaderText="PaidLeavesBalanced">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblPaidLeavesBalanced" runat="server" Text='<%#Eval("PaidLeavesBalanced")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    
+                                    
+                                  <%--  <asp:TemplateField SortExpression="Holidays" HeaderText="Holidays">
                                      <ItemTemplate>
                                             <asp:Label ID="lblHolidays" runat="server" Text='<%#Eval("Holidays")%>'></asp:Label>
                                         </ItemTemplate>
-                                    </asp:TemplateField>
+                                    </asp:TemplateField>--%>
                                     
                                     
                                     <asp:TemplateField SortExpression="Isnew" HeaderText="IsNew">

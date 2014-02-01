@@ -21,6 +21,7 @@
     <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
 
     <script type="text/javascript" src="js/jquery-ui-sliderAccess.js"></script>
+   <script src="js/datetimepicker_css.js" type="text/javascript"></script>
 
     <script src="js/jquery.tools.min.js" type="text/javascript"></script>
 
@@ -70,11 +71,29 @@
     <script type="text/javascript">
       $(window).load(function(){
        $('[rel=tooltip]').tooltip();
+       $("#grdUsers tr").each(function (e) {
+          $(this).find('input:text[id$="txtLeavesStartDt"]').datepicker({
+            dateFormat: "mm/dd/yy"
+            //timeFormat:"hh:mm tt"      
+        });
+        });
+       
       });
      
      function pageLoad()
      {
        $('[rel=tooltip]').tooltip();
+       
+        $("#grdUsers tr").each(function (e) {
+          $(this).find('input:text[id$="txtLeavesStartDt"]').datepicker({
+            dateFormat: "mm/dd/yy"
+            //timeFormat:"hh:mm tt"      
+        });
+         });
+        
+       
+       
+      
      }
      
     </script>
@@ -381,6 +400,20 @@
                         </ItemTemplate>
                         <ItemStyle Width="120" />
                     </asp:TemplateField>
+                    
+                     <asp:TemplateField SortExpression="PaidLeaveStartDt" HeaderText="LeavesStartDt">
+                        <%--  <HeaderTemplate>
+                                <asp:LinkButton ID="lblHeadDesignation" runat="server" Text="Designation"></asp:LinkButton>
+                            </HeaderTemplate>--%>
+                        <ItemTemplate>
+                            <asp:Label ID="lblLeavesStartDt" runat="server" Text='<%#Bind("PaidLeaveStartDt","{0:MM/dd/yyyy}") %>'></asp:Label>
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtLeavesStartDt" runat="server" Text='<%#Bind("PaidLeaveStartDt","{0:MM/dd/yyyy}") %>'></asp:TextBox>
+                        </EditItemTemplate>
+                        <ItemStyle Width="50" />
+                    </asp:TemplateField>
+                    
                     <asp:TemplateField SortExpression="LeavesAvailable" HeaderText="LeavesAvailable">
                         <%--  <HeaderTemplate>
                                 <asp:LinkButton ID="lblHeadDesignation" runat="server" Text="Designation"></asp:LinkButton>
@@ -391,7 +424,7 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtLeavAvailable" runat="server" Text='<%#Eval("LeavesAvailable")%>'></asp:TextBox>
                         </EditItemTemplate>
-                        <ItemStyle Width="30" />
+                        <ItemStyle Width="50" />
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="LeavesAvailableDt" HeaderText="LeavesAvailableDt">
                         <%-- <HeaderTemplate>

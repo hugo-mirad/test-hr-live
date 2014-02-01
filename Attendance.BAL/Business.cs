@@ -59,7 +59,6 @@ namespace Attendance.BAL
         {
             try
             {
-
                 //   SqlCommand cmd = new SqlCommand();
                 DataSet dsImage = new DataSet();
 
@@ -291,7 +290,7 @@ namespace Attendance.BAL
             }
         }
 
-         public DataSet BindEmpData()
+        public DataSet BindEmpData()
         {
             try
             {
@@ -317,7 +316,7 @@ namespace Attendance.BAL
         }
 
 
-         public bool UpdateSignTime(string EmpID, int LoguserID, string signIntime, string notes)
+        public bool UpdateSignTime(string EmpID, int LoguserID, string signIntime, string notes)
          {
 
              bool success = false;

@@ -256,7 +256,7 @@ namespace Attendance.BAL
         }
 
 
-        public bool UpdatePaidLeaveByLeaveID(int LeaveAvail, int Maxleave, int paildLeavID,int Enterby, string notes, DateTime CurrentDt,string IP,int PaidLeaveUserID)
+        public bool UpdatePaidLeaveByLeaveID(int LeaveAvail, int Maxleave, int paildLeavID,int Enterby, string notes, DateTime CurrentDt,DateTime paidLvsStartDt,string IP,int PaidLeaveUserID)
         {
             bool success = false;
             try
@@ -268,6 +268,7 @@ namespace Attendance.BAL
 
                 command.Parameters.Add("@LeaveAvail", SqlDbType.Int).Value = LeaveAvail;
                 command.Parameters.Add("@CurrentDt", SqlDbType.DateTime).Value = CurrentDt;
+                command.Parameters.Add("@paidLvsStartDt", SqlDbType.DateTime).Value = paidLvsStartDt;
                 command.Parameters.Add("@MaxLeave", SqlDbType.Int).Value = Maxleave;
                 command.Parameters.Add("@Notes", SqlDbType.VarChar).Value = notes;
                 command.Parameters.Add("@PaidLeaveID", SqlDbType.Int).Value = paildLeavID;

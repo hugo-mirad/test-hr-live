@@ -59,8 +59,7 @@ namespace Attendance
                         ddlLocation.Enabled = false;
                     }
 
-                    GetpaidLeavesData(ddlLocation.SelectedIndex);
-
+                    GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value));
 
                 }
             }
@@ -236,6 +235,9 @@ namespace Attendance
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
 
+                    Label lblLeavesStartDt = (Label)e.Row.FindControl("lblLeavesStartDt");
+                    lblLeavesStartDt.Text = lblLeavesStartDt.Text == "01/01/1900" ? "" : lblLeavesStartDt.Text;
+
                     Label lblStartedDate = (Label)e.Row.FindControl("lblStartedDate");
                     lblStartedDate.Text = lblStartedDate.Text == "01/01/1900" ? "" : lblStartedDate.Text;
 
@@ -317,6 +319,7 @@ namespace Attendance
                 HiddenField hdnUserid = (HiddenField)grdUsers.Rows[e.RowIndex].FindControl("hdnUserid");
                 int PaidLeaveUserID = Convert.ToInt32(hdnUserid.Value);
 
+                TextBox txtLeavesStartDt = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtLeavesStartDt");
                 TextBox txtLevAvail = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtLeavAvailable");
                 TextBox txtMAxLevAvail = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtMaxEligible");
                 TextBox txtNotes = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtNotes");
@@ -332,7 +335,7 @@ namespace Attendance
                 DateTime CurrentDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                 int LeaveAvail = Convert.ToInt32(txtLevAvail.Text);
                 int MaxLeaveAvail = Convert.ToInt32(txtMAxLevAvail.Text);
-
+                DateTime LeavesStartDt =txtLeavesStartDt.Text==""?Convert.ToDateTime("01/01/1900"): Convert.ToDateTime(txtLeavesStartDt.Text);
 
                 string notes = txtNotes.Text.Trim() == "" ? "" : GeneralFunction.ToProperNotes(txtNotes.Text) + "<br/>"+
                                "Updated by " + Session["EmpName"].ToString().Trim() + " at " + CurrentDate + "<br/>" + "***********************************" + "<br/>";  
@@ -342,7 +345,7 @@ namespace Attendance
 
                 String strHostName = Request.UserHostAddress.ToString();
                 string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
-                bool bnew = obj.UpdatePaidLeaveByLeaveID(LeaveAvail, MaxLeaveAvail, PaidLeaveID, userid, notes, CurrentDate, strIp,PaidLeaveUserID);
+                bool bnew = obj.UpdatePaidLeaveByLeaveID(LeaveAvail, MaxLeaveAvail, PaidLeaveID, userid, notes, CurrentDate,LeavesStartDt,strIp,PaidLeaveUserID);
                 grdUsers.EditIndex = -1;
                 GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value));
             }
