@@ -421,7 +421,7 @@
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
-                    <td style="width: 30px;">
+                    <td style="width: 90px;">
                         Approve Status<span class="must">*</span>
                     </td>
                     <td>
@@ -430,7 +430,7 @@
                                 <ContentTemplate>
                                     <asp:DropDownList ID="ddlLeaveApprove" runat="server" OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged"
                                         AppendDataBoundItems="true" AutoPostBack="true">
-                                        <asp:ListItem Value="0">All</asp:ListItem>
+                                      <asp:ListItem Value="0">Select</asp:ListItem>
                                     </asp:DropDownList>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
@@ -438,7 +438,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30px;">
+                    <td style="width: 90px;">
                         Notes
                     </td>
                     <td>

@@ -127,6 +127,28 @@
                 }
              })
              //rdAll rdSelected
+             
+             $('#rdWorkingday').live('change',function(e){
+                if($(this).is(':checked'))
+                {
+                 $('#trHol').hide();
+                }
+                else{
+                $('#trHol').show();
+                }
+             
+             })
+              $('#rdHoliday').live('change',function(e){
+                if($(this).is(':checked'))
+                {
+                 $('#trHol').show();
+                }
+                else{
+                $('#trHol').hide();
+                }
+             
+             })
+             
            
             
              $('#rdSelected').live('change',function(e){
@@ -158,10 +180,10 @@
              $this = e;
              $('.lblHDay').text($this.attr('currentdate'));     
              $('#hdnHolidayDt').val($this.attr('currentdate'));      
-             $("#rdHoliday").prop("checked")==false;
-             $("#rdWorkingday").prop("checked")==false;
-             $("#rdAll").prop("checked")==false;
-             $("#rdSelected").prop("checked")==false ;
+             $("#rdHoliday").prop("checked",false);
+             $("#rdWorkingday").prop("checked",false);
+             $("#rdAll").prop("checked",false);
+             $("#rdSelected").prop("checked",false) ;
              $('#ddlPopLoc').val('Select');
              $('#ddlPopDept').val('Select');
              $('#txtHolidayName').val('');
@@ -172,6 +194,7 @@
          }
     function ValidHol()
     {
+    debugger
         if(($("#rdHoliday").prop("checked")==false)&&($("#rdWorkingday").prop("checked")==false))
         {
          alert('Please choose holiday or working day');
@@ -195,17 +218,17 @@
          if(($("#rdAll").prop("checked")==false)&&($("#rdSelected").prop("checked")==false))
         {
          alert('Please choose employee(s)');
-         $('#rdHoliday').focus();
+         $('#rdAll').focus();
           return false;
         }
         
-       if($('#txtHolidayName').val().length<0)
+       if($('#txtHolidayName').val().length<=0)
        { 
         alert('Please enter holiday name');
         $('#txtHolidayName').focus();
          return false;
        }
-        
+        return true;
     }
     
    
@@ -570,7 +593,7 @@
             <table style="width: 95%; margin: 20px 5px; border-collapse: collapse;" class="holidayCalPo">
                 <tr>
                     <td style="width: 95px;">
-                        Declare as
+                        Declare as <span class="must"> *</span>
                     </td>
                     <td>
                         <asp:RadioButton ID="rdHoliday" runat="server" GroupName="Holiday" />&nbsp;Holiday
@@ -581,7 +604,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Location
+                        Location<span class="must"> *</span>
                     </td>
                     <td>
                         <asp:UpdatePanel ID="upPL" runat="server">
@@ -594,7 +617,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Department
+                        Department<span class="must"> *</span>
                     </td>
                     <td>
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -607,7 +630,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Employee(s)
+                        Employee(s)<span class="must"> *</span>
                     </td>
                     <td>
                         <asp:UpdatePanel ID="uprd" runat="server">
@@ -620,9 +643,9 @@
                         </asp:UpdatePanel>
                     </td>
                 </tr>
-                <tr>
+                <tr id="trHol" runat="server">
                     <td>
-                        Holiday name
+                        Holiday name <span class="must"> *</span>
                     </td>
                     <td>
                         <asp:TextBox ID="txtHolidayName" runat="server" MaxLength="250" Width="220"></asp:TextBox>

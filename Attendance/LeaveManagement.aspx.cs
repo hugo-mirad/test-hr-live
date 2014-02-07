@@ -337,8 +337,8 @@ namespace Attendance
                 int MaxLeaveAvail = Convert.ToInt32(txtMAxLevAvail.Text);
                 DateTime LeavesStartDt =txtLeavesStartDt.Text==""?Convert.ToDateTime("01/01/1900"): Convert.ToDateTime(txtLeavesStartDt.Text);
 
-                string notes = txtNotes.Text.Trim() == "" ? "" : GeneralFunction.ToProperNotes(txtNotes.Text) + "<br/>"+
-                               "Updated by " + Session["EmpName"].ToString().Trim() + " at " + CurrentDate + "<br/>" + "***********************************" + "<br/>";  
+                string notes = txtNotes.Text.Trim() == "" ? "" : GeneralFunction.ToProperNotes(txtNotes.Text) + "<br>" + "-------------------------------------<br>" +
+                               "Updated by " + Session["EmpName"].ToString().Trim() + " at " + CurrentDate + "<br>" + "***********************************" + "<br>";  
 
                
                 int userid = Convert.ToInt32(Session["UserID"]);
@@ -368,8 +368,8 @@ namespace Attendance
 
         private string CreateSignInTable(string Employeename, string SignInNotes)
         {
-            SignInNotes = HttpUtility.HtmlDecode(SignInNotes).Replace("</br>", "\n");
-            SignInNotes = HttpUtility.HtmlDecode(SignInNotes).Replace("<br/>", "\n");
+            //SignInNotes = SignInNotes.Replace("<br>", Environment.NewLine);
+           
             string strTransaction = string.Empty;
             if (SignInNotes.Trim() != "")
             {
@@ -387,7 +387,7 @@ namespace Attendance
                     strTransaction += "<td style=\"width:150px;\">";
                     strTransaction += "<fieldset style=\"margin:0 15px 0 0;border:#ccc 1px dashed;\"><legend>Notes</legend>";
                     strTransaction += "<div>";
-                    strTransaction += HttpUtility.HtmlDecode(SignInNotes).Replace("<br/>", "\n");
+                    strTransaction += HttpUtility.HtmlDecode(SignInNotes);
                     strTransaction += "</div>";
                     strTransaction += "</fieldset>";
                     strTransaction += "</td>";

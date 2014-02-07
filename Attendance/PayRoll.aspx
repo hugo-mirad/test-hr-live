@@ -599,14 +599,22 @@
                                             <asp:Label ID="lblPaidLeavesBalanced" runat="server" Text='<%#Eval("PaidLeavesBalanced")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    
-                                    
-                                  <%--  <asp:TemplateField SortExpression="Holidays" HeaderText="Holidays">
+                                     <asp:TemplateField SortExpression="CalLeaves" HeaderText="CalLeaves">
                                      <ItemTemplate>
-                                            <asp:Label ID="lblHolidays" runat="server" Text='<%#Eval("Holidays")%>'></asp:Label>
+                                            <asp:Label ID="lblCalLeaves" runat="server" Text='<%#Eval("CalLeaves")%>'></asp:Label>
                                         </ItemTemplate>
-                                    </asp:TemplateField>--%>
+                                    </asp:TemplateField>
                                     
+                                    <asp:TemplateField  HeaderText="Salary" SortExpression="Salary">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblSalary" runat="server" Text='<%#Eval("Salary")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                      <asp:TemplateField  HeaderText="CalSalary" SortExpression="CalculatedSalary">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblCalSalary" runat="server" Text='<%#Eval("CalSalary")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     
                                     <asp:TemplateField SortExpression="Isnew" HeaderText="IsNew">
                                         
