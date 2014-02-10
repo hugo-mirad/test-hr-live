@@ -519,6 +519,18 @@ display: block;
 margin-right: -4px;
 }
 
+a.SinglemultipleLogin, .SinglemultipleLogin
+{
+	text-decoration: none;
+background: url(../images/errorBlock.png) no-repeat 107% 7%;
+background-size: 10%;
+padding-right: -1px;
+display: block;
+margin-right: -4px;
+margin-top: -3px;
+}
+
+
 .multipleLoginList{ margin:10px; padding:0   }
 .multipleLoginList li{ list-style:none; margin:0 10px 10px 0; float:left; width:47%; }
 

@@ -3577,31 +3577,38 @@ namespace Attendance
 
                     Label lblScIn = (Label)e.Row.FindControl("lblScIn");
                     lblScIn.Text = lblScIn.Text.ToString().Trim() == "-" ? "" : lblScIn.Text.ToString();
+                    if (lblScIn.Text.Trim() == "-")
+                    {
+                        lblScIn.Text = "";
+                    }
 
                     Label lblSignIn = (Label)e.Row.FindControl("lblSignIn");
-                    lblSignIn.Text = lblSignIn.Text == "" ? "" : Convert.ToDateTime(lblSignIn.Text).ToString("hh:mm tt");
+                    lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "D" ? "D" : Convert.ToDateTime(lblSignIn.Text).ToString("hh:mm tt");
 
                     HiddenField hdnSignInFlag = (HiddenField)e.Row.FindControl("hdnSignInFlag");
                     if (hdnSignInFlag.Value == "True")
                     {
-                        e.Row.Cells[2].BackColor = System.Drawing.Color.Moccasin;
+                        e.Row.Cells[2].CssClass +="atnEdit " ;
                     }
 
                     HiddenField hdnSignOutFlag = (HiddenField)e.Row.FindControl("hdnSignOutFlag");
                     if (hdnSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[2].BackColor = System.Drawing.Color.Moccasin;
+                        e.Row.Cells[2].CssClass += "atnEdit ";
                     }
 
                     Label lblSignOut = (Label)e.Row.FindControl("lblSignOut");
-                    lblSignIn.Text = lblSignIn.Text == "" ? "" : (lblSignIn.Text + " - " + (lblSignOut.Text == "" ? "" : lblSignOut.Text == "N/A" ? "N/A" : Convert.ToDateTime(lblSignOut.Text).ToString("hh:mm tt")));
+                    lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "D" ? "D" : (lblSignIn.Text + " - " + (lblSignOut.Text == "" ? "" : lblSignOut.Text == "N/A" ? "N/A" : lblSignOut.Text == "L" ? "" : lblSignOut.Text == "H" ? "" : lblSignOut.Text == "D" ? "" : Convert.ToDateTime(lblSignOut.Text).ToString("hh:mm tt")));
                
                     HiddenField hdnSigninNotes = (HiddenField)e.Row.FindControl("hdnSigninNotes");
                     HiddenField hdnMultiple = (HiddenField)e.Row.FindControl("hdnMultiple");
 
+
+
+
                     if (hdnMultiple.Value == "True")
                     {
-                        lblSignIn.CssClass = "multipleLogin";
+                        lblSignIn.CssClass += "SinglemultipleLogin ";
                         dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(TodayDt), lblID.Text);
                         s = CreateMultipleTable(dt);
                         dt = null;
@@ -3612,7 +3619,7 @@ namespace Attendance
                     {
                         lblSignIn.Attributes.Add("rel", "tooltip");
                         lblSignIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[2].CssClass = "greenTag";
+                        e.Row.Cells[2].CssClass += "greenTag ";
                     }
                     Label lblMonHours = (Label)e.Row.FindControl("lblMonHours");
                     lblMonHours.Text = lblMonHours.Text == "N/A" ? "" : lblMonHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblMonHours.Text)));
@@ -3620,6 +3627,9 @@ namespace Attendance
                     {
                         lblMonHours.Text = "";
                     }
+
+                    HiddenField hdnLvStatus = (HiddenField)e.Row.FindControl("hdnLvStatus");
+                    e.Row.Cells[2].CssClass += GeneralFunction.GetColor(lblSignIn.Text.Trim(), hdnLvStatus.Value.Trim());
 
                 }
             }
@@ -3650,6 +3660,7 @@ namespace Attendance
                 dtAttandence.Columns.Add("LoginFlag", typeof(string));
                 dtAttandence.Columns.Add("LogoutFlag", typeof(string));
                 dtAttandence.Columns.Add("Multiple", typeof(string));
+                dtAttandence.Columns.Add("LvStatus", typeof(string));
                 dtAttandence.Rows.Add();
 
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
@@ -3670,11 +3681,26 @@ namespace Attendance
                         DataTable dtname = new DataTable();
                         DateTime NextDate = GeneralFunction.GetNextDayOfWeekDate(StartDate);
 
+                        DataTable dtL = ds.Tables[2];
+                        DataView dvL = dtL.DefaultView;
+                        DataTable dtLeave = new DataTable();
+
+                        DataTable dtH = ds.Tables[3];
+                        DataView dvH = dtH.DefaultView;
+                        DataTable dtHoliday = new DataTable();
+
                         for (int j = 0; j < ds.Tables[0].Rows.Count; j++)
                         {
 
                             dv.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
                             dtname = dv.ToTable();
+          
+                            dvL.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
+                            dtLeave = dvL.ToTable();
+
+                            dvH.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
+                            dtHoliday = dvH.ToTable();
+
                             dtAttandence.Rows[j]["empid"] = ds.Tables[0].Rows[j]["empid"].ToString();
                             dtAttandence.Rows[j]["Empname"] = ds.Tables[0].Rows[j]["firstName"].ToString() + " " + ds.Tables[0].Rows[j]["lastname"].ToString();
 
@@ -3684,17 +3710,47 @@ namespace Attendance
                             for (int i = 0; i < 7; i++)
                             {
                                 dtAttandence.Rows[i]["Day"] = "<b>" + startDate.DayOfWeek.ToString() + "</b>" + " (" + startDate.ToString("MM/dd/yyyy") + ") ";
+                                DataView dL = dtLeave.DefaultView;
+                                dL.RowFilter = "Fromdate<=#" + startDate + "# and #" + startDate + "#<=Todate";
+                                DataTable dtLvResult = dL.ToTable();
+
+
+                                DataView dH = dtHoliday.DefaultView;
+                                dH.RowFilter = "HolidayDate >= #" + startDate + "# and HolidayDate<#" + nextdate + "#";
+                                DataTable dtHolResult = dH.ToTable();
+
                                 if (dtname.Rows.Count > 0)
                                 {
                                     DataView dv1 = dtname.DefaultView;
                                     dv1.RowFilter = "Logindate >= #" + startDate + "# and Logindate<#" + nextdate + "#";
-
                                     DataTable dt1 = dv1.ToTable();
 
+                                    if (dtLvResult.Rows.Count > 0)
+                                    {
+                                        dtAttandence.Rows[i]["SignIn"] = "L";
+                                        dtAttandence.Rows[i]["SignOut"] = "L";
+                                        dtAttandence.Rows[i]["Hrs"] = "";
+                                        dtAttandence.Rows[i]["LvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                    }
+
+                                    if (dtHolResult.Rows.Count > 0)
+                                    {
+                                        if (startDate.DayOfWeek.ToString() == "Sunday")
+                                        {
+                                            dtAttandence.Rows[i]["SignIn"] = "D";
+                                            dtAttandence.Rows[i]["SignOut"] = "D";
+                                            dtAttandence.Rows[i]["Hrs"] = "";
+                                        }
+                                        else
+                                        {
+                                            dtAttandence.Rows[i]["SignIn"] = "H";
+                                            dtAttandence.Rows[i]["SignOut"] = "H";
+                                            dtAttandence.Rows[i]["Hrs"] = "";
+                                        }
+                                    }
 
                                     if (dt1.Rows.Count > 0)
                                     {
-
                                         dtAttandence.Rows[i]["SchIn"] = dt1.Rows[0]["startTime"].ToString();
                                         dtAttandence.Rows[i]["SchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                    
@@ -3737,8 +3793,34 @@ namespace Attendance
                                         dtAttandence.Rows[i]["LogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
                                     }
                                     dv1.RowFilter = null;
+                                   
                                 }
 
+                                if (dtLvResult.Rows.Count > 0)
+                                {
+                                    dtAttandence.Rows[i]["SignIn"] = "L";
+                                    dtAttandence.Rows[i]["SignOut"] = "L";
+                                    dtAttandence.Rows[i]["Hrs"] = "";
+                                    dtAttandence.Rows[i]["LvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                }
+
+                                if (dtHolResult.Rows.Count > 0)
+                                {
+                                    if (startDate.DayOfWeek.ToString() == "Sunday")
+                                    {
+                                        dtAttandence.Rows[i]["SignIn"] = "D";
+                                        dtAttandence.Rows[i]["SignOut"] = "D";
+                                        dtAttandence.Rows[i]["Hrs"] = "";
+                                    }
+                                    else
+                                    {
+                                        dtAttandence.Rows[i]["SignIn"] = "H";
+                                        dtAttandence.Rows[i]["SignOut"] = "H";
+                                        dtAttandence.Rows[i]["Hrs"] = "";
+                                    }
+                                }
+                                dvH.RowFilter = null;
+                                dvL.RowFilter = null;
                                 startDate = nextdate;
                                 nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
                                 dtAttandence.Rows.Add();
@@ -3762,22 +3844,21 @@ namespace Attendance
                         }
 
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Day"] = "<b>Total Hours</b>";
+                        dtAttandence.Rows[dtAttandence.Rows.Count - 1]["SchIn"] = "";
+                        dtAttandence.Rows[dtAttandence.Rows.Count - 1]["SchOut"] = "";
+                        dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Day"] = "<b>Total Hours</b>";
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Hrs"] = SumHours == 0 ? "" : "<b>" + GeneralFunction.CalDoubleToTime(SumHours) + "</b>";
                         dtAttandence.Rows.Add();
                     }
 
                     lblID.Text = dtAttandence.Rows[0]["EmpID"].ToString();
                     lblName.Text = dtAttandence.Rows[0]["Empname"].ToString();
-
                 }
 
             }
 
-
-
             catch (Exception ex)
             {
-
             }
 
             return dtAttandence;
@@ -3886,7 +3967,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPasscode_Click(object sender, EventArgs e)
         {
             txtOldpasscode.Text = "";
@@ -3894,7 +3974,6 @@ namespace Attendance
             txtConfirmPasscode.Text = "";
             mdlChangePasscode.Hide();
         }
-
         protected void lnkChangePasscode_Click(object sender, EventArgs e)
         {
             try
@@ -3910,7 +3989,6 @@ namespace Attendance
             {
             }
         }
-
         private DataTable GetWeeklyReport(DateTime startdate, DateTime enddate, int userid)
         {
             DataTable dtAttandence = new DataTable();
@@ -4030,7 +4108,6 @@ namespace Attendance
             }
             return dtAttandence;
         }
-
         private DataTable GetMonthlyreport(DateTime startdate, DateTime endMonth, int userid)
         {
             DataTable dtAttandence = new DataTable();
@@ -4168,7 +4245,6 @@ namespace Attendance
             }
             return dtAttandence;
         }
-
         protected void ddlReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
             int userid = Convert.ToInt32(Session["UserID"]);
@@ -4285,7 +4361,6 @@ namespace Attendance
             }
 
         }
-
         protected void grdWeeklyAttendance_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
@@ -4333,7 +4408,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCurrent_Click(object sender, EventArgs e)
         {
             try
@@ -4534,7 +4608,6 @@ namespace Attendance
 
             }
         }
-
         protected void btnFreeze_Click(object sender, EventArgs e)
         {
             try
@@ -4548,7 +4621,6 @@ namespace Attendance
 
             }
         }
-
         protected void btnFreezeCancle_Click(object sender, EventArgs e)
         {
             try
@@ -4559,7 +4631,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnFreezeOk_Click(object sender, EventArgs e)
         {
             int userid = Convert.ToInt32(Session["UserID"]);
@@ -4580,7 +4651,6 @@ namespace Attendance
             }
 
         }
-
         protected void grdMonthlyAttendance_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             //if (e.Row.RowType == DataControlRowType.Header)
@@ -4653,7 +4723,6 @@ namespace Attendance
             }
 
         }
-
         protected void grdWeeklyAttendance_RowCreated(object sender, GridViewRowEventArgs e)
         {
             try
@@ -4745,7 +4814,6 @@ namespace Attendance
 
             }
         }
-
         protected void grdMonthlyAttendance_RowCreated(object sender, GridViewRowEventArgs e)
         {
             try
@@ -4854,9 +4922,6 @@ namespace Attendance
 
             }
         }
-
-     
-
         private string CreateLunchTable(string Lunch)
         {
             string strTransaction = string.Empty;
@@ -4875,7 +4940,6 @@ namespace Attendance
             return strTransaction;
 
         }
-
         private string CreateMultipleTable(List<Attendance.Entities.MultipleLogininfo> obj)
         {
             string strTransaction = string.Empty;
@@ -4920,8 +4984,6 @@ namespace Attendance
             {
             }
         }
-
-
         private string CreateMultipleString(List<Attendance.Entities.MultipleLogininfo> dt)
         {
 

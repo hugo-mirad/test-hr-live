@@ -718,7 +718,7 @@ function clearDisposableItems( sender , args ) {
             </div>
         </div>
         
-            <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel16"
+        <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel16"
             DisplayAfter="0">
             <ProgressTemplate>
                 <div id="spinner">
@@ -1570,6 +1570,11 @@ function clearDisposableItems( sender , args ) {
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
+        <%--<div id="DvSingleRep" runat="server"> 
+         <div>
+            <asp:LinkButton ID="lnkLeaveReq" Text="Show Leave Requests" runat="server"></asp:LinkButton> <br />
+            <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server"></asp:LinkButton>    
+         </div>--%>
         <asp:UpdatePanel ID="upSingle" runat="server">
             <ContentTemplate>
                 <asp:Label ID="lblID" runat="server" Visible="false"></asp:Label>
@@ -1591,7 +1596,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblHeadSchIn" runat="server" Text="Schedule"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblScIn" runat="server" Text='<%#Eval("SchIn")+"-"+Eval("SchOut")%>'></asp:Label>
+                                <asp:Label ID="lblScIn" runat="server" Text='<%#Eval("SchIn")==""?"":Eval("SchIn")+"-"+Eval("SchOut")%>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField>
@@ -1604,6 +1609,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnMultiple" runat="server" Value='<%#Eval("Multiple")%>' />
                                 <asp:HiddenField ID="hdnSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "LoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSignInFlag" runat="server" Value='<%#Eval("LoginFlag")%>' />
+                                <asp:HiddenField ID="hdnLvStatus" runat="server" Value='<%#Eval("LvStatus")%>' />
                             <%--    <asp:HiddenField ID="hdnSignOutNotes" runat="server" Value='<%#Eval("LogoutNotes")%>' />--%>
                                 <asp:HiddenField ID="hdnSignOutFlag" runat="server" Value='<%#Eval("LogoutFlag")%>' />
                             </ItemTemplate>
@@ -1621,6 +1627,7 @@ function clearDisposableItems( sender , args ) {
                 </asp:GridView>
             </ContentTemplate>
         </asp:UpdatePanel>
+      <%--  </div>--%>
     </div>
     <!--Loginedit popup start-->
     <cc1:ModalPopupExtender ID="mdlLoginEditPopUp" BackgroundCssClass="popupHolder" runat="server"

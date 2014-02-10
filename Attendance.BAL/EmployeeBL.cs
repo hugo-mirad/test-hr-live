@@ -35,7 +35,6 @@ namespace Attendance.BAL
             return success;
         }
 
-
         public bool UpdatePasscodeByUserID(int userid, string oldpasscode, string newpasscode)
         {
             bool success = false;
@@ -135,7 +134,6 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-
         public string AddNewSchedule(string SchStart,string SchEnd,string LunchStart,string LunchEnd,bool fiveDays,bool SixDays,bool SevenDays,string IP,DateTime CurrentDt,int UserID)
         {
             bool success = false;
@@ -175,8 +173,6 @@ namespace Attendance.BAL
             }
             return ID;
         }
-
-
         public DataTable GetLeaveDetailsByLoction(string LocationName,DateTime Startdate,DateTime EndDate,int ApprovedStatusID)
         {
             DataSet ds = new DataSet();
@@ -204,8 +200,6 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-
-
         public bool UpdateLeaveRequest(int LeaveID, int ApprovedBy, int ApprovedStatus, string LeaveNotes,DateTime CurrentDt)
         {
             bool success = false;
@@ -230,7 +224,6 @@ namespace Attendance.BAL
             }
             return success;
         }
-
         public DataTable GetEmpPaidleavesDetailsByLocation(int location)
         {
             DataSet ds = new DataSet();
@@ -254,8 +247,6 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-
-
         public bool UpdatePaidLeaveByLeaveID(int LeaveAvail, int Maxleave, int paildLeavID,int Enterby, string notes, DateTime CurrentDt,DateTime paidLvsStartDt,string IP,int PaidLeaveUserID)
         {
             bool success = false;
@@ -308,7 +299,6 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-
         public bool SaveandGetHolidayDet(bool ISHoliday, DateTime HolidayDt, int locID, int DeptID, int userid, int EnterBy, DateTime EnterDt, string IP, string Holidayname)
         {
 
@@ -340,7 +330,6 @@ namespace Attendance.BAL
 
             return success;
         }
-
         public DataTable GetHolidayDetByLoc(DateTime startDt,DateTime EndDt,int locationID)
         {
             DataSet ds = new DataSet();
