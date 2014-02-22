@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttendenceInfo.cs" />
     <Compile Include="EmergencyContactInfo.cs" />
     <Compile Include="Entities.cs" />
     <Compile Include="MultipleLogininfo.cs" />

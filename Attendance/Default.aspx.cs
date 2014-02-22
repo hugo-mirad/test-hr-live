@@ -568,38 +568,38 @@ namespace Attendance
                 DateTime CurrentDt = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
 
                 
-                if (rdSelf.Checked)
-                {
-                    int UserID = Convert.ToInt32(hdnLeaveUserID.Value);
-                    DateTime FromDt = Convert.ToDateTime(txtFromDt.Text);
-                    DateTime ToDt = Convert.ToDateTime(txtToDt.Text);
-                    string Passcode = txtLeavePassCode.Text.ToString();
-                    string Reason = txtReason.Text ==""?"":GeneralFunction.ToProperNotes(txtReason.Text);
-                    string EmpID = "";
+                //if (rdSelf.Checked)
+                //{
+                    //int UserID = Convert.ToInt32(hdnLeaveUserID.Value);
+                    //DateTime FromDt = Convert.ToDateTime(txtFromDt.Text);
+                    //DateTime ToDt = Convert.ToDateTime(txtToDt.Text);
+                    //string Passcode = txtLeavePassCode.Text.ToString();
+                    //string Reason = txtReason.Text ==""?"":GeneralFunction.ToProperNotes(txtReason.Text);
+                    //string EmpID = txtLeaveEmpID.Text;
 
-                    DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
-                    if (ds.Tables.Count > 0)
-                    {
-                        if (ds.Tables[0].Rows.Count > 0)
-                        {
-                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
+                    //DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
+                    //if (ds.Tables.Count > 0)
+                    //{
+                    //    if (ds.Tables[0].Rows.Count > 0)
+                    //    {
+                    //        System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
 
-                        }
-                        else
-                        {
-                            lblLeaveError.Text = "Invalid passcode";
-                            lblLeaveError.Visible = true;
-                        }
-                    }
-                    else
-                    {
-                        lblLeaveError.Text = "Invalid passcode";
-                        lblLeaveError.Visible = true;
-                    }
+                    //    }
+                    //    else
+                    //    {
+                    //        lblLeaveError.Text = "Invalid passcode";
+                    //        lblLeaveError.Visible = true;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    lblLeaveError.Text = "Invalid passcode";
+                    //    lblLeaveError.Visible = true;
+                    //}
 
-                }
-                else if(rdOther.Checked)
-                {
+                //}
+                //else if(rdOther.Checked)
+                //{
                     int UserID = Convert.ToInt32(hdnLeaveUserID.Value);
                     DateTime FromDt = Convert.ToDateTime(txtFromDt.Text);
                     DateTime ToDt = Convert.ToDateTime(txtToDt.Text);
@@ -612,8 +612,18 @@ namespace Attendance
                     {
                         if (ds.Tables[0].Rows.Count > 0)
                         {
-                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
-
+                            if (ds.Tables[0].Rows[0]["LeaveID"].ToString() == "Applied")
+                            {
+                                lblLeaveError.Text = "You have already applied leave for these days";
+                                lblLeaveError.Visible = true;
+                                txtReason.Text = "";
+                                txtFromDt.Text = "";
+                                txtToDt.Text = "";
+                            }
+                            else
+                            {
+                                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
+                            }
                         }
                         else
                         {
@@ -628,7 +638,7 @@ namespace Attendance
                         lblLeaveError.Visible = true;
                     }
 
-                }
+                //}
             }
             catch (Exception ex)
             {

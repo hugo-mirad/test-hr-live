@@ -57,6 +57,16 @@
 
     <script type="text/javascript" language="javascript">
     
+    function isNumberKeyWithDot(evt) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46)
+                return false;
+
+            return true;
+        }
+    var curentRow = 0;
+    var currentInput = '';
     $(window).load(function () {
       $('#lnkDwnloadPDF').css('visibility','hidden');
      $('#spinner').hide();
@@ -88,7 +98,57 @@
         
         function pageLoad()
         {
-            $('#spinner').hide();            
+            $('#spinner').hide();    
+            
+            $('.Editlabel').click(function(){
+                $(this).hide();
+                $(this).next().show().focus();
+            })
+            $('.editInputBlur').on('focus', function(){
+                $(this).attr('prevVal' ,$.trim($(this).val()));
+            });
+            
+            $('.editInputBlur').blur(function(){
+                curentRow = $(this).parent().parent().index();
+               // console.log(curentRow)
+               
+               var sal = parseInt($('#grdPayRollIndia tr:eq('+curentRow+') .sal').text());
+               var total1 = 0;
+               var total2 = 0;
+               $('#grdPayRollIndia tr:eq('+curentRow+') input.add').each(function(){
+                    if($.trim($(this).val()) != ''){
+                        total1 += parseInt($.trim($(this).val()));
+                    }
+               });
+               
+               $('#grdPayRollIndia tr:eq('+curentRow+') input.sub').each(function(){
+                    if($.trim($(this).val()) != ''){
+                        total2 += parseInt($.trim($(this).val()));
+                    }
+               });
+               
+               
+               var gTotal = (sal+total1)-total2
+               $('#grdPayRollIndia tr:eq('+curentRow+') .totalPay').text(gTotal);
+               
+               
+               
+               
+               if( $(this).attr('prevVal') != $.trim($(this).val()) && $.trim($(this).val()) != '' ){
+                    $('#dvInternalNotes #txtPopNotes').val( $.trim($(this).attr('notes')));
+                    $('#dvInternalNotes #lblNotesName').text($('#grdPayRollIndia tr:eq('+curentRow+') td:eq(1) span').text());
+                    $find('mdlInternalNotes').show();
+                    currentInput = $(this).attr('id');
+               }
+               
+               if($.trim($(this).val()) == ''){
+                    $(this).attr('prevVal','').attr('notes','')
+               }
+                
+                
+                
+                
+            })
             
         }
         function linkdis()
@@ -102,7 +162,7 @@
         
         function validateDate()
         {
-        debugger
+        
         var valid=true;
           var Stdate=new Date($('#txtFromDate').val());
           var EndDate=new Date($('#txtToDate').val());
@@ -353,6 +413,8 @@
                     </div>
                     <h4>
                     </h4>
+                    <h4>
+                    </h4>
                 </h4>
             </div>
         </ProgressTemplate>
@@ -393,6 +455,9 @@
             OnClick="btnPDF_Click1" OnClientClick="return linkdis();"></asp:Button>
         <asp:Button ID="btnDoc" runat="server" Text="DownLoadToWord" CssClass="btn btn-small btn-success"
             OnClick="btnDoc_Click1" OnClientClick="return linkdis();"></asp:Button>
+            
+        <asp:Button ID="btnSave" runat="server" Text="Save" onclick="btnSave_Click" style="display:none;" /> 
+            
     </div>
     <div id="dvpayrollreport" runat="server" style="font-size: 12px; font-family: Arial;
         color: #333;">
@@ -565,6 +630,12 @@
                                             <asp:Label ID="lblLocation" runat="server" Text='<%#Eval("LocationName")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    <asp:TemplateField  HeaderText="Salary" SortExpression="Salary">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblSalary" runat="server" Text='<%#Eval("Salary")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    
                                     <asp:TemplateField SortExpression="Workingdays" HeaderText="WorkingDays">
                                      <ItemTemplate>
                                             <asp:Label ID="lblWorkingDays" runat="server" Text='<%#Eval("Workingdays")%>'></asp:Label>
@@ -575,22 +646,25 @@
                                             <asp:Label ID="lblAttendDays" runat="server" Text='<%#Eval("Present")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    
-                                     <asp:TemplateField SortExpression="PaidLeavesStDt" HeaderText="PaidLeavesStDt">
-                                      <ItemTemplate>
-                                            <asp:Label ID="lblPaidLvsStDate" runat="server" Text='<%# Bind("PaidLeaveStartDt", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                      <asp:TemplateField SortExpression="Leaves" HeaderText="Leaves">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblLeaves" runat="server" Text='<%#Eval("Leaves")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    
-                                     <asp:TemplateField SortExpression="LeavesAvailable" HeaderText="PaidLeavesEarned">
+                                     <asp:TemplateField SortExpression="Noshow" HeaderText="NoShow">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblNoshow" runat="server" Text='<%#Eval("Noshow")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField SortExpression="LeavesAvailable" HeaderText="PaidLeavesEarned">
                                      <ItemTemplate>
                                             <asp:Label ID="lblLeavesAvailable" runat="server" Text='<%#Eval("LeavesAvailable")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     
-                                     <asp:TemplateField SortExpression="Leaves" HeaderText="Leaves">
+                                     <asp:TemplateField SortExpression="LeavesUsed" HeaderText="PaidLeavesUsed">
                                      <ItemTemplate>
-                                            <asp:Label ID="lblLeaves" runat="server" Text='<%#Eval("Leaves")%>'></asp:Label>
+                                            <asp:Label ID="lblLeavesUsed" runat="server" Text='<%#Eval("PaidLeavesUsed")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     
@@ -599,23 +673,66 @@
                                             <asp:Label ID="lblPaidLeavesBalanced" runat="server" Text='<%#Eval("PaidLeavesBalanced")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                     <asp:TemplateField SortExpression="CalLeaves" HeaderText="CalLeaves">
+                                                                       
+                                     <asp:TemplateField SortExpression="CalLeaves" HeaderText="AbsentDays">
                                      <ItemTemplate>
                                             <asp:Label ID="lblCalLeaves" runat="server" Text='<%#Eval("CalLeaves")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    
-                                    <asp:TemplateField  HeaderText="Salary" SortExpression="Salary">
+                                    <asp:TemplateField  HeaderText="CalSalary" SortExpression="CalculatedSalary">
                                      <ItemTemplate>
-                                            <asp:Label ID="lblSalary" runat="server" Text='<%#Eval("Salary")%>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                      <asp:TemplateField  HeaderText="CalSalary" SortExpression="CalculatedSalary">
-                                     <ItemTemplate>
-                                            <asp:Label ID="lblCalSalary" runat="server" Text='<%#Eval("CalSalary")%>'></asp:Label>
+                                            <asp:Label ID="lblCalSalary" runat="server" Text='<%#Eval("CalSalary")%>' CssClass="sal"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     
+                                     <asp:TemplateField HeaderText="Bonus">
+                                     <ItemTemplate>
+                                             <asp:Label ID="lblBonus" runat="server" CssClass="Editlabel" ></asp:Label>
+                                            <asp:TextBox ID="txtBonus" runat="server" onkeypress="return isNumberKeyWithDot(event)" CssClass="editInputBlur add"></asp:TextBox>
+                                        </ItemTemplate>
+                                          <ItemStyle CssClass="editInput" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Incentives">
+                                     <ItemTemplate>
+                                     <asp:Label ID="lblIncentives" runat="server" CssClass="Editlabel"></asp:Label>
+                                            <asp:TextBox ID="txtIncentives" runat="server" onkeypress="return isNumberKeyWithDot(event)" CssClass="editInputBlur add"></asp:TextBox>
+                                        </ItemTemplate>
+                                          <ItemStyle CssClass="editInput" />
+                                    </asp:TemplateField>
+                                    
+                                    <asp:TemplateField HeaderText="PrevUnpaid">
+                                     <ItemTemplate>
+                                     <asp:Label ID="lblPrevUnpaid" runat="server" CssClass="Editlabel"></asp:Label>
+                                     <asp:TextBox ID="txtPrevUnpaid" runat="server" onkeypress="return isNumberKeyWithDot(event)" CssClass="editInputBlur add"></asp:TextBox>
+                                        </ItemTemplate>
+                                          <ItemStyle CssClass="editInput" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="AdvancePaid">
+                                     <ItemTemplate>
+                                     <asp:Label ID="lblAdvancePaid" runat="server" CssClass="Editlabel"></asp:Label>
+                                            <asp:TextBox ID="txtAdvancePaid" runat="server" onkeypress="return isNumberKeyWithDot(event)" CssClass="editInputBlur sub"></asp:TextBox>
+                                        </ItemTemplate>
+                                          <ItemStyle CssClass="editInput" />
+                                    </asp:TemplateField>
+                                      <asp:TemplateField HeaderText="Expenses">
+                                     <ItemTemplate>
+                                       <asp:Label ID="lblExpenses" runat="server" CssClass="Editlabel"></asp:Label>
+                                        <asp:TextBox ID="txtExpenses" runat="server" onkeypress="return isNumberKeyWithDot(event)" CssClass="editInputBlur add"></asp:TextBox>
+                                        </ItemTemplate>
+                                        <ItemStyle CssClass="editInput" />
+                                    </asp:TemplateField>
+                                     <asp:TemplateField HeaderText="LoanDeduct">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblLoanDeduct" runat="server" CssClass="Editlabel"></asp:Label>
+                                            <asp:TextBox ID="txtLoanDeduct" runat="server" onkeypress="return isNumberKeyWithDot(event)" CssClass="editInputBlur sub"></asp:TextBox>
+                                        </ItemTemplate>
+                                          <ItemStyle CssClass="editInput" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="TotalPay">
+                                     <ItemTemplate>
+                                            <asp:Label ID="lblTotal" runat="server" CssClass="totalPay" Text='<%#Eval("TotalPay")%>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField SortExpression="Isnew" HeaderText="IsNew">
                                         
                                         <ItemTemplate>
@@ -626,11 +743,10 @@
                                       <ItemTemplate>
                                             <asp:Label ID="lblIsChanges" runat="server"></asp:Label>
                                         </ItemTemplate>
-                                    </asp:TemplateField>
+                                    </asp:TemplateField>                                 
                                 </Columns>
                             </asp:GridView>
-                            
-                            
+
                             <table cellpadding="0" cellspacing="0" width="900">
                                 <tr>
                                     <td style="height: 30px;">
@@ -728,7 +844,7 @@
                                                                             <asp:Label ID="lblOldvalue" runat="server" Text='<%#Eval("OldValue")%>' Visible="false"></asp:Label>
                                                                             <asp:Label ID="lblNewValue" runat="server" Text='<%#Eval("NewValue")%>' Visible="false"></asp:Label>
                                                                             <asp:Label ID="lblChangedDt" runat="server" Text='<%#Bind("ChangeDate","{0:MM/dd/yyyy}") %>'
-                                                                                Visible="false"></asp:Label>
+                                                                             Visible="false"></asp:Label>
                                                                         </td>
                                                                     </tr>
                                                                 </ItemTemplate>
@@ -753,10 +869,64 @@
         </table>
     </div>
 
-    <script type="text/javascript">
-       
-    </script>
+
+ <!--Alert notes-->
+    <cc1:ModalPopupExtender ID="mdlInternalNotes" runat="server" BackgroundCssClass="popupHolder"
+        CancelControlID="lnkInteralNotesClose" TargetControlID="hdnInternalNotes" PopupControlID="dvInternalNotes">
+    </cc1:ModalPopupExtender>
+    <asp:HiddenField ID="hdnInternalNotes" runat="server" />
+    <div id="dvInternalNotes" runat="server" class="popContent" style="width: 350px; display: none">
+        <h2>
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                <ContentTemplate>
+                    <asp:Label ID="lblNotesName" runat="server"></asp:Label>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+            <span class="close">
+                <asp:LinkButton ID="lnkINteralNotesClose" runat="server"></asp:LinkButton></span>
+        </h2>
+        <div class="inner">
+            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                <tr>
+                    <td style="vertical-align:top; width:90px;" >
+                        Internal notes
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtPopNotes" runat="server" MaxLength="250" TextMode="MultiLine" Rows="6"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                 <td colspan="2">
+                  <input type="button" id="btnDone" runat="server" value="Done" style="float:right;margin:5px;" />
+                 </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 
     </form>
+    <script type="text/javascript">
+        $('#btnDone').click(function(){
+            var text = $.trim($('#txtPopNotes').val());  
+            
+            if(text != ''){           
+                /*
+                var text2= $.trim($('#grdPayRollIndia tr:eq('+curentRow+') td:last-child input').val());
+                if(text2 != ''){
+                    $('#grdPayRollIndia tr:eq('+curentRow+') td:last-child input').val(text2+'<br>'+text);
+                }else{
+                    $('#grdPayRollIndia tr:eq('+curentRow+') td:last-child input').val(text);
+                }
+                */
+                $('#'+currentInput).attr('notes', text);
+            }
+             $find('mdlInternalNotes').hide();  
+            
+         })
+    </script>
+    
 </body>
+
+
 </html>

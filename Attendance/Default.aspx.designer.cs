@@ -680,15 +680,6 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.LinkButton lnkleaveClose;
         
         /// <summary>
-        /// leaveEmp control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow leaveEmp;
-        
-        /// <summary>
         /// lblLeaveEmp control.
         /// </summary>
         /// <remarks>
@@ -714,24 +705,6 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtLeavePassCode;
-        
-        /// <summary>
-        /// rdSelf control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton rdSelf;
-        
-        /// <summary>
-        /// rdOther control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputRadioButton rdOther;
         
         /// <summary>
         /// txtFromDt control.

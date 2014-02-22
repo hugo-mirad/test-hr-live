@@ -395,12 +395,16 @@ namespace Attendance
                         {
                             c= " atnLeave";
                         }
-                        else 
+                        else if(flag=="Open") 
                         {
                             c= " atnUnLeave";
                         }
+                        else if (flag == "Denied")
+                        {
+                            c = " atnUnLeave";
+                        }
                         break;
-                    case "D":
+                    case "S":
                         c= " atnSun";
                         break;
                  }

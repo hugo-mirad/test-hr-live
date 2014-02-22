@@ -207,7 +207,6 @@ namespace Attendance
             }
 
         }
-
         private void BindListOfNewEmployee()
         {
             DataTable dt = dtNewEmp;
@@ -228,13 +227,11 @@ namespace Attendance
                 grdNewEmp.DataBind();
             }
         }
-
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             Session.Abandon();
             Response.Redirect("Default.aspx");
         }
-
         protected void lnkChangepwd_Click(object sender, EventArgs e)
         {
             try
@@ -250,12 +247,10 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPwd_Click(object sender, EventArgs e)
         {
             mdlChangePwd.Hide();
         }
-
         protected void btnUpdatePwd_Click(object sender, EventArgs e)
         {
             try
@@ -308,7 +303,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPasscode_Click(object sender, EventArgs e)
         {
             txtOldpasscode.Text = "";
@@ -316,7 +310,6 @@ namespace Attendance
             txtConfirmPasscode.Text = "";
             mdlChangePasscode.Hide();
         }
-
         protected void lnkChangePasscode_Click(object sender, EventArgs e)
         {
             try
@@ -332,7 +325,6 @@ namespace Attendance
             {
             }
         }
-
         private void GetReport(DateTime StartDate, DateTime EndTime, int userid,string Location)
         {
             try
@@ -377,10 +369,13 @@ namespace Attendance
             dtPayroll.Columns.Add("LeavesAvailable", typeof(int));
             dtPayroll.Columns.Add("PaidLeaveStartDt", typeof(DateTime));
             dtPayroll.Columns.Add("PaidLeavesBalanced", typeof(int));
+            dtPayroll.Columns.Add("PaidLeavesUsed", typeof(int));
             dtPayroll.Columns.Add("CalLeaves", typeof(int));
             dtPayroll.Columns.Add("Salary", typeof(double));
+            dtPayroll.Columns.Add("Noshow", typeof(int));
 
             dtPayroll.Columns.Add("CalSalary", typeof(double));
+            dtPayroll.Columns.Add("TotalPay", typeof(double));
        
 
             try
@@ -395,7 +390,7 @@ namespace Attendance
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
                 EmployeeBL obj = new EmployeeBL();
-                DataTable dtPaid = obj.GetEmpPaidleavesDetailsByLocation(LocationID);
+                DataTable dtPaid = obj.GetEmpPaidleavesDetailsByLocation(LocationID, StartDate.AddMonths(-1), StartDate.AddSeconds(-1));
                 int days = (Convert.ToInt32(EndTime.ToString("dd"))-Convert.ToInt32(StartDate.ToString("dd")))+1;
                 if (ds.Tables.Count > 0)
                 {
@@ -436,7 +431,7 @@ namespace Attendance
                             int holidays = 0;
                             int leaves = 0;
                             double present = 0.0;
-
+                            int noshow = 0;
                             dtPayroll.Rows[j]["userid"] = ds.Tables[0].Rows[j]["userid"].ToString();
                             dtPayroll.Rows[j]["empid"] = ds.Tables[0].Rows[j]["empid"].ToString();
                             dtPayroll.Rows[j]["Empname"] = ds.Tables[0].Rows[j]["firstName"].ToString() + " " + ds.Tables[0].Rows[j]["lastname"].ToString();
@@ -451,10 +446,30 @@ namespace Attendance
                             dtPayroll.Rows[j]["LeavesAvailable"] = 0;
                             if (dtPaidLev.Rows.Count > 0)
                             {
-                                
-                                dtPayroll.Rows[j]["LeavesAvailable"] = dtPaidLev.Rows[0]["LeavesAvailable"].ToString() == "" ? 0 : dtPaidLev.Rows[0]["LeavesAvailable"].ToString() == "NULL" ? 0 : Convert.ToInt32(dtPaidLev.Rows[0]["LeavesAvailable"].ToString());
-                                dtPayroll.Rows[j]["PaidLeaveStartDt"] = dtPaidLev.Rows[0]["PaidLeaveStartDt"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : dtPaidLev.Rows[0]["PaidLeaveStartDt"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(dtPaidLev.Rows[0]["PaidLeaveStartDt"].ToString());
+
+                                if (dtPaidLev.Rows[0]["PaidLeavesStartDt"].ToString() != "" || Convert.ToDateTime(dtPaidLev.Rows[0]["PaidLeavesStartDt"]).ToString("01/01/1900") != "")
+                                {
+                                    if (Convert.ToDateTime(dtPaidLev.Rows[0]["PaidLeavesStartDt"].ToString()) <= StartDate.AddSeconds(-1))
+                                    {
+                                        int PaidLeaves = dtPaidLev.Rows[0]["PaidLeavesBalanced"].ToString() == "" ? 0 : dtPaidLev.Rows[0]["PaidLeavesBalanced"].ToString() == "NULL" ? 0 : Convert.ToInt32(dtPaidLev.Rows[0]["PaidLeavesBalanced"].ToString());
+                                        dtPayroll.Rows[j]["LeavesAvailable"] = PaidLeaves + (dtPaidLev.Rows[0]["MonthlyEligible"].ToString() == "" ? 0 : dtPaidLev.Rows[0]["MonthlyEligible"].ToString() == "NULL" ? 0 : Convert.ToInt32(dtPaidLev.Rows[0]["MonthlyEligible"].ToString()));
+                                        dtPayroll.Rows[j]["PaidLeaveStartDt"] = dtPaidLev.Rows[0]["PaidLeavesStartDt"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : dtPaidLev.Rows[0]["PaidLeavesStartDt"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(dtPaidLev.Rows[0]["PaidLeavesStartDt"].ToString());
+                                    }
+                                }
                             }
+                            else
+                            {
+                                if (ds.Tables[0].Rows[j]["PaidLeavesStartDt"].ToString() != "" || Convert.ToDateTime(ds.Tables[0].Rows[j]["PaidLeavesStartDt"]).ToString("01/01/1900") != "")
+                                {
+                                    if (Convert.ToDateTime(ds.Tables[0].Rows[j]["PaidLeavesStartDt"].ToString()) <= StartDate.AddSeconds(-1))
+                                    {
+                                        int PaidLeaves = 0;
+                                        dtPayroll.Rows[j]["LeavesAvailable"] = PaidLeaves + (ds.Tables[0].Rows[j]["MonthlyEligible"].ToString() == "" ? 0 : ds.Tables[0].Rows[j]["MonthlyEligible"].ToString() == "NULL" ? 0 : Convert.ToInt32(ds.Tables[0].Rows[j]["MonthlyEligible"].ToString()));
+                                        dtPayroll.Rows[j]["PaidLeaveStartDt"] = ds.Tables[0].Rows[j]["PaidLeavesStartDt"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : ds.Tables[0].Rows[j]["PaidLeavesStartDt"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(ds.Tables[0].Rows[j]["PaidLeavesStartDt"].ToString());
+                                    }
+                                }
+                            }
+
                             if (dtname.Rows.Count > 0)
                             {
                                 DateTime startDate = StartDate;
@@ -519,7 +534,10 @@ namespace Attendance
                                     {
                                         leaves += 1;
                                     }
-                                     
+                                    else
+                                    {
+                                        noshow += 1;
+                                    }
                                   
                                     dL.RowFilter = null;
                                     dH.RowFilter = null;
@@ -548,6 +566,10 @@ namespace Attendance
                                     {
                                         leaves += 1;
                                     }
+                                    else
+                                    {
+                                        noshow += 1;
+                                    }
                                   
                                     dL.RowFilter = null;
                                     dH.RowFilter = null;
@@ -562,33 +584,33 @@ namespace Attendance
                             if (Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]) > Convert.ToInt32(dtPayroll.Rows[j]["leaves"]))
                             {
                                 dtPayroll.Rows[j]["PaidLeavesBalanced"] = Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]) - Convert.ToInt32(dtPayroll.Rows[j]["leaves"]);
+                                dtPayroll.Rows[j]["PaidLeavesUsed"] = Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]) - Convert.ToInt32(dtPayroll.Rows[j]["PaidLeavesBalanced"]);
+                                dtPayroll.Rows[j]["CalLeaves"] = 0;
+                            }
+                            else if (Convert.ToInt32(dtPayroll.Rows[j]["leaves"]) > Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]))
+                            {
+                                dtPayroll.Rows[j]["CalLeaves"] = Convert.ToInt32(dtPayroll.Rows[j]["leaves"]) - Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]);
+                                dtPayroll.Rows[j]["PaidLeavesUsed"] = Convert.ToInt32(dtPayroll.Rows[j]["leaves"]) - Convert.ToInt32(dtPayroll.Rows[j]["CalLeaves"]);
+                                dtPayroll.Rows[j]["PaidLeavesBalanced"] = 0;
+
                             }
                             else
                             {
-                                dtPayroll.Rows[j]["CalLeaves"]=Convert.ToInt32(dtPayroll.Rows[j]["leaves"]) - Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]);
+                                dtPayroll.Rows[j]["PaidLeavesBalanced"] = Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]) - Convert.ToInt32(dtPayroll.Rows[j]["leaves"]);
+                                dtPayroll.Rows[j]["PaidLeavesUsed"] = Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]) - Convert.ToInt32(dtPayroll.Rows[j]["PaidLeavesBalanced"]);
+                                dtPayroll.Rows[j]["CalLeaves"] = Convert.ToInt32(dtPayroll.Rows[j]["LeavesAvailable"]) - Convert.ToInt32(dtPayroll.Rows[j]["leaves"]);
                             }
                             //salary calculation  CalSalary  CalLeaves
-
 
                             double CurntSalary = Convert.ToDouble(dtPayroll.Rows[j]["Salary"]);
                             int wrkDays = Convert.ToInt32(dtPayroll.Rows[j]["Workingdays"]);
                             double CalSalary = 0.0;
                             double perdaySal = wrkDays == 0 ? 0 : (CurntSalary / Convert.ToDouble(wrkDays));
-                            if (dtPayroll.Rows[j]["CalLeaves"].ToString() != "NULL" && dtPayroll.Rows[j]["CalLeaves"].ToString().Trim() != "")
-                            {
-                               
-                                int calLeaves = Convert.ToInt32(dtPayroll.Rows[j]["CalLeaves"]);
-
-                                Double TotalCalPresent = present + Convert.ToInt32((wrkDays - Convert.ToInt32(present)) - calLeaves);
-                                CalSalary = perdaySal * Convert.ToDouble(TotalCalPresent);
-                            }
-                            else
-                            {
-                                CalSalary = perdaySal * Convert.ToDouble(present);
-                            }
-
+                            double paiddaysOff = perdaySal * (dtPayroll.Rows[j]["PaidLeavesUsed"].ToString() == "" ? 0 : dtPayroll.Rows[j]["PaidLeavesUsed"].ToString() == "NULL" ? 0 : Convert.ToInt32(dtPayroll.Rows[j]["PaidLeavesUsed"]));
+                            double ActualSalary = perdaySal * Convert.ToInt32(dtPayroll.Rows[j]["Present"]);
+                            CalSalary = paiddaysOff + ActualSalary;
                             dtPayroll.Rows[j]["CalSalary"] = CalSalary;
-
+                            dtPayroll.Rows[j]["TotalPay"] = CalSalary;
 
                         }
                     }
@@ -758,7 +780,6 @@ namespace Attendance
             {
             }
         }
-
         private void CreateNewEmployeeList(int EmpID)
         {
             try
@@ -973,12 +994,10 @@ namespace Attendance
             {
             }
         }
-  
         public override void VerifyRenderingInServerForm(Control control)
         {
             /* Verifies that the control is rendered */
         }
-
         private void showpdf(string filepath)
         {
             try
@@ -1023,7 +1042,6 @@ namespace Attendance
             {
             }
         }
-
         protected void grdNewEmp_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
@@ -1107,7 +1125,6 @@ namespace Attendance
             {
             }
         }
-
         protected void lnkUserMangement_Click(object sender, EventArgs e)
         {
             if (Session["IsAdmin"].ToString() == "True")
@@ -1119,7 +1136,6 @@ namespace Attendance
                 Response.Redirect("UserManagement.aspx");
             }
         }
-
         protected void ddlLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -1411,7 +1427,6 @@ namespace Attendance
             {
             }
         }
-
         private void getLocations()
         {
             try
@@ -1428,7 +1443,6 @@ namespace Attendance
 
             }
         }
-
         protected void grdPayRollIndia_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             DataSet dsEdit = Session["EditHistory"] as DataSet;
@@ -1484,6 +1498,63 @@ namespace Attendance
 
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Report obj = new Report();
+                for (int i = 0; i < grdPayRollIndia.Rows.Count; i++)
+                {
+
+                    comanyname.Text = CommonFiles.ComapnyName;
+                    string timezone = "";
+                    if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                    {
+                        timezone = "Eastern Standard Time";
+                    }
+                    else
+                    {
+                        timezone = "India Standard Time";
+                    }
+                    DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+
+
+                    //Atndence history
+                    Attendance.Entities.AttendenceInfo objInfo = new Attendance.Entities.AttendenceInfo();
+                    HiddenField hdnUserID = (HiddenField)grdPayRollIndia.Rows[i].FindControl("hdnUserID");
+                    Label lblWorkingDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblWorkingDays");
+                    Label lblAttendDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblAttendDays");
+                    Label lblLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeaves");
+                    Label lblNoshow = (Label)grdPayRollIndia.Rows[i].FindControl("lblNoshow");
+                    Label lblLeavesAvailable = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesAvailable");
+                    Label lblLeavesUsed = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesUsed");
+                    Label lblPaidLeavesBalanced = (Label)grdPayRollIndia.Rows[i].FindControl("lblPaidLeavesBalanced");
+                    Label lblCalLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalLeaves");
+                    DateTime dt = Convert.ToDateTime(ViewState["StartRptDt"]);
+                    objInfo.Mnth = Convert.ToInt32(dt.ToString("MM"));
+                    objInfo.Yr = Convert.ToInt32(dt.ToString("yyyy"));
+                    objInfo.EnterBy=Convert.ToInt32(Session["UserID"]);
+                    objInfo.EnterDate = ISTTime;
+                    objInfo.TotalCalLeaves1 = lblCalLeaves.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblCalLeaves.ToString().Trim());
+                    objInfo.PaidLeavesUsed = lblLeavesUsed.ToString().Trim() == "" ? 0: Convert.ToSingle(lblLeavesUsed.ToString().Trim());
+                    objInfo.PaidLeavesBalanced = lblPaidLeavesBalanced.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblPaidLeavesBalanced.ToString().Trim());
+                    objInfo.PaidLeaves = lblLeavesAvailable.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesAvailable.ToString().Trim());
+                    objInfo.NoShow = lblNoshow.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblNoshow.ToString().Trim());
+                    objInfo.Leaves = lblLeaves.ToString().Trim() == "" ?0 : Convert.ToSingle(lblLeaves.ToString().Trim());
+                    objInfo.WorkingDays = lblWorkingDays.ToString().Trim() == "" ? 0: Convert.ToSingle(lblWorkingDays.ToString().Trim());
+                    objInfo.AttendDays = lblAttendDays.ToString().Trim() == "" ? 0: Convert.ToSingle(lblAttendDays.ToString().Trim());
+                    objInfo.Userid = Convert.ToInt32(hdnUserID.Value);
+
+                    int AtnLogID = obj.SaveAttendanceHistory(objInfo);
+
+                    //Salary history
+
                 }
             }
             catch (Exception ex)

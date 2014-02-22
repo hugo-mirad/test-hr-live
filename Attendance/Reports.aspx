@@ -93,30 +93,30 @@
         {
             white-space: nowrap;
         }
-        .table2 td
+        .table2,.tableLeave td
         {
             border: #ccc 1px dotted;
             padding: 2px 4px;
             white-space: nowrap;
         }
-        .table2 th, .table2 tr:first-child td
+        .table2 th, .table2 tr:first-child td,.tableLeave th, .tableLeave tr:first-child td
         {
             padding: 2px 4px;
             vertical-align: middle;
             background: #ccc;
             text-align: center;
         }
-        .table2
+        .table2,.tableLeave
         {
             font-size: 13px;
         }
-        .table2 tr:first-child td
+        .table2 tr:first-child td,.tableLeave tr:first-child td
         {
             /* border:#888 2px solid;*/
             font-weight: bold;
             font-size: 13px;
         }
-        .table2
+        .table2,.tableLeave
         {
             border: #999 1px solid;
             border-collapse: collapse;
@@ -126,7 +126,7 @@
             margin-right: 25%;
             padding-left: 99px;
         }
-        .table2 td span
+        .table2 td span,.tableLeave td span
         {
             white-space: nowrap;
             font-size: 14px;
@@ -740,6 +740,9 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
+       
+                        <h4>
+                        </h4>
        
                     </h4>
                 </div>
@@ -1570,11 +1573,16 @@ function clearDisposableItems( sender , args ) {
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
-        <%--<div id="DvSingleRep" runat="server"> 
-         <div>
-            <asp:LinkButton ID="lnkLeaveReq" Text="Show Leave Requests" runat="server"></asp:LinkButton> <br />
+        <div id="DvSingleRep" runat="server"> 
+        <div>
+        <asp:UpdatePanel ID="upLeave" runat="server">
+        <ContentTemplate>
+            <asp:LinkButton ID="lnkLeaveReq" Text="Show Leave Requests" runat="server" 
+                 onclick="lnkLeaveReq_Click"></asp:LinkButton> <br />
             <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server"></asp:LinkButton>    
-         </div>--%>
+         </ContentTemplate>
+        </asp:UpdatePanel>
+        </div>
         <asp:UpdatePanel ID="upSingle" runat="server">
             <ContentTemplate>
                 <asp:Label ID="lblID" runat="server" Visible="false"></asp:Label>
@@ -1625,10 +1633,65 @@ function clearDisposableItems( sender , args ) {
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
+                
+                <br />
+                <br /><br />
+                <asp:GridView ID="grdSingleLeaveReq" runat="server" AutoGenerateColumns="false" CssClass="tableLeave">
+                <Columns>
+                   <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
+                            <ItemTemplate>
+                                <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="50" />
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
+                            <ItemTemplate>
+                                <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")+" "+Eval("lastname")%>'></asp:Label>
+                                <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("lastname")%>' Visible="false"></asp:Label>
+                                <asp:HiddenField ID="hdnPhoto" runat="server" Value='<%#Eval("photolink")%>' />
+                            </ItemTemplate>
+                            <ItemStyle Width="150" />
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Fromdate" HeaderText="From date">
+                            <ItemTemplate>
+                                <asp:Label ID="lblFromdate" runat="server" Text='<%# Bind("Fromdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="60" />
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Todate" HeaderText="To date">
+                            <ItemTemplate>
+                                <asp:Label ID="lblTodate" runat="server" Text='<%#Bind("Todate","{0:MM/dd/yyyy}") %>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="60" />
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Reason">
+                            <ItemTemplate>
+                                <asp:Label ID="lblReason" runat="server" Text='<%#Eval("Reason")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="130" />
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="ApprovedStatus" HeaderText="Approval status">
+                            <ItemTemplate>
+                                <asp:Label ID="lblApprovedStatus" runat="server" Text='<%#Eval("ApprovedStatus")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="130" />
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Notes">
+                            <ItemTemplate>
+                                <asp:Label ID="lblNotes" runat="server" Text='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "Notes"))%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="130" />
+                        </asp:TemplateField>
+                </Columns>
+                
+                </asp:GridView>
+                
+                
+                
             </ContentTemplate>
         </asp:UpdatePanel>
-      <%--  </div>--%>
-    </div>
+        </div>
+   
     <!--Loginedit popup start-->
     <cc1:ModalPopupExtender ID="mdlLoginEditPopUp" BackgroundCssClass="popupHolder" runat="server"
         PopupControlID="LoginEditPopup" TargetControlID="hdnPopLogIn" CancelControlID="lnkEditClose">
@@ -1891,9 +1954,7 @@ function clearDisposableItems( sender , args ) {
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                       <td>
-                        Old password<span class="must">*</span>
-                    </td>
-                    <td>
+                        Old password      <td>
                         <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
                     </td>
                 </tr>

@@ -203,6 +203,24 @@ namespace Attendance {
         protected global::System.Web.UI.HtmlControls.HtmlImage Photo;
         
         /// <summary>
+        /// uplvAp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel uplvAp;
+        
+        /// <summary>
+        /// lblMonthRep control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMonthRep;
+        
+        /// <summary>
         /// upSelect control.
         /// </summary>
         /// <remarks>

@@ -59,18 +59,24 @@ namespace Attendance
                         ddlLocation.Enabled = false;
                     }
 
-                    GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+
+                    DateTime StartDate = CurentDatetime.AddDays(1 - CurentDatetime.Day);
+                    ViewState["PaidStartDate"] = StartDate.ToString("MM/dd/yyyy");
+                    DateTime EndDate = StartDate.AddMonths(1).AddSeconds(-1);
+                    ViewState["PaidEndDate"] = EndDate.ToString("MM/dd/yyyy");
+
+                    GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value),StartDate,EndDate);
 
                 }
             }
         }
 
-        private void GetpaidLeavesData(int locationID)
+        private void GetpaidLeavesData(int locationID, DateTime startDt, DateTime EndDt)
         {
             try
             {
                 EmployeeBL obj = new EmployeeBL();
-                DataTable dt = obj.GetEmpPaidleavesDetailsByLocation(locationID);
+                DataTable dt = obj.GetEmpPaidleavesDetailsByLocation(locationID,startDt,EndDt);
                 if (dt.Rows.Count > 0)
                 {
                     grdUsers.DataSource = dt;
@@ -286,7 +292,9 @@ namespace Attendance
             try
             {
 
-                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
+                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
+                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value),StartDate,EndDate);
             }
             catch (Exception ex)
             {
@@ -298,7 +306,12 @@ namespace Attendance
             try
             {
                 grdUsers.EditIndex = e.NewEditIndex;
-                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                grdUsers.Rows[e.NewEditIndex].CssClass = "edit";
+                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
+                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
+               
+
+                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value),StartDate,EndDate);
             }
             catch (Exception ex)
             {
@@ -318,10 +331,11 @@ namespace Attendance
                 }
                 HiddenField hdnUserid = (HiddenField)grdUsers.Rows[e.RowIndex].FindControl("hdnUserid");
                 int PaidLeaveUserID = Convert.ToInt32(hdnUserid.Value);
-
                 TextBox txtLeavesStartDt = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtLeavesStartDt");
                 TextBox txtLevAvail = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtLeavAvailable");
-                TextBox txtMAxLevAvail = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtMaxEligible");
+                TextBox txtLeavesUsed = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtLeavesUsed");
+                TextBox txtLeavBalanced = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtLeavBalanced");
+                //TextBox txtMAxLevAvail = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtMaxEligible");
                 TextBox txtNotes = (TextBox)grdUsers.Rows[e.RowIndex].FindControl("txtNotes");
                 string timezone = "";
                 if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
@@ -333,21 +347,24 @@ namespace Attendance
                     timezone = "India Standard Time";
                 }
                 DateTime CurrentDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-                int LeaveAvail = Convert.ToInt32(txtLevAvail.Text);
-                int MaxLeaveAvail = Convert.ToInt32(txtMAxLevAvail.Text);
+                int LeaveAvail =txtLevAvail.Text==""?0:Convert.ToInt32(txtLevAvail.Text);
+               // int MaxLeaveAvail = Convert.ToInt32(txtMAxLevAvail.Text);
+                int LeavesUsed =txtLeavesUsed.Text==""?0:Convert.ToInt32(txtLeavesUsed.Text);
+                int LeavesBalanced =txtLeavBalanced.Text==""?0:Convert.ToInt32(txtLeavBalanced.Text);
                 DateTime LeavesStartDt =txtLeavesStartDt.Text==""?Convert.ToDateTime("01/01/1900"): Convert.ToDateTime(txtLeavesStartDt.Text);
-
                 string notes = txtNotes.Text.Trim() == "" ? "" : GeneralFunction.ToProperNotes(txtNotes.Text) + "<br>" + "-------------------------------------<br>" +
                                "Updated by " + Session["EmpName"].ToString().Trim() + " at " + CurrentDate + "<br>" + "***********************************" + "<br>";  
-
-               
                 int userid = Convert.ToInt32(Session["UserID"]);
-
                 String strHostName = Request.UserHostAddress.ToString();
                 string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
-                bool bnew = obj.UpdatePaidLeaveByLeaveID(LeaveAvail, MaxLeaveAvail, PaidLeaveID, userid, notes, CurrentDate,LeavesStartDt,strIp,PaidLeaveUserID);
+                bool bnew = obj.UpdatePaidLeaveByLeaveID(LeaveAvail,LeavesUsed,LeavesBalanced,PaidLeaveID, userid, notes, CurrentDate,LeavesStartDt,strIp,PaidLeaveUserID);
                 grdUsers.EditIndex = -1;
-                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+
+
+                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
+                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
+                
+                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value),StartDate,EndDate);
             }
             catch (Exception ex)
             {
@@ -359,7 +376,10 @@ namespace Attendance
             try
             {
                 grdUsers.EditIndex = -1;
-                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
+                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
+              
+                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value),StartDate,EndDate);
             }
             catch (Exception ex)
             {
@@ -369,12 +389,10 @@ namespace Attendance
         private string CreateSignInTable(string Employeename, string SignInNotes)
         {
             //SignInNotes = SignInNotes.Replace("<br>", Environment.NewLine);
-           
             string strTransaction = string.Empty;
             if (SignInNotes.Trim() != "")
             {
                 strTransaction = "<div style=\"height:143px;overflow-y:scroll;overflow-x:hidden;\">";
-
                 strTransaction += "<table class=\"noPading\"  id=\"SalesStatus\" style=\"display: table; border-collapse:collapse;  width:100%; color:#eee; \">";
                 strTransaction += "<tr id=\"CampaignsTitle1\" >";
                 strTransaction += "<td align=\"center\" colspan=\"2\" >";
@@ -405,11 +423,52 @@ namespace Attendance
             try
             {
                 grdUsers.EditIndex = -1;
-                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+
+                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
+                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
+                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate,EndDate);
             }
             catch (Exception ex)
             {
             }
         }
-    }
+
+
+
+        protected void grdUsers_RowCreated(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if (e.Row.RowType == DataControlRowType.Header)
+                {
+                    GridView HeaderGrid = (GridView)sender;
+
+                    GridViewRow HeaderGridRow = new GridViewRow(0, 0, DataControlRowType.Header, DataControlRowState.Insert);
+
+                    TableCell header = new TableCell();
+                    header.ColumnSpan = 6;
+                    header.CssClass = "bR";
+                    header.Text = "Employee Information";
+                    header.Style["text-align"] = "center";
+                    HeaderGridRow.Cells.Add(header);
+
+                    header = new TableCell();
+                    header.ColumnSpan = 7;
+                   
+                    header.Text = "Paid Leaves Information";
+                    header.Style["text-align"] = "center";
+                    HeaderGridRow.Cells.Add(header);
+                    grdUsers.Controls[0].Controls.AddAt(0, HeaderGridRow);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        
+        }
+
+
+
+
 }

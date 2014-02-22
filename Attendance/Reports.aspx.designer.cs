@@ -428,6 +428,42 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.GridView grdMonthlyAttendance;
         
         /// <summary>
+        /// DvSingleRep control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DvSingleRep;
+        
+        /// <summary>
+        /// upLeave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upLeave;
+        
+        /// <summary>
+        /// lnkLeaveReq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkLeaveReq;
+        
+        /// <summary>
+        /// lnkNewLeaveReq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkNewLeaveReq;
+        
+        /// <summary>
         /// upSingle control.
         /// </summary>
         /// <remarks>
@@ -462,6 +498,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView grdAttendanceSingle;
+        
+        /// <summary>
+        /// grdSingleLeaveReq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grdSingleLeaveReq;
         
         /// <summary>
         /// mdlLoginEditPopUp control.

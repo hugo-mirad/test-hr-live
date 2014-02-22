@@ -7,14 +7,11 @@
 <head runat="server">
 
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
-
     <link rel="stylesheet" href="css/reset.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/UI.css" />
     <link rel="stylesheet" href="css/inputs.css" type="text/css" />
     <link href="css/admin.css" rel="stylesheet" type="text/css" />
-
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
-
     <script src="js/jquery.tools.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
@@ -28,7 +25,6 @@
      }
      
     </script>
-
     <style type="text/css">
         .tooltip
         {
@@ -131,6 +127,12 @@
     </div>
     <h2 class="pageHeadding">
         Leave Approval management
+        <br />
+        <asp:UpdatePanel ID="uplvAp" runat="server">
+        <ContentTemplate>
+        <asp:Label ID="lblMonthRep" runat="server"></asp:Label>
+        </ContentTemplate>
+        </asp:UpdatePanel>
     </h2>
     <div style="display: inline-block; margin-left: 10px;">
         <asp:UpdatePanel ID="upSelect" runat="server">
@@ -240,6 +242,18 @@
                             </ItemTemplate>
                             <ItemStyle Width="150" />
                         </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Requestdate" HeaderText="Applied date">
+                            <ItemTemplate>
+                                <asp:Label ID="lblRequestdate" runat="server" Text='<%# Bind("Requestdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="60" />
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="RequestedByName" HeaderText="Applied by">
+                            <ItemTemplate>
+                                <asp:Label ID="lblRequestedByName" runat="server" Text='<%#Eval("RequestedByName")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="120" />
+                        </asp:TemplateField>
                         <asp:TemplateField SortExpression="Fromdate" HeaderText="From date">
                             <ItemTemplate>
                                 <asp:Label ID="lblFromdate" runat="server" Text='<%# Bind("Fromdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
@@ -258,17 +272,23 @@
                             </ItemTemplate>
                             <ItemStyle Width="130" />
                         </asp:TemplateField>
-                        <asp:TemplateField SortExpression="ApprovedStatus" HeaderText="Approval status">
+                         <asp:TemplateField SortExpression="ApprovedByName" HeaderText="Approved by">
+                            <ItemTemplate>
+                                <asp:Label ID="lblApprovedByName" runat="server" Text='<%#Eval("ApprovedByName")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="120" />
+                        </asp:TemplateField>
+                         <asp:TemplateField SortExpression="ApprovedStatus" HeaderText="Approved status">
                             <ItemTemplate>
                                 <asp:Label ID="lblApprovedStatus" runat="server" Text='<%#Eval("ApprovedStatus")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle Width="130" />
+                            <ItemStyle Width="60" />
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Notes">
                             <ItemTemplate>
                                 <asp:Label ID="lblNotes" runat="server" Text='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "Notes"))%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle Width="130" />
+                            <ItemStyle Width="70" />
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>

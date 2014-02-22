@@ -11,8 +11,7 @@
     <link rel="stylesheet" type="text/css" href="css/UI.css" />
     <link rel="stylesheet" href="css/inputs.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
-    
-    
+
     <!-- 
 <link href='http://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Wallpoet' rel='stylesheet' type='text/css'>
@@ -38,10 +37,7 @@
             display: block;
             background: url(../images/close.png) 0 0 no-repeat;
         }
-        
-        
-        
-        
+
         /* css for timepicker */.ui-datepicker .ui-datepicker
         {
             margin-bottom: 8px;
@@ -319,6 +315,7 @@
      function showLeaveSuccess()
      {
        alert('Leave request updated successfully');
+       $find('mdlApplyingLeave').hide();
        location.reload();
      }
 
@@ -793,7 +790,7 @@
     <div id="dvApplyingLeave" runat="server" class="popContent" style="width: 450px;
         display: none">
         <h2>
-            <asp:Label ID="Label1" Text="Applying Leave for" runat="server"></asp:Label>
+            <asp:Label ID="Label1" Text="Leave Application for" runat="server"></asp:Label>
             <asp:Label ID="Label2" runat="server"></asp:Label>
             <span class="close">
                 <asp:LinkButton ID="lnkleaveClose" runat="server"></asp:LinkButton></span>
@@ -801,25 +798,27 @@
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
-                    <td style="width: 40%; vertical-align: top;">
+                    <td style="width: 45%; vertical-align: top;">
                         <table style="border-collapse: collapse;" class="loginForm" width="100%">
                             <tr>
                                 <td>
-                                    <img src="images/defaultUSer.jpg" class="userThumb" style="width: 140px;" />
+                                    <img src="images/defaultUSer.jpg" class="userThumb" style="width: 110px;" />
                                 </td>
                             </tr>
-                            <tr id="leaveEmp" runat="server" style="display: none;">
-                                <td>
-                                    <asp:Label ID="lblLeaveEmp" runat="server" Text="EmpID  <span class='must'>*</span> (Other)"
-                                       ></asp:Label>
+                             <tr ><%--id="leaveEmp" runat="server" style="display: none;">--%>
+                                <td style="vertical-align: top">
+                                <span style="color:#A0132C;font-size: 14px;">Submitted by</span>
+                                <br />
+                                    <asp:Label ID="lblLeaveEmp" runat="server" Text="My EmpID  <span class='must'>*</span> "></asp:Label>
+                                       
                                     <br />
-                                    <asp:TextBox ID="txtLeaveEmpID" runat="server"  Style="width: 140px;"></asp:TextBox>
+                                    <asp:TextBox ID="txtLeaveEmpID" runat="server"  Style="width: 150px;"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Pass code<span class="must">*</span> (Other)<br />
-                                    <asp:TextBox ID="txtLeavePassCode" runat="server" TextMode="Password" Style="width: 140px;"></asp:TextBox>
+                                    My Pass code<span class="must">*</span> <br />
+                                    <asp:TextBox ID="txtLeavePassCode" runat="server" TextMode="Password" Style="width: 150px;"></asp:TextBox>
                                 </td>
                             </tr>
                         </table>
@@ -831,11 +830,11 @@
                         <table style="border-collapse: collapse;" class="loginForm">
                             <tr>
                                 <td style="vertical-align: top">
-                                    <div style="float: right; padding-right: 12px;">
+                                    <%--<div style="float: right; padding-right: 12px;">
                                         <label class="rdLabel"><input type="radio" id="rdSelf" name="LeaveIdentity" runat="server" value="Self" checked="true"  />Self</label>
                                         <label class="rdLabel"><input type="radio" id="rdOther" name="LeaveIdentity" runat="server" value="Other" />Other</label>
-                                    </div>
-                                    <br />
+                                    </div>--%>
+                                    <%--<br />--%>
                                     From date <span class="must">*</span><br />
                                     <asp:TextBox ID="txtFromDt" runat="server" Style="width: 223px;"></asp:TextBox>
                                     
@@ -850,7 +849,7 @@
                             <tr>
                                 <td>
                                     Reason <span class="must">*</span><br />
-                                    <asp:TextBox ID="txtReason" runat="server" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                                    <asp:TextBox ID="txtReason" runat="server" TextMode="MultiLine" Rows="7"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>

@@ -858,8 +858,8 @@ namespace Attendance
                                         switch (GetDay)
                                         {
                                             case DayOfWeek.Sunday:
-                                                dtAttandence.Rows[j]["SunSignIn"] = "D";
-                                                dtAttandence.Rows[j]["SunSignOut"] = "D";
+                                                dtAttandence.Rows[j]["SunSignIn"] = "S";
+                                                dtAttandence.Rows[j]["SunSignOut"] = "S";
                                                 dtAttandence.Rows[j]["SunHrs"] = "";
                                                 break;
 
@@ -920,7 +920,7 @@ namespace Attendance
 
                             }
 
-                            else if (dtLeave.Rows.Count > 0)
+                             if (dtLeave.Rows.Count > 0)
                             {
                                 DateTime startDate = StartDate;
                                 DateTime nextdate = NextDate;
@@ -1001,7 +1001,7 @@ namespace Attendance
                             }
 
 
-                            else if (dtHoliday.Rows.Count > 0)
+                            if (dtHoliday.Rows.Count > 0)
                             {
                                 DateTime startDate = StartDate;
                                 DateTime nextdate = NextDate;
@@ -1016,8 +1016,8 @@ namespace Attendance
                                         switch (GetDay)
                                         {
                                             case DayOfWeek.Sunday:
-                                                dtAttandence.Rows[j]["SunSignIn"] = "D";
-                                                dtAttandence.Rows[j]["SunSignOut"] = "D";
+                                                dtAttandence.Rows[j]["SunSignIn"] = "S";
+                                                dtAttandence.Rows[j]["SunSignOut"] = "S";
                                                 dtAttandence.Rows[j]["SunHrs"] = "";
                                                 break;
 
@@ -1967,7 +1967,7 @@ namespace Attendance
                         lblThuOut.ForeColor = System.Drawing.Color.Black;
                     }
                     LinkButton lblFriIn = (LinkButton)e.Row.FindControl("lblFriIn");
-                    lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text == "H" ? "H" : lblFriIn.Text == "L" ? "L" : Convert.ToDateTime(lblFriIn.Text).ToString("hh:mm");
+                    lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text == "H" ? "H" : lblFriIn.Text == "L" ? "L" : Convert.ToDateTime(lblFriIn.Text).ToString("hh:mm tt");
 
                     if (lblFriIn.Text == "")
                     {
@@ -2115,7 +2115,7 @@ namespace Attendance
 
 
                     LinkButton lblSunIn = (LinkButton)e.Row.FindControl("lblSunIn");
-                    lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "D" ? "D" : lblSunIn.Text == "L" ? "" : Convert.ToDateTime(lblSunIn.Text).ToString("hh:mm tt");
+                    lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : Convert.ToDateTime(lblSunIn.Text).ToString("hh:mm tt");
                     if (lblSunIn.Text == "")
                     {
                         if ((Convert.ToDateTime(ViewState["SunDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SunDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
@@ -2163,14 +2163,14 @@ namespace Attendance
                     lblSunIn.Attributes.Add("sMultiple", sSunMultiple);
                     lblSunIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["SunDate"].ToString()).ToString("MM/dd/yyyy"));
                     LinkButton lblSunOut = (LinkButton)e.Row.FindControl("lblSunOut");
-                    lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "D" ? "D" : lblSunIn.Text == "L" ? "" : lblSunIn.Text + (lblSunOut.Text == "" ? "" : lblSunOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblSunOut.Text).ToString("hh:mm tt"));
+                    lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : lblSunIn.Text + (lblSunOut.Text == "" ? "" : lblSunOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblSunOut.Text).ToString("hh:mm tt"));
                     if (lblSunOut.Text == "")
                     {
                         if ((Convert.ToDateTime(ViewState["SunDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SunDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
                         {
                             if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
                             {
-                                lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "D" ? "D" : lblSunIn.Text == "L" ? "" : lblSunIn.Text + " - N/A";
+                                lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : lblSunIn.Text + " - N/A";
                             }
 
                         }
@@ -3583,7 +3583,7 @@ namespace Attendance
                     }
 
                     Label lblSignIn = (Label)e.Row.FindControl("lblSignIn");
-                    lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "D" ? "D" : Convert.ToDateTime(lblSignIn.Text).ToString("hh:mm tt");
+                    lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "S" ? "S" : Convert.ToDateTime(lblSignIn.Text).ToString("hh:mm tt");
 
                     HiddenField hdnSignInFlag = (HiddenField)e.Row.FindControl("hdnSignInFlag");
                     if (hdnSignInFlag.Value == "True")
@@ -3598,7 +3598,7 @@ namespace Attendance
                     }
 
                     Label lblSignOut = (Label)e.Row.FindControl("lblSignOut");
-                    lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "D" ? "D" : (lblSignIn.Text + " - " + (lblSignOut.Text == "" ? "" : lblSignOut.Text == "N/A" ? "N/A" : lblSignOut.Text == "L" ? "" : lblSignOut.Text == "H" ? "" : lblSignOut.Text == "D" ? "" : Convert.ToDateTime(lblSignOut.Text).ToString("hh:mm tt")));
+                    lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "S" ? "S" : (lblSignIn.Text + " - " + (lblSignOut.Text == "" ? "" : lblSignOut.Text == "N/A" ? "N/A" : lblSignOut.Text == "L" ? "" : lblSignOut.Text == "H" ? "" : lblSignOut.Text == "S" ? "" : Convert.ToDateTime(lblSignOut.Text).ToString("hh:mm tt")));
                
                     HiddenField hdnSigninNotes = (HiddenField)e.Row.FindControl("hdnSigninNotes");
                     HiddenField hdnMultiple = (HiddenField)e.Row.FindControl("hdnMultiple");
@@ -3737,8 +3737,8 @@ namespace Attendance
                                     {
                                         if (startDate.DayOfWeek.ToString() == "Sunday")
                                         {
-                                            dtAttandence.Rows[i]["SignIn"] = "D";
-                                            dtAttandence.Rows[i]["SignOut"] = "D";
+                                            dtAttandence.Rows[i]["SignIn"] = "S";
+                                            dtAttandence.Rows[i]["SignOut"] = "S";
                                             dtAttandence.Rows[i]["Hrs"] = "";
                                         }
                                         else
@@ -3808,8 +3808,8 @@ namespace Attendance
                                 {
                                     if (startDate.DayOfWeek.ToString() == "Sunday")
                                     {
-                                        dtAttandence.Rows[i]["SignIn"] = "D";
-                                        dtAttandence.Rows[i]["SignOut"] = "D";
+                                        dtAttandence.Rows[i]["SignIn"] = "S";
+                                        dtAttandence.Rows[i]["SignOut"] = "S";
                                         dtAttandence.Rows[i]["Hrs"] = "";
                                     }
                                     else
@@ -5108,8 +5108,15 @@ namespace Attendance
                     }
 
                 }
-                //  GetReportAdmin(StartDate, EndDate, LocationID);
-                Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
+                DataTable ds = GetReport(StartDate, EndDate, Convert.ToInt32(Session["UserID"]));
+                Session["AtnDetails"] = ds;
+                grdAttandence.DataSource = ds;
+                grdAttandence.DataBind();
+                grdAttendanceSingle.DataSource = null;
+                grdAttendanceSingle.DataBind();
+                grdMonthlyAttendance.DataSource = null;
+                grdMonthlyAttendance.DataBind();
+                //Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
 
 
                 mdlMultipleEditEditPopUp.Hide();
@@ -5119,6 +5126,25 @@ namespace Attendance
 
             }
 
+
+        }
+
+        protected void lnkLeaveReq_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EmployeeBL obj = new EmployeeBL();
+                DateTime startDate = Convert.ToDateTime(Session["TodayDate"]);
+                DateTime endDate = startDate.AddDays(7);
+
+                DataTable ds = obj.GetLeaveRequestDetByUserID(Convert.ToInt32(Session["UserID"]),startDate,endDate);
+                grdSingleLeaveReq.DataSource = ds;
+                grdSingleLeaveReq.DataBind();
+                
+            }
+            catch (Exception ex)
+            {
+            }
 
         }
     }

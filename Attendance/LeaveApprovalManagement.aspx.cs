@@ -36,7 +36,6 @@ namespace Attendance
 
                     }
                     DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-
                     var CurentDatetime = ISTTime;
 
                     lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
@@ -46,9 +45,6 @@ namespace Attendance
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
 
-
-                    
-
                     DateTime startdate = Convert.ToDateTime(CurentDatetime.ToString("MM/dd/yyyy")).AddDays(1 - Convert.ToDateTime(CurentDatetime.ToString("MM/dd/yyyy")).Day);
                     DateTime Enddate=startdate.AddMonths(1).AddSeconds(-1);
 
@@ -57,10 +53,19 @@ namespace Attendance
                     ViewState["CurrentMonth"] = startdate;
                     int AppovedStatusID = 0;
 
-
                     GetStatus();
                     GetLeavesDetails(lblLocation.Text, startdate, Enddate, AppovedStatusID);
+                    if (startdate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentMonth"]).ToString("MM/dd/yyyy"))
+                    {
+                        btnNext.CssClass = "btn btn-danger btn-small disabled";
+                        btnNext.Enabled = false;
+                    }
+                    else
+                    {
+                        btnNext.CssClass = "btn btn-danger btn-small enabled";
+                        btnNext.Enabled = true;
 
+                    }
                 }
             }
         }
@@ -95,6 +100,7 @@ namespace Attendance
 
                     grdUsers.DataSource = dt;
                     grdUsers.DataBind();
+                    lblMonthRep.Text = "(" + startdate.ToString("MM/dd/yyyy") + " - " + Enddate.ToString("MM/dd/yyyy") + ")";
                     Session["AllLeaveRequestData"] = dt;
                     lblError.Visible = false;
                 }
@@ -115,7 +121,6 @@ namespace Attendance
         {
             try
             {
-
                 txtOldpwd.Text = "";
                 txtNewPwd.Text = "";
                 lblPwdName.Text = Session["EmpName"].ToString().Trim();
@@ -142,7 +147,6 @@ namespace Attendance
                 int userid = Convert.ToInt32(Session["UserID"]);
                 string oldPwd = txtOldpwd.Text.Trim();
                 string NewPwd = txtNewPwd.Text.Trim();
-
                 Attendance.BAL.EmployeeBL obj = new EmployeeBL();
                 bool bnew = obj.UpdatePasswordByUserID(userid, oldPwd, NewPwd);
                 if (bnew)
@@ -170,7 +174,6 @@ namespace Attendance
                 int userid = Convert.ToInt32(Session["UserID"]);
                 string oldPasscode = txtOldpasscode.Text.Trim();
                 string NewPasscode = txtNewPasscode.Text.Trim();
-
                 Attendance.BAL.EmployeeBL obj = new EmployeeBL();
                 bool bnew = obj.UpdatePasscodeByUserID(userid, oldPasscode, NewPasscode);
                 if (bnew)
@@ -181,7 +184,6 @@ namespace Attendance
                     mdlChangePasscode.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Passcode changed successfully..');", true);
                 }
-
             }
             catch (Exception ex)
             {
@@ -321,8 +323,8 @@ namespace Attendance
                     DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
 
                     int LeaveID = Convert.ToInt32(recordID[i]);
-                    string notes = txtLeaveNotes.Text.Trim() == "" ? "" : GeneralFunction.ToProperNotes(txtLeaveNotes.Text) + "<br>" + "-----------------------------------<br>" +
-                                   "Updated by " + Session["EmpName"].ToString().Trim() + " at " + ISTTime + "<br>" + "******************************<br>";  
+                    string notes = txtLeaveNotes.Text.Trim() == "" ? "" : GeneralFunction.ToProperNotes(txtLeaveNotes.Text) + "<br>" + " <br>" +
+                                  ddlLeaveApprove.SelectedItem.Text+" by " + Session["EmpName"].ToString().Trim() + " at " + ISTTime + "<br>" + "------------------------------------<br>";  
                         
                     int ApprovedStatusID = Convert.ToInt32(ddlLeaveApprove.SelectedValue);
                     int ApprovedBy = Convert.ToInt32(Session["UserID"]);
@@ -364,9 +366,6 @@ namespace Attendance
                     btnNext.Enabled = true;
 
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -394,8 +393,6 @@ namespace Attendance
                     btnNext.Enabled = true;
 
                 }
-
-
 
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
                 GetLeavesDetails(lblLocation.Text, CurrentStart, CurrentEnd, StatusID);

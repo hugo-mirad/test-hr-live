@@ -132,6 +132,7 @@ h2 .close a
             margin-left: 10px;
             margin-right: 25%;
             padding-left: 99px;
+            
         }
         .table2 td span
         {
@@ -710,7 +711,7 @@ div.picker div.header span { color:#fff;  }
 .atnHoliday a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
 
 .atnUnLeave{ background:#F7CC7D; text-align:center;}
-.atnUnLeave a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
+.atnUnLeave a{ color:#333; font-weight:bold; font-size:11px; text-align:center;text-transform: lowercase }
 
 .atnLeave{ background:#BDF3BD; text-align:center;}
 .atnLeave a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
@@ -731,4 +732,30 @@ div.picker div.header span { color:#fff;  }
 */
 
 
+.editGrid input[type=text],
+.editGrid input[type=pasword],
+.editGrid select,
+.editGrid textarea{ padding:0; margin:0; border:0; position:relative; min-width:100%; line-height:5px; font-size:10px; width:100%; height:auto; max-height:17px; border-radius:0; box-shadow:none; background:none; }
+
+
+.editGrid tr.edit{ background:#F8FAC4; }
+.editGrid tr.edit td input[type=text],.editGrid tr.edit td input[type=pasword],
+.editGrid tr.edit td select,
+.editGrid tr.edit td textarea
+{  border: #949494 1px solid; background: #FFF;}
+.editGrid tr.edit td{ padding:0px;}
+
+.Editlabel{ display:block; width:100%; height:15px; cursor:pointer; }
+.editInput input{ display:none; min-width:100%; background:#fff; color:#222; border:none; padding:0; margin:0; line-height:18px; height:18px; font-size:10px;}
+.editInput input:focus{  border-radius:0; box-shadow:inset 0 0 2px #000}
+.table1 td.editInput{ padding:0; }
+
+.table1 td.hide, .table1 th.hide{ display:none; }
+
+/*
+.editGrid input[type=text]:focus,
+.editGrid input[type=pasword]:focus,
+.editGrid select:focus,
+.editGrid textarea:focus{ border:#222 1px solid; }
+*/
 

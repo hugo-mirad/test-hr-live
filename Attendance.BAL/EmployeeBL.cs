@@ -34,7 +34,6 @@ namespace Attendance.BAL
             }
             return success;
         }
-
         public bool UpdatePasscodeByUserID(int userid, string oldpasscode, string newpasscode)
         {
             bool success = false;
@@ -59,7 +58,6 @@ namespace Attendance.BAL
             }
             return success;
         }
-
         public bool ResetPasscodeByAdmin(int userid, string ip, string newpasscode,DateTime currentDate,string EmpID)
         {
             bool success = false;
@@ -84,8 +82,6 @@ namespace Attendance.BAL
             }
             return success;
         }
-
-
         public bool ResetPassWordByAdmin(int userid, string ip, string newPwd, DateTime currentDate, string EmpID)
         {
             bool success = false;
@@ -110,7 +106,6 @@ namespace Attendance.BAL
             }
             return success;
         }
-
         public DataTable GetEmployyeDetailsByUserID(int userid)
         {
             DataSet ds = new DataSet();
@@ -224,7 +219,7 @@ namespace Attendance.BAL
             }
             return success;
         }
-        public DataTable GetEmpPaidleavesDetailsByLocation(int location)
+        public DataTable GetEmpPaidleavesDetailsByLocation(int location,DateTime StartDt,DateTime EndDt)
         {
             DataSet ds = new DataSet();
 
@@ -233,21 +228,19 @@ namespace Attendance.BAL
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
                 SqlCommand cmd = new SqlCommand();
                 SqlDataAdapter da = new SqlDataAdapter("[Usp_GetPaidLeaveDetailsByLocation]", con);
-
+                da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDt));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", location));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
-
                 DataTable dt = ds.Tables[0];
-
             }
             catch (Exception ex)
             {
             }
-
             return ds.Tables[0];
         }
-        public bool UpdatePaidLeaveByLeaveID(int LeaveAvail, int Maxleave, int paildLeavID,int Enterby, string notes, DateTime CurrentDt,DateTime paidLvsStartDt,string IP,int PaidLeaveUserID)
+        public bool UpdatePaidLeaveByLeaveID(int LeaveAvail,int LeavesUsed,int LeavesBalanced,int paildLeavID,int Enterby, string notes, DateTime CurrentDt,DateTime paidLvsStartDt,string IP,int PaidLeaveUserID)
         {
             bool success = false;
             try
@@ -260,7 +253,9 @@ namespace Attendance.BAL
                 command.Parameters.Add("@LeaveAvail", SqlDbType.Int).Value = LeaveAvail;
                 command.Parameters.Add("@CurrentDt", SqlDbType.DateTime).Value = CurrentDt;
                 command.Parameters.Add("@paidLvsStartDt", SqlDbType.DateTime).Value = paidLvsStartDt;
-                command.Parameters.Add("@MaxLeave", SqlDbType.Int).Value = Maxleave;
+                //command.Parameters.Add("@MaxLeave", SqlDbType.Int).Value = Maxleave;
+                command.Parameters.Add("@LeaveUsed", SqlDbType.Int).Value = LeavesUsed;
+                command.Parameters.Add("@LeaveBalanced", SqlDbType.Int).Value = LeavesBalanced;
                 command.Parameters.Add("@Notes", SqlDbType.VarChar).Value = notes;
                 command.Parameters.Add("@PaidLeaveID", SqlDbType.Int).Value = paildLeavID;
                 command.Parameters.Add("@EnterBY", SqlDbType.Int).Value = Enterby;
@@ -356,6 +351,30 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-    
+        public DataTable GetLeaveRequestDetByUserID(int userid,DateTime startdate,DateTime endDate)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetLeaveRequestsByUserid]", con);
+
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Startdate", startdate));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Enddate", endDate));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
     }
 }

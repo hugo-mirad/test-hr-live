@@ -811,5 +811,51 @@ namespace Attendance.BAL
                 return ds;
             }
 
+            public int SaveAttendanceHistory(Attendance.Entities.AttendenceInfo objInfo)
+            {
+                DataSet ds = new DataSet();
+                int AtnLogID = 0;
+                try
+                {
+                    SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                    SqlCommand cmd = new SqlCommand();
+                    SqlDataAdapter da = new SqlDataAdapter("[USP_SaveEmpAttendanceHistory]", con);
+
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@userid", objInfo.Userid));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Wkgdays", objInfo.WorkingDays));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Atndays", objInfo.AttendDays));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Leaves", objInfo.Leaves));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Noshow", objInfo.NoShow));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@PaidLeaves", objInfo.PaidLeaves));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@PaidLeavesUsed", objInfo.PaidLeavesUsed));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@PaidLeavesBalanced", objInfo.PaidLeavesBalanced));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@TotalCalLeaves", objInfo.TotalCalLeaves1));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@EnteredDate", objInfo.EnterDate));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@EnterBy", objInfo.EnterBy));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@month", objInfo.Mnth));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@year", objInfo.Yr));
+
+
+                    da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    da.Fill(ds);
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            AtnLogID = Convert.ToInt32(ds.Tables[0].Rows[0]["AtnLogID"].ToString());
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                }
+                return AtnLogID;
+            }
+
+
+
+
     }
 }

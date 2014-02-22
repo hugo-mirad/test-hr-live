@@ -142,7 +142,7 @@ $(function() {
             
              $('#txtFromDt').datepicker({	        
 	            minDate: se,
-	            maxDate: 30
+	            maxDate: 90
             });            
             
         })       
@@ -160,21 +160,21 @@ $(function() {
             
             $('#txtToDt').datepicker({	        
                 minDate: $('#txtFromDt').val(),
-                maxDate: 30
+                maxDate: 90
             });
             
         }) 
         
         
-         $('input[name=LeaveIdentity]:radio').live('change', function(){
-            $('#leaveEmp #txtLeaveEmpID').val('');
-            
-            if($('#rdSelf').is(':checked')){           
-                $('#leaveEmp').hide();                
-            }else{
-                 $('#leaveEmp').show();                
-            }
-        });
+//         $('input[name=LeaveIdentity]:radio').live('change', function(){
+//            $('#leaveEmp #txtLeaveEmpID').val('');
+//            
+//            if($('#rdSelf').is(':checked')){           
+//                $('#leaveEmp').hide();                
+//            }else{
+//                 $('#leaveEmp').show();                
+//            }
+//        });
         
         
         // --------------------------------------- Leave form Defaults and events  End ------------------
@@ -516,7 +516,7 @@ $(function() {
         
         
          $('#dvApplyingLeave h2').html('<span>APPLYING LEAVE FOR </span>' + dropped.find('input:eq(0)').val())
-        $('#lblLOError').text('');
+       
         $('#dvApplyingLeave #hdnLeaveUserID').val(dropped.find('input:eq(1)').val())
         
         var path = $.trim(dropped.find('img').attr('src'));
@@ -526,6 +526,13 @@ $(function() {
         } else {
             $('#dvApplyingLeave .userThumb').attr('src', 'images/defaultUSer.jpg');
         }        
+        
+        var CurnDate = new Date($.trim($('#lblDate2').text()));
+        CurnDate = CurnDate.getMonth()+1+"/"+CurnDate.getDate()+"/"+CurnDate.getFullYear();
+        
+        $('#txtFromDt').val(CurnDate);
+         $('#txtToDt').val(CurnDate);
+         $('#lblLeaveError').val('')
         $find('mdlApplyingLeave').show();
         
         
