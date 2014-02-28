@@ -855,7 +855,131 @@ namespace Attendance.BAL
             }
 
 
+            public bool SaveSalaryHistory(Attendance.Entities.SalaryInfo objInfo)
+            {
+                DataSet ds = new DataSet();
+                bool success = false;
+                try
+                {
+                    SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                    SqlCommand cmd = new SqlCommand();
+                    SqlDataAdapter da = new SqlDataAdapter("[USP_SaveEmpSalaryHistory]", con);
+
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@AtnLogID", objInfo.AtnLogID));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@CalSalary", objInfo.CalSalary));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Bonus", objInfo.Bonus));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Incentives", objInfo.Incentives));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@PrevUnpaid", objInfo.PrevUnpaid));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Advancepaid", objInfo.AdvancePaid));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@ExpensesRecieved", objInfo.Expenses));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@LoanDeduct", objInfo.LoanDeduct));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@TotalPay", objInfo.TotalPay));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@EnteredDate", objInfo.EnteredDate));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@EnterBy", objInfo.EnterBy));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Month", objInfo.Mnth));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@Year", objInfo.Years));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@InternalNotes", objInfo.InternalNotes));
 
 
+                    da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    da.Fill(ds);
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            success = true;
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                }
+                return success;
+            }
+
+            public bool FinalizePayrollReport(int LocationID, DateTime startDate,int enterBy)
+            {
+                
+                    bool success = false;
+                    try
+                    {
+                        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                        con.Open();
+                        SqlCommand command = new SqlCommand("[USP_UpdateFinalizePayrollData]", con);
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.Add("@locationID", SqlDbType.Int).Value = LocationID;
+                        command.Parameters.Add("@startDate", SqlDbType.DateTime).Value = startDate;
+                        command.Parameters.Add("@enterBy", SqlDbType.Int).Value = enterBy;
+
+                        command.ExecuteNonQuery();
+                        con.Close();
+                        success = true;
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    return success;
+                }
+
+            public bool UpdatePaidLeavesDetAfterFinalPayroll(Attendance.Entities.AttendenceInfo objInfo, DateTime CurrentDt,string ip)
+            {
+
+                bool success = false;
+                try
+                {
+                    SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                    con.Open();
+                    SqlCommand command = new SqlCommand("[USP_PettycashDetails]", con);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add("@IPAddress", SqlDbType.VarChar).Value = ip;
+                    command.Parameters.Add("@LeaveAvail", SqlDbType.Int).Value = objInfo.PaidLeaves;
+                    command.Parameters.Add("@CurrentDt", SqlDbType.DateTime).Value = CurrentDt;
+                    command.Parameters.Add("@LeaveUsed", SqlDbType.Int).Value = objInfo.PaidLeavesUsed;
+                    command.Parameters.Add("@LeaveBalanced", SqlDbType.Int).Value = objInfo.PaidLeavesBalanced;
+                    command.Parameters.Add("@EnterBY", SqlDbType.Int).Value = objInfo.EnterBy ;
+                    command.Parameters.Add("@PaidLeaveUserID", SqlDbType.Int).Value = objInfo.Userid;
+                    command.Parameters.Add("@EnteredBy", SqlDbType.Int).Value = objInfo.EnterBy;
+
+                    command.Parameters.Add("@EnterDt", SqlDbType.DateTime).Value = objInfo.EnterDate;
+                    command.ExecuteNonQuery();
+                    con.Close();
+                    success = true;
+                }
+                catch (Exception ex)
+                {
+                }
+                return success;
+            }
+
+            public bool GetFinalPayrollDate(DateTime MonthStart, int LocationID)
+            {
+                bool Count = false;
+                DataSet ds = new DataSet();
+                try
+                {
+                    SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                    SqlCommand cmd = new SqlCommand();
+                    SqlDataAdapter da = new SqlDataAdapter("[USP_GetFinalPayrollDate]", con);
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@startDate", MonthStart));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", LocationID));
+                    da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    da.Fill(ds);
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            Count = true;
+                        }
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                }
+                return Count;
+            }
     }
 }

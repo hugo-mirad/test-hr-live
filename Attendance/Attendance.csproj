@@ -136,8 +136,10 @@
     <Content Include="LeaveManagement.aspx" />
     <Content Include="Manage.aspx" />
     <Content Include="ManagersReport.aspx" />
+    <Content Include="myxml.xml" />
     <Content Include="PayRoll.aspx" />
     <Content Include="PayRollDownLoad.aspx" />
+    <Content Include="PayslipTemplate\payslip.txt" />
     <Content Include="PettyCashManagement.aspx" />
     <Content Include="Photos\Abdul-Samad%28Network-Engg%29.jpg" />
     <Content Include="Photos\AlexJr.Sales-Executive.jpg" />
@@ -452,7 +454,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>54885</DevelopmentServerPort>
+          <DevelopmentServerPort>53273</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

@@ -240,7 +240,30 @@ namespace Attendance.BAL
             }
             return ds.Tables[0];
         }
-        public bool UpdatePaidLeaveByLeaveID(int LeaveAvail,int LeavesUsed,int LeavesBalanced,int paildLeavID,int Enterby, string notes, DateTime CurrentDt,DateTime paidLvsStartDt,string IP,int PaidLeaveUserID)
+
+        public DataTable Usp_GetEmployeePayrollDataByLocation(int location, DateTime StartDt, DateTime EndDt)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[Usp_GetEmployeePayrollDataByLocation]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDt));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", location));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+            }
+            return ds.Tables[0];
+        }
+
+        public bool UpdatePaidLeaveByLeaveID(int LeaveAvail,int LeavesUsed,int LeavesBalanced,int paildLeavID,int Enterby, string notes, DateTime CurrentDt,DateTime paidLvsStartDt,string IP,int PaidLeaveUserID,DateTime EnterDate)
         {
             bool success = false;
             try
@@ -253,7 +276,7 @@ namespace Attendance.BAL
                 command.Parameters.Add("@LeaveAvail", SqlDbType.Int).Value = LeaveAvail;
                 command.Parameters.Add("@CurrentDt", SqlDbType.DateTime).Value = CurrentDt;
                 command.Parameters.Add("@paidLvsStartDt", SqlDbType.DateTime).Value = paidLvsStartDt;
-                //command.Parameters.Add("@MaxLeave", SqlDbType.Int).Value = Maxleave;
+                command.Parameters.Add("@EnterDt", SqlDbType.DateTime).Value = EnterDate;
                 command.Parameters.Add("@LeaveUsed", SqlDbType.Int).Value = LeavesUsed;
                 command.Parameters.Add("@LeaveBalanced", SqlDbType.Int).Value = LeavesBalanced;
                 command.Parameters.Add("@Notes", SqlDbType.VarChar).Value = notes;

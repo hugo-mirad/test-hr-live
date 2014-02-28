@@ -346,6 +346,8 @@ namespace Attendance
                 {
                     timezone = "India Standard Time";
                 }
+
+                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
                 DateTime CurrentDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                 int LeaveAvail =txtLevAvail.Text==""?0:Convert.ToInt32(txtLevAvail.Text);
                // int MaxLeaveAvail = Convert.ToInt32(txtMAxLevAvail.Text);
@@ -357,13 +359,10 @@ namespace Attendance
                 int userid = Convert.ToInt32(Session["UserID"]);
                 String strHostName = Request.UserHostAddress.ToString();
                 string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
-                bool bnew = obj.UpdatePaidLeaveByLeaveID(LeaveAvail,LeavesUsed,LeavesBalanced,PaidLeaveID, userid, notes, CurrentDate,LeavesStartDt,strIp,PaidLeaveUserID);
+                bool bnew = obj.UpdatePaidLeaveByLeaveID(LeaveAvail, LeavesUsed, LeavesBalanced, PaidLeaveID, userid, notes, StartDate, LeavesStartDt, strIp, PaidLeaveUserID, CurrentDate);
                 grdUsers.EditIndex = -1;
-
-
-                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
-                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
                 
+                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
                 GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value),StartDate,EndDate);
             }
             catch (Exception ex)
