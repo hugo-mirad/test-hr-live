@@ -399,5 +399,24 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
+
+        public DataTable GetYear()
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetYear]", con);
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
     }
 }

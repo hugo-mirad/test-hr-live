@@ -22,7 +22,7 @@ namespace Attendance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["LocationName"] != null)
+            if (Session["IsAdmin"] != null && Session["UserID"] != null)
             {
            
                 if (!IsPostBack)

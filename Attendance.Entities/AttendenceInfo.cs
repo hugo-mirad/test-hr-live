@@ -15,6 +15,10 @@ namespace Attendance.Entities
             set { workingDays = value; }
         }
 
+
+      
+
+
         private float attendDays;
 
         public float AttendDays

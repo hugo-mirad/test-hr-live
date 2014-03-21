@@ -1,48 +1,72 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="LeaveApprovalManagement.aspx.cs"
-    Inherits="Attendance.LeaveApprovalManagement" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="VariableSchdeulemgmt.aspx.cs"
+    Inherits="Attendance.VariableSchdeulemgmt" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-
-    <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+    <title>Untitled Page</title>
+    <!-- <script src="js/overlibmws.js" type="text/javascript"></script>  -->
     <link rel="stylesheet" href="css/reset.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/UI.css" />
     <link rel="stylesheet" href="css/inputs.css" type="text/css" />
+    <!-- <link rel="stylesheet" href="css/style.css" type="text/css" /> -->
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="css/admin.css" rel="stylesheet" type="text/css" />
-    <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
-    <script src="js/jquery.tools.min.js" type="text/javascript"></script>
 
-    <script type="text/javascript">
-      $(window).load(function(){
-       $('[rel=tooltip]').tooltip();
-      });
-     
-     function pageLoad()
-     {
-       $('[rel=tooltip]').tooltip();
-     }
-     
+    <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+
+    <script src="js/jquery-ui.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+
+    <script type="text/javascript" src="js/jquery-ui-sliderAccess.js"></script>
+
+    <script type="text/javascript" language="javascript">
+    $(function(){  
+            $('.chkAll').live('change',function(){
+                if($('#dvVariable').css('display')=="block")
+                 {
+                  if($(this).is(':checked')){
+                   $('#grdVariable input[type=checkbox]:not(.chkAll)').each(function(){
+                        $(this).attr('checked',true);
+                   })
+                   }else{
+                    $('#grdVariable input[type=checkbox]:not(.chkAll)').each(function(){
+                        $(this).removeAttr('checked');
+                   })
+                 }
+                }
+                else if($('#dvDefault').css('display')=="block"){
+                  if($(this).is(':checked')){
+                    $('#grdDefault input[type=checkbox]:not(.chkAll)').each(function(){
+                        $(this).attr('checked',true);
+                   })
+                   }else{
+                    $('#grdDefault input[type=checkbox]:not(.chkAll)').each(function(){
+                        $(this).removeAttr('checked');
+                   })
+                  }
+                   
+                }
+            })
+    })
+    
     </script>
-    <style type="text/css">
-        .tooltip
-        {
-            display: none;
-            background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
-            font-size: 12px;
-            height: 167px;
-            width: 320px;
-            padding: 25px;
-            color: #EEE;
-        }
-    </style>
-    <title>Untitled Page</title>
+
 </head>
 <body>
     <form id="form1" runat="server">
     <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server">
     </cc1:ToolkitScriptManager>
+    <%-- <div id="spinner">
+        <h4>
+            <div>
+                Processing
+                <img src="images/loading.gif" />
+            </div>
+        </h4>
+    </div>--%>
     <div class="headder">
         <a href="#" class="logo">
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
@@ -91,20 +115,18 @@
                                             </asp:UpdatePanel>
                                         </li>
                                         <li>
-                                            <asp:UpdatePanel ID="UpdatePanel13" runat="server">
+                                            <asp:UpdatePanel ID="UpPasscode" runat="server">
                                                 <ContentTemplate>
                                                     <asp:LinkButton runat="server" ID="lnkChangePasscode" Text="Change Passcode" OnClick="lnkChangePasscode_Click"></asp:LinkButton>
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                         </li>
-                                        
                                     </ul>
                                 </li>
                             </ul>
                             <!-- Show Clock Start  -->
                             <div class="tDate">
                                 <asp:Label ID="lblDate2" runat="server" Style="display: none"></asp:Label>
-                                <asp:HiddenField ID="hdnTodaydt" runat="server" />
                                 <%--  <asp:Label ID="lblPrevTime" runat="server" Text=""></asp:Label>--%>
                                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px; float: left; display: inline-block">
                                 </span>
@@ -118,6 +140,7 @@
                             <!-- Show Clock End  -->
                         </td>
                         <td style="vertical-align: top; width: 35px;">
+                            <%-- <asp:Image ID="Image1" runat="server" ImageUrl="Photos/defaultUSer.jpg" />--%>
                             <img src="Photos/defaultUSer.jpg" class="topPic" runat="server" id="Photo" />
                         </td>
                     </tr>
@@ -126,180 +149,165 @@
         </div>
     </div>
     <h2 class="pageHeadding">
-        Leave Approval management
-        <br />
-        <asp:UpdatePanel ID="uplvAp" runat="server">
-        <ContentTemplate>
-        <asp:Label ID="lblMonthRep" runat="server" CssClass="lbl"></asp:Label>
-        </ContentTemplate>
-        </asp:UpdatePanel>
+        Variable schedule management
     </h2>
-    <div style="display: inline-block; margin-left: 10px;">
-        <asp:UpdatePanel ID="upSelect" runat="server">
+    <div style="display: inline-block;">
+        <asp:UpdatePanel ID="up2" runat="server">
             <ContentTemplate>
-                <b>Status </b>&nbsp;&nbsp;
-                <asp:DropDownList ID="ddlSelect" runat="server" Width="83px" Height="23px" OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged"
-                    AppendDataBoundItems="true" AutoPostBack="true">
-                    <asp:ListItem Value="0">All</asp:ListItem>
+                <b>Schdeule type</b> &nbsp;<asp:DropDownList ID="ddlScheduleType" runat="server"
+                    AutoPostBack="true" Width="83px" Height="23px" OnSelectedIndexChanged="ddlScheduleType_SelectedIndexChanged">
+                    <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                    <asp:ListItem Text="Default" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="Variable" Value="2"></asp:ListItem>
                 </asp:DropDownList>
-                <asp:Button ID="lnkUpdate" runat="server" Text="Update" CssClass="btn btn-danger w996"
-                    Style="margin-left: 815px" OnClientClick="return validPop();" OnClick="lnkUpdate_Click">
-                </asp:Button>
-                <div style="display: none">
-                    <input type="button" id="lnkUpdate2" value="Update" cssclass="btn btn-danger w996" />
-                </div>
+                <asp:Label ID="lblGrdLocaton" runat="server" Text="Location"></asp:Label></b>&nbsp;&nbsp;
+                <asp:DropDownList ID="ddlLocation" runat="server" AutoPostBack="true" Width="83px"
+                    Height="23px" AppendDataBoundItems="true">
+                    <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                </asp:DropDownList>
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>
-    <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="upSelect"
-        DisplayAfter="0">
-        <ProgressTemplate>
-            <div id="spinner">
-                <h4>
-                    <div>
-                        Processing
-                        <img src="images/loading.gif" />
-                    </div>
-                </h4>
-            </div>
-        </ProgressTemplate>
-    </asp:UpdateProgress>
-    <asp:UpdateProgress ID="up189" runat="server" AssociatedUpdatePanelID="upLeaveUpdate111"
-        DisplayAfter="0">
-        <ProgressTemplate>
-            <div id="spinner">
-                <h4>
-                    <div>
-                        Processing
-                        <img src="images/loading.gif" />
-                    </div>
-                </h4>
-            </div>
-        </ProgressTemplate>
-    </asp:UpdateProgress>
-    <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upbtns"
-        DisplayAfter="0">
-        <ProgressTemplate>
-            <div id="spinner">
-                <h4>
-                    <div>
-                        Processing
-                        <img src="images/loading.gif" />
-                    </div>
-                </h4>
-            </div>
-        </ProgressTemplate>
-    </asp:UpdateProgress>
-    <div style="margin-bottom: 6px;">
-        <div style="display: inline-block; width: 1007px">
-            <asp:UpdatePanel ID="upbtns" runat="server">
-                <ContentTemplate>
-                    <asp:Button ID="btnPrevious" runat="server" Text="Previous" CssClass="btn btn-danger btn-small"
-                        OnClick="btnPrevious_Click" />&nbsp;
-                    <asp:Button ID="btnCurrent" runat="server" Text="Current" CssClass="btn btn-danger btn-small"
-                        OnClick="btnCurrent_Click" />&nbsp;
-                    <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
-                        OnClick="btnNext_Click" />&nbsp;
-                </ContentTemplate>
-            </asp:UpdatePanel>
-        </div>
-    </div>
-    <div>
-        <asp:UpdatePanel ID="upgrd" runat="server">
-            <ContentTemplate>
-                <div>
-                    <asp:Label ID="lblTotal" runat="server" Style="font-size: 11px; font-weight: bold;
-                        margin-left: 10px;"></asp:Label>
-                    &nbsp;
-                </div>
-                <asp:HiddenField ID="hdnChkRecords" runat="server" />
-                <input style="width: 91px" id="txthdnSortOrder" type="hidden" runat="server" enableviewstate="true" />
-                <input style="width: 40px" id="txthdnSortColumnId" type="hidden" runat="server" enableviewstate="true" />
-                <asp:GridView ID="grdUsers" runat="server" AutoGenerateColumns="false" CssClass="table1"
-                    Style="width: 990px;" OnRowCommand="grdUsers_RowCommand" OnRowDataBound="grdUsers_RowDataBound"
-                    AllowSorting="True" OnSorting="grdUsers_Sorting">
+    <asp:UpdatePanel ID="upgd" runat="server">
+        <ContentTemplate>
+            <div id="dvVariable" style="width: 90%" runat="server">
+                <asp:Button ID="btnChangeVariable" runat="server" Text="Change variable schedule"
+                    CssClass="btn btn-small btn-danger" Style="float: right; margin-right: 218px;" />
+                <br />
+                <br />
+                <asp:GridView runat="server" AutoGenerateColumns="false" ID="grdVariable" CssClass="table1"
+                    BorderWidth="1" CellPadding="0" CellSpacing="0" Width="800px">
                     <Columns>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <input id="selectAll" class="selectAll" type="checkbox" runat="server" />
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:CheckBox ID="chkRecord" runat="server" LeaveID='<%#Eval("LeaveID")%>' />
-                            </ItemTemplate>
-                            <ItemStyle Width="30" />
-                        </asp:TemplateField>
                         <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
                             <ItemTemplate>
-                                <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"></asp:Label>
+                                <asp:HiddenField ID="hdnEmpuserid" runat="server" Value='<%#Eval("UserID")%>' />
+                                <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle Width="50" />
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
                             <ItemTemplate>
-                                <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")+" "+Eval("lastname")%>'></asp:Label>
-                                <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("lastname")%>' Visible="false"></asp:Label>
-                                <asp:HiddenField ID="hdnPhoto" runat="server" Value='<%#Eval("photolink")%>' />
+                                <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("FirstName")+" "+Eval("LastName")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle Width="150" />
                         </asp:TemplateField>
-                        <asp:TemplateField SortExpression="Requestdate" HeaderText="Applied date">
+                        <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
                             <ItemTemplate>
-                                <asp:Label ID="lblRequestdate" runat="server" Text='<%# Bind("Requestdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("StartDate", "{0:MM/dd/yyyy}") %>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle Width="60" />
                         </asp:TemplateField>
-                        <asp:TemplateField SortExpression="RequestedByName" HeaderText="Applied by">
+                        <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
                             <ItemTemplate>
-                                <asp:Label ID="lblRequestedByName" runat="server" Text='<%#Eval("RequestedByName")%>'></asp:Label>
+                                <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}") %>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle Width="120" />
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="DeptName" HeaderText="Department">
+                            <ItemTemplate>
+                                <asp:Label ID="lblDept" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="EmployeeType" HeaderText="Type">
+                            <ItemTemplate>
+                                <asp:Label ID="lblEmployeetype" runat="server" Text='<%#Eval("MasterEmpType")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Location" HeaderText="Location">
+                            <ItemTemplate>
+                                <asp:Label ID="lblLocation" runat="server" Text='<%#Eval("LocationName")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Schedule" HeaderText="Schedule">
+                            <ItemTemplate>
+                                <asp:Label ID="lblVarSchedule" runat="server" Text='<%#Eval("Schedule")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="LunchBreak" HeaderText="Lunch break">
+                            <ItemTemplate>
+                                <asp:Label ID="lblVarLunch" runat="server" Text='<%#Eval("LunchBreak")%>'></asp:Label>
+                            </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="Fromdate" HeaderText="From date">
                             <ItemTemplate>
-                                <asp:Label ID="lblFromdate" runat="server" Text='<%# Bind("Fromdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                <asp:Label ID="lblVarFrom" runat="server" Text='<%#Bind("VschFromDt", "{0:MM/dd/yyyy}")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle Width="60" />
                         </asp:TemplateField>
                         <asp:TemplateField SortExpression="Todate" HeaderText="To date">
                             <ItemTemplate>
-                                <asp:Label ID="lblTodate" runat="server" Text='<%#Bind("Todate","{0:MM/dd/yyyy}") %>'></asp:Label>
+                                <asp:Label ID="lblVarTo" runat="server" Text='<%#Bind("VschToDt", "{0:MM/dd/yyyy}")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle Width="60" />
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Reason">
-                            <ItemTemplate>
-                                <asp:Label ID="lblReason" runat="server" Text='<%#Eval("Reason")%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="130" />
-                        </asp:TemplateField>
-                         <asp:TemplateField SortExpression="ApprovedByName" HeaderText="Approved by">
-                            <ItemTemplate>
-                                <asp:Label ID="lblApprovedByName" runat="server" Text='<%#Eval("ApprovedByName")%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="120" />
-                        </asp:TemplateField>
-                         <asp:TemplateField SortExpression="ApprovedStatus" HeaderText="Approved status">
-                            <ItemTemplate>
-                                <asp:Label ID="lblApprovedStatus" runat="server" Text='<%#Eval("ApprovedStatus")%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="60" />
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Notes">
-                            <ItemTemplate>
-                                <asp:Label ID="lblNotes" runat="server" Text='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "Notes"))%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="70" />
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
-                <h4 style="text-align: center">
-                    <asp:Label ID="lblError" runat="server" Visible="false"></asp:Label></h4>
-            </ContentTemplate>
-            <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="ddlSelect" EventName="SelectedIndexChanged" />
-            </Triggers>
-        </asp:UpdatePanel>
-    </div>
+            </div>
+            <div id="dvDefault" runat="server" style="display: none;">
+                <asp:Button ID="btnAddVarSchedule" runat="server" Text="Add variable schedule" CssClass="btn btn-small btn-danger"
+                    Style="float: right; margin-right: 218px;" />
+                <br />
+                <br />
+                <asp:GridView runat="server" AutoGenerateColumns="false" ID="grdDefault" CssClass="table1"
+                    BorderWidth="1" CellPadding="0" CellSpacing="0" Width="800px">
+                    <Columns>
+                        <asp:TemplateField>
+                            <HeaderTemplate>
+                                <input type="checkbox" id="chkAll" runat="server" name="chkAll" class="chkAll" />All
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <asp:CheckBox ID="chkSelect" runat="server" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
+                            <ItemTemplate>
+                                <asp:HiddenField ID="hdnEmpuserid" runat="server" Value='<%#Eval("UserID")%>' />
+                                <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
+                            <ItemTemplate>
+                                <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("FirstName")+" "+Eval("LastName")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
+                            <ItemTemplate>
+                                <asp:Label ID="lblStartedDate" runat="server" Text='<%#Bind("StartDate","{0:MM/dd/yyyy}")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
+                            <ItemTemplate>
+                                <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="DeptName" HeaderText="Department">
+                            <ItemTemplate>
+                                <asp:Label ID="lblDept" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="EmployeeType" HeaderText="Type">
+                            <ItemTemplate>
+                                <asp:Label ID="lblEmployeetype" runat="server" Text='<%#Eval("MasterEmpType")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Location" HeaderText="Location">
+                            <ItemTemplate>
+                                <asp:Label ID="lblLocation" runat="server" Text='<%#Eval("LocationName")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="Schedule" HeaderText="Schedule">
+                            <ItemTemplate>
+                                <asp:Label ID="lblVarSchedule" runat="server" Text='<%#Eval("Schedule")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="LunchBreak" HeaderText="Lunch break">
+                            <ItemTemplate>
+                                <asp:Label ID="lblVarLunch" runat="server" Text='<%#Eval("LunchBreak")%>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
+            </div>
+        </ContentTemplate>
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="ddlScheduleType" EventName="SelectedIndexChanged" />
+        </Triggers>
+    </asp:UpdatePanel>
+    <!----------Popups------------->
     <!--Change password popup start-->
     <cc1:ModalPopupExtender ID="mdlChangePwd" runat="server" BackgroundCssClass="popupHolder"
         CancelControlID="lnkPwdClose" TargetControlID="hdnChangePwd" PopupControlID="ChangePwd">
@@ -319,7 +327,10 @@
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                     <td>
-                        Old password<asp:TextBox ID="txtOldpwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                        Old password<span class="must">*</span>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="8" TextMode="Password"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -426,44 +437,53 @@
             </table>
         </div>
     </div>
-    <!--Change passcode popup End-->
-    <!--Leave popup start-->
-    <cc1:ModalPopupExtender ID="mdlLeaveStatusUpdate" runat="server" BackgroundCssClass="popupHolder"
-        CancelControlID="lnkLeaveApprovCancel" TargetControlID="hdnLeaveApprove" PopupControlID="divLeaveApprove">
+    <!--Change password popup End-->
+    
+    <!--add variable schedule management start-->
+    <cc1:ModalPopupExtender ID="mdlAddVariableSch" runat="server" BackgroundCssClass="popupHolder"
+        CancelControlID="lnkAddClose" TargetControlID="hdnAddVariable" PopupControlID="addVariableSchedule">
     </cc1:ModalPopupExtender>
-    <asp:HiddenField ID="hdnLeaveApprove" runat="server" />
-    <div id="divLeaveApprove" runat="server" class="popContent" style="width: 400px;
-        display: none">
+    <asp:HiddenField ID="hdnAddVariable" runat="server" />
+    <div id="addVariableSchedule" runat="server" class="popContent" style="width: 400px; display: none">
         <h2>
-            Leave Approve status <span class="close">
-                <asp:LinkButton ID="lnkLeaveApprovCancel" runat="server"></asp:LinkButton></span>
+            Add variable schedule
+            <span class="close">
+            <asp:LinkButton ID="lnkAddClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
-                    <td style="width: 30%;">
-                        Approve Status<span class="must">*</span>
+                    <td>
+                        From<span class="must">*</span>
                     </td>
                     <td>
-                        <div style="display: inline-block; margin-left: 10px;">
-                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                <ContentTemplate>
-                                    <asp:DropDownList ID="ddlLeaveApprove" runat="server" width="250" OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged"
-                                        AppendDataBoundItems="true" AutoPostBack="true">
-                                      <asp:ListItem Value="0">Select</asp:ListItem>
-                                    </asp:DropDownList>
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
-                        </div>
+                        <asp:TextBox ID="TextBox1" runat="server" MaxLength="8" TextMode="Password"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
-                        Notes
+                    <td>
+                       Upto<span class="must">*</span>
+                                             
                     </td>
-                    <td style="text-align:right">
-                        <asp:TextBox ID="txtLeaveNotes" runat="server" MaxLength="250" TextMode="MultiLine" Width="243"
-                            Rows="5"></asp:TextBox>
+                    <td>
+                        <asp:DropDownList ID="ddlUpto" runat="server">
+                        <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                        <asp:ListItem Text="One week" Value="1week"></asp:ListItem>
+                        <asp:ListItem Text="Two weeks" Value="1week"></asp:ListItem>
+                        <asp:ListItem Text="One week" Value="1week"></asp:ListItem>
+                        <asp:ListItem Text="One week" Value="1week"></asp:ListItem>
+                        <asp:ListItem Text="One week" Value="1week"></asp:ListItem>
+                        <asp:ListItem Text="One week" Value="1week"></asp:ListItem>
+                        <asp:ListItem Text="One week" Value="1week"></asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Confirm password<span class="must">*</span>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="TextBox3" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
@@ -471,109 +491,26 @@
                     </td>
                     <td>
                         <div style="display: inline-block">
-                            <asp:UpdatePanel ID="upLeaveUpdate111" runat="server">
+                            <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                 <ContentTemplate>
-                                    <asp:Button ID="btnLeeaveApproveUpdate" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validLeaveApprove();" OnClick="btnLeeaveApproveUpdate_Click" />
+                                    <asp:Button ID="Button1" runat="server" Text="Update" CssClass="btn btn-danger"
+                                        OnClientClick="return validPwd();" OnClick="btnUpdatePwd_Click" />
                                 </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnCancelPwd" EventName="Click" />
+                                </Triggers>
                             </asp:UpdatePanel>
                         </div>
-                        <input type="button" id="btnApproveCancel" value="Cancel" class="btn" />
+                        <asp:Button ID="Button2" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPwd_Click" />
                     </td>
                 </tr>
             </table>
         </div>
     </div>
-    <!--Leave popup end-->
+    
+    
+    <!-- add variable schedule management stop-->
+    
     </form>
 </body>
-
-<script type="text/javascript">
-
-
-$(function(){
-
-   $('#btnApproveCancel').click(function()
-   {
-      $find('mdlLeaveStatusUpdate').hide();
-   });
-   
-   
-   
-   $('#lnkUpdate2').live('click', function(){
-         var str = '';
-         var len = 0;         
-        $('#grdUsers input[type=checkbox]').each(function(){
-            if($(this).is(':checked')){
-                str += $(this).attr('LeaveID')+',';
-                len++;
-            }
-            $('#hdnChkRecords').val(str);
-            
-        })
-        
-        if(len>0){
-            $find('mdlLeaveStatusUpdate').show();
-        }else{
-            alert('Please choose ');           
-        }
-   });
-   
-    
-    $('.selectAll').live('change',function(){
-         if($(this).is(':checked')){
-           $('#grdUsers input[type=checkbox]:not(.selectAll)').each(function(){
-                $(this).attr('checked',true);
-           })
-        }else{
-            $('#grdUsers input[type=checkbox]:not(.selectAll)').each(function(){
-                $(this).removeAttr('checked');
-           })
-        }
-    })
-    
-
-});
-
-
-
-function validPop(){
-
-     var str = '';
-     var len = 0;  
-      $('#grdUsers input[type=checkbox]:not(.selectAll)').each(function(){
-        if($(this).is(':checked')){
-            str += $(this).parent().attr('leaveid')+',';
-            len++;
-        }      
-    })
-    
-    if(len>0){
-         $('#hdnChkRecords').val(str);
-        return true;
-    }else{
-         alert('Please choose ');  
-        return false;
-    }
-    
-   
-    
-}
-
-function validLeaveApprove(){
-    var valid=true;
-
-    if($('#ddlLeaveApprove').val()==0){
-        alert('Please select status');
-        $('#ddlLeaveApprove').focus();
-        valid=false;
-    }
-    return valid;
-}
-
-
-
-
-</script>
-
 </html>

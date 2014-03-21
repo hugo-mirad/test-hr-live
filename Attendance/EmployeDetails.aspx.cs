@@ -25,7 +25,7 @@ namespace Attendance
 
             ViewState["Location"] = Request.QueryString["Loc"].ToString();
 
-            if (Session["TimeZoneID"] != null)
+            if (Session["IsAdmin"] != null && Session["UserID"] != null)
             {
                 if (ViewState["Location"] != null)
                 {
@@ -100,7 +100,43 @@ namespace Attendance
             Attendance.BAL.EmployeeBL obj = new EmployeeBL();
             try
             {
+                 comanyname.Text = CommonFiles.ComapnyName;
+                string timezone = "";
+                if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                {
+                    timezone = "Eastern Standard Time";
+                }
+                else
+                {
+                    timezone = "India Standard Time";
+
+                }
+                DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+               
                 DataTable dt = obj.GetEmployyeDetailsByUserID(empid);
+                if (dt.Rows[0]["Isvariable"].ToString() == "True")
+                {
+                    DataView dv = dt.DefaultView;
+                    dv.RowFilter = "VschFromDt<=#" + ISTTime + "# and #" + ISTTime + "#<=VschToDt";
+                    DataTable dtS = dv.ToTable();
+                    if(dtS.Rows.Count>0)
+                    {
+                        lblSchedule.Text = dtS.Rows[0]["StartTime"].ToString() + "-" + dtS.Rows[0]["EndTime"].ToString() + " " + "<b>Lunch break: </b>" + dtS.Rows[0]["LunchBreakStart"].ToString() + "-" + dtS.Rows[0]["LunchBreakEnd"].ToString();
+                        hdnScID.Value = dt.Rows[0]["ScheduleId"].ToString();
+                    }
+                    else
+                    {
+                     lblSchedule.Text="Not yet scheduled";
+                     hdnScID.Value = "0";
+                    } 
+                }
+                else
+                {
+                    lblSchedule.Text = dt.Rows[0]["StartTime"].ToString() + "-" + dt.Rows[0]["EndTime"].ToString() + " " + "<b>Lunch break: </b>" + dt.Rows[0]["LunchBreakStart"].ToString() + "-" + dt.Rows[0]["LunchBreakEnd"].ToString();
+                    hdnScID.Value = dt.Rows[0]["ScheduleId"].ToString();
+                }
+
+
                 hdnUserID.Value = dt.Rows[0]["UserID"].ToString();
 
                 lblEmpID.Text = dt.Rows[0]["EmpID"].ToString();
@@ -149,8 +185,8 @@ namespace Attendance
                 lblDeuctions.Text = dt.Rows[0]["Deductions"].ToString();
                 lblGender.Text = dt.Rows[0]["gender"].ToString();
                 lblFilling.Text = dt.Rows[0]["MaritalStatus"].ToString();
-                hdnScID.Value = dt.Rows[0]["ScheduleId"].ToString();
-                lblSchedule.Text = dt.Rows[0]["StartTime"].ToString() + "-" + dt.Rows[0]["EndTime"].ToString() + " " + "<b>Lunch break: </b>" + dt.Rows[0]["LunchBreakStart"].ToString() + "-" + dt.Rows[0]["LunchBreakEnd"].ToString();
+              
+               
                 lblDateofBirth.Text = dt.Rows[0]["dateofbirth"].ToString() == "" ? "" : Convert.ToDateTime(dt.Rows[0]["dateofbirth"].ToString().Trim()).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(dt.Rows[0]["dateofbirth"].ToString()).ToString("MM/dd/yyyy");
                 lblPhoneNum.Text = dt.Rows[0]["phoneNum"].ToString() == "" ? "" : GeneralFunction.FormatUsTelephoneNo(dt.Rows[0]["phoneNum"].ToString());
                 lblMobileNum.Text = dt.Rows[0]["mobileNum"].ToString() == "" ? "" : GeneralFunction.FormatUsTelephoneNo(dt.Rows[0]["mobileNum"].ToString());

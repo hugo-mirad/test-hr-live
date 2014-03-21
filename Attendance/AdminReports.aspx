@@ -690,7 +690,7 @@ function clearDisposableItems( sender , args ) {
             <ContentTemplate>
                 <asp:Label ID="lblWeekReportheading" runat="server"></asp:Label>
                 <br />
-                <asp:Label ID="lblWeekReport" runat="server"></asp:Label>
+                <asp:Label CssClass="lbl" ID="lblWeekReport" runat="server"></asp:Label>
             </ContentTemplate>
         </asp:UpdatePanel>
     </h2>

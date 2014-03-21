@@ -19,7 +19,7 @@ namespace Attendance
         public GeneralFunction objFun = new GeneralFunction();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["LocationName"] != null)
+            if (Session["IsAdmin"] != null && Session["UserID"] != null)
             {
 
                 if (!IsPostBack)
@@ -33,12 +33,9 @@ namespace Attendance
                     else
                     {
                         timezone = "India Standard Time";
-
                     }
                     DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-
                     var CurentDatetime = ISTTime;
-
                     lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
@@ -59,14 +56,32 @@ namespace Attendance
                         ddlLocation.Enabled = false;
                     }
 
+                    Report obj = new Report();
+                    DataSet ds=obj.GetFinalPayrollDate(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            DateTime StartDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["FinalMonth"].ToString()+ "/01/" + ds.Tables[0].Rows[0]["FinalYear"].ToString());
+                            ViewState["PaidStartDate"] = StartDate.ToString("MM/dd/yyyy");
+                            ViewState["CurrentStDt"] = StartDate.ToString("MM/dd/yyyy");
+                            DateTime EndDate = StartDate.AddMonths(1).AddSeconds(-1);
+                            ViewState["PaidEndDate"] = EndDate.ToString("MM/dd/yyyy");
+                            ViewState["CurrentEndDt"] = EndDate.ToString("MM/dd/yyyy");
 
-                    DateTime StartDate = CurentDatetime.AddDays(1 - CurentDatetime.Day);
-                    ViewState["PaidStartDate"] = StartDate.ToString("MM/dd/yyyy");
-                    DateTime EndDate = StartDate.AddMonths(1).AddSeconds(-1);
-                    ViewState["PaidEndDate"] = EndDate.ToString("MM/dd/yyyy");
-
-                    GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value),StartDate,EndDate);
-
+                            GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate);
+                            if (StartDate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentStDt"]).ToString("MM/dd/yyyy"))
+                            {
+                                btnNext.CssClass = "btn btn-danger btn-small disabled";
+                                btnNext.Enabled = false;
+                            }
+                            else
+                            {
+                                btnNext.CssClass = "btn btn-danger btn-small enabled";
+                                btnNext.Enabled = true;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -77,6 +92,7 @@ namespace Attendance
             {
                 EmployeeBL obj = new EmployeeBL();
                 DataTable dt = obj.GetEmpPaidleavesDetailsByLocation(locationID,startDt,EndDt);
+                lblLeaveReport.Text = "(" + startDt.ToString("MM/dd/yyyy") + "-" + EndDt.ToString("MM/dd/yyyy") + ")";
                 if (dt.Rows.Count > 0)
                 {
                     grdUsers.DataSource = dt;
@@ -84,6 +100,16 @@ namespace Attendance
                     grdUsers.DataBind();
                     lblTotal.Visible = true;
                     lblTotal.Text = "Total Employee(s) :" + dt.Rows.Count;
+                    lblNodata.Visible = false;
+                    dvlblNodata.Style["display"] = "none";                 
+                }
+                else
+                {
+                    lblNodata.Visible = true;
+                    dvlblNodata.Style["display"] = "block";
+                    lblNodata.Text = "No data found";
+                    grdUsers.DataSource = null;
+                    grdUsers.DataBind();
                 }
             }
             catch (Exception ex)
@@ -459,6 +485,93 @@ namespace Attendance
                     HeaderGridRow.Cells.Add(header);
                     grdUsers.Controls[0].Controls.AddAt(0, HeaderGridRow);
                 }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void btnPrev_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]).AddMonths(-1);
+                ViewState["PaidStartDate"] = StartDate;
+               // ViewState["CurrentStDt"] = StartDate.ToString("MM/dd/yyyy");
+                DateTime EndDate = StartDate.AddMonths(1).AddSeconds(-1);
+                ViewState["PaidEndDate"] = EndDate.ToString("MM/dd/yyyy");
+               // ViewState["CurrentEndDt"] = EndDate.ToString("MM/dd/yyyy");
+
+                if (StartDate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentStDt"]).ToString("MM/dd/yyyy"))
+                {
+                    btnNext.CssClass = "btn btn-danger btn-small disabled";
+                    btnNext.Enabled = false;
+                }
+                else
+                {
+                    btnNext.CssClass = "btn btn-danger btn-small enabled";
+                    btnNext.Enabled = true;
+                }
+
+                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void btnCurrent_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DateTime StartDate = Convert.ToDateTime(ViewState["CurrentStDt"]);
+                ViewState["PaidStartDate"] = StartDate;
+              
+                DateTime EndDate = StartDate.AddMonths(1).AddSeconds(-1);
+                ViewState["PaidEndDate"] = EndDate.ToString("MM/dd/yyyy");
+              
+                if (StartDate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentStDt"]).ToString("MM/dd/yyyy"))
+                {
+                    btnNext.CssClass = "btn btn-danger btn-small disabled";
+                    btnNext.Enabled = false;
+                }
+                else
+                {
+                    btnNext.CssClass = "btn btn-danger btn-small enabled";
+                    btnNext.Enabled = true;
+                }
+
+                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate);
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        protected void btnNext_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]).AddMonths(1);
+                ViewState["PaidStartDate"] = StartDate;
+                // ViewState["CurrentStDt"] = StartDate.ToString("MM/dd/yyyy");
+                DateTime EndDate = StartDate.AddMonths(1).AddSeconds(-1);
+                ViewState["PaidEndDate"] = EndDate.ToString("MM/dd/yyyy");
+                // ViewState["CurrentEndDt"] = EndDate.ToString("MM/dd/yyyy");
+
+                if (StartDate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentStDt"]).ToString("MM/dd/yyyy"))
+                {
+                    btnNext.CssClass = "btn btn-danger btn-small disabled";
+                    btnNext.Enabled = false;
+                }
+                else
+                {
+                    btnNext.CssClass = "btn btn-danger btn-small enabled";
+                    btnNext.Enabled = true;
+                }
+
+                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate);
             }
             catch (Exception ex)
             {

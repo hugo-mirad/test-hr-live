@@ -76,8 +76,17 @@
         $('.tooltip2').tipsy({html: true, gravity:'sw' });
       });
      
+     
+     
      $(function(){
      
+     
+  
+          $('.btnDefaultCancel').click(function(){
+         
+            $find('mdlDefaultmgmt').hide();
+          });
+       
          $('.tooltip2').tipsy({html: true, gravity:'sw' });
             $('.popupHolder2').css('z-index','100002')
             $('.popupContent2').css('z-index','100003')
@@ -249,10 +258,25 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
+                 </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
+    
+    <asp:UpdateProgress ID="UpdateProgress3" runat="server" AssociatedUpdatePanelID="upDefaultmgmt"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+                 </h4>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upbtns"
         DisplayAfter="0">
         <ProgressTemplate>
@@ -262,7 +286,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
+                     </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
@@ -508,6 +532,10 @@
                         OnClick="btnCurrent_Click" />&nbsp;
                     <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
                         OnClick="btnNext_Click" />&nbsp;
+                    <div style="float:right">
+                    <asp:Button ID="btnDefaultMgmt" runat="server" Text="Default holiday management" 
+                            CssClass="btn-link" onclick="btnDefaultMgmt_Click"/></div>
+                    <%-- <input type="button" name="btnDefaultMgmt" runat="server" value="Default holiday management" class="btn-link"  />--%>  
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
@@ -727,6 +755,150 @@
             float: right;" value="OK" runat="server" />&nbsp;
         <br />
     </div>
+    
+    
+    
+    
+    
+     <cc1:ModalPopupExtender ID="mdlDefaultmgmt" runat="server" BackgroundCssClass="popupHolder"
+        CancelControlID="lnkDefault" TargetControlID="hdnDefault" PopupControlID="dvDefault">
+    </cc1:ModalPopupExtender>
+    <asp:HiddenField ID="hdnDefault" runat="server" />
+    <div id="dvDefault" runat="server" class="popContent" style="width: 400px; display: none">
+        <h2>
+            Default holiday management
+            <span class="close">
+                <asp:LinkButton ID="lnkDefault" runat="server"></asp:LinkButton></span>
+        </h2>
+        <div class="inner">
+            <table style="width: 95%; margin: 20px 5px; border-collapse: collapse;" class="holidayCalPo">
+                <tr>
+                    <td style="width: 95px;">
+                        Default holiday <span class="must"> *</span>
+                    </td>
+                    <td>
+                    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                            <ContentTemplate>
+                        <asp:DropDownList ID="ddlDay" runat="server" AutoPostBack="true" >
+                        <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                        <asp:ListItem Text="Sunday" Value="0"></asp:ListItem>
+                        <asp:ListItem Text="Monday" Value="1"></asp:ListItem>
+                        <asp:ListItem Text="Tuesday" Value="2"></asp:ListItem>
+                        <asp:ListItem Text="Wednesday" Value="3"></asp:ListItem>
+                        <asp:ListItem Text="Thursday" Value="4"></asp:ListItem>
+                        <asp:ListItem Text="Friday" Value="5"></asp:ListItem>
+                        <asp:ListItem Text="Saturday" Value="6"></asp:ListItem>
+                        </asp:DropDownList>
+                        </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        From <span class="must"> *</span>
+                    </td>
+                    <td>
+                        <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                            <ContentTemplate>
+                                <asp:DropDownList ID="ddlFromYear" runat="server" AutoPostBack="true" >
+                                </asp:DropDownList>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Upto<span class="must"> *</span>
+                    </td>
+                  
+                    <td>
+                          <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                            <ContentTemplate>
+                                <asp:DropDownList ID="ddlToYear" runat="server" AutoPostBack="true" >
+                                </asp:DropDownList>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </td>
+                </tr>
+                
+                 <tr>
+                    <td>
+                        Location<span class="must"> *</span>
+                    </td>
+                    <td>
+                        <asp:UpdatePanel ID="UpdatePanel6" runat="server">
+                            <ContentTemplate>
+                                <asp:DropDownList ID="ddlDefaultlocation" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPopLoc_SelectedIndexChanged">
+                                </asp:DropDownList>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Department<span class="must"> *</span>
+                    </td>
+                    <td>
+                        <asp:UpdatePanel ID="UpdatePanel10" runat="server">
+                            <ContentTemplate>
+                                <asp:DropDownList ID="ddlDefaultDept" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPopDept_SelectedIndexChanged1">
+                                </asp:DropDownList>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <div style="display: inline-block;">
+                            <asp:UpdatePanel ID="upDefaultmgmt" runat="server">
+                                <ContentTemplate>
+                                    <asp:Button ID="btnSubmit" runat="server" Text="Apply" CssClass="btn btn-danger btn-small"
+                                        OnClientClick="return ValidDefault();" onclick="btnSubmit_Click" />
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
+                        &nbsp;&nbsp;
+                        <input type="button" name="btnDefaultCancel" runat="server" class="btnDefaultCancel btn btn-small" value="Cancel" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
     </form>
+    
+    <script type="text/javascript" language="javascript">
+    function  ValidDefault()
+    {
+    debugger
+      if($('#ddlDay').val()=='Select')
+      {
+       alert('Please select default holiday'); 
+       $('#ddlDay').focus();
+       return false;
+      }
+      if($('#ddlDefaultlocation').val()=='Select')
+      {
+       alert('Please select location'); 
+       $('#ddlDefaultlocation').focus();
+       
+        return false;
+      }
+      if($('#ddlDefaultDept').val()=='Select')
+      {
+       alert('Please select department'); 
+       $('#ddlDefaultDept').focus();
+        return false;
+      }
+       return true;
+    }
+    
+    </script>
+    
+    
 </body>
 </html>

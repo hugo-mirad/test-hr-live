@@ -428,6 +428,11 @@
     </script>
 
     <script type="text/javascript">
+    
+    
+      
+    
+    
       function validPwd()
       {
        debugger
@@ -677,7 +682,7 @@ function clearDisposableItems( sender , args ) {
             <ContentTemplate>
                 <asp:Label ID="lblWeekReportheading" runat="server"></asp:Label>
                 <br />
-                <asp:Label ID="lblWeekReport" runat="server"></asp:Label>
+                <asp:Label ID="lblWeekReport" CssClass="lbl" runat="server"></asp:Label>
             </ContentTemplate>
         </asp:UpdatePanel>
     </h2>
@@ -727,7 +732,7 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
-                        <h4>
+                       </h4>
                 </div>
             </ProgressTemplate>
         </asp:UpdateProgress>
@@ -740,11 +745,7 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
-       
-                        <h4>
-                        </h4>
-       
-                    </h4>
+                     </h4>
                 </div>
             </ProgressTemplate>
         </asp:UpdateProgress>
@@ -757,7 +758,7 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
-                        <h4>
+                       </h4>
                 </div>
             </ProgressTemplate>
         </asp:UpdateProgress>
@@ -1574,15 +1575,17 @@ function clearDisposableItems( sender , args ) {
             </asp:UpdatePanel>
         </div>
         <div id="DvSingleRep" runat="server"> 
-        <div>
+        <div style="float:right;padding-right: 250px;">
         <asp:UpdatePanel ID="upLeave" runat="server">
         <ContentTemplate>
             <asp:LinkButton ID="lnkLeaveReq" Text="Show Leave Requests" runat="server" 
                  onclick="lnkLeaveReq_Click"></asp:LinkButton> <br />
-            <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server"></asp:LinkButton>    
+            <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server" 
+                onclick="lnkNewLeaveReq_Click"></asp:LinkButton>    
          </ContentTemplate>
         </asp:UpdatePanel>
         </div>
+        <br />
         <asp:UpdatePanel ID="upSingle" runat="server">
             <ContentTemplate>
                 <asp:Label ID="lblID" runat="server" Visible="false"></asp:Label>
@@ -1633,6 +1636,8 @@ function clearDisposableItems( sender , args ) {
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
+                
+                
                 
                 <br />
                 <br /><br />
@@ -1834,8 +1839,8 @@ function clearDisposableItems( sender , args ) {
         runat="server" PopupControlID="MultipleEditPopup" CancelControlID="lnkMultipleEditOutClose"
         TargetControlID="hdnMultipleEditpopup">
     </cc1:ModalPopupExtender>
-    <asp:HiddenField ID="hdnMultipleEditpopup" runat="server" />
-    <div id="MultipleEditPopup" runat="server" class="popContent" style="width: 400px;
+        <asp:HiddenField ID="hdnMultipleEditpopup" runat="server" />
+      <div id="MultipleEditPopup" runat="server" class="popContent" style="width: 400px;
         display: none">
         <h2>
             <span class="lblMultipleEditPopName"></span>&nbsp;&nbsp;
@@ -2111,6 +2116,77 @@ function clearDisposableItems( sender , args ) {
         </div>
     </div>
     <!--Successfull alert popup End-->
+    
+    
+    
+      <!--Loginedit popup start-->
+    <cc1:ModalPopupExtender ID="mdlNewLeaveRequest" BackgroundCssClass="popupHolder" runat="server"
+        PopupControlID="NewLeaveRequest" TargetControlID="hdnNewleaveReq" CancelControlID="lnkLeaveClose">
+    </cc1:ModalPopupExtender>
+    <asp:HiddenField ID="hdnNewleaveReq" runat="server" />
+    <div id="NewLeaveRequest" runat="server" class="popContent" style="width: 400px; display: none">
+        <h2>
+          New Leave Request
+            <span class="close">
+                <asp:LinkButton ID="lnkLeaveClose" runat="server"></asp:LinkButton></span>
+        </h2>
+        <div class="inner">
+            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                <tr>
+                    <td>
+                        From <span class="must">*</span>
+                    </td>
+                    <td>
+                         <asp:TextBox ID="txtLeaveFrom" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        To <span class="must">*</span>
+                    </td>
+                    <td>
+                          <asp:TextBox ID="txtLeaveTo" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+               
+                  <tr>
+                    <td>
+                        Reason <span class="must">*</span>
+                    </td>
+                    <td>
+                          <asp:TextBox ID="txtReason" runat="server" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <div style="display: inline-block">
+                            <asp:UpdatePanel ID="UpdatePanel18" runat="server">
+                                <ContentTemplate>
+                                    <asp:Button ID="btnLeaveReqSubmit" runat="server" Text="Submit" 
+                                        OnClientClick="return validLeaveReq();" CssClass="btn btn-danger" 
+                                        onclick="btnLeaveReqSubmit_Click" />
+                                        <br />
+                                        <asp:Label ID="lblLeaveError" runat="server" ForeColor="Red" ></asp:Label>
+                                </ContentTemplate>
+                             
+                            </asp:UpdatePanel>
+                        </div>
+                       <input type="button" class="btn" value="Cancel" name="btnLvCancel" onclick="return hideNewleave();" />
+                        <br />
+                        
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--Loginedit popup end-->
+    
+    
+    
+    
     </form>
 
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
@@ -2134,11 +2210,42 @@ function clearDisposableItems( sender , args ) {
 
     <script type="text/javascript" language="javascript">
     
+      function hideNewleave()
+      {
+         $find('mdlNewLeaveRequest').hide();
+      }
+      
+    
       function Multiplecancle()
       {
          $find('mdlMultipleEditEditPopUp').hide();
          
       }
+    
+      function validLeaveReq()
+      {
+      
+       if($.trim($('#txtLeaveFrom').val()).length<=0)
+       {
+         alert('Please select from date');
+             $('#txtLeaveFrom').focus();
+             return false;
+       }
+        if($.trim($('#txtLeaveTo').val()).length<=0)
+       {
+         alert('Please select to date');
+         $('#txtLeaveTo').focus();
+          return false;
+       }
+       if($.trim($('#txtReason').val()).length<=0)
+       {
+         alert('Please enter reason');
+        $('#txtReason').focus();
+         return false;
+       }
+       return true;
+      }
+    
     
     
     
@@ -2147,6 +2254,8 @@ function clearDisposableItems( sender , args ) {
               //  $('.table1 tr:last-child').remove();
             $('.table2 tr:last-child').remove();
             // $('.table3 tr:last-child').remove();
+            
+        
             
         
             var start = 2;
@@ -2198,6 +2307,39 @@ function clearDisposableItems( sender , args ) {
         });
         
         $(function(){
+        var leaveDt=new Date($.trim($('#lblDate2').text()));
+        
+           $('#txtLeaveFrom').live('focus', function(){
+             if($(this).hasClass('hasDatepicker')){
+                $(this).datepicker( "destroy" );
+                $(this).removeClass("hasDatepicker")
+            }  
+            
+             $('#txtLeaveFrom').datepicker({	        
+	            minDate: leaveDt,
+	            maxDate: 90
+            });            
+            
+        })       
+        
+       $('#txtLeaveFrom').live('change', function(){
+            $('#txtLeaveTo').val('');           
+       });
+       
+       
+       $('#txtLeaveTo').live('focus', function(){
+             if($(this).hasClass('hasDatepicker')){
+                $(this).datepicker( "destroy" );
+                $(this).removeClass("hasDatepicker")
+             }  
+            
+            $('#txtLeaveTo').datepicker({	        
+                minDate: $('#txtLeaveFrom').val(),
+                maxDate: 90
+            });
+            
+        }) 
+        
         
          $('.tooltip2').tipsy({html: true, gravity:'sw' });
             
@@ -2540,6 +2682,8 @@ function clearDisposableItems( sender , args ) {
                  $('#txtSignOut').timepicker({                    
 	                timeFormat: "hh:mm TT"	                
                 });
+  
+              
   
             $('.table2 tr:last-child').remove();
          
@@ -3047,6 +3191,10 @@ function clearDisposableItems( sender , args ) {
         return(arr[0]);
         
     }
+        
+        
+        
+        
         
         
         

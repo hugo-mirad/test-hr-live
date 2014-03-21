@@ -889,6 +889,7 @@
     <script type="text/javascript" language="javascript">
     
     var se = new Date($.trim($('#lblDate2').text()));
+   var leaveSe=new Date($.trim($('#lblDate2').text()));
    
     var month=new Array();
     month[0]="Jan";

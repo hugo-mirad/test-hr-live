@@ -1309,10 +1309,18 @@ input[type="button"].btn-block {
 .btn-warning:active,
 .btn-warning.active,
 .btn-warning.disabled,
-.btn-warning[disabled] {
+.btn-warning[disabled] 
+{
+	/*
   color: #ffffff;
   background-color: #f89406;
   *background-color: #df8505;
+*/
+color: #696969;
+  background-color: #C2C2C2;
+  *background-color: #df8505;
+  border-bottom: 2px #999 solid;
+  text-shadow: #FFF 0px 1px 1px;
 }
 .btn-warning:active,
 .btn-warning.active {

@@ -21,7 +21,7 @@ namespace Attendance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["LocationName"] != null)
+            if (Session["IsAdmin"] != null && Session["UserID"] != null)
             {
 
                 if (!IsPostBack)
@@ -60,9 +60,7 @@ namespace Attendance
                     GetUserDetails(sort, Session["LocationName"].ToString().Trim());
                     GetStates(Session["LocationName"].ToString().Trim());
                     GetSSN();
-                   
                 }
-
             }
             else
             {
@@ -638,31 +636,21 @@ namespace Attendance
             {
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
-
                     Label lblEmpLastname = (Label)e.Row.FindControl("lblEmpLastname");
-
                     Label lblEmpFirstname = (Label)e.Row.FindControl("lblEmpFirstname");
-
                     lblEmpFirstname.Text = lblEmpFirstname.Text + " " + lblEmpLastname.Text;
-
                     HiddenField hdnPhoto = (HiddenField)e.Row.FindControl("hdnPhoto");
                     string Photo = "/Photos/" + hdnPhoto.Value.ToString().Trim();
                     string tip = CreateSignInTable(lblEmpFirstname.Text, Photo);
                     // lblEmpFirstname.Text = GeneralFunction.WrapTextByMaxCharacters(lblEmpFirstname.Text, 20);
                     lblEmpFirstname.Attributes.Add("rel", "tooltip");
                     lblEmpFirstname.Attributes.Add("title", tip);
-
                     Label lblStartedDate = (Label)e.Row.FindControl("lblStartedDate");
                     lblStartedDate.Text = lblStartedDate.Text == "01/01/1900" ? "" : lblStartedDate.Text;
-
                     Label lblTerminatedDate = (Label)e.Row.FindControl("lblTerminatedDate");
                     lblTerminatedDate.Text = lblTerminatedDate.Text == "01/01/1900" ? "" : lblTerminatedDate.Text;
-
-
                     Label lblTermReason = (Label)e.Row.FindControl("lblTermReason");
                     lblTermReason.Text = GeneralFunction.WrapTextByMaxCharacters(lblTermReason.Text, 20);
-
-
                     Label lblActvie = (Label)e.Row.FindControl("lblActvie");
                     lblActvie.Text = lblActvie.Text == "True" ? "Yes" : "No";
                 }
@@ -774,7 +762,6 @@ namespace Attendance
 
         protected void lnkEditClose_Click(object sender, EventArgs e)
         {
-
             viewPopup.Style["display"] = "block";
             Editpopup.Style["display"] = "none";
             btnEdit.Visible = true;
@@ -797,8 +784,6 @@ namespace Attendance
             Session.Abandon();
             Response.Redirect("Default.aspx");
         }
-
-
         private string CreateSignInTable(string Employeename, string photo)
         {
             string strTransaction = string.Empty;
@@ -814,8 +799,6 @@ namespace Attendance
             return strTransaction;
 
         }
-
-
         protected void lnkChangepwd_Click(object sender, EventArgs e)
         {
             try
@@ -831,12 +814,10 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPwd_Click(object sender, EventArgs e)
         {
             mdlChangePwd.Hide();
         }
-
         protected void btnUpdatePwd_Click(object sender, EventArgs e)
         {
             try
@@ -889,7 +870,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPasscode_Click(object sender, EventArgs e)
         {
             txtOldpasscode.Text = "";
@@ -897,7 +877,6 @@ namespace Attendance
             txtConfirmPasscode.Text = "";
             mdlChangePasscode.Hide();
         }
-
         protected void lnkChangePasscode_Click(object sender, EventArgs e)
         {
             try
@@ -913,14 +892,12 @@ namespace Attendance
             {
             }
         }
-
         protected void ddlSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
             int sort = Convert.ToInt32(ddlSelect.SelectedItem.Value);
             Session["SortBy"] = sort;
             GetUserDetails(sort,ddlLocation.SelectedItem.Text.ToString().Trim());
         }
-
         protected void grdUsers_Sorting(object sender, GridViewSortEventArgs e)
         {
             try
@@ -938,9 +915,6 @@ namespace Attendance
                 throw ex;
             }
         }
-
-
-
         private void GetEmployeeTypes()
         {
 
@@ -960,7 +934,6 @@ namespace Attendance
             {
             }
         }
-
         private void GetSchedules()
         {
 
@@ -981,7 +954,6 @@ namespace Attendance
             {
             }
         }
-
         private void GetStates(string Location)
         {
             try
@@ -1038,7 +1010,6 @@ namespace Attendance
             {
             }
         }
-
         protected void lnkReport_Click(object sender, EventArgs e)
         {
             if (Session["IsAdmin"].ToString() == "True")
@@ -1050,7 +1021,6 @@ namespace Attendance
                 Response.Redirect("Reports.aspx");
             }
         }
-
         protected void ddlLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -1062,9 +1032,6 @@ namespace Attendance
             {
             }
         }
-
-
-
         protected void lnkScheduleAdd_Click(object sender, EventArgs e)
         {
             mdlAddPopUp.Show();
@@ -1080,7 +1047,6 @@ namespace Attendance
 
 
         }
-
         protected void btnSchUpdate_Click(object sender, EventArgs e)
         {
             try
@@ -1135,7 +1101,6 @@ namespace Attendance
             }
 
         }
-
         protected void btnCancelSch_Click(object sender, EventArgs e)
         {
 

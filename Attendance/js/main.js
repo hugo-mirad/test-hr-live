@@ -141,7 +141,7 @@ $(function() {
             }  
             
              $('#txtFromDt').datepicker({	        
-	            minDate: se,
+	            minDate: leaveSe,
 	            maxDate: 90
             });            
             
@@ -527,8 +527,20 @@ $(function() {
             $('#dvApplyingLeave .userThumb').attr('src', 'images/defaultUSer.jpg');
         }        
         
-        var CurnDate = new Date($.trim($('#lblDate2').text()));
-        CurnDate = CurnDate.getMonth()+1+"/"+CurnDate.getDate()+"/"+CurnDate.getFullYear();
+         
+        if(droppedParent4 == 'origin'){        
+            var CurnDate = new Date($.trim($('#lblDate2').text()));
+            CurnDate = CurnDate.getMonth()+1+"/"+CurnDate.getDate()+"/"+CurnDate.getFullYear();     
+             leaveSe=CurnDate;
+        }else{
+        
+            var CurnDate = new Date($.trim($('#lblDate2').text()));    
+            CurnDate.setDate(CurnDate.getDate()+1);
+            CurnDate = CurnDate.getMonth()+1+"/"+CurnDate.getDate()+"/"+CurnDate.getFullYear(); 
+            leaveSe=CurnDate;
+        }
+        
+        
         
         $('#txtFromDt').val(CurnDate);
          $('#txtToDt').val(CurnDate);

@@ -338,17 +338,32 @@
     </div>
     <!--Change password popup End-->
     <h2 class="pageHeadding">
+   
         Leave management
+        <br />
+          <asp:UpdatePanel ID="upRep" runat="server">
+        <ContentTemplate>
+           <asp:Label ID="lblLeaveReport" CssClass="lbl" runat="server"></asp:Label>
+        </ContentTemplate>
+        </asp:UpdatePanel>
     </h2>
     <div style="display: inline-block; margin-left: 10px;">
         <asp:UpdatePanel ID="UpdateLocation" runat="server">
             <ContentTemplate>
                 <b>
                     <asp:Label ID="lblGrdLocaton" runat="server" Text="Location"></asp:Label></b>&nbsp;&nbsp;
-                <asp:DropDownList ID="ddlLocation" runat="server" AutoPostBack="true" Width="83px"
+                   <asp:DropDownList ID="ddlLocation" runat="server" AutoPostBack="true" Width="83px"
                     Height="23px" AppendDataBoundItems="true" OnSelectedIndexChanged="ddlLocation_SelectedIndexChanged">
                     <asp:ListItem Text="Select" Value="0"></asp:ListItem>
                 </asp:DropDownList>
+               <br />
+                <asp:Button ID="btnPrev" runat="server" Text="Previous" 
+                    CssClass="btn btn-danger btn-small" onclick="btnPrev_Click" />
+                <asp:Button ID="btnCurrent" runat="server" Text="Current" 
+                    CssClass="btn btn-danger btn-small" onclick="btnCurrent_Click" />
+                <asp:Button ID="btnNext" runat="server" Text="Next" 
+                    CssClass="btn btn-danger btn-small" onclick="btnNext_Click" />
+                
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>
@@ -361,11 +376,12 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                </h4>
+               </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    <asp:UpdatePanel ID="upgrd" runat="server">
+    <div style="padding-top: 10px;">
+    <asp:UpdatePanel ID="upgrd" runat="server" >
         <ContentTemplate>
             <div>
                 <asp:Label ID="lblTotal" runat="server" Style="font-size: 11px; font-weight: bold;
@@ -374,6 +390,11 @@
             </div>
             <input style="width: 91px" id="txthdnSortOrder" type="hidden" runat="server" enableviewstate="true" />
             <input style="width: 40px" id="txthdnSortColumnId" type="hidden" runat="server" enableviewstate="true" />
+            
+            <div style="padding: 100px;text-align: center;font-weight: bold;font-size: 25px;" id="dvlblNodata" runat="server">
+            <asp:Label ID="lblNodata" runat="server" ></asp:Label>
+            </div>
+     
             <asp:GridView ID="grdUsers" runat="server" AutoGenerateColumns="false" CssClass="table1 editGrid"
                 DataKeyNames="PaidLeaveID" Style="width: 997px;" OnRowCommand="grdUsers_RowCommand"
                 OnRowDataBound="grdUsers_RowDataBound" AllowSorting="True" OnSorting="grdUsers_Sorting"
@@ -485,6 +506,7 @@
             </asp:GridView>
         </ContentTemplate>
     </asp:UpdatePanel>
+    </div>
     </form>
 </body>
 </html>

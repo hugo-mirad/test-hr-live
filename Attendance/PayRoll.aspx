@@ -72,7 +72,7 @@
     </style>
 
     <script type="text/javascript" language="javascript">
-    
+   
     function isNumberKeyWithDot(evt) {
 
             var charCode = (evt.which) ? evt.which : event.keyCode
@@ -115,83 +115,123 @@
         function addEditLabelCss()
         {
      
-            $('.grdPayRollIndia .lblBonus').addClass('Editlabel');
-            $('.grdPayRollIndia .lblIncentives').addClass('Editlabel');
-            $('.grdPayRollIndia .lblPrevUnpaid').addClass('Editlabel');
-            $('.grdPayRollIndia .lblAdvancePaid').addClass('Editlabel');
-            $('.grdPayRollIndia .lblExpenses').addClass('Editlabel');
-            $('.grdPayRollIndia .lblLoanDeduct').addClass('Editlabel');
+             $('.grdPayRollIndia .lblBonus').each(function(){
+                $(this).next('input').show();
+                $(this).addClass('Editlabel');
+                $(this).bind();
+            });            
+     
+            $('.grdPayRollIndia .lblIncentives').each(function(){
+                $(this).next('input').show();
+                $(this).addClass('Editlabel');
+                $(this).bind();
+            }); 
+            
+             $('.grdPayRollIndia .lblPrevUnpaid').each(function(){
+                $(this).next('input').show();
+                $(this).addClass('Editlabel');
+                $(this).bind();
+            }); 
+            
+             $('.grdPayRollIndia .lblAdvancePaid').each(function(){
+                $(this).next('input').show();
+                $(this).addClass('Editlabel');
+                $(this).bind();
+            }); 
+            
+            
+             $('.grdPayRollIndia .lblExpenses').each(function(){
+                $(this).next('input').show();
+                $(this).addClass('Editlabel');
+                $(this).bind();
+            }); 
+            
+            
+             $('.grdPayRollIndia .lblLoanDeduct').each(function(){
+                $(this).next('input').show();
+                $(this).addClass('Editlabel');
+                $(this).bind();
+            }); 
+     
+     
+         
         }
         
         function delEditLabelCss()
         {
-      
-            $('.lblBonus').remove('Editlabel');
-            $('.lblIncentives').remove('Editlabel');
-            $('.lblPrevUnpaid').remove('Editlabel');
-            $('.lblAdvancePaid').remove('Editlabel');
-            $('.lblExpenses').remove('Editlabel');
-            $('.lblLoanDeduct').remove('Editlabel');
+        
+           
+            
+            $('.grdPayRollIndia .Editlabel').each(function(){
+                $(this).next('input').hide();
+                $(this).show().removeClass('Editlabel');
+                $(this).unbind();
+            });        
+         
         }
         
         function pageLoad()
         {
             $('#spinner').hide();    
             
-            $('.Editlabel').click(function(){
-                $(this).hide();
-                $(this).next().show().focus();
-            })
-            $('.editInputBlur').on('focus', function(){
-                $(this).attr('prevVal' ,$.trim($(this).val()));
-            });
+            if($('#hdnFreeze').val() == "false"){
             
-            $('.editInputBlur').blur(function(){
-                curentRow = $(this).parent().parent().index();
-               // console.log(curentRow)
-               
-               var sal = parseInt($('#grdPayRollIndia tr:eq('+curentRow+') .sal').text());
-               var total1 = 0;
-               var total2 = 0;
-               $('#grdPayRollIndia tr:eq('+curentRow+') input.add').each(function(){
-                    if($.trim($(this).val()) != ''){
-                        total1 += parseInt($.trim($(this).val()));
-                    }
-               });
-               
-               $('#grdPayRollIndia tr:eq('+curentRow+') input.sub').each(function(){
-                    if($.trim($(this).val()) != ''){
-                        total2 += parseInt($.trim($(this).val()));
-                    }
-               });
-               
-               
-               var gTotal = (sal+total1)-total2
-               $('#grdPayRollIndia tr:eq('+curentRow+') .totalPay').text(gTotal);
-               
-               
-               
-               
-               if( $(this).attr('prevVal') != $.trim($(this).val()) && $.trim($(this).val()) != '' ){
-                    $('#dvInternalNotes #txtPopNotes').val( $.trim($(this).attr('notes')));
-                    $('#dvInternalNotes #lblNotesName').text($('#grdPayRollIndia tr:eq('+curentRow+') td:eq(1) span').text());
-                    $find('mdlInternalNotes').show();
-                    currentInput = $(this).attr('id');
-               }
-               
-               if($.trim($(this).val()) == ''){
-                    $(this).attr('prevVal','').attr('notes','')
-               }
+                addEditLabelCss();   
+            
+                $('.Editlabel').click(function(){
+                    $(this).hide();
+                    $(this).next().show().focus();
+                })
+                $('.editInputBlur').on('focus', function(){
+                    $(this).attr('prevVal' ,$.trim($(this).val()));
+                });
                 
-                
-                
-                
-            })
+                $('.editInputBlur').blur(function(){
+                    curentRow = $(this).parent().parent().index();
+                   // console.log(curentRow)
+                   
+                   var sal = parseInt($('#grdPayRollIndia tr:eq('+curentRow+') .sal').text());
+                   var total1 = 0;
+                   var total2 = 0;
+                   $('#grdPayRollIndia tr:eq('+curentRow+') input.add').each(function(){
+                        if($.trim($(this).val()) != ''){
+                            total1 += parseInt($.trim($(this).val()));
+                        }
+                   });
+                   
+                   $('#grdPayRollIndia tr:eq('+curentRow+') input.sub').each(function(){
+                        if($.trim($(this).val()) != ''){
+                            total2 += parseInt($.trim($(this).val()));
+                        }
+                   });
+                   
+                   
+                   var gTotal = (sal+total1)-total2
+                   $('#grdPayRollIndia tr:eq('+curentRow+') .totalPay').text(gTotal);
+                   
+                   
+                   
+                   
+                   if( $(this).attr('prevVal') != $.trim($(this).val()) && $.trim($(this).val()) != '' ){
+                        $('#dvInternalNotes #txtPopNotes').val( $.trim($(this).attr('notes')));
+                        $('#dvInternalNotes #lblNotesName').text($('#grdPayRollIndia tr:eq('+curentRow+') td:eq(1) span').text());
+                        $find('mdlInternalNotes').show();
+                        currentInput = $(this).attr('id');
+                   }
+                   
+                   if($.trim($(this).val()) == ''){
+                        $(this).attr('prevVal','').attr('notes','')
+                   }
+                  })
+              
+              }else{
+                    delEditLabelCss();
+              }
             
         }
         function linkdis()
         {
-        debugger    
+             
            $('#lnkDwnloadPDF').css('visibility','visible');
          
            return true;
@@ -232,6 +272,9 @@
     <form id="form1" runat="server">
     <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server">
     </cc1:ToolkitScriptManager>
+    
+    <asp:HiddenField ID="hdnFreeze" runat="server" Value="false"/>
+    
     <div id="spinner">
         <h4>
             <div>
@@ -459,9 +502,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
-                    </h4>
-                </h4>
+                  </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
@@ -470,7 +511,7 @@
             <ContentTemplate>
                 <asp:Label ID="lblPayroll" runat="server" Text="Payroll report"></asp:Label>
                 <br />
-                <asp:Label ID="lblWeekPayrollReport" runat="server"></asp:Label>
+                <asp:Label ID="lblWeekPayrollReport" CssClass="lbl" runat="server"></asp:Label>
                 <br />
                 <asp:Label ID="lblFreeze" runat="server" ForeColor="Red" Font-Bold="false" Style="font-size: 10px;"></asp:Label>
             </ContentTemplate>
@@ -490,17 +531,19 @@
                         Height="23px" AppendDataBoundItems="true" OnSelectedIndexChanged="ddlLocation_SelectedIndexChanged">
                         <asp:ListItem Text="Select" Value="0"></asp:ListItem>
                     </asp:DropDownList>
+                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="btn btn-small btn-warning" />
+                    <asp:Button ID="btnFinal" runat="server" Text="Freeze" CssClass="btn btn-small btn-warning"
+                        OnClientClick="return validFinal();" OnClick="btnFinal_Click" />
+                    <asp:Button ID="btnPrint" runat="server" OnClick="btnPrint_Click" Text="Print" CssClass="btn btn-small btn-group" />
                 </ContentTemplate>
             </asp:UpdatePanel>
+            
+            
         </div>
         <asp:Button ID="btnPDF" runat="server" Text="DownLoadToPDF" CssClass="btn btn-small btn-success"
-            OnClick="btnPDF_Click1" OnClientClick="return linkdis();"></asp:Button>
-        <asp:Button ID="btnDoc" runat="server" Text="DownLoadToWord" CssClass="btn btn-small btn-success"
-            OnClick="btnDoc_Click1" OnClientClick="return linkdis();"></asp:Button>
-        <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="btn btn-small btn-warning" />
-        <asp:Button ID="btnFinal" runat="server" Text="Final" CssClass="btn btn-small btn-warning"
-            OnClientClick="return validFinal();" OnClick="btnFinal_Click" />
-        <asp:Button ID="btnPrint" runat="server" OnClick="btnPrint_Click" Text="Print" CssClass="btn btn-small btn-group" />
+                OnClick="btnPDF_Click1" OnClientClick="return linkdis();"></asp:Button>
+            <asp:Button ID="btnDoc" runat="server" Text="DownLoadToWord" CssClass="btn btn-small btn-success"
+                OnClick="btnDoc_Click1" OnClientClick="return linkdis();"></asp:Button>
     </div>
     <div id="dvpayrollreport" runat="server" style="font-size: 12px; font-family: Arial;
         color: #333;">
@@ -944,12 +987,13 @@
                             margin: 5px;" />
                     </td>
                 </tr>
+                </td> </tr>
             </table>
         </div>
     </div>
     <asp:UpdatePanel ID="upPayslip" runat="server">
         <ContentTemplate>
-            <asp:Repeater ID="rppayslip" runat="server">
+            <asp:Repeater ID="rppayslip" runat="server" OnItemDataBound="rppayslip_ItemDataBound">
                 <ItemTemplate>
                     <div style="width: 595px; height: 842px;">
                         <h3 style="text-align: center">
@@ -957,13 +1001,12 @@
                         <br />
                         <br />
                         <div style="display: inline-block; width: 98%;">
-                            <span style="float: left">Prepared:<asp:Label ID="lblPCurntDt" runat="server" Text="Feb 22 2014"></asp:Label>
-                            </span><span style="float: right">Prepared:<asp:Label ID="lblPMonth" runat="server"
+                            <span style="float: left">Prepared:<asp:Label ID="lblPCurntDt" runat="server"></asp:Label>
+                            </span><span style="float: right">Payroll Information:<asp:Label ID="lblPMonth" runat="server"
                                 Text="Jan'14"></asp:Label>
                             </span>
                         </div>
                         <br />
-                       
                         <table style="width: 99%">
                             <thead>
                                 <tr style="border-bottom: #999 2px solid;">
@@ -999,7 +1042,7 @@
                                         Date of Joining
                                     </td>
                                     <td>
-                                        <asp:Label ID="lblPDOB" runat="server"></asp:Label>
+                                        <asp:Label ID="lblPDOJ" runat="server" Text='<%# Bind("Startdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
                                     </td>
                                 </tr>
                                 <tr style="border-bottom: #ccc 1px solid;">
@@ -1019,7 +1062,6 @@
                             </tbody>
                         </table>
                         <br />
-                        
                         <table style="width: 99%">
                             <thead>
                                 <tr style="border-bottom: #999 2px solid;">
@@ -1075,22 +1117,21 @@
                             </tbody>
                         </table>
                         <br />
-                        
                         <table style="width: 99%">
                             <thead>
                                 <tr style="border-bottom: #999 2px solid;">
                                     <td colspan="3">
-                                       <b> Salary Details</b>
+                                        <b>Salary Details</b>
                                     </td>
                                 </tr>
                                 <tr style="border-bottom: #ccc 1px solid;">
                                     <td style="width: 33%">
                                         &nbsp;
                                     </td>
-                                    <td style="width: 33%;text-align:right">
+                                    <td style="width: 33%; text-align: right">
                                         Eligible Pay
                                     </td>
-                                    <td style="width: 33%;text-align:right">
+                                    <td style="width: 33%; text-align: right">
                                         Earned Pay
                                     </td>
                                 </tr>
@@ -1100,10 +1141,10 @@
                                     <td>
                                         Base
                                     </td>
-                                    <td style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPSalary" Text='<%#Eval("Salary")%>'></asp:Label>
                                     </td>
-                                    <td style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label ID="lblPCalSalary" runat="server" Text='<%#Eval("CalSalary")%>'></asp:Label>
                                     </td>
                                 </tr>
@@ -1114,7 +1155,7 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPBonus" Text='<%#Eval("Bonus")%>'></asp:Label>
                                     </td>
                                 </tr>
@@ -1125,8 +1166,8 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                    <td>
-                                        &nbsp;
+                                    <td style="text-align: right">
+                                        <asp:Label runat="server" ID="lblPTransport"></asp:Label>
                                     </td>
                                 </tr>
                                 <tr style="border-bottom: #ccc 1px solid;">
@@ -1136,8 +1177,8 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                    <td>
-                                        &nbsp;
+                                    <td style="text-align: right">
+                                        <asp:Label runat="server" ID="lblPFoodAllowance"></asp:Label>
                                     </td>
                                 </tr>
                                 <tr style="border-bottom: #ccc 1px solid;">
@@ -1147,7 +1188,7 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPIncentives" Text='<%#Eval("Incentives")%>'></asp:Label>
                                     </td>
                                 </tr>
@@ -1158,8 +1199,8 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                    <td>
-                                        &nbsp;
+                                    <td style="text-align: right">
+                                        <asp:Label runat="server" ID="lblPReimburse"></asp:Label>
                                     </td>
                                 </tr>
                                 <tr style="border-bottom: #ccc 1px solid;">
@@ -1169,7 +1210,7 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPTotalPay"></asp:Label>
                                     </td>
                                 </tr>
@@ -1180,8 +1221,8 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                    <td  style="text-align:right">
-                                        100
+                                    <td style="text-align: right">
+                                        <asp:Label runat="server" ID="lblPPF" Text="100"></asp:Label>
                                     </td>
                                 </tr>
                                 <tr style="border-bottom: #ccc 1px solid;">
@@ -1191,14 +1232,13 @@
                                     <td>
                                         &nbsp;
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPNetPay"></asp:Label>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <br />
-                        
                         <table style="width: 99%">
                             <thead>
                                 <tr style="border-bottom: #999 2px solid;">
@@ -1206,11 +1246,11 @@
                                         <b>Summary</b>
                                     </td>
                                 </tr>
-                                <tr  style="border-bottom: #ccc 1px solid;">
+                                <tr style="border-bottom: #ccc 1px solid;">
                                     <td style="width: 49%">
                                         Current Earnings
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPCurrentEarnings"></asp:Label>
                                     </td>
                                 </tr>
@@ -1220,7 +1260,7 @@
                                     <td>
                                         Advance Paid
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPAdvancePaid" Text='<%#Eval("AdvancePaid")%>'></asp:Label>
                                     </td>
                                 </tr>
@@ -1228,7 +1268,7 @@
                                     <td>
                                         Previously Unpaid
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPPrevUnpaid" Text='<%#Eval("PrevUnpaid")%>'></asp:Label>
                                     </td>
                                 </tr>
@@ -1236,7 +1276,7 @@
                                     <td>
                                         Current Payments
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPCurrentpayments"></asp:Label>
                                     </td>
                                 </tr>
@@ -1244,7 +1284,7 @@
                                     <td>
                                         Remaining Balance
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="lblPRembal"></asp:Label>
                                     </td>
                                 </tr>
@@ -1252,7 +1292,7 @@
                                     <td>
                                         Additional Incentives Paid during the month
                                     </td>
-                                    <td  style="text-align:right">
+                                    <td style="text-align: right">
                                         <asp:Label runat="server" ID="Label4"></asp:Label>
                                     </td>
                                 </tr>

@@ -18,7 +18,7 @@ namespace Attendance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["LocationName"] != null)
+            if (Session["IsAdmin"] != null && Session["UserID"]!=null)
             {
 
                 if (!IsPostBack)
@@ -47,6 +47,7 @@ namespace Attendance
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
 
                     Getdepartments();
+                    GetYear();
                     getLocations();
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
 
@@ -74,21 +75,20 @@ namespace Attendance
                     Session["CurntHolEnd"] = MonthEnd;
                     GetCalender(MonthStart, MonthEnd,locationID);
 
-                    if (MonthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
-                    {
-                        btnNext.CssClass = "btn btn-danger btn-small disabled";
-                        btnNext.Enabled = false;
-                    }
-                    else
-                    {
-                        btnNext.CssClass = "btn btn-danger btn-small enabled";
-                        btnNext.Enabled = true;
-                    }
+                    //if (MonthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
+                    //{
+                    //    btnNext.CssClass = "btn btn-danger btn-small disabled";
+                    //    btnNext.Enabled = false;
+                    //}
+                    //else
+                    //{
+                    //    btnNext.CssClass = "btn btn-danger btn-small enabled";
+                    //    btnNext.Enabled = true;
+                    //}
                    
                 }
             }
         }
-
         private void GetCalender(DateTime MonthStart, DateTime MonthEnd,int locationID)
         {
             EmployeeBL obj = new EmployeeBL();
@@ -161,7 +161,6 @@ namespace Attendance
                                 dtAttandence.Rows[j]["Saturday"] = current;
                                 days++;
                                 break;
-
                             case DayOfWeek.Tuesday:
                                 current = MonthStart;
                                 dtAttandence.Rows[j]["Tuesday"] = current;
@@ -179,7 +178,6 @@ namespace Attendance
                                 dtAttandence.Rows[j]["Saturday"] = current;
                                 days++;
                                 break; // TODO: might not be correct. Was : Exit Select
-
                             case DayOfWeek.Wednesday:
                                 current = MonthStart;
                                 dtAttandence.Rows[j]["Wednesday"] = current;
@@ -194,7 +192,6 @@ namespace Attendance
                                 dtAttandence.Rows[j]["Saturday"] = current;
                                 days++;
                                 break;
-
                             case DayOfWeek.Thursday:
                                 current = MonthStart;
                                 dtAttandence.Rows[j]["Thursday"] = current;
@@ -205,9 +202,7 @@ namespace Attendance
                                 current = current.AddDays(1);
                                 dtAttandence.Rows[j]["Saturday"] = current;
                                 days++;
-
                                 break;
-
                             case DayOfWeek.Friday:
                                 current = MonthStart;
                                 dtAttandence.Rows[j]["Friday"] = current;
@@ -216,7 +211,6 @@ namespace Attendance
                                 dtAttandence.Rows[j]["Saturday"] = current;
                                 days++;
                                 break;
-
                             case DayOfWeek.Saturday:
                                 current = MonthStart;
                                 dtAttandence.Rows[j]["Saturday"] = current;
@@ -296,7 +290,6 @@ namespace Attendance
         {
             try
             {
-
                 txtOldpwd.Text = "";
                 txtNewPwd.Text = "";
                 lblPwdName.Text = Session["EmpName"].ToString().Trim();
@@ -432,11 +425,14 @@ namespace Attendance
                 ddlPopDept.DataBind();
                 ddlPopDept.Items.Insert(0, new ListItem("Select", "Select"));
                 ddlPopDept.Items.Insert(1, new ListItem("ALL", "0"));
-                //ddlPopAllDept.DataSource = dt;
-                //ddlPopAllDept.DataTextField = "Deptname";
-                //ddlPopAllDept.DataValueField = "DeptID";
-                //ddlPopAllDept.DataBind();
-                //ddlPopAllDept.Items.Insert(0, new ListItem("Select", "0"));
+
+                ddlDefaultDept.DataSource = dt;
+                ddlDefaultDept.DataTextField = "Deptname";
+                ddlDefaultDept.DataValueField = "DeptID";
+                ddlDefaultDept.DataBind();
+                ddlDefaultDept.Items.Insert(0, new ListItem("Select", "Select"));
+                ddlDefaultDept.Items.Insert(1, new ListItem("ALL", "0"));
+              
             }
             catch (Exception ex)
             {
@@ -460,6 +456,13 @@ namespace Attendance
                 ddlPopLoc.DataBind();
                 ddlPopLoc.Items.Insert(0, new ListItem("Select", "Select"));
                 ddlPopLoc.Items.Insert(1, new ListItem("ALL", "0"));
+
+                ddlDefaultlocation.DataSource = dt;
+                ddlDefaultlocation.DataTextField = "LocationName";
+                ddlDefaultlocation.DataValueField = "LocationId";
+                ddlDefaultlocation.DataBind();
+                ddlDefaultlocation.Items.Insert(0, new ListItem("Select", "Select"));
+                ddlDefaultlocation.Items.Insert(1, new ListItem("ALL", "0"));
 
             }
             catch (Exception ex)
@@ -522,10 +525,7 @@ namespace Attendance
                             int SelectID = Convert.ToInt32(selectedRec[i].Trim());
                             bool bnew = obj.SaveandGetHolidayDet(IsHoliday, HolidayDt, LocationID, DeptID, SelectID, EnterBy, Enterdate, IpAddress, Holidayname);
                         }
-
                     }
-
-
                 }
                 GetCalender(Convert.ToDateTime(Session["MonthHolStart"]),Convert.ToDateTime(Session["MonthHolEnd"]),Convert.ToInt32(ddlLocation.SelectedItem.Value));
                 mdlHoliday.Hide();
@@ -748,16 +748,16 @@ namespace Attendance
                 Session["MonthHolStart"] = PrevMnthStart;
                 Session["MonthHolEnd"] = PrevMnthEnd;
                 int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
-                if (PrevMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
-                {
-                    btnNext.CssClass = "btn btn-danger btn-small disabled";
-                    btnNext.Enabled = false;
-                }
-                else
-                {
-                    btnNext.CssClass = "btn btn-danger btn-small enabled";
-                    btnNext.Enabled = true;
-                }
+                //if (PrevMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
+                //{
+                //    btnNext.CssClass = "btn btn-danger btn-small disabled";
+                //    btnNext.Enabled = false;
+                //}
+                //else
+                //{
+                //    btnNext.CssClass = "btn btn-danger btn-small enabled";
+                //    btnNext.Enabled = true;
+                //}
 
 
                 GetCalender(PrevMnthStart, PrevMnthEnd, location);
@@ -768,7 +768,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCurrent_Click(object sender, EventArgs e)
         {
             try
@@ -779,23 +778,22 @@ namespace Attendance
                 Session["MonthHolStart"] = CrtMnthStart;
                 Session["MonthHolEnd"] = CrtMnthEnd;
                 int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
-                if (CrtMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
-                {
-                    btnNext.CssClass = "btn btn-danger btn-small disabled";
-                    btnNext.Enabled = false;
-                }
-                else
-                {
-                    btnNext.CssClass = "btn btn-danger btn-small enabled";
-                    btnNext.Enabled = true;
-                }
+                //if (CrtMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
+                //{
+                //    btnNext.CssClass = "btn btn-danger btn-small disabled";
+                //    btnNext.Enabled = false;
+                //}
+                //else
+                //{
+                //    btnNext.CssClass = "btn btn-danger btn-small enabled";
+                //    btnNext.Enabled = true;
+                //}
                 GetCalender(CrtMnthStart, CrtMnthEnd, location);
             }
             catch (Exception ex)
             {
             }
         }
-
         protected void btnNext_Click(object sender, EventArgs e)
         {
             try
@@ -806,16 +804,16 @@ namespace Attendance
                 Session["MonthHolStart"] = NxtMnthStart;
                 Session["MonthHolEnd"] = NxtMnthEnd;
                 int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
-                if (NxtMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
-                {
-                    btnNext.CssClass = "btn btn-danger btn-small disabled";
-                    btnNext.Enabled = false;
-                }
-                else
-                {
-                    btnNext.CssClass = "btn btn-danger btn-small enabled";
-                    btnNext.Enabled = true;
-                }
+                //if (NxtMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
+                //{
+                //    btnNext.CssClass = "btn btn-danger btn-small disabled";
+                //    btnNext.Enabled = false;
+                //}
+                //else
+                //{
+                //    btnNext.CssClass = "btn btn-danger btn-small enabled";
+                //    btnNext.Enabled = true;
+                //}
 
 
                 GetCalender(NxtMnthStart, NxtMnthEnd, location);
@@ -825,7 +823,6 @@ namespace Attendance
             {
             }
         }
-
         protected void ddlLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -841,7 +838,6 @@ namespace Attendance
             {
             }
         }
-
         protected void ddlPopLoc_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -853,7 +849,6 @@ namespace Attendance
             {
             }
         }
-
         protected void ddlPopDept_SelectedIndexChanged1(object sender, EventArgs e)
         {
             try
@@ -864,6 +859,94 @@ namespace Attendance
             catch (Exception ex)
             {
             }
+        }
+        private void GetYear()
+        {
+            try
+            {
+                EmployeeBL obj = new EmployeeBL();
+                ddlFromYear.DataSource = obj.GetYear();
+                ddlFromYear.DataTextField = "year";
+                ddlFromYear.DataValueField = "year";
+                ddlFromYear.DataBind();
+                ddlFromYear.Items.Insert(0, new ListItem("Select", "Select"));
+                ddlFromYear.SelectedIndex = ddlFromYear.Items.IndexOf(ddlFromYear.Items.FindByText(System.DateTime.Now.ToString("yyyy")));
+
+
+                ddlToYear.DataSource = obj.GetYear();
+                ddlToYear.DataTextField = "year";
+                ddlToYear.DataValueField = "year";
+                ddlToYear.DataBind();
+                ddlToYear.Items.Insert(0, new ListItem("Select", "Select"));
+                ddlToYear.SelectedIndex = ddlToYear.Items.IndexOf(ddlToYear.Items.FindByText(System.DateTime.Now.ToString("yyyy")));
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string DefaultDay = ddlDay.SelectedItem.Text;
+                int fromYr=Convert.ToInt32(ddlFromYear.SelectedItem.Text.ToString().Trim());
+                int toYr=Convert.ToInt32(ddlToYear.SelectedItem.Text.ToString().Trim());
+                int LocationID = Convert.ToInt32(ddlDefaultlocation.SelectedItem.Value);
+                int DeptID = Convert.ToInt32(ddlDefaultDept.SelectedItem.Value);
+
+                DateTime startDate = new DateTime(fromYr, 1, 1);
+                DateTime endDate = new DateTime(toYr, 12, 31);
+
+                int EnterBy = Convert.ToInt32(Session["UserID"]);
+
+                string timezone = "";
+                if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                {
+                    timezone = "Eastern Standard Time";
+                }
+                else
+                {
+                    timezone = "India Standard Time";
+
+                }
+                DateTime Enterdate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                String strHostName = Request.UserHostAddress.ToString();
+                string IpAddress = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
+
+
+                TimeSpan diff = endDate - startDate;
+                int days = diff.Days;
+                EmployeeBL obj = new EmployeeBL();
+                for (var i = 0; i <= days; i++)
+                {
+                    var testDate = startDate.AddDays(i);
+                    if (testDate.DayOfWeek.ToString()==DefaultDay)
+                    {
+                        bool bnew = obj.SaveandGetHolidayDet(true, testDate, LocationID, DeptID, 0, EnterBy, Enterdate, IpAddress, "Default");
+                    
+                    }
+                }
+                mdlDefaultmgmt.Hide();
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Default holidays updated successfully..');", true);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        protected void btnDefaultMgmt_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ddlDay.SelectedIndex = 0;
+                ddlDefaultlocation.SelectedIndex = 0;
+                ddlDefaultDept.SelectedIndex = 0;
+                ddlFromYear.SelectedIndex = ddlFromYear.Items.IndexOf(ddlFromYear.Items.FindByText(System.DateTime.Now.ToString("yyyy")));
+                ddlToYear.SelectedIndex = ddlToYear.Items.IndexOf(ddlToYear.Items.FindByText(System.DateTime.Now.ToString("yyyy")));
+                mdlDefaultmgmt.Show();
+            }
+            catch (Exception ex)
+            {
+            }   
         }
 
 
