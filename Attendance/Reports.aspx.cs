@@ -341,9 +341,7 @@ namespace Attendance
                         DataTable dtSchedules = new DataTable();
 
 
-                        DataTable dtVarySch = ds.Tables[5];
-                        DataView dvVarySch = dtVarySch.DefaultView;
-                        DataTable dtVarySchedules = new DataTable();
+                       
 
                         for (int j = 0; j < ds.Tables[0].Rows.Count; j++)
                         {
@@ -360,11 +358,6 @@ namespace Attendance
 
                             dvSch.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
                             dtSchedules = dvSch.ToTable();
-
-                            dvVarySch.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
-                            dtVarySchedules = dvVarySch.ToTable();
-
-
                             if (dtSchedules.Rows.Count > 0)
                             {
                                 dtAttandence.Rows[j]["SunSchIn"] = dtSchedules.Rows[0]["startTime"].ToString();
@@ -390,77 +383,6 @@ namespace Attendance
                                 dtAttandence.Rows[j]["FriLunch"] = dtSchedules.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtSchedules.Rows[0]["LunchBreakEnd"].ToString().Trim();
                                 dtAttandence.Rows[j]["SatLunch"] = dtSchedules.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtSchedules.Rows[0]["LunchBreakEnd"].ToString().Trim();
                             }
-
-                            else
-                            {
-                                if (dtVarySchedules.Rows.Count > 0)
-                                {
-                                    DataView dvVary = dtVarySchedules.DefaultView;
-                                    DataTable dtschvar = new DataTable();
-                                    DateTime startDate = StartDate;
-                                    for (int dy = 0; dy < 7; dy++)
-                                    {
-                                        dvVary.RowFilter = "VschFromDt<=#" + startDate + "# and #" + startDate + "#<=VschEndDt";
-                                        dtschvar = dvVary.ToTable();
-
-                                        if (dtschvar.Rows.Count > 0)
-                                        {
-                                            DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
-
-                                            switch (GetDay)
-                                            {
-                                                case DayOfWeek.Sunday:
-                                                    dtAttandence.Rows[j]["SunSchIn"] = dtschvar.Rows[0]["startTime"].ToString();
-                                                    dtAttandence.Rows[j]["SunSchOut"] = dtschvar.Rows[0]["EndTime"].ToString();
-                                                    dtAttandence.Rows[j]["SunLunch"] = dtschvar.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtschvar.Rows[0]["LunchBreakEnd"].ToString().Trim();
-                                                    break;
-
-                                                case DayOfWeek.Monday:
-                                                    dtAttandence.Rows[j]["MonSchIn"] = dtschvar.Rows[0]["startTime"].ToString();
-                                                    dtAttandence.Rows[j]["MonSchOut"] = dtschvar.Rows[0]["EndTime"].ToString();
-                                                    dtAttandence.Rows[j]["MonLunch"] = dtschvar.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtschvar.Rows[0]["LunchBreakEnd"].ToString().Trim();
-                                                    break;
-
-                                                case DayOfWeek.Tuesday:
-                                                    dtAttandence.Rows[j]["TueSchIn"] = dtschvar.Rows[0]["startTime"].ToString();
-                                                    dtAttandence.Rows[j]["TueSchOut"] = dtschvar.Rows[0]["EndTime"].ToString();
-                                                    dtAttandence.Rows[j]["TueLunch"] = dtschvar.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtschvar.Rows[0]["LunchBreakEnd"].ToString().Trim();
-                                                    break; // TODO: might not be correct. Was : Exit Select
-
-                                                case DayOfWeek.Wednesday:
-                                                    dtAttandence.Rows[j]["WedSchIn"] = dtschvar.Rows[0]["startTime"].ToString();
-                                                    dtAttandence.Rows[j]["WedSchOut"] = dtschvar.Rows[0]["EndTime"].ToString();
-                                                    dtAttandence.Rows[j]["WedLunch"] = dtschvar.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtschvar.Rows[0]["LunchBreakEnd"].ToString().Trim();
-                                                    break;
-
-                                                case DayOfWeek.Thursday:
-                                                    dtAttandence.Rows[j]["ThuSchIn"] = dtschvar.Rows[0]["startTime"].ToString();
-                                                    dtAttandence.Rows[j]["ThuSchOut"] = dtschvar.Rows[0]["EndTime"].ToString();
-                                                    dtAttandence.Rows[j]["ThuLunch"] = dtschvar.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtschvar.Rows[0]["LunchBreakEnd"].ToString().Trim();
-                                                    break;
-
-                                                case DayOfWeek.Friday:
-                                                    dtAttandence.Rows[j]["FriSchIn"] = dtschvar.Rows[0]["startTime"].ToString();
-                                                    dtAttandence.Rows[j]["FriSchOut"] = dtschvar.Rows[0]["EndTime"].ToString();
-                                                    dtAttandence.Rows[j]["FriLunch"] = dtschvar.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtschvar.Rows[0]["LunchBreakEnd"].ToString().Trim();
-                                                    break;
-
-                                                case DayOfWeek.Saturday:
-                                                    dtAttandence.Rows[j]["SatSchIn"] = dtschvar.Rows[0]["startTime"].ToString();
-                                                    dtAttandence.Rows[j]["SatSchOut"] = dtschvar.Rows[0]["EndTime"].ToString();
-                                                    dtAttandence.Rows[j]["SatLunch"] = dtschvar.Rows[0]["LunchBreakStart"].ToString().Trim() + "-" + dtschvar.Rows[0]["LunchBreakEnd"].ToString().Trim();
-                                                    break;
-                                            }
-                                        }
-
-                                        startDate = startDate.AddDays(1);
-                                    }
-
-                                }
-                            }
-
-
-
                             dtAttandence.Rows[j]["empid"] = ds.Tables[0].Rows[j]["empid"].ToString();
                             dtAttandence.Rows[j]["Empname"] = ds.Tables[0].Rows[j]["firstName"].ToString() + " " + ds.Tables[0].Rows[j]["lastname"].ToString();
                             dtAttandence.Rows[j]["PEmpname"] = ds.Tables[0].Rows[j]["PfirstName"].ToString() + " " + ds.Tables[0].Rows[j]["Plastname"].ToString();
@@ -542,9 +464,6 @@ namespace Attendance
                                                     }
 
                                                 }
-
-
-
                                                 // dtAttandence.Rows[j]["SunHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["SunLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 //dtAttandence.Rows[j]["SunLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
@@ -5203,10 +5122,6 @@ namespace Attendance
                         {
                             bool bnew = obj.UpdateSignInSignOutDelete(loguserID);
                         }
-
-
-
-
                     }
 
                 }
@@ -5228,8 +5143,6 @@ namespace Attendance
             {
 
             }
-
-
         }
 
         protected void lnkLeaveReq_Click(object sender, EventArgs e)
@@ -5307,7 +5220,6 @@ namespace Attendance
 
                            DateTime startDate = Convert.ToDateTime(Session["TodayDate"]);
                            DateTime endDate = startDate.AddDays(7);
-
 
                            EmployeeBL objLeave = new EmployeeBL();
                            DataTable datas = objLeave.GetLeaveRequestDetByUserID(Convert.ToInt32(Session["UserID"]), startDate, endDate);

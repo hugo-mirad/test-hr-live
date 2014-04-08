@@ -396,7 +396,7 @@
             </div>
      
             <asp:GridView ID="grdUsers" runat="server" AutoGenerateColumns="false" CssClass="table1 editGrid"
-                DataKeyNames="PaidLeaveID" Style="width: 997px;" OnRowCommand="grdUsers_RowCommand"
+                DataKeyNames="PaidLeaveID" Style="width: 1100px;" OnRowCommand="grdUsers_RowCommand"
                 OnRowDataBound="grdUsers_RowDataBound" AllowSorting="True" OnSorting="grdUsers_Sorting"
                 OnRowEditing="grdUsers_RowEditing" OnRowCancelingEdit="grdUsers_RowCancelingEdit" OnRowCreated="grdUsers_RowCreated"
                 OnRowUpdating="grdUsers_RowUpdating">
@@ -452,6 +452,7 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtLeavesStartDt" runat="server" Text='<%#Bind("PaidLeavesStartDt","{0:MM/dd/yyyy}") %>'></asp:TextBox>
                         </EditItemTemplate>
+                       
                         <ItemStyle Width="60" />
                     </asp:TemplateField>
                     
@@ -497,9 +498,9 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtNotes" TextMode="MultiLine" Rows="3" runat="server"></asp:TextBox>
                         </EditItemTemplate>
-                        <ItemStyle Width="140" />
+                       
                     </asp:TemplateField>
-                    <asp:CommandField ShowEditButton="true" ItemStyle-Width="30" />
+                    <asp:CommandField ShowEditButton="true" ItemStyle-Width="80" />
                      </Columns>
                      <EditRowStyle CssClass="edit" />
                      

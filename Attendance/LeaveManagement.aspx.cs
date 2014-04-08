@@ -16,6 +16,7 @@ namespace Attendance
 {
     public partial class LeaveManagement : System.Web.UI.Page
     {
+        
         public GeneralFunction objFun = new GeneralFunction();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -116,6 +117,8 @@ namespace Attendance
             {
             }
         }
+        
+   
         private void getLocations()
         {
             try

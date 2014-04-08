@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Collections;
+
 namespace Attendance.BAL
 {
     public class Report

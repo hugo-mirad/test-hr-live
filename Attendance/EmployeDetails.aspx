@@ -157,22 +157,20 @@
                document.getElementById("txtLunchStart").focus();
            }
 
-          else if (document.getElementById('txtLunchEnd').value.trim().length < 1) {
+         else if (document.getElementById('txtLunchEnd').value.trim().length < 1) {
                alert("Please enter lunch end time.");
                valid = false;
                document.getElementById("txtLunchEnd").value = "";
                document.getElementById("txtLunchEnd").focus();
            }
            
-            else if (document.getElementById('rdFive').checked==false &&document.getElementById('rdSix').checked==false &&document.getElementById('rdSeven').checked==false){
+         else if (document.getElementById('rdFive').checked==false &&document.getElementById('rdSix').checked==false &&document.getElementById('rdSeven').checked==false){
                alert("Please choose days.");
                valid = false;
                //document.getElementById("rdFive").value = "";
                document.getElementById("rdFive").focus();
            }
-           
-           
-           
+                      
          else if(Date.parse("01/01/2000 "+SchStart)>=Date.parse("01/01/2000 "+SchEnd))
          {
            alert("Schedule start time should be greater than end time");
@@ -180,9 +178,7 @@
             document.getElementById("txtScheduleEnd").value = "";
             document.getElementById("txtScheduleEnd").focus();
          }
-           
-           
-           else if(Date.parse("01/01/2000 "+LunchStart)>=Date.parse("01/01/2000 "+LunchEnd))
+          else if(Date.parse("01/01/2000 "+LunchStart)>=Date.parse("01/01/2000 "+LunchEnd))
          {
            alert("Lunch start time should be greater than end time");
            valid=false;
@@ -205,18 +201,12 @@
             document.getElementById("txtLunchEnd").value = "";
             document.getElementById("txtLunchEnd").focus();
          }
-           
-           
-
            return valid;
       }
-    
-    
-        
-        
-        
+
         function ValidateSalSubmit()
         {
+        debugger
             var valid=true;
             if (document.getElementById('ddlEditWage').value=="0")
            {

@@ -83,21 +83,22 @@
         }
     var curentRow = 0;
     var currentInput = '';
+    
     $(window).load(function () {
-      $('#lnkDwnloadPDF').css('visibility','hidden');
-     $('#spinner').hide();
+        $('#lnkDwnloadPDF').css('visibility','hidden');
+        $('#spinner').hide();
      
-      $('#txtFromDate').datepicker({
+        $('#txtFromDate').datepicker({
             dateFormat: "mm/dd/yy"
             //timeFormat:"hh:mm tt"      
         });
-          
-          $('#txtToDate').datepicker({
+
+        $('#txtToDate').datepicker({
             dateFormat: "mm/dd/yy"
             //timeFormat:"hh:mm tt"      
         });
         
-        });
+    });
         
         
          function showspinner()
@@ -159,13 +160,11 @@
         
         function delEditLabelCss()
         {
-        
-           
-            
+
             $('.grdPayRollIndia .Editlabel').each(function(){
                 $(this).next('input').hide();
-                $(this).show().removeClass('Editlabel');
-                $(this).unbind();
+                $(this).show().removeClass('Editlabel').addClass('EditlabelBk');
+                $(this).unbind('click');
             });        
          
         }
@@ -174,14 +173,38 @@
         {
             $('#spinner').hide();    
             
+            
+            //console.log($('#hdnFreeze').val());
+            
+            
+             $('#txtFromDate').datepicker({
+                dateFormat: "mm/dd/yy"
+                //timeFormat:"hh:mm tt"      
+            });
+
+            $('#txtToDate').datepicker({
+                dateFormat: "mm/dd/yy"
+                //timeFormat:"hh:mm tt"      
+            });
+            
+            
             if($('#hdnFreeze').val() == "false"){
             
-                addEditLabelCss();   
+                //addEditLabelCss();   
+                
+                
+                $('.grdPayRollIndia .EditlabelBk').each(function(){
+                    $(this).next('input').show();
+                    $(this).hide().addClass('Editlabel').removeClass('EditlabelBk')
+                   // $(this).bind('click');
+                }); 
+                
             
                 $('.Editlabel').click(function(){
                     $(this).hide();
                     $(this).next().show().focus();
                 })
+                
                 $('.editInputBlur').on('focus', function(){
                     $(this).attr('prevVal' ,$.trim($(this).val()));
                 });
@@ -209,9 +232,6 @@
                    var gTotal = (sal+total1)-total2
                    $('#grdPayRollIndia tr:eq('+curentRow+') .totalPay').text(gTotal);
                    
-                   
-                   
-                   
                    if( $(this).attr('prevVal') != $.trim($(this).val()) && $.trim($(this).val()) != '' ){
                         $('#dvInternalNotes #txtPopNotes').val( $.trim($(this).attr('notes')));
                         $('#dvInternalNotes #lblNotesName').text($('#grdPayRollIndia tr:eq('+curentRow+') td:eq(1) span').text());
@@ -231,9 +251,8 @@
         }
         function linkdis()
         {
-             
+          
            $('#lnkDwnloadPDF').css('visibility','visible');
-         
            return true;
         }
         
@@ -272,9 +291,6 @@
     <form id="form1" runat="server">
     <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server">
     </cc1:ToolkitScriptManager>
-    
-    <asp:HiddenField ID="hdnFreeze" runat="server" Value="false"/>
-    
     <div id="spinner">
         <h4>
             <div>
@@ -502,7 +518,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                  </h4>
+                </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
@@ -534,16 +550,15 @@
                     <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="btn btn-small btn-warning" />
                     <asp:Button ID="btnFinal" runat="server" Text="Freeze" CssClass="btn btn-small btn-warning"
                         OnClientClick="return validFinal();" OnClick="btnFinal_Click" />
-                    <asp:Button ID="btnPrint" runat="server" OnClick="btnPrint_Click" Text="Print" CssClass="btn btn-small btn-group" />
+                   
                 </ContentTemplate>
             </asp:UpdatePanel>
-            
-            
         </div>
+         <asp:Button ID="btnPrint" runat="server" OnClick="btnPrint_Click" Text="Print" CssClass="btn btn-small btn-group" />
         <asp:Button ID="btnPDF" runat="server" Text="DownLoadToPDF" CssClass="btn btn-small btn-success"
-                OnClick="btnPDF_Click1" OnClientClick="return linkdis();"></asp:Button>
-            <asp:Button ID="btnDoc" runat="server" Text="DownLoadToWord" CssClass="btn btn-small btn-success"
-                OnClick="btnDoc_Click1" OnClientClick="return linkdis();"></asp:Button>
+            OnClick="btnPDF_Click1" OnClientClick="return linkdis();"></asp:Button>
+        <asp:Button ID="btnDoc" runat="server" Text="DownLoadToWord" CssClass="btn btn-small btn-success"
+            OnClick="btnDoc_Click1" OnClientClick="return linkdis();"></asp:Button>
     </div>
     <div id="dvpayrollreport" runat="server" style="font-size: 12px; font-family: Arial;
         color: #333;">
@@ -648,6 +663,7 @@
                                     </asp:TemplateField>
                                 </Columns>
                             </asp:GridView>
+                            <asp:HiddenField ID="hdnFreeze" runat="server" Value="false" />
                             <asp:GridView runat="server" AutoGenerateColumns="false" ID="grdPayRollIndia" CssClass="table1 grdPayRollIndia"
                                 OnRowDataBound="grdPayRollIndia_RowDataBound" BorderWidth="1" CellPadding="0"
                                 CellSpacing="0" Width="800px" OnRowCreated="grdPayRollIndia_RowCreated">
@@ -993,6 +1009,7 @@
     </div>
     <asp:UpdatePanel ID="upPayslip" runat="server">
         <ContentTemplate>
+         <div >
             <asp:Repeater ID="rppayslip" runat="server" OnItemDataBound="rppayslip_ItemDataBound">
                 <ItemTemplate>
                     <div style="width: 595px; height: 842px;">
@@ -1301,6 +1318,7 @@
                     </div>
                 </ItemTemplate>
             </asp:Repeater>
+            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
     </form>

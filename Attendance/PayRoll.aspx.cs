@@ -17,9 +17,6 @@ using iTextSharp.text.html.simpleparser;
 using System.IO;
 using System.Net.Mail;
 using System.Data.SqlClient;
-
-
-
 namespace Attendance
 {
     public partial class PayRoll : System.Web.UI.Page
@@ -613,7 +610,7 @@ namespace Attendance
             //    lblEmpName.Text = lblEmpName.Text + " " + hdnLastname.Value.ToString().Trim();
 
             //    Label lblAddress = (Label)e.Item.FindControl("lblAddress");
-            //    HiddenField hdnAddress2 = (HiddenField)e.Item.FindControl("hdnAddress2");
+            //    HiddenField hdnAddress2 = (HiddenField)e.Item.FindControl("hdnAddress2");             
             //    HiddenField hdnZip = (HiddenField)e.Item.FindControl("hdnZip");
             //    HiddenField hdnState = (HiddenField)e.Item.FindControl("hdnState");
 
@@ -701,7 +698,6 @@ namespace Attendance
         {
             try
             {
-
                 //lnkDwnloadPDF.Enabled = true;
                 string CurrentDate = Convert.ToDateTime(lblDate2.Text).ToString("MM-dd-yyyy") + Convert.ToDateTime(lblDate2.Text).ToString("hhmmsstt");
                 string Location = Session["LocationName"].ToString();
@@ -711,29 +707,133 @@ namespace Attendance
                 {
                     System.IO.Directory.CreateDirectory(filepath);
                 }
-                StringWriter sw = new StringWriter();
-                HtmlTextWriter hw = new HtmlTextWriter(sw);
-                dvpayrollreport.RenderControl(hw);
-                StringReader sr = new StringReader(sw.ToString());
-                Document pdfDoc = new Document(new Rectangle(1200f,1800f));
-                HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+
+                var pdfDoc = new Document(PageSize.A3);
                 PdfWriter.GetInstance(pdfDoc, new FileStream(filepath + "Payroll.pdf", FileMode.Create));
                 Session["FilePath"] = filepath + "Payroll.pdf";
                 pdfDoc.Open();
-           
-                iTextSharp.text.Font georgia = FontFactory.GetFont("georgia", 20f,1,new BaseColor(System.Drawing.Color.Brown));
-                //georgia.Color = Color.Gray;
-                Chunk beginning = new Chunk(PayrollDate, georgia);
-                Phrase p1 = new Phrase(beginning);
-                Phrase p2 = new Phrase();
-                pdfDoc.Add(new Paragraph(p1));
-                //pdfDoc.Add(new Paragraph(30f, "Created at" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + " by " + Session["EmpName"].ToString().Trim()));
-                //pdfDoc.AddTitle(PayrollDate);
-                htmlparser.Parse(sr);
-                pdfDoc.Close();
-                Response.Write(pdfDoc);
-                showpdf(Session["FilePath"].ToString());
-                Response.End();
+                var table1 = new PdfPTable(15);
+                PdfPCell cell = new PdfPCell();
+                // table1.DefaultCell.Border = Rectangle.NO_BORDER;
+
+
+                table1.WidthPercentage = 100;
+                table1.HorizontalAlignment = Element.ALIGN_CENTER;
+               
+                
+
+                iTextSharp.text.Font fntTableFont1 = new Font(Font.FontFamily.TIMES_ROMAN, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                iTextSharp.text.Font fntTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                iTextSharp.text.Font fntTableHeading = new Font(Font.FontFamily.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLD, BaseColor.MAGENTA);
+
+                if (ddlLocation.SelectedItem.Text.ToString() == "INDG" || ddlLocation.SelectedItem.Text.ToString() == "INBH")
+                {
+                    DataTable dt = Session["Indiapayroll"] as DataTable;
+
+                    PdfPCell CellZero = new PdfPCell(new Phrase("Employee Information",fntTableFont1));
+                    CellZero.Colspan = 8;
+                    CellZero.Border = 0;
+                    CellZero.BackgroundColor = BaseColor.GRAY;
+                    CellZero.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellZero);
+
+                    PdfPCell CellZero2 = new PdfPCell(new Phrase("Attendance Info", fntTableFont1));
+                    CellZero2.Colspan = 2;
+                    CellZero2.Border = 0;
+                    CellZero2.BackgroundColor = BaseColor.GRAY;
+                    CellZero2.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellZero2);
+
+
+                    PdfPCell CellZero3 = new PdfPCell(new Phrase("Paid days Info", fntTableFont1));
+                    CellZero2.Colspan = 2;
+                    CellZero2.Border = 0;
+                    CellZero2.BackgroundColor = BaseColor.GRAY;
+                    CellZero2.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellZero2);
+
+                     CellZero2 = new PdfPCell(new Phrase("Salary Info", fntTableFont1));
+                    CellZero2.Colspan = 3;
+                    CellZero2.Border = 0;
+                    CellZero2.BackgroundColor = BaseColor.GRAY;
+                    CellZero2.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellZero2);
+                    PdfPCell[] cel = new PdfPCell[15];
+                    PdfPRow row = new PdfPRow(cel);
+
+                    cel[0] = new PdfPCell(new Phrase("EmpID",fntTableFont1));
+                    cel[1]  = new PdfPCell(new Phrase("Name",fntTableFont1));            
+                    cel[2]  = new PdfPCell(new Phrase("StartDt",fntTableFont1));
+                    cel[3]  = new PdfPCell(new Phrase("TermDt",fntTableFont1));
+                    cel[4]  = new PdfPCell(new Phrase("Department",fntTableFont1));
+                    cel[5]  = new PdfPCell(new Phrase("Type",fntTableFont1));
+                    cel[6]  = new PdfPCell(new Phrase("Location",fntTableFont1));
+                    cel[7]  = new PdfPCell(new Phrase("Salary",fntTableFont1));
+                    cel[8]  = new PdfPCell(new Phrase("Working days",fntTableFont1));
+                    cel[9]  = new PdfPCell(new Phrase("Attend days",fntTableFont1));
+                    cel[10]  = new PdfPCell(new Phrase("Used",fntTableFont1));
+                    cel[11]  = new PdfPCell(new Phrase("Balanced",fntTableFont1));
+                    cel[12]  = new PdfPCell(new Phrase("Salary",fntTableFont1));
+                    cel[13]  = new PdfPCell(new Phrase("Is New",fntTableFont1));
+                    cel[14]  = new PdfPCell(new Phrase("Is Changes",fntTableFont1));
+
+                    table1.Rows.Add(row);
+                   
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {           
+                        cel[0] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[1] = new PdfPCell(new Phrase(dt.Rows[i]["PEmpname"].ToString(), fntTableFont));
+                        cel[2] = new PdfPCell(new Phrase(dt.Rows[i]["StartDate"].ToString(), fntTableFont));
+                        cel[3] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[4] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[5] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[6] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[7] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[8] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[9] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[10] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[11] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[12] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[13] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        cel[14] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
+                        table1.Rows.Add(row);
+                    }
+                    pdfDoc.Add(table1);
+                    table1.Rows.Clear();
+                    table1.WidthPercentage = 100;
+                    pdfDoc.Close();
+                    Response.Write(pdfDoc);
+                    showpdf(Session["FilePath"].ToString());
+                    Response.End();
+                }
+                
+
+
+
+
+                //StringWriter sw = new StringWriter();
+                //HtmlTextWriter hw = new HtmlTextWriter(sw);
+                //dvpayrollreport.RenderControl(hw);
+                //StringReader sr = new StringReader(sw.ToString());
+                //Document pdfDoc = new Document(new Rectangle(1200f,1800f));
+                //HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+                //PdfWriter.GetInstance(pdfDoc, new FileStream(filepath + "Payroll.pdf", FileMode.Create));
+                //Session["FilePath"] = filepath + "Payroll.pdf";
+                //pdfDoc.Open();
+               
+                //iTextSharp.text.Font georgia = FontFactory.GetFont("georgia", 20f,1,new BaseColor(System.Drawing.Color.Brown));
+                ////georgia.Color = Color.Gray;
+                //Chunk beginning = new Chunk(PayrollDate, georgia);
+                //Phrase p1 = new Phrase(beginning);
+                //Phrase p2 = new Phrase();
+                //pdfDoc.Add(new Paragraph(p1));
+                ////pdfDoc.Add(new Paragraph(30f, "Created at" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + " by " + Session["EmpName"].ToString().Trim()));
+                ////pdfDoc.AddTitle(PayrollDate);
+                //htmlparser.Parse(sr);
+                //pdfDoc.Close();
+                //Response.Write(pdfDoc);
+                //showpdf(Session["FilePath"].ToString());
+                //Response.End();
 
             }
             catch (Exception ex)
@@ -753,7 +853,6 @@ namespace Attendance
             }
             catch (Exception ex)
             {
-
             }
         }
         protected void btnDoc_Click1(object sender, EventArgs e)
@@ -1114,29 +1213,16 @@ namespace Attendance
             {
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
-
-                  
-
                     Label lblEmpID = (Label)e.Row.FindControl("lblEmpID");
-
                     Label lblEmpFirstname = (Label)e.Row.FindControl("lblEmpFirstname");
-
                     Label lblStartedDate = (Label)e.Row.FindControl("lblStartedDate");
                     lblStartedDate.Text = lblStartedDate.Text == "01/01/1900" ? "" : (lblStartedDate.Text);
-
                     Label lblTerminatedDate = (Label)e.Row.FindControl("lblTerminatedDate");
                     lblTerminatedDate.Text = lblTerminatedDate.Text == "01/01/1900" ? "" : lblTerminatedDate.Text;
-
-
                     DateTime Start = Convert.ToDateTime(ViewState["StartRptDt"]);
                     DateTime End = Convert.ToDateTime(ViewState["EndRptDt"]);
-
-
-
                     Label lblSalary = (Label)e.Row.FindControl("lblSalary");
-
                     Label lblLeavesAvailable = (Label)e.Row.FindControl("lblLeavesAvailable");
-
                     Label lblLeaves = (Label)e.Row.FindControl("lblLeaves");
 
                     if (lblStartedDate.Text != "" && (Convert.ToDateTime(lblStartedDate.Text) >= Start && Convert.ToDateTime(lblStartedDate.Text) <= End))
@@ -1145,7 +1231,6 @@ namespace Attendance
                         Label lblIsNew = (Label)e.Row.FindControl("lblIsNew");
                         lblIsNew.Text = "Yes";
                         CreateNewEmployeeList(Convert.ToInt32(hdnEmpuserid.Value));
-
                     }
                     else
                     {
@@ -1158,7 +1243,6 @@ namespace Attendance
                             Label lblIsChanges = (Label)e.Row.FindControl("lblIsChanges");
                             lblIsChanges.Text = "Yes";
                             CreateListOFChanges(lblEmpFirstname.Text, hdnEmpuserid.Value, dt1, lblEmpID.Text);
-
                         }
                     }
                 }
@@ -1348,7 +1432,6 @@ namespace Attendance
                 int locationID = Convert.ToInt32(ddlLocation.SelectedValue);
                 for (int i = 0; i < grdPayRollIndia.Rows.Count; i++)
                 {
-
                     comanyname.Text = CommonFiles.ComapnyName;
                     string timezone = "";
                     if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
@@ -1402,7 +1485,6 @@ namespace Attendance
                     TextBox txtExpenses = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtExpenses");
                     TextBox txtLoanDeduct = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtLoanDeduct");
                     Label lblTotal = (Label)grdPayRollIndia.Rows[i].FindControl("lblTotal");
-
 
                     Attendance.Entities.SalaryInfo objSal = new Attendance.Entities.SalaryInfo();
                     objSal.AtnLogID = AtnLogID;
@@ -1474,7 +1556,6 @@ namespace Attendance
 
                 }
                 bool bnewf = obj.FinalizePayrollReport(locationID, dt, Convert.ToInt32(Session["UserID"]));
-
                 bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value));
 
                 if (final)
@@ -1855,7 +1936,7 @@ namespace Attendance
                                 //salary calculation  CalSalary  CalLeaves
                                 double CurntSalary = Convert.ToDouble(dtPayroll.Rows[j]["Salary"]);
                                 int wrkDays = Convert.ToInt32(dtPayroll.Rows[j]["Workingdays"]);
-                                double CalSalary = 0.0;                    
+                                double CalSalary = 0.0;
                                 if (Convert.ToInt32(dtPayroll.Rows[j]["Present"]) > 0)
                                 {
                                     double perdaySal = wrkDays == 0 ? 0 : Math.Round(CurntSalary / Convert.ToDouble(wrkDays));
@@ -1864,6 +1945,11 @@ namespace Attendance
                                     CalSalary = paiddaysOff + ActualSalary;
                                     dtPayroll.Rows[j]["CalSalary"] = CalSalary;
                                     dtPayroll.Rows[j]["TotalPay"] = CalSalary;
+                                }
+                                else
+                                {
+                                    dtPayroll.Rows[j]["CalSalary"] = 0.0;
+                                    dtPayroll.Rows[j]["TotalPay"] = 0.0;
                                 }
                             }
                         }
@@ -1931,8 +2017,8 @@ namespace Attendance
             try
             {
                 DataTable xmlDt = Session["Indiapayroll"] as DataTable;
-                rppayslip.DataSource = xmlDt;
-                rppayslip.DataBind();
+                //rppayslip.DataSource = xmlDt;
+                //rppayslip.DataBind();
                 comanyname.Text = CommonFiles.ComapnyName;
                 string timezone = "";
                 if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
@@ -1945,31 +2031,628 @@ namespace Attendance
                 }
                 DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
 
-                var CurentDatetime = ISTTime;
+                string CurrentDate = Convert.ToDateTime(lblDate2.Text).ToString("MM-dd-yyyy") + Convert.ToDateTime(lblDate2.Text).ToString("hhmmsstt");
 
-                //for (int i = 0; i < rppayslip.Items.Count; i++)
-                //{
 
-                //    Response.ClearContent();
-                //    Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", CurentDatetime + ".doc"));
-                //    Response.Charset = "";
-                //    Response.ContentType = "application/ms-word";
-                //    StringWriter sw = new StringWriter();
-                //    HtmlTextWriter htw = new HtmlTextWriter(sw);
-                //    rppayslip.Items[i].RenderControl(htw);
-                //    //     Response.Write("<h2 style=\"font-size:12px; font-weight:normal; font-family:\"Century Gothic\">" + PayrollDate + "</br>" + lblWeekPayrollReport.Text + "</h2>");
-                //    Response.Write(sw.ToString());
+                string filepath = Server.MapPath("~/Payroll/Payslips" + ddlLocation.SelectedItem.Value + "/" + CurrentDate + "/");
+                if (!System.IO.Directory.Exists(filepath))
+                {
+                    System.IO.Directory.CreateDirectory(filepath);
+                }
+                var pdfDoc = new Document(PageSize.A4);
+                PdfWriter.GetInstance(pdfDoc, new FileStream(filepath + "Payroll.pdf", FileMode.Create));
+                Session["FilePath"] = filepath + "Payroll.pdf";
+                pdfDoc.Open();
+                var table1 = new PdfPTable(4);
+                PdfPCell cell = new PdfPCell();
+                // table1.DefaultCell.Border = Rectangle.NO_BORDER;
 
-                //    Response.End();
-                //}
+
+                table1.WidthPercentage = 90;
+                table1.HorizontalAlignment = Element.ALIGN_CENTER;
+                table1.SpacingAfter = 15;
+                
+
+
+                //adding some rows 
+                for (int i = 0; i < xmlDt.Rows.Count; i++)
+                {
+
+                    // cell.HorizontalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
+                    iTextSharp.text.Font fntTableFont1 = new Font(Font.FontFamily.TIMES_ROMAN, 12, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                    iTextSharp.text.Font fntTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                   
+                    //iTextSharp.text.Font fntTableFont2 = FontFactory.GetFont("Times New Roman", 10, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                    //iTextSharp.text.Font fntTableFont3 = FontFactory.GetFont("Times New Roman", 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+                    
+
+
+                    PdfPCell CellZero = new PdfPCell(new Phrase(new Phrase(("Hugo Mirad Marketing Solutions(P) Ltd."), fntTableFont1)));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    CellZero.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(new Phrase(("Hyderabad"), fntTableFont1)));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    CellZero.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    CellZero.Rowspan = 3;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(("Prepared:" + ISTTime.ToString("MMMM") + " " + ISTTime.ToString("dd") + " " + ISTTime.ToString("yyyy")), fntTableFont));
+                    CellZero.Colspan = 2;
+                    CellZero.Border = 0;
+                   // CellZero.AddElement(new Phrase(("Prepared:" + ISTTime.ToString("MMM") + " " + ISTTime.ToString("dd") + " " + ISTTime.ToString("yyyy")), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+
+                    string s = Convert.ToDateTime(txtFromDate.Text.ToString()).ToString("MMM") + "'" + Convert.ToDateTime(txtFromDate.Text.ToString()).ToString("yy");
+                    CellZero = new PdfPCell(new Phrase(("Payroll Information:" + s), fntTableFont1));
+                    CellZero.Colspan = 2;
+                    CellZero.Border = 0;
+                    //CellZero.AddElement(new Phrase(("Payroll Information:" + s), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Employee Information", fntTableFont1));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1.5F;
+                    CellZero.HorizontalAlignment = Element.ALIGN_MIDDLE; 
+                    //  CellZero.AddElement(new Phrase("Salary Details", fntTableFont));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Name", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;                  
+                   // CellZero.AddElement(new Phrase("Name", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["PEmpname"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                 //   CellZero.AddElement(new Phrase(xmlDt.Rows[i]["PEmpname"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Employee ID#", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase("EmployeeID#", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["empid"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase(xmlDt.Rows[i]["empid"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Business Name", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase("Business Name", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["Empname"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(xmlDt.Rows[i]["Empname"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Date of Joining", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase("Date of Joining", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(Convert.ToDateTime(xmlDt.Rows[i]["Startdate"]).ToString("dd/MM/yyyy"), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase(Convert.ToDateTime(xmlDt.Rows[i]["Startdate"]).ToString("dd/MM/yyyy"), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Project", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                  //  CellZero.AddElement(new Phrase("Project", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Designation", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase("Designation", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["DeptName"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(xmlDt.Rows[i]["DeptName"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Attendance Details", fntTableFont1));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1.5F;
+                   // CellZero.AddElement(new Phrase("Attendance Details", fntTableFont));
+                    CellZero.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Total work days", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase("Total work days", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["Workingdays"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(xmlDt.Rows[i]["Workingdays"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Days Present", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                  //  CellZero.AddElement(new Phrase("Days Present", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["Present"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase(xmlDt.Rows[i]["Present"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Off days(Dates)", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase("Off days(Dates)", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Check local/online register", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase("Check local/online register", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Paid days off", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase("Paid days off", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["PaidLeavesUsed"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                  //  CellZero.AddElement(new Phrase(xmlDt.Rows[i]["PaidLeavesUsed"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Salary Details", fntTableFont1));
+                    CellZero.Colspan = 3;
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1.5F;
+                  //  CellZero.AddElement(new Phrase("Salary Details", fntTableFont));
+                    CellZero.HorizontalAlignment = Element.ALIGN_MIDDLE;               
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Eligible Pay", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase("Eligible Pay", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Earned Pay", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;                 
+                    //CellZero.AddElement(new Phrase("Earned Pay", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Base", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 1;
+                   // CellZero.AddElement(new Phrase("Base", fntTableFont2));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["Salary"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;                 
+                    //CellZero.AddElement(new Phrase(xmlDt.Rows[i]["Salary"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["CalSalary"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;                  
+                    //CellZero.AddElement(new Phrase(xmlDt.Rows[i]["CalSalary"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Attendance Bonus", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                   // CellZero.AddElement(new Phrase("Attendance Bonus", fntTableFont2));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["Bonus"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(xmlDt.Rows[i]["Bonus"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Transportation", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                    //CellZero.AddElement(new Phrase("Transportation", fntTableFont2));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Food Allowance", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan =2;
+                  //  CellZero.AddElement(new Phrase("Food Allowance", fntTableFont2));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Incentives *", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                  //  CellZero.AddElement(new Phrase("Incentives *", fntTableFont2));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["Incentives"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(xmlDt.Rows[i]["Incentives"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Reimbursements **", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                  //  CellZero.AddElement(new Phrase("Reimbursements **", fntTableFont2));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Gross", fntTableFont1));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                   // CellZero.AddElement(new Phrase("Gross", fntTableFont3));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase("", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Professional Tax", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                   // CellZero.AddElement(new Phrase("Professional Tax", fntTableFont2));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("100", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                  //  CellZero.AddElement(new Phrase("100", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Net", fntTableFont1));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    CellZero.Colspan = 2;
+                   // CellZero.AddElement(new Phrase("Net", fntTableFont2));
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Colspan = 4;
+                    CellZero.Border = 0;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Summary", fntTableFont1));
+                    CellZero.Colspan = 3;
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1.5F;
+                    //CellZero.AddElement(new Phrase("Summary", fntTableFont));
+                    CellZero.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Current Earnings", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 2;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase("Current Earnings", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;    
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Advance Paid", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 2;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase("Advance Paid", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["AdvancePaid"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                  //  CellZero.AddElement(new Phrase(xmlDt.Rows[i]["AdvancePaid"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                      CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Previously Unpaid", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 2;
+                    CellZero.BorderWidthBottom = 1;
+                  //  CellZero.AddElement(new Phrase("Previously Unpaid", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(xmlDt.Rows[i]["PrevUnpaid"].ToString(), fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(xmlDt.Rows[i]["PrevUnpaid"].ToString(), fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                      CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Current Payments", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 2;
+                    CellZero.BorderWidthBottom = 1;
+                  //  CellZero.AddElement(new Phrase("Current Payments", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                  //  CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Remaining Balance", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 2;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase("Remaining Balance", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase("Additional Incentives Paid during the month", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 2;
+                    CellZero.BorderWidthBottom = 1;
+                    //CellZero.AddElement(new Phrase("Additional Incentives Paid during the month", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" ", fntTableFont));
+                    CellZero.Border = 0;
+                    CellZero.BorderWidthBottom = 1;
+                   // CellZero.AddElement(new Phrase(" ", fntTableFont2));
+                    CellZero.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    table1.AddCell(CellZero);
+
+                    CellZero = new PdfPCell(new Phrase(" "));
+                    CellZero.Border = 0;
+                    CellZero.Colspan = 1;
+                    table1.AddCell(CellZero);
+
+                    pdfDoc.Add(table1);
+                    pdfDoc.NewPage();
+                    table1.Rows.Clear();
+                    table1.WidthPercentage = 100;
+                }
+                pdfDoc.Close();
+                Response.Write(pdfDoc);
+                showpdf(Session["FilePath"].ToString());
+                Response.End();
 
             }
             catch (Exception ex)
             {
             }
-
-
-
         }
         protected void rppayslip_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {

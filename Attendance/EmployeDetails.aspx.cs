@@ -114,27 +114,10 @@ namespace Attendance
                 DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                
                 DataTable dt = obj.GetEmployyeDetailsByUserID(empid);
-                if (dt.Rows[0]["Isvariable"].ToString() == "True")
-                {
-                    DataView dv = dt.DefaultView;
-                    dv.RowFilter = "VschFromDt<=#" + ISTTime + "# and #" + ISTTime + "#<=VschToDt";
-                    DataTable dtS = dv.ToTable();
-                    if(dtS.Rows.Count>0)
-                    {
-                        lblSchedule.Text = dtS.Rows[0]["StartTime"].ToString() + "-" + dtS.Rows[0]["EndTime"].ToString() + " " + "<b>Lunch break: </b>" + dtS.Rows[0]["LunchBreakStart"].ToString() + "-" + dtS.Rows[0]["LunchBreakEnd"].ToString();
-                        hdnScID.Value = dt.Rows[0]["ScheduleId"].ToString();
-                    }
-                    else
-                    {
-                     lblSchedule.Text="Not yet scheduled";
-                     hdnScID.Value = "0";
-                    } 
-                }
-                else
-                {
-                    lblSchedule.Text = dt.Rows[0]["StartTime"].ToString() + "-" + dt.Rows[0]["EndTime"].ToString() + " " + "<b>Lunch break: </b>" + dt.Rows[0]["LunchBreakStart"].ToString() + "-" + dt.Rows[0]["LunchBreakEnd"].ToString();
-                    hdnScID.Value = dt.Rows[0]["ScheduleId"].ToString();
-                }
+               
+                lblSchedule.Text = dt.Rows[0]["StartTime"].ToString() + "-" + dt.Rows[0]["EndTime"].ToString() + " " + "<b>Lunch break: </b>" + dt.Rows[0]["LunchBreakStart"].ToString() + "-" + dt.Rows[0]["LunchBreakEnd"].ToString();
+                hdnScID.Value = dt.Rows[0]["ScheduleId"].ToString();
+           
 
 
                 hdnUserID.Value = dt.Rows[0]["UserID"].ToString();
@@ -179,7 +162,7 @@ namespace Attendance
                 }
 
                 lblWageType.Text = dt.Rows[0]["WageType"].ToString();
-                ViewState["Salary"] = dt.Rows[0]["Salary"].ToString() == "" ? "" : dt.Rows[0]["Salary"].ToString() == "0.00" ? "" : dt.Rows[0]["Salary"].ToString();
+                ViewState["Salary"] = dt.Rows[0]["Salary"].ToString() == "" ? "" : dt.Rows[0]["Salary"].ToString() == "0.00" ? "" : dt.Rows[0]["Salary"].ToString() == "NULL" ? "0.00" : dt.Rows[0]["Salary"].ToString();
                 lblSalary.Text = dt.Rows[0]["Salary"].ToString() == "" ? "" : dt.Rows[0]["Salary"].ToString() == "0.00" ? "" : dt.Rows[0]["Salary"].ToString();
                 lblSalary.Text = lblSalary.Text == "" ? "" : GeneralFunction.FormatCurrency(lblSalary.Text, ViewState["Location"].ToString().Trim());
                 lblDeuctions.Text = dt.Rows[0]["Deductions"].ToString();
@@ -279,8 +262,6 @@ namespace Attendance
         {
             try
             {
-
-              
             }
             catch (Exception ex)
             {
@@ -312,7 +293,6 @@ namespace Attendance
                     mdlChangePwd.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Password changed successfully..');", true);
                 }
-
             }
             catch (Exception ex)
             {
@@ -379,7 +359,6 @@ namespace Attendance
                 txtEditBFname.Text = hdnBusinessFirst.Value.Trim();
                 txtEditBLname.Text = hdnBusinessLast.Value.Trim();
 
-
                 ddlEmpType.SelectedIndex = ddlEmpType.Items.IndexOf(ddlEmpType.Items.FindByText(lblEmpType.Text.Trim()));
                 ddlSchedule.SelectedIndex = ddlSchedule.Items.IndexOf(ddlSchedule.Items.FindByValue(hdnScID.Value.Trim()));
                 ddlEditDepart.SelectedIndex = ddlEditDepart.Items.IndexOf(ddlEditDepart.Items.FindByText(lbldepartment.Text.Trim()));
@@ -419,8 +398,6 @@ namespace Attendance
 
         private void GetEmployeeTypes()
         {
-
-
             try
             {
                 Attendance.BAL.Report obj = new Report();
@@ -439,8 +416,6 @@ namespace Attendance
 
         private void GetSchedules()
         {
-
-
             try
             {
                 Attendance.BAL.Report obj = new Report();
@@ -459,8 +434,6 @@ namespace Attendance
 
         private void Getdepartments()
         {
-
-
             try
             {
                 Attendance.BAL.Report obj = new Report();
@@ -564,7 +537,6 @@ namespace Attendance
                             // float AspectRatio = (float)oBitmap.Size.Width / (float)oBitmap.Size.Height;
 
                             int newHeight = 140;
-
                             Bitmap bmpNew = new Bitmap(newwidthimg, newHeight);
                             oGraphic = Graphics.FromImage(bmpNew);
 
@@ -586,11 +558,8 @@ namespace Attendance
                             //ofont.Dispose();
                             //oBrush.Dispose();
                             oBitmap.Save(FileNameSaveData, ImageFormat.Jpeg);
-
                             oBitmap.Dispose();
-
-
-                        }
+                       }
                     }
                 }
                 catch (Exception ex)

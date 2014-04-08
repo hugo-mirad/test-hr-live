@@ -242,10 +242,8 @@ namespace Attendance
             {
                  int LocationID=Convert.ToInt32(ddlLocation.SelectedItem.Value);
                  int scheduleTypeID = Convert.ToInt32(ddlScheduleType.SelectedItem.Value);
-
                  DateTime startDate=Convert.ToDateTime(ViewState["VStart"]);
                  DateTime EndDate=Convert.ToDateTime(ViewState["VEnd"]);
-
                  BindScheduleData(LocationID, scheduleTypeID, startDate, EndDate);
             }
             catch (Exception ex)

@@ -562,7 +562,7 @@ font-weight: bold;
 .table1.tblCal th{ background:none; background-color: #F6F8FA; color:#A4AEB9;  }
 .table1.tblCal td a{ background:#F0F8FF;}
 
-.table1.tblCal td a.sunHoliday{ background: #F6F8FA; color: #A4AEB9; font-weight: bold}
+.table1.tblCal td a.DefaultHoliday{ background: #F6F8FA; color: #A4AEB9; font-weight: bold}
 .table1.tblCal td a:hover{ background:#B7E5F5; color:#333; }
 
 .table1.tblCal td a.holiday{ background:#4FC1E9; color:#fff; }
@@ -707,21 +707,22 @@ line-height: 5em
 
 div.picker div.header span { color:#fff;  }
 
-.atnHoliday{ background:#AFAFAF; text-align:center;}
-.atnHoliday a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
+.atnHoliday{ background:#ddd;/*#AFAFAF;*/ text-align:center;}
+.atnHoliday a{ color:#333; font-weight:bold; font-size:10px; text-align:center; }
 
 .atnUnLeave{ background:#F7CC7D; text-align:center;}
-.atnUnLeave a{ color:#333; font-weight:bold; font-size:11px; text-align:center;text-transform: lowercase }
+.atnUnLeave a{ color:#333; font-weight:bold; font-size:10px; text-align:center;text-transform: lowercase }
 
-.atnLeave{ background:#BDF3BD; text-align:center;}
-.atnLeave a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
+.atnLeave{ background:#B4E5E4 ;/*#BDF3BD; */text-align:center;}
+.atnLeave a{ color:#333; font-weight:bold; font-size:10px; text-align:center; }
 
 .atnSun{ background:#ddd; text-align:center;}
-.atnSun a{ color:#333; font-weight:bold; font-size:11px; text-align:center; }
+.atnSun a{ color:#333; font-weight:bold; font-size:10px; text-align:center; }
 
 .atnEdit{background-color:#FFB125; text-align:center;}
  td.atnEdit.greenTag, tr td.atnEdit.greenTag, table tr td.atnEdit.greenTag, .atnEdit.greenTag{ background-color:#FFB125; background-image: url(../images/editBlock.png); background-position: -17px -17px; background-repeat: no-repeat; }
 .atnEdit a{  text-align:center; }
+
 
 
 
@@ -747,10 +748,32 @@ div.picker div.header span { color:#fff;  }
 
 .Editlabel{ display:block; width:100%; height:15px; cursor:pointer; }
 .editInput input{ display:none; min-width:100%; background:#fff; color:#222; border:none; padding:0; margin:0; line-height:18px; height:18px; font-size:10px;}
-.editInput input:focus{  border-radius:0; box-shadow:inset 0 0 2px #000}
+
+.edit input, .edit textarea{  min-width:100%; background:#fff; color:#222; border:none; padding:0; margin:0; line-height:18px; height:18px; font-size:10px; border:none;}
+.editInput input:focus, .edit input:focus, .edit textarea:focus{  border-radius:0; box-shadow:inset 0 0 2px #000}
 .table1 td.editInput{ padding:0; }
 
+tr.edit td{ padding:0; }
+
 .table1 td.hide, .table1 th.hide{ display:none; }
+
+
+
+.editGrid tr.edit td input[type=text], .editGrid tr.edit td input[type=pasword], .editGrid tr.edit td select, .editGrid tr.edit td textarea 
+{
+	border:none; 
+	min-width: 100%;
+	background: #FFF;
+	color: #222;
+	border: none;
+	padding: 0;
+	margin: 0;
+	line-height: 18px;
+	height: 18px;
+	font-size: 10px;
+	overflow:hidden;
+}
+
 
 /*
 .editGrid input[type=text]:focus,

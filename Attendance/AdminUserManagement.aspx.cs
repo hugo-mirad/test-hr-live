@@ -775,7 +775,6 @@ namespace Attendance
             txtEditLastname.Text = "";
             txtEditStartDate.Text = "";
             ddlEditDepart.SelectedIndex = 0;
-
             mdlEditPopup.Hide();
         }
 
@@ -803,7 +802,6 @@ namespace Attendance
         {
             try
             {
-
                 txtOldpwd.Text = "";
                 txtNewPwd.Text = "";
                 lblPwdName.Text = Session["EmpName"].ToString().Trim();
@@ -881,7 +879,6 @@ namespace Attendance
         {
             try
             {
-
                 txtOldpasscode.Text = "";
                 txtNewPasscode.Text = "";
                 lblPasscodeName.Text = Session["EmpName"].ToString().Trim();
@@ -917,8 +914,6 @@ namespace Attendance
         }
         private void GetEmployeeTypes()
         {
-
-
             try
             {
                 Attendance.BAL.Report obj = new Report();
@@ -1027,7 +1022,7 @@ namespace Attendance
             {
                 int sort = Convert.ToInt32(ddlSelect.SelectedItem.Value);
                 GetUserDetails(sort,ddlLocation.SelectedItem.Text.ToString().Trim());
-           }
+             }
             catch (Exception ex)
             {
             }

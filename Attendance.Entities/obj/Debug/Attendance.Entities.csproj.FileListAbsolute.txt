@@ -43,3 +43,8 @@ D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.Entities\bin\Debug\A
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.Entities\obj\Debug\ResolveAssemblyReference.cache
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.Entities\obj\Debug\Attendance.Entities.dll
 D:\github\TestHrBizstridesClone\TestHrBizStrides\Attendance.Entities\obj\Debug\Attendance.Entities.pdb
+D:\AboutToLive\TestHrBizstrides_25\TestHrBizStrides\Attendance.Entities\bin\Debug\Attendance.Entities.dll
+D:\AboutToLive\TestHrBizstrides_25\TestHrBizStrides\Attendance.Entities\bin\Debug\Attendance.Entities.pdb
+D:\AboutToLive\TestHrBizstrides_25\TestHrBizStrides\Attendance.Entities\obj\Debug\ResolveAssemblyReference.cache
+D:\AboutToLive\TestHrBizstrides_25\TestHrBizStrides\Attendance.Entities\obj\Debug\Attendance.Entities.dll
+D:\AboutToLive\TestHrBizstrides_25\TestHrBizStrides\Attendance.Entities\obj\Debug\Attendance.Entities.pdb

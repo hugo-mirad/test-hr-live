@@ -317,7 +317,7 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-        public bool SaveandGetHolidayDet(bool ISHoliday, DateTime HolidayDt, int locID, int DeptID, int userid, int EnterBy, DateTime EnterDt, string IP, string Holidayname)
+        public bool SaveandGetHolidayDet(bool ISHoliday, DateTime HolidayDt, int locID, int DeptID, int userid, int EnterBy, DateTime EnterDt, string IP, string Holidayname,bool IsDefault)
         {
 
             bool success = false;
@@ -338,6 +338,8 @@ namespace Attendance.BAL
                 command.Parameters.Add(new SqlParameter("@EnteredBy", EnterBy));
                 command.Parameters.Add(new SqlParameter("@EnteredDate", EnterDt));
                 command.Parameters.Add(new SqlParameter("@Ipaddress", IP));
+                command.Parameters.Add(new SqlParameter("@IsDefault", IsDefault));
+                
                 command.ExecuteNonQuery();
                 con.Close();
                 success = true;

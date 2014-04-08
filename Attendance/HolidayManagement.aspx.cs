@@ -67,25 +67,12 @@ namespace Attendance
                         ddlLocation.Enabled = false;
                     }
 
-
-                    //Session["MonthHolStart"]), Convert.ToDateTime(Session["MonthHolEnd"]
                     Session["MonthHolStart"] = MonthStart;
                     Session["MonthHolEnd"] = MonthEnd;
                     Session["CurntHolStart"] = MonthStart;
                     Session["CurntHolEnd"] = MonthEnd;
                     GetCalender(MonthStart, MonthEnd,locationID);
-
-                    //if (MonthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
-                    //{
-                    //    btnNext.CssClass = "btn btn-danger btn-small disabled";
-                    //    btnNext.Enabled = false;
-                    //}
-                    //else
-                    //{
-                    //    btnNext.CssClass = "btn btn-danger btn-small enabled";
-                    //    btnNext.Enabled = true;
-                    //}
-                   
+                  
                 }
             }
         }
@@ -511,7 +498,7 @@ namespace Attendance
                 if (rdAll.Checked)
                 {
                     int ForAll = 0;
-                    bool bnew = obj.SaveandGetHolidayDet(IsHoliday, HolidayDt, LocationID, DeptID, ForAll, EnterBy, Enterdate, IpAddress, Holidayname);
+                    bool bnew = obj.SaveandGetHolidayDet(IsHoliday, HolidayDt, LocationID, DeptID, ForAll, EnterBy, Enterdate, IpAddress, Holidayname,false);
                     
                 }
                 else if (rdSelected.Checked)
@@ -523,7 +510,7 @@ namespace Attendance
                         for (int i = 0; i < selectedRec.Length - 1; i++)
                         {
                             int SelectID = Convert.ToInt32(selectedRec[i].Trim());
-                            bool bnew = obj.SaveandGetHolidayDet(IsHoliday, HolidayDt, LocationID, DeptID, SelectID, EnterBy, Enterdate, IpAddress, Holidayname);
+                            bool bnew = obj.SaveandGetHolidayDet(IsHoliday, HolidayDt, LocationID, DeptID, SelectID, EnterBy, Enterdate, IpAddress, Holidayname,false);
                         }
                     }
                 }
@@ -590,9 +577,9 @@ namespace Attendance
                         dv.RowFilter = "HolidayDate='" +Convert.ToDateTime(lblSun.Text).ToString("MM/dd/yyyy") + "'";
                         DataTable dtDay = dv.ToTable();
                         dv.RowFilter = null;
-                        if (dtDay.Rows.Count > 0)
+                        if (dtDay.Rows.Count > 0 && dtDay.Rows[0]["IsDefault"].ToString().Trim()=="True")
                         {
-                            lblSun.CssClass += " sunHoliday";
+                            lblSun.CssClass += " DefaultHoliday";
                         }
                         lblSun.Attributes.Add("currentdate", Convert.ToDateTime(lblSun.Text).ToString("MM/dd/yyyy"));
                         lblSun.Text = Convert.ToDateTime(lblSun.Text).ToString("dd");
@@ -610,11 +597,17 @@ namespace Attendance
                         dv.RowFilter = null;
                         if (dtDay.Rows.Count > 0)
                         {
-                            string cs = lblMon.CssClass==""? "holiday tooltip2":"holiday tooltip2";
-
-                            string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
-                            lblMon.Attributes.Add("class", cs);
-                            lblMon.Attributes.Add("title", HName);
+                            if (dtDay.Rows[0]["IsDefault"].ToString().Trim() == "True")
+                            {
+                                lblMon.CssClass += " DefaultHoliday";
+                            }
+                            else
+                            {
+                                string cs = lblMon.CssClass == "" ? "holiday tooltip2" : "holiday tooltip2";
+                                string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
+                                lblMon.Attributes.Add("class", cs);
+                                lblMon.Attributes.Add("title", HName);
+                            }
                         }
                         lblMon.Attributes.Add("currentdate", Convert.ToDateTime(lblMon.Text).ToString("MM/dd/yyyy"));
                         lblMon.Text = Convert.ToDateTime(lblMon.Text).ToString("dd");
@@ -633,10 +626,17 @@ namespace Attendance
                         dv.RowFilter = null;
                         if (dtDay.Rows.Count > 0)
                         {
-                           // lblTue.CssClass = "holiday";
-                            string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
-                            lblTue.Attributes.Add("class", "holiday tooltip2");
-                            lblTue.Attributes.Add("title", HName);
+                            if (dtDay.Rows[0]["IsDefault"].ToString().Trim() == "True")
+                            {
+                                lblTue.CssClass += " DefaultHoliday";
+                            }
+                            else
+                            {
+
+                                string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
+                                lblTue.Attributes.Add("class", "holiday tooltip2");
+                                lblTue.Attributes.Add("title", HName);
+                            }
                         }
                         lblTue.Attributes.Add("currentdate", Convert.ToDateTime(lblTue.Text).ToString("MM/dd/yyyy"));
                         lblTue.Text = Convert.ToDateTime(lblTue.Text).ToString("dd");
@@ -656,10 +656,17 @@ namespace Attendance
                         dv.RowFilter = null;
                         if (dtDay.Rows.Count > 0)
                         {
-                           // lblWed.CssClass = "holiday tooltip2";
-                            string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
-                            lblWed.Attributes.Add("class", "holiday tooltip2");
-                            lblWed.Attributes.Add("title", HName);
+                            if (dtDay.Rows[0]["IsDefault"].ToString().Trim() == "True")
+                            {
+                                lblWed.CssClass += " DefaultHoliday";
+                            }
+                            else
+                            {
+
+                                string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
+                                lblWed.Attributes.Add("class", "holiday tooltip2");
+                                lblWed.Attributes.Add("title", HName);
+                            }
                         }
                         lblWed.Attributes.Add("currentdate", Convert.ToDateTime(lblWed.Text).ToString("MM/dd/yyyy"));
                         lblWed.Text = Convert.ToDateTime(lblWed.Text).ToString("dd");
@@ -678,10 +685,16 @@ namespace Attendance
                         dv.RowFilter = null;
                         if (dtDay.Rows.Count > 0)
                         {
-                           // lblThu.CssClass = "holiday";
-                            string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
-                            lblThu.Attributes.Add("class", "holiday tooltip2");
-                            lblThu.Attributes.Add("title", HName);
+                            if (dtDay.Rows[0]["IsDefault"].ToString().Trim() == "True")
+                            {
+                                lblThu.CssClass += " DefaultHoliday";
+                            }
+                            else
+                            {
+                                string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
+                                lblThu.Attributes.Add("class", "holiday tooltip2");
+                                lblThu.Attributes.Add("title", HName);
+                            }
                         }
                         lblThu.Attributes.Add("currentdate", Convert.ToDateTime(lblThu.Text).ToString("MM/dd/yyyy"));
                         lblThu.Text = Convert.ToDateTime(lblThu.Text).ToString("dd");
@@ -701,10 +714,16 @@ namespace Attendance
                         dv.RowFilter = null;
                         if (dtDay.Rows.Count > 0)
                         {
-                           // lblFri.CssClass = "holiday";
-                            string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
-                            lblFri.Attributes.Add("class", "holiday tooltip2");
-                            lblFri.Attributes.Add("title", HName);
+                            if (dtDay.Rows[0]["IsDefault"].ToString().Trim() == "True")
+                            {
+                                lblFri.CssClass += " DefaultHoliday";
+                            }
+                            else
+                            {
+                                string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
+                                lblFri.Attributes.Add("class", "holiday tooltip2");
+                                lblFri.Attributes.Add("title", HName);
+                            }
                         }
                         lblFri.Attributes.Add("currentdate", Convert.ToDateTime(lblFri.Text).ToString("MM/dd/yyyy"));
                         lblFri.Text = Convert.ToDateTime(lblFri.Text).ToString("dd");
@@ -723,10 +742,16 @@ namespace Attendance
                         dv.RowFilter = null;
                         if (dtDay.Rows.Count > 0)
                         {
-                           // lblSat.CssClass = "holiday";
-                            string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
-                            lblSat.Attributes.Add("class", "holiday tooltip2");
-                            lblSat.Attributes.Add("title", HName);
+                            if (dtDay.Rows[0]["IsDefault"].ToString().Trim() == "True")
+                            {
+                                lblSat.CssClass += " DefaultHoliday";
+                            }
+                            else
+                            {
+                                string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
+                                lblSat.Attributes.Add("class", "holiday tooltip2");
+                                lblSat.Attributes.Add("title", HName);
+                            }
                         }
                         lblSat.Attributes.Add("currentdate", Convert.ToDateTime(lblSat.Text).ToString("MM/dd/yyyy"));
                         lblSat.Text = Convert.ToDateTime(lblSat.Text).ToString("dd");
@@ -922,12 +947,13 @@ namespace Attendance
                     var testDate = startDate.AddDays(i);
                     if (testDate.DayOfWeek.ToString()==DefaultDay)
                     {
-                        bool bnew = obj.SaveandGetHolidayDet(true, testDate, LocationID, DeptID, 0, EnterBy, Enterdate, IpAddress, "Default");
+                        bool bnew = obj.SaveandGetHolidayDet(true, testDate, LocationID, DeptID, 0, EnterBy, Enterdate, IpAddress, "Default",true);
                     
                     }
                 }
                 mdlDefaultmgmt.Hide();
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Default holidays updated successfully..');", true);
+                GetCalender(Convert.ToDateTime(Session["MonthHolStart"]), Convert.ToDateTime(Session["MonthHolEnd"]), Convert.ToInt32(ddlLocation.SelectedItem.Value));
             }
             catch (Exception ex)
             {
