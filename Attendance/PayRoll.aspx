@@ -550,15 +550,20 @@
                     <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="btn btn-small btn-warning" />
                     <asp:Button ID="btnFinal" runat="server" Text="Freeze" CssClass="btn btn-small btn-warning"
                         OnClientClick="return validFinal();" OnClick="btnFinal_Click" />
-                   
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
-         <asp:Button ID="btnPrint" runat="server" OnClick="btnPrint_Click" Text="Print" CssClass="btn btn-small btn-group" />
-        <asp:Button ID="btnPDF" runat="server" Text="DownLoadToPDF" CssClass="btn btn-small btn-success"
-            OnClick="btnPDF_Click1" OnClientClick="return linkdis();"></asp:Button>
-        <asp:Button ID="btnDoc" runat="server" Text="DownLoadToWord" CssClass="btn btn-small btn-success"
-            OnClick="btnDoc_Click1" OnClientClick="return linkdis();"></asp:Button>
+        <div style="display:inline-block;">
+            <asp:UpdatePanel ID="upbnt" runat="server">
+                <ContentTemplate>
+                    <asp:Button ID="btnPrint" runat="server" OnClick="btnPrint_Click" Text="Print" CssClass="btn btn-small btn-group" />
+                    <asp:Button ID="btnPDF" runat="server" Text="DownLoadToPDF" CssClass="btn btn-small btn-success"
+                        OnClick="btnPDF_Click1" OnClientClick="return linkdis();"></asp:Button>
+                    <asp:Button ID="btnDoc" runat="server" Text="DownLoadToWord" CssClass="btn btn-small btn-success"
+                        OnClick="btnDoc_Click1" OnClientClick="return linkdis();"></asp:Button>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </div>
     </div>
     <div id="dvpayrollreport" runat="server" style="font-size: 12px; font-family: Arial;
         color: #333;">
@@ -578,60 +583,39 @@
                                 Width="800px">
                                 <Columns>
                                     <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
-                                        <%--  <HeaderTemplate>
-                                <asp:LinkButton ID="lblHeadEmpID" runat="server" Text="EmpID"></asp:LinkButton>
-                            </HeaderTemplate>--%>
-                                        <ItemTemplate>
+                                      <ItemTemplate>
                                             <asp:HiddenField ID="hdnUserID" runat="server" Value='<%#Eval("empid")%>' />
                                             <asp:HiddenField ID="hdnEmpuserid" runat="server" Value='<%#Eval("UserID")%>' />
                                             <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
-                                        <%--   <HeaderTemplate>
-                                <asp:LinkButton ID="lblHeadEmpFirstname" runat="server" Text="Firstname"></asp:LinkButton>
-                            </HeaderTemplate>--%>
                                         <ItemTemplate>
                                             <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("FirstName")%>'></asp:Label>
                                             <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("LastName")%>' Visible="false"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
-                                        <%--<HeaderTemplate>
-                                <asp:LinkButton ID="lblHeadStarted" runat="server" Text="StartedDt"></asp:LinkButton>
-                            </HeaderTemplate>--%>
                                         <ItemTemplate>
                                             <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("StartDate", "{0:MM/dd/yyyy}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
-                                        <%--   <HeaderTemplate>
-                                <asp:LinkButton ID="lblHeadTerminated" runat="server" Text="TerminatedDt"></asp:LinkButton>
-                            </HeaderTemplate>--%>
-                                        <ItemTemplate>
+                                           <ItemTemplate>
                                             <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="DeptName" HeaderText="Department">
-                                        <%--  <HeaderTemplate>
-                                <asp:LinkButton ID="lblHeadDepartment" runat="server" Text="Department"></asp:LinkButton>
-                            </HeaderTemplate>--%>
-                                        <ItemTemplate>
+                                              <ItemTemplate>
                                             <asp:Label ID="lblDept" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="EmployeeType" HeaderText="Type">
-                                        <%--  <HeaderTemplate>
-                                <asp:LinkButton ID="lblHeadDesignation" runat="server" Text="Designation"></asp:LinkButton>
-                            </HeaderTemplate>--%>
                                         <ItemTemplate>
                                             <asp:Label ID="lblEmployeetype" runat="server" Text='<%#Eval("MasterEmpType")%>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="Location" HeaderText="Location">
-                                        <%-- <HeaderTemplate>
-                                <asp:LinkButton ID="lblHeadActive" runat="server" Text="Active"></asp:LinkButton>
-                            </HeaderTemplate>--%>
                                         <ItemTemplate>
                                             <asp:Label ID="lblLocation" runat="server" Text='<%#Eval("LocationName")%>'></asp:Label>
                                         </ItemTemplate>
@@ -1009,315 +993,315 @@
     </div>
     <asp:UpdatePanel ID="upPayslip" runat="server">
         <ContentTemplate>
-         <div >
-            <asp:Repeater ID="rppayslip" runat="server" OnItemDataBound="rppayslip_ItemDataBound">
-                <ItemTemplate>
-                    <div style="width: 595px; height: 842px;">
-                        <h3 style="text-align: center">
-                            Hugo Mirad Marketing Solutions(P) Ltd.</h3>
-                        <br />
-                        <br />
-                        <div style="display: inline-block; width: 98%;">
-                            <span style="float: left">Prepared:<asp:Label ID="lblPCurntDt" runat="server"></asp:Label>
-                            </span><span style="float: right">Payroll Information:<asp:Label ID="lblPMonth" runat="server"
-                                Text="Jan'14"></asp:Label>
-                            </span>
+            <div>
+                <asp:Repeater ID="rppayslip" runat="server" OnItemDataBound="rppayslip_ItemDataBound">
+                    <ItemTemplate>
+                        <div style="width: 595px; height: 842px;">
+                            <h3 style="text-align: center">
+                                Hugo Mirad Marketing Solutions(P) Ltd.</h3>
+                            <br />
+                            <br />
+                            <div style="display: inline-block; width: 98%;">
+                                <span style="float: left">Prepared:<asp:Label ID="lblPCurntDt" runat="server"></asp:Label>
+                                </span><span style="float: right">Payroll Information:<asp:Label ID="lblPMonth" runat="server"
+                                    Text="Jan'14"></asp:Label>
+                                </span>
+                            </div>
+                            <br />
+                            <table style="width: 99%">
+                                <thead>
+                                    <tr style="border-bottom: #999 2px solid;">
+                                        <td colspan="4">
+                                            <b>Employee Information</b>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 170px;">
+                                            <b>
+                                                <asp:Label runat="server" ID="lblpEmpName" Text='<%#Eval("PEmpname")%>'></asp:Label></b>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Employee ID#
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblpEmpID" runat="server" Text='<%#Eval("empid")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Business Name
+                                        </td>
+                                        <td>
+                                            <asp:Label runat="server" ID="lblPBusinessName" Text='<%#Eval("Empname")%>'></asp:Label>
+                                        </td>
+                                        <td>
+                                            Date of Joining
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblPDOJ" runat="server" Text='<%# Bind("Startdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Project
+                                        </td>
+                                        <td>
+                                            <asp:Label runat="server" ID="lblPProject"></asp:Label>
+                                        </td>
+                                        <td>
+                                            Designation
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblPDesg" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+                            <table style="width: 99%">
+                                <thead>
+                                    <tr style="border-bottom: #999 2px solid;">
+                                        <td colspan="4">
+                                            <b>Attendance Details</b>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td style="width: 25%">
+                                            Total Work Days
+                                        </td>
+                                        <td style="width: 25%">
+                                            <b>
+                                                <asp:Label runat="server" ID="lblPWkngDays" Text='<%#Eval("Workingdays")%>'></asp:Label></b>
+                                        </td>
+                                        <td>
+                                            Days Present
+                                        </td>
+                                        <td style="width: 25%">
+                                            <asp:Label ID="lblPPresent" runat="server" Text='<%#Eval("Present")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            Off days(dates)
+                                        </td>
+                                        <td>
+                                            Check local/online register
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            Paid days off
+                                        </td>
+                                        <td>
+                                            <asp:Label ID="lblPPaidDaysUsed" runat="server" Text='<%#Eval("PaidLeavesUsed")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+                            <table style="width: 99%">
+                                <thead>
+                                    <tr style="border-bottom: #999 2px solid;">
+                                        <td colspan="3">
+                                            <b>Salary Details</b>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td style="width: 33%">
+                                            &nbsp;
+                                        </td>
+                                        <td style="width: 33%; text-align: right">
+                                            Eligible Pay
+                                        </td>
+                                        <td style="width: 33%; text-align: right">
+                                            Earned Pay
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Base
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPSalary" Text='<%#Eval("Salary")%>'></asp:Label>
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label ID="lblPCalSalary" runat="server" Text='<%#Eval("CalSalary")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Attendance Bonus
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPBonus" Text='<%#Eval("Bonus")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Transportation
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPTransport"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Food Allowance
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPFoodAllowance"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Incentives *
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPIncentives" Text='<%#Eval("Incentives")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Reimbursements **
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPReimburse"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            <b>Gross</b>
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPTotalPay"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Professional Tax
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPPF" Text="100"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            <b>Net</b>
+                                        </td>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPNetPay"></asp:Label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+                            <table style="width: 99%">
+                                <thead>
+                                    <tr style="border-bottom: #999 2px solid;">
+                                        <td colspan="2">
+                                            <b>Summary</b>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td style="width: 49%">
+                                            Current Earnings
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPCurrentEarnings"></asp:Label>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Advance Paid
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPAdvancePaid" Text='<%#Eval("AdvancePaid")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Previously Unpaid
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPPrevUnpaid" Text='<%#Eval("PrevUnpaid")%>'></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Current Payments
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPCurrentpayments"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Remaining Balance
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="lblPRembal"></asp:Label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: #ccc 1px solid;">
+                                        <td>
+                                            Additional Incentives Paid during the month
+                                        </td>
+                                        <td style="text-align: right">
+                                            <asp:Label runat="server" ID="Label4"></asp:Label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <br />
-                        <table style="width: 99%">
-                            <thead>
-                                <tr style="border-bottom: #999 2px solid;">
-                                    <td colspan="4">
-                                        <b>Employee Information</b>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td style="width: 125px;">
-                                        Name
-                                    </td>
-                                    <td style="width: 170px;">
-                                        <b>
-                                            <asp:Label runat="server" ID="lblpEmpName" Text='<%#Eval("PEmpname")%>'></asp:Label></b>
-                                    </td>
-                                    <td style="width: 125px;">
-                                        Employee ID#
-                                    </td>
-                                    <td>
-                                        <asp:Label ID="lblpEmpID" runat="server" Text='<%#Eval("empid")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Business Name
-                                    </td>
-                                    <td>
-                                        <asp:Label runat="server" ID="lblPBusinessName" Text='<%#Eval("Empname")%>'></asp:Label>
-                                    </td>
-                                    <td>
-                                        Date of Joining
-                                    </td>
-                                    <td>
-                                        <asp:Label ID="lblPDOJ" runat="server" Text='<%# Bind("Startdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Project
-                                    </td>
-                                    <td>
-                                        <asp:Label runat="server" ID="lblPProject"></asp:Label>
-                                    </td>
-                                    <td>
-                                        Designation
-                                    </td>
-                                    <td>
-                                        <asp:Label ID="lblPDesg" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br />
-                        <table style="width: 99%">
-                            <thead>
-                                <tr style="border-bottom: #999 2px solid;">
-                                    <td colspan="4">
-                                        <b>Attendance Details</b>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td style="width: 25%">
-                                        Total Work Days
-                                    </td>
-                                    <td style="width: 25%">
-                                        <b>
-                                            <asp:Label runat="server" ID="lblPWkngDays" Text='<%#Eval("Workingdays")%>'></asp:Label></b>
-                                    </td>
-                                    <td>
-                                        Days Present
-                                    </td>
-                                    <td style="width: 25%">
-                                        <asp:Label ID="lblPPresent" runat="server" Text='<%#Eval("Present")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td>
-                                        Off days(dates)
-                                    </td>
-                                    <td>
-                                        Check local/online register
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td>
-                                        Paid days off
-                                    </td>
-                                    <td>
-                                        <asp:Label ID="lblPPaidDaysUsed" runat="server" Text='<%#Eval("PaidLeavesUsed")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br />
-                        <table style="width: 99%">
-                            <thead>
-                                <tr style="border-bottom: #999 2px solid;">
-                                    <td colspan="3">
-                                        <b>Salary Details</b>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td style="width: 33%">
-                                        &nbsp;
-                                    </td>
-                                    <td style="width: 33%; text-align: right">
-                                        Eligible Pay
-                                    </td>
-                                    <td style="width: 33%; text-align: right">
-                                        Earned Pay
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Base
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPSalary" Text='<%#Eval("Salary")%>'></asp:Label>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label ID="lblPCalSalary" runat="server" Text='<%#Eval("CalSalary")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Attendance Bonus
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPBonus" Text='<%#Eval("Bonus")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Transportation
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPTransport"></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Food Allowance
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPFoodAllowance"></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Incentives *
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPIncentives" Text='<%#Eval("Incentives")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Reimbursements **
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPReimburse"></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        <b>Gross</b>
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPTotalPay"></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Professional Tax
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPPF" Text="100"></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        <b>Net</b>
-                                    </td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPNetPay"></asp:Label>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br />
-                        <table style="width: 99%">
-                            <thead>
-                                <tr style="border-bottom: #999 2px solid;">
-                                    <td colspan="2">
-                                        <b>Summary</b>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td style="width: 49%">
-                                        Current Earnings
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPCurrentEarnings"></asp:Label>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Advance Paid
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPAdvancePaid" Text='<%#Eval("AdvancePaid")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Previously Unpaid
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPPrevUnpaid" Text='<%#Eval("PrevUnpaid")%>'></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Current Payments
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPCurrentpayments"></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Remaining Balance
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="lblPRembal"></asp:Label>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: #ccc 1px solid;">
-                                    <td>
-                                        Additional Incentives Paid during the month
-                                    </td>
-                                    <td style="text-align: right">
-                                        <asp:Label runat="server" ID="Label4"></asp:Label>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </ItemTemplate>
-            </asp:Repeater>
+                    </ItemTemplate>
+                </asp:Repeater>
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
