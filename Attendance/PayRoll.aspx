@@ -845,6 +845,7 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                    <div class id="dvNewEmp" runat="server">
                                         <b class="headding2" style="margin-bottom: 0; padding-bottom: 0">
                                             <asp:Label ID="lblNewEmp" runat="server" Style="padding: 10px;"></asp:Label></b>
                                         <asp:GridView ID="grdNewEmp" runat="server" AutoGenerateColumns="false" CssClass="table1"
@@ -901,6 +902,7 @@
                                                 </asp:TemplateField>
                                             </Columns>
                                         </asp:GridView>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>

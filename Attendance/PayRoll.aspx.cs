@@ -17,6 +17,8 @@ using iTextSharp.text.html.simpleparser;
 using System.IO;
 using System.Net.Mail;
 using System.Data.SqlClient;
+using System.Collections.Generic;
+using iTextSharp.text.html;
 namespace Attendance
 {
     public partial class PayRoll : System.Web.UI.Page
@@ -698,7 +700,6 @@ namespace Attendance
         {
             try
             {
-                //lnkDwnloadPDF.Enabled = true;
                 string CurrentDate = Convert.ToDateTime(lblDate2.Text).ToString("MM-dd-yyyy") + Convert.ToDateTime(lblDate2.Text).ToString("hhmmsstt");
                 string Location = Session["LocationName"].ToString();
                 string PayrollDate = "PAYROLL REPORT " + lblWeekPayrollReport.Text;
@@ -711,132 +712,193 @@ namespace Attendance
                 var pdfDoc = new Document(PageSize.A3);
                 PdfWriter.GetInstance(pdfDoc, new FileStream(filepath + "Payroll.pdf", FileMode.Create));
                 Session["FilePath"] = filepath + "Payroll.pdf";
-                pdfDoc.Open();
-                var table1 = new PdfPTable(15);
-                PdfPCell cell = new PdfPCell();
-                // table1.DefaultCell.Border = Rectangle.NO_BORDER;
-
-
-                table1.WidthPercentage = 100;
-                table1.HorizontalAlignment = Element.ALIGN_CENTER;
-
-                iTextSharp.text.Font fntTableFont1 = new Font(Font.FontFamily.TIMES_ROMAN, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
-                iTextSharp.text.Font fntTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
-                iTextSharp.text.Font fntTableHeading = new Font(Font.FontFamily.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLD, BaseColor.MAGENTA);
-
-                if (ddlLocation.SelectedItem.Text.ToString() == "INDG" || ddlLocation.SelectedItem.Text.ToString() == "INBH")
+                if (ddlLocation.SelectedItem.Text == "INDG" || ddlLocation.SelectedItem.Value == "INBH")
                 {
-                    DataTable dt = GeneralFunction.GetDataTable(grdPayRollIndia);
-
-                    PdfPCell CellZero = new PdfPCell(new Phrase("Employee Information", fntTableFont1));
-                    CellZero.Colspan = 8;
-                    CellZero.Border = 0;
-                    CellZero.BackgroundColor = BaseColor.GRAY;
-                    CellZero.HorizontalAlignment = Element.ALIGN_CENTER;
-                    table1.AddCell(CellZero);
-
-                    PdfPCell CellZero2 = new PdfPCell(new Phrase("Attendance Info", fntTableFont1));
-                    CellZero2.Colspan = 2;
-                    CellZero2.Border = 0;
-                    CellZero2.BackgroundColor = BaseColor.GRAY;
-                    CellZero2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    table1.AddCell(CellZero2);
-
-
-                    PdfPCell CellZero3 = new PdfPCell(new Phrase("Paid days Info", fntTableFont1));
-                    CellZero2.Colspan = 2;
-                    CellZero2.Border = 0;
-                    CellZero2.BackgroundColor = BaseColor.GRAY;
-                    CellZero2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    table1.AddCell(CellZero2);
-
-                    CellZero2 = new PdfPCell(new Phrase("Salary Info", fntTableFont1));
-                    CellZero2.Colspan = 3;
-                    CellZero2.Border = 0;
-                    CellZero2.BackgroundColor = BaseColor.GRAY;
-                    CellZero2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    table1.AddCell(CellZero2);
-                    PdfPCell[] cel = new PdfPCell[15];
-                    PdfPRow row = new PdfPRow(cel);
-
-                    cel[0] = new PdfPCell(new Phrase("EmpID", fntTableFont1));
-                    cel[1] = new PdfPCell(new Phrase("Name", fntTableFont1));
-                    cel[2] = new PdfPCell(new Phrase("StartDt", fntTableFont1));
-                    cel[3] = new PdfPCell(new Phrase("TermDt", fntTableFont1));
-                    cel[4] = new PdfPCell(new Phrase("Department", fntTableFont1));
-                    cel[5] = new PdfPCell(new Phrase("Type", fntTableFont1));
-                    cel[6] = new PdfPCell(new Phrase("Location", fntTableFont1));
-                    cel[7] = new PdfPCell(new Phrase("Salary", fntTableFont1));
-                    cel[8] = new PdfPCell(new Phrase("Working days", fntTableFont1));
-                    cel[9] = new PdfPCell(new Phrase("Attend days", fntTableFont1));
-                    cel[10] = new PdfPCell(new Phrase("Used", fntTableFont1));
-                    cel[11] = new PdfPCell(new Phrase("Balanced", fntTableFont1));
-                    cel[12] = new PdfPCell(new Phrase("Salary", fntTableFont1));
-                    cel[13] = new PdfPCell(new Phrase("Is New", fntTableFont1));
-                    cel[14] = new PdfPCell(new Phrase("Is Changes", fntTableFont1));
-
-                    table1.Rows.Add(row);
-
-                    for (int i = 0; i < grdPayRollIndia.Rows.Count; i++)
-                    {
-                        cel[0] = new PdfPCell(new Phrase(grdPayRollIndia.Rows[i].Cells[0].Text.ToString(), fntTableFont));
-                        cel[1] = new PdfPCell(new Phrase(dt.Rows[i]["PEmpname"].ToString(), fntTableFont));
-
-                        string stDt = dt.Rows[i]["StartDate"].ToString() == "NULL" ? "" : Convert.ToDateTime(dt.Rows[i]["StartDate"].ToString()).ToString("MM/dd/yyyy") == "01/01/1990" ? "" : Convert.ToDateTime(dt.Rows[i]["StartDate"].ToString()).ToString("MM/dd/yyyy");
-                        string TrDt = dt.Rows[i]["TermDate"].ToString() == "NULL" ? "" : Convert.ToDateTime(dt.Rows[i]["TermDate"].ToString()).ToString("MM/dd/yyyy") == "01/01/1990" ? "" : Convert.ToDateTime(dt.Rows[i]["TermDate"].ToString()).ToString("MM/dd/yyyy");
-
-                        cel[2] = new PdfPCell(new Phrase(stDt, fntTableFont));
-                        cel[3] = new PdfPCell(new Phrase(TrDt, fntTableFont));
-                        cel[4] = new PdfPCell(new Phrase(dt.Rows[i]["DeptName"].ToString(), fntTableFont));
-                        cel[5] = new PdfPCell(new Phrase(dt.Rows[i]["MasterEmpType"].ToString(), fntTableFont));
-                        cel[6] = new PdfPCell(new Phrase(dt.Rows[i]["LocationName"].ToString(), fntTableFont));
-                        cel[7] = new PdfPCell(new Phrase(dt.Rows[i]["Salary"].ToString(), fntTableFont));
-                        cel[8] = new PdfPCell(new Phrase(dt.Rows[i]["Workingdays"].ToString(), fntTableFont));
-                        cel[9] = new PdfPCell(new Phrase(dt.Rows[i]["Present"].ToString(), fntTableFont));
-                        cel[10] = new PdfPCell(new Phrase(dt.Rows[i]["PaidLeavesUsed"].ToString(), fntTableFont));
-                        cel[11] = new PdfPCell(new Phrase(dt.Rows[i]["PaidLeavesBalanced"].ToString(), fntTableFont));
-                        cel[12] = new PdfPCell(new Phrase(dt.Rows[i]["TotalPay"].ToString(), fntTableFont));
-                        cel[13] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
-                        cel[14] = new PdfPCell(new Phrase(dt.Rows[i]["empid"].ToString(), fntTableFont));
-                        table1.Rows.Add(row);
-                    }
-                    pdfDoc.Add(table1);
-                    table1.Rows.Clear();
+                    pdfDoc.Open();
+                    var table1 = new PdfPTable(15);
                     table1.WidthPercentage = 100;
+                    table1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    float[] widths = new float[] { 1.2f, 3f, 1.5f, 1.5f, 2.5f, 1.5f, 1.2f, 1.5f, 2f, 1.5f, 1.5f, 1.5f, 1.5f, 1.2f, 2f };
+                    table1.SetWidths(widths);
+                    table1.SpacingAfter = 15;
+
+                    iTextSharp.text.Font fntTableFont1 = new Font(Font.FontFamily.TIMES_ROMAN, 10, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+                    iTextSharp.text.Font fntTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+                    iTextSharp.text.Font fntTableHeading = new Font(Font.FontFamily.TIMES_ROMAN, 14, iTextSharp.text.Font.BOLD, BaseColor.MAGENTA);
+
+                    iTextSharp.text.Font georgia = FontFactory.GetFont("georgia", 16f, 1, new BaseColor(System.Drawing.Color.Red));
+                    Chunk beginning = new Chunk(PayrollDate, georgia);
+                    Phrase p1 = new Phrase(beginning);
+                    PdfPCell CellHeading = new PdfPCell(p1);
+                    CellHeading.Colspan = 15;
+                    CellHeading.Border = 0;
+                    CellHeading.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                    CellHeading.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellHeading);
+
+                    CellHeading = new PdfPCell(new Phrase(" "));
+                    CellHeading.Colspan = 15;
+                    CellHeading.Rowspan = 4;
+                    CellHeading.Border = 0;
+                    CellHeading.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                    CellHeading.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellHeading);
+
+
+                    CellHeading = new PdfPCell(new Phrase(lblTotal.Text, fntTableFont));
+                    CellHeading.Colspan = 7;
+                    CellHeading.Border = 0;
+                    CellHeading.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                    CellHeading.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellHeading);
+
+                    CellHeading = new PdfPCell(new Phrase("Report generated at  " + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + " by " + Session["EmpName"].ToString().Trim(), fntTableFont));
+                    CellHeading.Colspan = 8;
+                    CellHeading.Border = 0;
+                    CellHeading.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                    CellHeading.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table1.AddCell(CellHeading);
+
+                    if (ddlLocation.SelectedItem.Text.ToString() == "INDG" || ddlLocation.SelectedItem.Text.ToString() == "INBH")
+                    {
+                        DataTable dt = GetDataTable(grdPayRollIndia);
+
+                        PdfPCell CellZero = new PdfPCell(new Phrase("Employee Information", fntTableFont1));
+                        CellZero.Colspan = 8;
+                        CellZero.BorderWidthRight = 1;
+                        CellZero.BackgroundColor = BaseColor.LIGHT_GRAY;
+                        CellZero.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                        CellZero.HorizontalAlignment = Element.ALIGN_CENTER;
+                        CellZero.Rowspan = 2;
+                        table1.AddCell(CellZero);
+
+                        PdfPCell CellZero2 = new PdfPCell(new Phrase("Attendance Information", fntTableFont1));
+                        CellZero2.Colspan = 7;
+                        CellZero2.Rowspan = 2;
+                        CellZero2.Border = 0;
+                        CellZero2.BackgroundColor = BaseColor.LIGHT_GRAY;
+                        CellZero.HorizontalAlignment = Element.ALIGN_MIDDLE;
+                        CellZero2.HorizontalAlignment = Element.ALIGN_CENTER;
+                        table1.AddCell(CellZero2);
+
+                        PdfPCell[] cel = new PdfPCell[15];
+                        PdfPRow row = new PdfPRow(cel);
+                        cel[0] = new PdfPCell(new Phrase("EmpID", fntTableFont1));
+                        cel[1] = new PdfPCell(new Phrase("Name", fntTableFont1));
+                        cel[2] = new PdfPCell(new Phrase("StartDt", fntTableFont1));
+                        cel[3] = new PdfPCell(new Phrase("TermDt", fntTableFont1));
+                        cel[4] = new PdfPCell(new Phrase("Department", fntTableFont1));
+                        cel[5] = new PdfPCell(new Phrase("Type", fntTableFont1));
+                        cel[6] = new PdfPCell(new Phrase("Location", fntTableFont1));
+                        cel[7] = new PdfPCell(new Phrase("Salary", fntTableFont1));
+                        cel[8] = new PdfPCell(new Phrase("Working days", fntTableFont1));
+                        cel[9] = new PdfPCell(new Phrase("Attend days", fntTableFont1));
+                        cel[10] = new PdfPCell(new Phrase("Used", fntTableFont1));
+                        cel[11] = new PdfPCell(new Phrase("Balanced", fntTableFont1));
+                        cel[12] = new PdfPCell(new Phrase("Total Salary", fntTableFont1));
+                        cel[13] = new PdfPCell(new Phrase("Is New", fntTableFont1));
+                        cel[14] = new PdfPCell(new Phrase("Is Changes", fntTableFont1));
+
+                        table1.Rows.Add(row);
+
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            PdfPCell[] cell1 = new PdfPCell[15];
+                            PdfPRow row1 = new PdfPRow(cell1);
+                            cell1[0] = new PdfPCell(new Phrase(dt.Rows[i]["EmpID"].ToString(), fntTableFont));
+                            cell1[1] = new PdfPCell(new Phrase(dt.Rows[i]["Name"].ToString(), fntTableFont));
+                            cell1[2] = new PdfPCell(new Phrase(dt.Rows[i]["StartDt"].ToString(), fntTableFont));
+                            cell1[3] = new PdfPCell(new Phrase(dt.Rows[i]["TermDt"].ToString(), fntTableFont));
+                            cell1[4] = new PdfPCell(new Phrase(dt.Rows[i]["Dept"].ToString(), fntTableFont));
+                            cell1[5] = new PdfPCell(new Phrase(dt.Rows[i]["Type"].ToString(), fntTableFont));
+                            cell1[6] = new PdfPCell(new Phrase(dt.Rows[i]["Location"].ToString(), fntTableFont));
+                            cell1[7] = new PdfPCell(new Phrase(dt.Rows[i]["Salary"].ToString(), fntTableFont));
+                            cell1[8] = new PdfPCell(new Phrase(dt.Rows[i]["WorkingDays"].ToString(), fntTableFont));
+                            cell1[9] = new PdfPCell(new Phrase(dt.Rows[i]["AttendDays"].ToString(), fntTableFont));
+                            cell1[10] = new PdfPCell(new Phrase(dt.Rows[i]["PaidUsed"].ToString(), fntTableFont));
+                            cell1[11] = new PdfPCell(new Phrase(dt.Rows[i]["PaidBalanced"].ToString(), fntTableFont));
+                            cell1[12] = new PdfPCell(new Phrase(dt.Rows[i]["TotalPay"].ToString(), fntTableFont));
+                            cell1[13] = new PdfPCell(new Phrase(dt.Rows[i]["Isnew"].ToString(), fntTableFont));
+                            cell1[14] = new PdfPCell(new Phrase(dt.Rows[i]["ischanges"].ToString(), fntTableFont));
+
+                            table1.Rows.Add(row1);
+                        }
+                        pdfDoc.Add(table1);
+
+                        dt = GetNewEmpTable(grdNewEmp);
+                        PdfPTable tbl2 = new PdfPTable(7);
+                        tbl2.HorizontalAlignment = Element.ALIGN_LEFT;
+                        tbl2.WidthPercentage = 70;
+
+                        PdfPCell celhead = new PdfPCell(new Phrase("New employee(s):", fntTableFont1));
+                        celhead.Colspan = 7;
+                        celhead.BorderWidthBottom = 0.5F;
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            tbl2.AddCell(celhead);
+                            celhead = new PdfPCell(new Phrase(" ", fntTableFont));
+                            celhead.Colspan = 7;
+                            celhead.Border = 0;
+                            tbl2.AddCell(celhead);
+
+                            cel = new PdfPCell[7];
+                            row = new PdfPRow(cel);
+                            cel[0] = new PdfPCell(new Phrase("EmpID", fntTableFont1));
+                            cel[1] = new PdfPCell(new Phrase("Name", fntTableFont1));
+                            cel[2] = new PdfPCell(new Phrase("Emp type", fntTableFont1));
+                            cel[3] = new PdfPCell(new Phrase("Start date", fntTableFont1));
+                            cel[4] = new PdfPCell(new Phrase("Date of birth", fntTableFont1));
+                            cel[5] = new PdfPCell(new Phrase("Deductions", fntTableFont1));
+                            cel[6] = new PdfPCell(new Phrase("Address", fntTableFont1));
+                            tbl2.Rows.Add(row);
+
+                            for (int i = 0; i < dt.Rows.Count; i++)
+                            {
+                                PdfPCell[] cell1 = new PdfPCell[7];
+                                PdfPRow row1 = new PdfPRow(cell1);
+                                cell1[0] = new PdfPCell(new Phrase(dt.Rows[i]["EmpID"].ToString(), fntTableFont));
+                                cell1[1] = new PdfPCell(new Phrase(dt.Rows[i]["Name"].ToString(), fntTableFont));
+                                cell1[2] = new PdfPCell(new Phrase(dt.Rows[i]["Emp type"].ToString(), fntTableFont));
+                                cell1[3] = new PdfPCell(new Phrase(dt.Rows[i]["Start date"].ToString(), fntTableFont));
+                                cell1[4] = new PdfPCell(new Phrase(dt.Rows[i]["Date of birth"].ToString(), fntTableFont));
+                                cell1[5] = new PdfPCell(new Phrase(dt.Rows[i]["Deductions"].ToString(), fntTableFont));
+                                cell1[6] = new PdfPCell(new Phrase(dt.Rows[i]["Address"].ToString(), fntTableFont));
+                                tbl2.Rows.Add(row1);
+                            }
+                            pdfDoc.Add(tbl2);
+                        }
+                        pdfDoc.Close();
+                        Response.Write(pdfDoc);
+                        showpdf(Session["FilePath"].ToString());
+                        Response.End();
+                    }
+                }
+                else
+                {
+                    StringWriter sw = new StringWriter();
+                    HtmlTextWriter hw = new HtmlTextWriter(sw);
+                    dvpayrollreport.RenderControl(hw);
+                    StringReader sr = new StringReader(sw.ToString());
+                    HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+                   // PdfWriter.GetInstance(pdfDoc, new FileStream(filepath + "Payroll.pdf", FileMode.Create));
+                    Session["FilePath"] = filepath + "Payroll.pdf";
+                    pdfDoc.Open();
+
+                    iTextSharp.text.Font georgia = FontFactory.GetFont("georgia", 20f, 1, new BaseColor(System.Drawing.Color.Brown));
+                    //georgia.Color = Color.Gray;
+                    Chunk beginning = new Chunk(PayrollDate, georgia);
+                    Phrase p1 = new Phrase(beginning);
+                    Phrase p2 = new Phrase();
+                    pdfDoc.Add(new Paragraph(p1));
+                    //pdfDoc.Add(new Paragraph(30f, "Created at" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + " by " + Session["EmpName"].ToString().Trim()));
+                    //pdfDoc.AddTitle(PayrollDate);
+                    htmlparser.Parse(sr);
                     pdfDoc.Close();
                     Response.Write(pdfDoc);
                     showpdf(Session["FilePath"].ToString());
                     Response.End();
                 }
-
-
-
-
-
-                //StringWriter sw = new StringWriter();
-                //HtmlTextWriter hw = new HtmlTextWriter(sw);
-                //dvpayrollreport.RenderControl(hw);
-                //StringReader sr = new StringReader(sw.ToString());
-                //Document pdfDoc = new Document(new Rectangle(1200f, 1800f));
-                //HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
-                //PdfWriter.GetInstance(pdfDoc, new FileStream(filepath + "Payroll.pdf", FileMode.Create));
-                //Session["FilePath"] = filepath + "Payroll.pdf";
-                //pdfDoc.Open();
-
-                //iTextSharp.text.Font georgia = FontFactory.GetFont("georgia", 20f, 1, new BaseColor(System.Drawing.Color.Brown));
-                ////georgia.Color = Color.Gray;
-                //Chunk beginning = new Chunk(PayrollDate, georgia);
-                //Phrase p1 = new Phrase(beginning);
-                //Phrase p2 = new Phrase();
-                //pdfDoc.Add(new Paragraph(p1));
-                ////pdfDoc.Add(new Paragraph(30f, "Created at" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + " by " + Session["EmpName"].ToString().Trim()));
-                ////pdfDoc.AddTitle(PayrollDate);
-                //htmlparser.Parse(sr);
-                //pdfDoc.Close();
-                //Response.Write(pdfDoc);
-                //showpdf(Session["FilePath"].ToString());
-                //Response.End();
-
             }
             catch (Exception ex)
             {
@@ -2711,66 +2773,134 @@ namespace Attendance
 
         }
 
-        private static DataTable GetDataTable(GridView dtg)
+        private static DataTable GetDataTable(GridView grdPayRollIndia)
         {
             DataTable dt = new DataTable();
 
             // add the columns to the datatable            
-            if (dtg.HeaderRow != null)
+            if (grdPayRollIndia.HeaderRow != null)
             {
-
-                for (int i = 0; i < dtg.HeaderRow.Cells.Count; i++)
-                {
-                    dt.Columns.Add(dtg.HeaderRow.Cells[i].Text);
-                }
+                    dt.Columns.Add("EmpID");
+                    dt.Columns.Add("Name");
+                    dt.Columns.Add("StartDt");
+                    dt.Columns.Add("TermDt");
+                    dt.Columns.Add("Dept");
+                    dt.Columns.Add("Type");
+                    dt.Columns.Add("Location");
+                    dt.Columns.Add("Salary");
+                    dt.Columns.Add("WorkingDays");
+                    dt.Columns.Add("AttendDays");
+                    dt.Columns.Add("PaidUsed");
+                    dt.Columns.Add("PaidBalanced");
+                    dt.Columns.Add("TotalPay");
+                    dt.Columns.Add("Isnew");
+                    dt.Columns.Add("ischanges");
             }
-
+            int i = 0;
             //  add each of the data rows to the table
-            foreach (GridViewRow row in dtg.Rows)
+            foreach (GridViewRow row in grdPayRollIndia.Rows)
             {
                 DataRow dr;
                 dr = dt.NewRow();
-
-                Label lbl = (Label)gvDepartments.Rows[i].FindControl("lblEmpID");
+                
+                Label lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblEmpID");
                 dr[0] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblEmpFirstname");
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblEmpFirstname");
                 dr[1] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblStartedDate");
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblStartedDate");
                 dr[2] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblTerminatedDate");
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblTerminatedDate");
                 dr[3] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblDept");
-                dr[0] = lbl.Text.ToString();
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblDept");
+                dr[4] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblEmpID");
-                dr[0] = lbl.Text.ToString();
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblEmployeetype");
+                dr[5] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblEmpID");
-                dr[0] = lbl.Text.ToString();
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblLocation");
+                dr[6] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblEmpID");
-                dr[0] = lbl.Text.ToString();
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblSalary");
+                dr[7] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblEmpID");
-                dr[0] = lbl.Text.ToString();
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblWorkingDays");
+                dr[8] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblEmpID");
-                dr[0] = lbl.Text.ToString();
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblAttendDays");
+                dr[9] = lbl.Text.ToString();
 
-                lbl = (Label)gvDepartments.Rows[i].FindControl("lblEmpID");
-                dr[0] = lbl.Text.ToString();
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesUsed");
+                dr[10] = lbl.Text.ToString();
 
-                
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblPaidLeavesBalanced");
+                dr[11] = lbl.Text.ToString();
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblTotal");
+                dr[12] = lbl.Text.ToString();
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblIsNew");
+                dr[13] = lbl.Text.ToString();
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblIsChanges");
+                dr[14] = lbl.Text.ToString();
                     
               
                 dt.Rows.Add(dr);
+                i++;
             }
             return dt;
         }
 
+        private static DataTable GetNewEmpTable(GridView grdPayRollIndia)
+        {
+            DataTable dt = new DataTable();
+
+            // add the columns to the datatable            
+            if (grdPayRollIndia.HeaderRow != null)
+            {
+                dt.Columns.Add("EmpID");
+                dt.Columns.Add("Name");
+                dt.Columns.Add("Emp type");
+                dt.Columns.Add("Start date");
+                dt.Columns.Add("Date of birth");
+                dt.Columns.Add("Deductions");
+                dt.Columns.Add("Address");
+             }
+            int i = 0;
+            //  add each of the data rows to the table
+            foreach (GridViewRow row in grdPayRollIndia.Rows)
+            {
+                DataRow dr;
+                dr = dt.NewRow();
+
+                Label lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblEmpID");
+                dr[0] = lbl.Text.ToString();
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblEmpName");
+                dr[1] = lbl.Text.ToString();
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblEmpType");
+                dr[2] = lbl.Text.ToString(); 
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblStart");
+                dr[3] = lbl.Text.ToString();
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblBirthDate");
+                dr[4] = lbl.Text.ToString();
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblDeductions");
+                dr[5] = lbl.Text.ToString();
+
+                lbl = (Label)grdPayRollIndia.Rows[i].FindControl("lblAddress");
+                dr[6] = lbl.Text.ToString();
+                dt.Rows.Add(dr);
+                i++;
+            }
+            return dt;
+        }
     }
 }
