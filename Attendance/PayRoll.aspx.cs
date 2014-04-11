@@ -2685,8 +2685,7 @@ namespace Attendance
 
                     pdfDoc.Add(table1);
                     pdfDoc.NewPage();
-                    PdfStamper pstamp = new PdfStamper();
-                   
+                        
                     table1.Rows.Clear();
                     table1.WidthPercentage = 100;
                 }
@@ -2882,7 +2881,5 @@ namespace Attendance
             }
             return dt;
         }
-
-    
     }
 }
