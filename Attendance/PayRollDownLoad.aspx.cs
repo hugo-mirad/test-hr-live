@@ -21,7 +21,7 @@ namespace Attendance
             {
                 string filepath = Session["FilePath"].ToString();
                 string documentPath = string.Format(filepath);
-                string attachmentHeader = String.Format("attachment; filename=Payslips.pdf", filepath);
+                string attachmentHeader = String.Format("attachment;" + Session["filename"].ToString(), filepath);
                 Response.AppendHeader("content-disposition", attachmentHeader);
                 Response.ContentType = "application/octet-stream";
                 Response.WriteFile(documentPath);
