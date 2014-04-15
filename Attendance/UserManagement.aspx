@@ -146,6 +146,17 @@
                document.getElementById('txtStartDt').focus();
            }
     
+      else if(document.getElementById('ddlShift').value=="0")
+           {
+               alert("Please select shift.");               
+               valid=false;
+                //document.getElementById("ddlDeptment").focus="";
+                  $('#ddlShift').closest('.ppHedContent').slideDown().prev('h4').children('span').html('-');
+               document.getElementById("ddlShift").focus();
+           }
+    
+    
+    
       else if (document.getElementById('ddlWagetype').value=="0")
            {
                alert("Please select wage type.");               
@@ -1020,6 +1031,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="ddlCn1State" EventName="SelectedIndexChanged" />
                                     <asp:AsyncPostBackTrigger ControlID="ddlCn2State" EventName="SelectedIndexChanged" />
                                     <asp:AsyncPostBackTrigger ControlID="ddlCn3State" EventName="SelectedIndexChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="ddlShift" EventName="SelectedIndexChanged" />
                                     <asp:PostBackTrigger ControlID="btnAdd" />
                                 </Triggers>
                             </asp:UpdatePanel>
@@ -1155,13 +1167,14 @@
                             <td>
                             </td>
                             <td>
-                                Active
+                               Shift<span class="must">*</span>
                             </td>
                             <td>
-                                <asp:RadioButton ID="rdActiveTrue" runat="server" GroupName="Active" Checked="true"
-                                    TabIndex="8" />Yes
-                                <asp:RadioButton ID="rdActiveFalse" runat="server" GroupName="Active" TabIndex="9" />No
+                              <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" AppendDataBoundItems="true">
+                              <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                              </asp:DropDownList>
                             </td>
+                            
                         </tr>
                         <tr>
                             <td style="vertical-align: middle;">
@@ -1175,8 +1188,12 @@
                             <td>
                             </td>
                             <td>
+                                Active
                             </td>
                             <td>
+                                <asp:RadioButton ID="rdActiveTrue" runat="server" GroupName="Active" Checked="true"
+                                    TabIndex="8" />Yes
+                                <asp:RadioButton ID="rdActiveFalse" runat="server" GroupName="Active" TabIndex="9" />No
                             </td>
                         </tr>
                     </table>
@@ -1261,7 +1278,7 @@
                             </td>
                             <td style="width: 5%">
                             </td>
-                            <td>
+                            <td style="vertical-align:top;">
                                 <table style="width: 99%; vertical-align: top;">
                                     <tr>
                                         <td style="width: 150px; vertical-align: top">

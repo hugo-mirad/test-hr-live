@@ -607,6 +607,10 @@ function clearDisposableItems( sender , args ) {
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
         </a>
+         <div class="shifts">
+                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
+                   
+         </div>
         <div class="right">
             <div class="wel">
                 <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -710,6 +714,12 @@ function clearDisposableItems( sender , args ) {
                 OnSelectedIndexChanged="ddlLocation_SelectedIndexChanged" Style="width: 70px;">
                 <asp:ListItem Text="Select" Value="0"></asp:ListItem>
             </asp:DropDownList>
+            
+             &nbsp;&nbsp; <b>
+                <asp:Label ID="lblShift" runat="server" Text="Shifts"></asp:Label></b>&nbsp;&nbsp;
+            <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" 
+                OnSelectedIndexChanged="ddlShift_SelectedIndexChanged" Style="width: 70px;">
+             </asp:DropDownList>
         </ContentTemplate>
     </asp:UpdatePanel>
     <div>
@@ -982,7 +992,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblFriScOut" runat="server" Text='<%# " - "+Eval("FriSchOut").ToString().Trim()%>'></asp:Label>
                                 <asp:HiddenField ID="hdnFriLunch" runat="server" Value='<%#Eval("FriLunch").ToString().Trim()%>' />
                             </ItemTemplate>
-                            <ItemStyle  />
+                            <ItemStyle  CssClass="bL"/>
                         </asp:TemplateField>
                      
                         <asp:TemplateField>
@@ -1025,7 +1035,10 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblSatScIn" runat="server" Text='<%#Eval("SatSchIn").ToString().Trim()%>'></asp:Label>&nbsp;&nbsp;
                                 <asp:Label ID="lblSatScOut" runat="server" Text='<%# " - "+ Eval("SatSchOut").ToString().Trim()%>'></asp:Label>
                                  <asp:HiddenField ID="hdnSatLunch" runat="server" Value='<%#Eval("SatLunch").ToString().Trim()%>' />
+                                 
+                                 
                             </ItemTemplate>
+                            <ItemStyle CssClass="bL" />
                         </asp:TemplateField>
                     
                         <asp:TemplateField>

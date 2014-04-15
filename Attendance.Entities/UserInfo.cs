@@ -15,6 +15,15 @@ namespace Attendance.Entities
             set { _EmpID = value; }
         }
 
+
+        private int _ShiftID;
+
+        public int ShiftID
+        {
+            get { return _ShiftID; }
+            set { _ShiftID = value; }
+        }
+
         private string _Firstname;
 
         public string Firstname

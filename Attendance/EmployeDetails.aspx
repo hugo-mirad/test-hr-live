@@ -412,8 +412,14 @@
         function validateEditSubmit() {
         debugger
           var valid=true;
-      
-         if (document.getElementById('txtEditFirstname').value=="") {
+         if(document.getElementById('ddlShift').value=="0")
+           {
+               alert("Please select shift.");               
+               valid=false;
+               document.getElementById("ddlShift").focus();
+           }
+         
+        else if (document.getElementById('txtEditFirstname').value=="") {
                alert("Please enter firstname.");
                valid = false;
                
@@ -811,8 +817,12 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="2" style="height: 10px;">
-                                                                &nbsp;
+                                                            <td>
+                                                                <b>Shift</b>
+                                                            </td>
+                                                            <td>
+                                                            <asp:Label ID="lblShift" runat="server"></asp:Label>
+                                                            <asp:HiddenField ID="hdnShiftID" runat="server" />
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -1417,8 +1427,15 @@
                                 <asp:TextBox ID="txtEditEmpID" runat="server" Enabled="false"></asp:TextBox>
                                 <asp:HiddenField ID="hdnToday" runat="server" />
                             </td>
-                            <td colspan="3">
-                                &nbsp;
+                            <td >
+                            </td>
+                            <td>
+                               Shift<span class="must">*</span>
+                            </td>
+                            <td>
+                            <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" AppendDataBoundItems="true">
+                            <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                            </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>
@@ -1616,7 +1633,7 @@
                                             <asp:AsyncPostBackTrigger ControlID="ddlEditDepart" EventName="SelectedIndexChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="ddlSchedule" EventName="SelectedIndexChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="lnkEditClose" EventName="Click" />
-                                            <%-- <asp:AsyncPostBackTrigger ControlID="btnEdit" EventName="Click" />--%>
+                                             <asp:AsyncPostBackTrigger ControlID="ddlShift" EventName="SelectedIndexChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="btnEditCancel" EventName="Click" />
                                             <asp:AsyncPostBackTrigger ControlID="rdEditActiveFalse" EventName="CheckedChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="rdEditActiveTrue" EventName="CheckedChanged" />

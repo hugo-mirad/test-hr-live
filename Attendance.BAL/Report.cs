@@ -177,7 +177,7 @@ namespace Attendance.BAL
 
                 command.Parameters.Add("@photoLink", SqlDbType.VarChar).Value = PhotoLink;
                 command.Parameters.Add("@EmpTypeID", SqlDbType.Int).Value = objInfo.EmpTypeID;
-                //command.Parameters.Add("@EmpID", SqlDbType.VarChar).Value = objInfo.EmpID;
+                command.Parameters.Add("@ShiftID", SqlDbType.Int).Value = objInfo.ShiftID;
                 command.Parameters.Add("@Gender", SqlDbType.VarChar).Value = objInfo.Gender;
 
                 command.Parameters.Add("@phoneNum", SqlDbType.VarChar).Value = objInfo.Phone;
@@ -265,6 +265,7 @@ namespace Attendance.BAL
                 command.Parameters.Add("@EmpTypeID", SqlDbType.Int).Value = objInfo.EmpTypeID;
                 command.Parameters.Add("@EnteredBy", SqlDbType.Int).Value = EnteredBy;
                 command.Parameters.Add("@IsActive", SqlDbType.Bit).Value = objInfo.IsActive;
+                command.Parameters.Add("@ShiftID", SqlDbType.Int).Value = objInfo.ShiftID;
                 command.Parameters.Add("@photoLink", SqlDbType.VarChar).Value = PhotoLink;
                 command.Parameters.Add("@Ipaddress", SqlDbType.VarChar).Value = Ipaddress;
                 command.ExecuteNonQuery();
@@ -306,7 +307,7 @@ namespace Attendance.BAL
             }
             return success;
         }
-        public DataSet GetWeeklyReport(DateTime startdate, DateTime EndDate, int userid, string LocationName)
+        public DataSet GetWeeklyReport(DateTime startdate, DateTime EndDate, int userid, string LocationName,int shiftID)
         {
             DataSet ds = new DataSet();
             try
@@ -317,6 +318,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", startdate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@endDate", EndDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationName", LocationName));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
@@ -327,7 +329,7 @@ namespace Attendance.BAL
             }
             return ds;
         }
-        public DataSet GetWeeklyReportAdmin(DateTime startdate, DateTime EndDate,string LocationName)
+        public DataSet GetWeeklyReportAdmin(DateTime startdate, DateTime EndDate,string LocationName,int shiftID)
         {
             DataSet ds = new DataSet();
             try
@@ -337,7 +339,7 @@ namespace Attendance.BAL
                 SqlDataAdapter da = new SqlDataAdapter("[USP_weeklyAdmin]", con);
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", startdate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@endDate", EndDate));
-                //da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationName", LocationName));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
@@ -348,7 +350,7 @@ namespace Attendance.BAL
             }
             return ds;
         }
-        public DataSet GetActiveUsersAdmin(DateTime startdate, DateTime EndDate,string LocationName)
+        public DataSet GetActiveUsersAdmin(DateTime startdate, DateTime EndDate, string LocationName, int shiftID)
         {
             DataSet ds = new DataSet();
             try
@@ -359,6 +361,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", startdate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@endDate", EndDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationName", LocationName));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
 
@@ -368,7 +371,7 @@ namespace Attendance.BAL
             }
             return ds;
         }
-        public DataSet GetActiveUsers(DateTime startdate, DateTime EndDate, int userid, string LocationName)
+        public DataSet GetActiveUsers(DateTime startdate, DateTime EndDate, int userid, string LocationName, int shiftID)
         {
             DataSet ds = new DataSet();
             try
@@ -379,6 +382,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", startdate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@endDate", EndDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationName", LocationName));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);

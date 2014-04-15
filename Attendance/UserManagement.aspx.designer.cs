@@ -464,6 +464,24 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.TextBox txtStartDt;
         
         /// <summary>
+        /// ddlShift control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlShift;
+        
+        /// <summary>
+        /// photoUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload photoUpload;
+        
+        /// <summary>
         /// rdActiveTrue control.
         /// </summary>
         /// <remarks>
@@ -480,15 +498,6 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdActiveFalse;
-        
-        /// <summary>
-        /// photoUpload control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload photoUpload;
         
         /// <summary>
         /// ddlWagetype control.

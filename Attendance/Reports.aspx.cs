@@ -46,6 +46,8 @@ namespace Attendance
                     hdnTodaydt.Value = CurentDatetime.ToString("MM/dd/yyyy");
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
+                    GetMasterShifts(Session["LocationName"].ToString());
+                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
                     getLocations();
 
 
@@ -53,6 +55,10 @@ namespace Attendance
                     lblLocation.Text = Session["LocationName"].ToString();
                     ViewState["Location"] = Session["LocationName"].ToString();
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
+
+                    GetShifts(ViewState["Location"].ToString());
+                    ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(Session["ShiftID"].ToString()));
+
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
 
@@ -86,6 +92,8 @@ namespace Attendance
                         ds = GetReportSingle(StartDate, EndDate, userid);
                         lblReport.Visible = false;
                         ddlReportType.Visible = false;
+                        ddlShift.Visible = false;
+                        lblShift.Visible = false;
                         Session["AtnDetails"] = ds;
                         if (ds.Rows.Count > 0)
                         {
@@ -101,6 +109,8 @@ namespace Attendance
                             lnkPayroll.Enabled = false;
                             ddlLocation.Visible = false;
                             lblGrdLocaton.Visible = false;
+                            ddlShift.Visible = false;
+                            lblShift.Visible = false;
                         }
                     }
                     else
@@ -134,7 +144,7 @@ namespace Attendance
 
 
 
-                        ds = GetReport(StartDate, EndDate, userid);
+                        ds = GetReport(StartDate, EndDate, userid,Convert.ToInt32(ddlShift.SelectedItem.Value));
                         Session["AtnDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
@@ -172,7 +182,7 @@ namespace Attendance
 
 
 
-        public DataTable GetReport(DateTime StartDate, DateTime EndDate, int userid)
+        public DataTable GetReport(DateTime StartDate, DateTime EndDate, int userid, int shiftID)
         {
             lblWeekReportheading.Text = "Weekly attendance report";
             lblWeekReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndDate.ToString("MM/dd/yyyy") + " )";
@@ -299,8 +309,10 @@ namespace Attendance
                 SqlCommand cmd = new SqlCommand();
                 SqlDataAdapter da = new SqlDataAdapter("[USP_Fn]", con);
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDate));
+                
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
 
@@ -2393,7 +2405,8 @@ namespace Attendance
                             lblGrdLocaton.Visible = false;
                             lnkPayroll.ForeColor = System.Drawing.Color.Gray;
                             lnkPayroll.Enabled = false;
-
+                            ddlShift.Visible = false;
+                            lblShift.Visible = false;
                             //  lnkUserMangement.Style["display"] = "none";
                         }
                     }
@@ -2425,7 +2438,7 @@ namespace Attendance
                             btnFreeze.Enabled = true;
                         }
 
-                        ds = GetReport(PreWeekStart, PreWeekEnd, userid);
+                        ds = GetReport(PreWeekStart, PreWeekEnd, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                         Session["AtnDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
@@ -2464,7 +2477,7 @@ namespace Attendance
 
 
 
-                    DataTable dt = GetWeeklyReport(StartDate, endDate, userid);
+                    DataTable dt = GetWeeklyReport(StartDate, endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                     if (dt.Rows.Count > 0)
                     {
@@ -2485,7 +2498,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.ToString();
                     DateTime endDate = startDate.AddSeconds(-1);
                     ViewState["StartMonth"] = StartDate;
-                    DataTable dt = GetMonthlyreport(StartDate, endDate, userid);
+                    DataTable dt = GetMonthlyreport(StartDate, endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -2569,6 +2582,8 @@ namespace Attendance
                             lnkPayroll.Enabled = false;
                             ddlLocation.Visible = false;
                             lblGrdLocaton.Visible = false;
+                            ddlShift.Visible = false;
+                            lblShift.Visible = false;
                         }
                     }
                     else
@@ -2601,7 +2616,7 @@ namespace Attendance
 
 
 
-                        ds = GetReport(NextWeekStart, NextWeekEnd, userid);
+                        ds = GetReport(NextWeekStart, NextWeekEnd, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                         Session["AtnDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
@@ -2637,7 +2652,7 @@ namespace Attendance
                         btnNext.Enabled = true;
                     }
 
-                    DataTable dt = GetWeeklyReport(StartDate, endDate, userid);
+                    DataTable dt = GetWeeklyReport(StartDate, endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                     if (dt.Rows.Count > 0)
                     {
@@ -2659,7 +2674,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.ToString();
                     DateTime endDate = StartDate.AddMonths(6).AddSeconds(-1);
                     ViewState["StartMonth"] = StartDate;
-                    DataTable dt = GetMonthlyreport(StartDate, endDate, userid);
+                    DataTable dt = GetMonthlyreport(StartDate, endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -3687,6 +3702,7 @@ namespace Attendance
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDate));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", 0));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
 
@@ -4007,7 +4023,7 @@ namespace Attendance
             {
             }
         }
-        private DataTable GetWeeklyReport(DateTime startdate, DateTime enddate, int userid)
+        private DataTable GetWeeklyReport(DateTime startdate, DateTime enddate, int userid,int shiftID)
         {
             DataTable dtAttandence = new DataTable();
             try
@@ -4025,12 +4041,12 @@ namespace Attendance
                 Attendance.BAL.Report obj = new Report();
 
 
-                DataSet ds = obj.GetActiveUsers(startdate, enddate, userid, ViewState["Location"].ToString().Trim());
+                DataSet ds = obj.GetActiveUsers(startdate, enddate, userid, ViewState["Location"].ToString().Trim(), shiftID);
 
                 for (int j = 0; j < 4; j++)
                 {
 
-                    DataSet dsResult = obj.GetWeeklyReport(startdate, startdate.AddDays(7).AddSeconds(-1), userid, ViewState["Location"].ToString().Trim());
+                    DataSet dsResult = obj.GetWeeklyReport(startdate, startdate.AddDays(7).AddSeconds(-1), userid, ViewState["Location"].ToString().Trim(),shiftID);
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
@@ -4126,7 +4142,7 @@ namespace Attendance
             }
             return dtAttandence;
         }
-        private DataTable GetMonthlyreport(DateTime startdate, DateTime endMonth, int userid)
+        private DataTable GetMonthlyreport(DateTime startdate, DateTime endMonth, int userid, int shiftID)
         {
             DataTable dtAttandence = new DataTable();
             try
@@ -4146,12 +4162,12 @@ namespace Attendance
 
                 DateTime enddate = startdate.AddMonths(1).AddSeconds(-1);
 
-                DataSet ds = obj.GetActiveUsers(startdate, endMonth, userid, ViewState["Location"].ToString().Trim());
+                DataSet ds = obj.GetActiveUsers(startdate, endMonth, userid, ViewState["Location"].ToString().Trim(),shiftID);
 
                 for (int j = 0; j < 6; j++)
                 {
 
-                    DataSet dsResult = obj.GetWeeklyReport(startdate, enddate, userid, ViewState["Location"].ToString().Trim());
+                    DataSet dsResult = obj.GetWeeklyReport(startdate, enddate, userid, ViewState["Location"].ToString().Trim(),shiftID);
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
@@ -4280,7 +4296,7 @@ namespace Attendance
                 hdnMonthlyStartDt.Value = StartDate.AddMonths(-6).ToString();
                 DateTime endDate = StartDate.AddSeconds(-1);
                 ViewState["CrntMonthEnd"] = endDate;
-                DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate, userid);
+                DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                 btnFreeze.Visible = false;
                 lblFreeze.Visible = false;
 
@@ -4307,7 +4323,7 @@ namespace Attendance
                 hdnWeeklyStartDt.Value = StartDate.ToString();
                 DateTime endDate = startDate.AddDays(6);
                 ViewState["CrntWkEnd"] = endDate;
-                DataTable dt = GetWeeklyReport(StartDate, endDate, userid);
+                DataTable dt = GetWeeklyReport(StartDate, endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                 btnFreeze.Visible = false;
                 lblFreeze.Visible = false;
 
@@ -4340,9 +4356,7 @@ namespace Attendance
                 DateTime TodayDate = Convert.ToDateTime(Session["TodayDate"]);
                 DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
                 DateTime EndDate = GeneralFunction.GetLastDayOfWeekDate(TodayDate);
-                DataTable ds = GetReport(StartDate, EndDate, userid);
-
-
+                DataTable ds = GetReport(StartDate, EndDate, userid,Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                 btnFreeze.Visible = true;
                 lblFreeze.Visible = true;
@@ -4461,6 +4475,8 @@ namespace Attendance
                     ds = GetReportSingle(StartDate, EndDate, userid);
                     lblReport.Visible = false;
                     ddlReportType.Visible = false;
+                    ddlShift.Visible = false;
+                    lblShift.Visible = false;
                     Session["AtnDetails"] = ds;
                     if (ds.Rows.Count > 0)
                     {
@@ -4532,9 +4548,7 @@ namespace Attendance
                             btnFreeze.Enabled = true;
                         }
 
-
-
-                        ds = GetReport(StartDate, EndDate, userid);
+                        ds = GetReport(StartDate, EndDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                         Session["AtnDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
@@ -4566,7 +4580,7 @@ namespace Attendance
                         ddlReportType.Visible = true;
                         lblReport.Visible = true;
 
-                        DataTable dt = GetWeeklyReport(startWeek, EndWeek, userid);
+                        DataTable dt = GetWeeklyReport(startWeek, EndWeek, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                         if (dt.Rows.Count > 0)
                         {
                             btnFreeze.Visible = false;
@@ -4585,7 +4599,7 @@ namespace Attendance
                         ViewState["StartMonth"] = StartDate;
                         hdnMonthlyStartDt.Value = StartDate.ToString();
                         DateTime endDate = Convert.ToDateTime(ViewState["CrntMonthEnd"]);
-                        DataTable dt = GetMonthlyreport(StartDate, endDate, userid);
+                        DataTable dt = GetMonthlyreport(StartDate, endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                         btnFreeze.Visible = false;
                         lblFreeze.Visible = false;
 
@@ -5125,7 +5139,7 @@ namespace Attendance
                     }
 
                 }
-                DataTable ds = GetReport(StartDate, EndDate, Convert.ToInt32(Session["UserID"]));
+                DataTable ds = GetReport(StartDate, EndDate, Convert.ToInt32(Session["UserID"]), Convert.ToInt32(ddlShift.SelectedItem.Value));
                 Session["AtnDetails"] = ds;
                 grdAttandence.DataSource = ds;
                 grdAttandence.DataBind();
@@ -5235,5 +5249,27 @@ namespace Attendance
             {
             }
         }
+
+        private void GetShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShift.DataSource = dsShifts;
+            ddlShift.DataTextField = "shiftname";
+            ddlShift.DataValueField = "shiftID";
+            ddlShift.DataBind();
+            ddlShift.Items.Insert(0, new ListItem("ALL", "0"));
+        }
+        private void GetMasterShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShifts.DataSource = dsShifts;
+            ddlShifts.DataTextField = "shiftname";
+            ddlShifts.DataValueField = "shiftID";
+            ddlShifts.DataBind();
+        }
+
+       
     }
 }

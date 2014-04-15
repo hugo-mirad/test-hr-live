@@ -45,9 +45,14 @@ namespace Attendance
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
+                    GetMasterShifts(Session["LocationName"].ToString());
+                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
                     getLocations();
+
                     ViewState["Location"] = Session["LocationName"].ToString();
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
+                    GetShifts(ViewState["Location"].ToString());
+                    ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(Session["ShiftID"].ToString()));
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
                     Session["TodayDate"] = Session["TodayBannerDate"];
@@ -96,7 +101,7 @@ namespace Attendance
                         btnFreeze.Enabled = true;
                     }
                     DataTable ds = new DataTable();
-                    ds = GetReportAdmin(StartDate, EndDate, Convert.ToInt32(ddlLocation.SelectedValue));
+                    ds = GetReportAdmin(StartDate, EndDate, Convert.ToInt32(ddlLocation.SelectedValue), Convert.ToInt32(ddlShift.SelectedValue));
                     lblGrdLocaton.Visible = true;
                     ddlLocation.Visible = true;
                     Session["AtnAdminDetails"] = ds;
@@ -232,7 +237,7 @@ namespace Attendance
 
             }
         }
-        public DataTable GetReportAdmin(DateTime StartDate, DateTime EndDate, int LocationID)
+        public DataTable GetReportAdmin(DateTime StartDate, DateTime EndDate, int LocationID, int ShiftID)
         {
             lblWeekReportheading.Text = "Weekly attendance report";
             lblWeekReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndDate.ToString("MM/dd/yyyy") + " )";
@@ -367,6 +372,7 @@ namespace Attendance
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
                 SqlCommand cmd = new SqlCommand();
                 SqlDataAdapter da = new SqlDataAdapter("[USP_FnAdmin]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", ShiftID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", LocationID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDate));
@@ -404,7 +410,7 @@ namespace Attendance
                         DataView dvH = dtH.DefaultView;
                         DataTable dtHoliday = new DataTable();
 
-                        DataTable dtSch=ds.Tables[4];
+                        DataTable dtSch = ds.Tables[4];
                         DataView dvSch = dtSch.DefaultView;
                         DataTable dtSchedules = new DataTable();
 
@@ -420,14 +426,14 @@ namespace Attendance
 
                             dvH.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
                             dtHoliday = dvH.ToTable();
-                            
-                            dvSch.RowFilter="empid='"+ ds.Tables[0].Rows[j]["empid"].ToString() + "'";
-                            dtSchedules=dvSch.ToTable();
 
-                          
+                            dvSch.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
+                            dtSchedules = dvSch.ToTable();
 
 
-                            if(dtSchedules.Rows.Count>0)
+
+
+                            if (dtSchedules.Rows.Count > 0)
                             {
                                 dtAttandence.Rows[j]["SunSchIn"] = dtSchedules.Rows[0]["startTime"].ToString();
                                 dtAttandence.Rows[j]["SunSchOut"] = dtSchedules.Rows[0]["EndTime"].ToString();
@@ -471,7 +477,7 @@ namespace Attendance
 
 
                                     DataView dL = dtLeave.DefaultView;
-                                    dL.RowFilter = "Fromdate<=#" + startDate + "# and #" + startDate + "#<=Todate"; 
+                                    dL.RowFilter = "Fromdate<=#" + startDate + "# and #" + startDate + "#<=Todate";
                                     DataTable dtLvResult = dL.ToTable();
 
 
@@ -513,7 +519,7 @@ namespace Attendance
                                                         dtAttandence.Rows[j]["SunLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
                                                         dtAttandence.Rows[j]["SunLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
                                                     }
-                                                    
+
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["SunMultiple"] = "True";
@@ -564,7 +570,7 @@ namespace Attendance
                                                 }
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
-                                                    dtAttandence.Rows[j]["MonLoginNotes"] =dtAttandence.Rows[j]["MonLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
+                                                    dtAttandence.Rows[j]["MonLoginNotes"] = dtAttandence.Rows[j]["MonLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["MonSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["MonSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
 
@@ -604,9 +610,9 @@ namespace Attendance
 
                                                 //  dtAttandence.Rows[j]["MonHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["MonLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                               // dtAttandence.Rows[j]["MonLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                                // dtAttandence.Rows[j]["MonLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 //dtAttandence.Rows[j]["MonLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                              
+
                                                 dtAttandence.Rows[j]["MonFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
 
@@ -660,9 +666,9 @@ namespace Attendance
 
                                                 //dtAttandence.Rows[j]["TueHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["TueLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                               // dtAttandence.Rows[j]["TueLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                                // dtAttandence.Rows[j]["TueLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 // dtAttandence.Rows[j]["TueLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                               
+
                                                 dtAttandence.Rows[j]["TueFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break; // TODO: might not be correct. Was : Exit Select
                                             case DayOfWeek.Wednesday:
@@ -690,7 +696,7 @@ namespace Attendance
                                                         dtAttandence.Rows[j]["WedLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
                                                         dtAttandence.Rows[j]["WedLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
                                                     }
-                                                    
+
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["WedMultiple"] = "True";
@@ -720,9 +726,9 @@ namespace Attendance
 
                                                 // dtAttandence.Rows[j]["WedHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["WedLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                              //  dtAttandence.Rows[j]["WedLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
+                                                //  dtAttandence.Rows[j]["WedLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 //   dtAttandence.Rows[j]["WedLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                              
+
                                                 dtAttandence.Rows[j]["WedFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                             case DayOfWeek.Thursday:
@@ -748,7 +754,7 @@ namespace Attendance
                                                         dtAttandence.Rows[j]["ThuLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
                                                     }
 
-                                                    
+
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["ThuMultiple"] = "True";
@@ -778,7 +784,7 @@ namespace Attendance
                                                 //dtAttandence.Rows[j]["ThuHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["ThuLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 dtAttandence.Rows[j]["ThuLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
-                                               //dtAttandence.Rows[j]["ThuLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();                                            
+                                                //dtAttandence.Rows[j]["ThuLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();                                            
                                                 dtAttandence.Rows[j]["ThuFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                             case DayOfWeek.Friday:
@@ -796,14 +802,14 @@ namespace Attendance
                                                 {
                                                     dtAttandence.Rows[j]["FriLoginNotes"] = dtAttandence.Rows[j]["FriLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["FriSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                    dtAttandence.Rows[j]["FriSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count-1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["FriSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
                                                     if (dt1.Rows[0]["loginflag"].ToString() == "True" || dt1.Rows[0]["logoutflag"].ToString() == "True")
                                                     {
                                                         dtAttandence.Rows[j]["FriLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
                                                         dtAttandence.Rows[j]["FriLogoutFlag"] = dt1.Rows[0]["logoutflag"].ToString();
                                                     }
 
-                                                    
+
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["FriMultiple"] = "True";
@@ -835,7 +841,7 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["FriLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 //dtAttandence.Rows[j]["FriLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
                                                 // dtAttandence.Rows[j]["FriLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
-                                              
+
                                                 dtAttandence.Rows[j]["FriFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                             case DayOfWeek.Saturday:
@@ -859,11 +865,11 @@ namespace Attendance
                                                     dtAttandence.Rows[j]["SatSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
                                                     dtAttandence.Rows[j]["SatSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
 
-                                                    if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString()=="True")
-                                                     {
-                                                          dtAttandence.Rows[j]["SatLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
-                                                          dtAttandence.Rows[j]["SatLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
-                                                     }
+                                                    if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString() == "True")
+                                                    {
+                                                        dtAttandence.Rows[j]["SatLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
+                                                        dtAttandence.Rows[j]["SatLogoutFlag"] = dt1.Rows[k]["logoutflag"].ToString();
+                                                    }
 
                                                     if (dt1.Rows.Count > 1)
                                                     {
@@ -894,13 +900,13 @@ namespace Attendance
 
                                                 //dtAttandence.Rows[j]["SatHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["SatLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                             
-                                               
+
+
                                                 dtAttandence.Rows[j]["SatFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                         }
                                     }
-                                   
+
 
 
                                     else if (dtHolResult.Rows.Count > 0)
@@ -1014,12 +1020,12 @@ namespace Attendance
                                     }
 
 
-                                        dL.RowFilter = null;
-                                        dH.RowFilter = null;
-                                        dv1.RowFilter = null;
-                                        startDate = nextdate;
-                                        nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
-                               
+                                    dL.RowFilter = null;
+                                    dH.RowFilter = null;
+                                    dv1.RowFilter = null;
+                                    startDate = nextdate;
+                                    nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
+
                                 }
                                 Double SumHours = (dtAttandence.Rows[j]["SunHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SunHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SunHrs"])));
                                 SumHours = SumHours + (dtAttandence.Rows[j]["MonHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["MonHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["MonHrs"])));
@@ -1189,8 +1195,8 @@ namespace Attendance
                             }
 
 
-                           
-                           
+
+
 
                             Double ToHours = (dtAttandence.Rows[j]["SunHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SunHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SunHrs"])));
                             ToHours = ToHours + (dtAttandence.Rows[j]["MonHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["MonHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["MonHrs"])));
@@ -1201,8 +1207,8 @@ namespace Attendance
                             ToHours = ToHours + (dtAttandence.Rows[j]["SatHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SatHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SatHrs"])));
                             dtAttandence.Rows[j]["TotalHours"] = (ToHours).ToString();
 
-                           dtAttandence.Rows[j]["PresentDays"] = presentdays;
-                           dtAttandence.Rows.Add();
+                            dtAttandence.Rows[j]["PresentDays"] = presentdays;
+                            dtAttandence.Rows.Add();
                         }
 
                         Double WeeklySumSunHrs = 0;
@@ -1482,8 +1488,8 @@ namespace Attendance
                     }
 
                     HiddenField hdnMonSignInFlag = (HiddenField)e.Row.FindControl("hdnMonSignInFlag");
-                    HiddenField hdnMonSignOutFlag=(HiddenField)e.Row.FindControl("hdnMonSignOutFlag");
-                    if (hdnMonSignInFlag.Value == "True" || hdnMonSignOutFlag.Value=="True")
+                    HiddenField hdnMonSignOutFlag = (HiddenField)e.Row.FindControl("hdnMonSignOutFlag");
+                    if (hdnMonSignInFlag.Value == "True" || hdnMonSignOutFlag.Value == "True")
                     {
                         e.Row.Cells[3].CssClass += " atnEdit";
                         lblMonIn.CssClass.Replace("greenTag", "");
@@ -1555,10 +1561,10 @@ namespace Attendance
 
                     HiddenField hdnTueSignInFlag = (HiddenField)e.Row.FindControl("hdnTueSignInFlag");
                     HiddenField hdnTueSignOutFlag = (HiddenField)e.Row.FindControl("hdnTueSignOutFlag");
-                    if (hdnTueSignInFlag.Value == "True" || hdnTueSignOutFlag.Value=="True")
+                    if (hdnTueSignInFlag.Value == "True" || hdnTueSignOutFlag.Value == "True")
                     {
                         e.Row.Cells[6].CssClass += " atnEdit";
-                        
+
                     }
                     HiddenField hdnTueSigninNotes = (HiddenField)e.Row.FindControl("hdnTueSigninNotes");
                     HiddenField hdnTueMultiple = (HiddenField)e.Row.FindControl("hdnTueMultiple");
@@ -1629,7 +1635,7 @@ namespace Attendance
 
                     HiddenField hdnWedSignInFlag = (HiddenField)e.Row.FindControl("hdnWedSignInFlag");
                     HiddenField hdnWedSignOutFlag = (HiddenField)e.Row.FindControl("hdnWedSignOutFlag");
-                    if (hdnWedSignInFlag.Value == "True" || hdnWedSignOutFlag.Value=="True")
+                    if (hdnWedSignInFlag.Value == "True" || hdnWedSignOutFlag.Value == "True")
                     {
                         e.Row.Cells[9].CssClass += " atnEdit";
                         lblWedIn.CssClass.Replace("greenTag", "");
@@ -1930,7 +1936,7 @@ namespace Attendance
 
 
                     HiddenField hdnSunSignInNotes = (HiddenField)e.Row.FindControl("hdnSunSignInNotes");
-                 
+
                     HiddenField hdnSunMultiple = (HiddenField)e.Row.FindControl("hdnSunMultiple");
                     if (hdnSunMultiple.Value == "True")
                     {
@@ -2195,7 +2201,7 @@ namespace Attendance
                     }
 
 
-                    ds = GetReportAdmin(PreWeekStart, PreWeekEnd, Convert.ToInt32(ddlLocation.SelectedValue));
+                    ds = GetReportAdmin(PreWeekStart, PreWeekEnd, Convert.ToInt32(ddlLocation.SelectedValue), Convert.ToInt32(ddlShift.SelectedValue));
                     Session["AtnAdminDetails"] = ds;
                     grdAttandence.DataSource = ds;
                     grdAttandence.DataBind();
@@ -2230,7 +2236,7 @@ namespace Attendance
                     lblFreeze.Visible = false;
 
 
-                    DataTable dt = GetWeeklyReport(StartDate, endDate);
+                    DataTable dt = GetWeeklyReport(StartDate, endDate,Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                     if (dt.Rows.Count > 0)
                     {
@@ -2252,7 +2258,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.ToString();
                     DateTime endDate = startDate.AddSeconds(-1);
                     ViewState["StartMonth"] = StartDate;
-                    DataTable dt = GetMonthlyreport(StartDate, endDate);
+                    DataTable dt = GetMonthlyreport(StartDate, endDate, Convert.ToInt32(ddlShift.SelectedItem.Value));
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -2341,7 +2347,7 @@ namespace Attendance
 
 
 
-                    ds = GetReportAdmin(NextWeekStart, NextWeekEnd, Convert.ToInt32(ddlLocation.SelectedValue));
+                    ds = GetReportAdmin(NextWeekStart, NextWeekEnd, Convert.ToInt32(ddlLocation.SelectedValue), Convert.ToInt32(ddlShift.SelectedValue));
                     Session["AtnAdminDetails"] = ds;
                     grdAttandence.DataSource = ds;
                     grdAttandence.DataBind();
@@ -2376,7 +2382,7 @@ namespace Attendance
                         btnNext.Enabled = true;
                     }
 
-                    DataTable dt = GetWeeklyReport(StartDate, endDate);
+                    DataTable dt = GetWeeklyReport(StartDate, endDate,Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                     if (dt.Rows.Count > 0)
                     {
@@ -2398,7 +2404,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.ToString();
                     DateTime endDate = StartDate.AddMonths(6).AddSeconds(-1);
                     ViewState["StartMonth"] = StartDate;
-                    DataTable dt = GetMonthlyreport(StartDate, endDate);
+                    DataTable dt = GetMonthlyreport(StartDate, endDate,Convert.ToInt32(ddlShift.SelectedItem.Value));
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -3108,7 +3114,7 @@ namespace Attendance
 
                     DataTable ds = new DataTable();
 
-                    ds = GetReportAdmin(StartDate, EndDate, Convert.ToInt32(ddlLocation.SelectedValue));
+                    ds = GetReportAdmin(StartDate, EndDate, Convert.ToInt32(ddlLocation.SelectedValue), Convert.ToInt32(ddlShift.SelectedValue));
                     Session["AtnAdminDetails"] = ds;
                     grdAttandence.DataSource = ds;
                     grdAttandence.DataBind();
@@ -3147,7 +3153,7 @@ namespace Attendance
                     ddlReportType.Visible = true;
                     lblReport.Visible = true;
 
-                    DataTable dt = GetWeeklyReport(startWeek, EndWeek);
+                    DataTable dt = GetWeeklyReport(startWeek, EndWeek, Convert.ToInt32(ddlShift.SelectedItem.Value));
                     if (dt.Rows.Count > 0)
                     {
                         grdAttandence.DataSource = null;
@@ -3166,7 +3172,7 @@ namespace Attendance
                     ViewState["StartMonth"] = StartDate;
                     hdnMonthlyStartDt.Value = StartDate.ToString();
                     DateTime endDate = Convert.ToDateTime(ViewState["CrntMonthEnd"]);
-                    DataTable dt = GetMonthlyreport(StartDate, endDate);
+                    DataTable dt = GetMonthlyreport(StartDate, endDate, Convert.ToInt32(ddlShift.SelectedItem.Value));
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -3202,6 +3208,7 @@ namespace Attendance
         protected void ddlLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
             ViewState["Location"] = ddlLocation.SelectedItem.Text.Trim();
+            GetShifts(ddlLocation.SelectedItem.Text.ToString());
             try
             {
                 if (ddlReportType.SelectedItem.Value == "0")
@@ -3216,8 +3223,6 @@ namespace Attendance
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayDate"]);
                     DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
                     DateTime EndDate = GeneralFunction.GetLastDayOfWeekDate(TodayDate);
-
-
                     btnFreeze.Visible = true;
                     lblFreeze.Visible = true;
                     //   DateTime TodayDate = Convert.ToDateTime(Session["TodayDate"]);
@@ -3253,7 +3258,7 @@ namespace Attendance
                         btnNext.Enabled = true;
                     }
 
-                    DataTable ds = GetReportAdmin(StartDate, EndDate, LocationId);
+                    DataTable ds = GetReportAdmin(StartDate, EndDate, LocationId, 0);
                     Session["AtnAdminDetails"] = ds;
                     grdAttandence.DataSource = ds;
                     grdAttandence.DataBind();
@@ -3299,7 +3304,7 @@ namespace Attendance
                     }
 
 
-                    DataTable dt = GetWeeklyReport(StartDate, endDate);
+                    DataTable dt = GetWeeklyReport(StartDate, endDate,0);
 
                     if (dt.Rows.Count > 0)
                     {
@@ -3338,7 +3343,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.AddMonths(-6).ToString();
                     DateTime endDate = StartDate.AddSeconds(-1);
                     ViewState["CrntMonthEnd"] = endDate;
-                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate);
+                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate,0);
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -3465,7 +3470,7 @@ namespace Attendance
             {
             }
         }
-        private DataTable GetWeeklyReport(DateTime startdate, DateTime enddate)
+        private DataTable GetWeeklyReport(DateTime startdate, DateTime enddate,int ShiftID)
         {
             DataTable dtAttandence = new DataTable();
             try
@@ -3483,12 +3488,12 @@ namespace Attendance
                 Attendance.BAL.Report obj = new Report();
 
 
-                DataSet ds = obj.GetActiveUsersAdmin(startdate, enddate, ViewState["Location"].ToString().Trim());
+                DataSet ds = obj.GetActiveUsersAdmin(startdate, enddate, ViewState["Location"].ToString().Trim(),Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                 for (int j = 0; j < 4; j++)
                 {
 
-                    DataSet dsResult = obj.GetWeeklyReportAdmin(startdate, startdate.AddDays(7).AddSeconds(-1), ViewState["Location"].ToString().Trim());
+                    DataSet dsResult = obj.GetWeeklyReportAdmin(startdate, startdate.AddDays(7).AddSeconds(-1), ViewState["Location"].ToString().Trim(),ShiftID);
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
@@ -3588,7 +3593,7 @@ namespace Attendance
             }
             return dtAttandence;
         }
-        private DataTable GetMonthlyreport(DateTime startdate, DateTime endMonth)
+        private DataTable GetMonthlyreport(DateTime startdate, DateTime endMonth,int shiftID)
         {
             DataTable dtAttandence = new DataTable();
             try
@@ -3608,12 +3613,12 @@ namespace Attendance
 
                 DateTime enddate = startdate.AddMonths(1).AddSeconds(-1);
 
-                DataSet ds = obj.GetActiveUsersAdmin(startdate, endMonth, ViewState["Location"].ToString().Trim());
+                DataSet ds = obj.GetActiveUsersAdmin(startdate, endMonth, ViewState["Location"].ToString().Trim(),shiftID);
 
                 for (int j = 0; j < 6; j++)
                 {
 
-                    DataSet dsResult = obj.GetWeeklyReportAdmin(startdate, enddate, ViewState["Location"].ToString().Trim());
+                    DataSet dsResult = obj.GetWeeklyReportAdmin(startdate, enddate, ViewState["Location"].ToString().Trim(),shiftID);
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
@@ -3729,8 +3734,6 @@ namespace Attendance
             {
                 int userid = Convert.ToInt32(Session["UserID"]);
                 //  string IsAdmin = Session["IsAdmin"].ToString();
-
-
                 if (ddlReportType.SelectedItem.Value == "2")
                 {
                     DateTime todayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
@@ -3743,7 +3746,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.AddMonths(-6).ToString();
                     DateTime endDate = StartDate.AddSeconds(-1);
                     ViewState["CrntMonthEnd"] = endDate;
-                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate);
+                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate,0);
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -3771,7 +3774,7 @@ namespace Attendance
                     hdnWeeklyStartDt.Value = StartDate.ToString();
                     DateTime endDate = startDate.AddDays(6);
                     ViewState["CrntWkEnd"] = endDate;
-                    DataTable dt = GetWeeklyReport(StartDate, endDate);
+                    DataTable dt = GetWeeklyReport(StartDate, endDate,0);
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
                     if (GeneralFunction.GetFirstDayOfWeekDate(endDate).ToString("MM/dd/yyyy") == GeneralFunction.GetFirstDayOfWeekDate(DateTime.Now).ToString("MM/dd/yyyy"))
@@ -3842,7 +3845,7 @@ namespace Attendance
 
 
 
-                    DataTable ds = GetReportAdmin(StartDate, EndDate, Convert.ToInt32(ddlLocation.SelectedValue));
+                    DataTable ds = GetReportAdmin(StartDate, EndDate, Convert.ToInt32(ddlLocation.SelectedValue), 0);
                     Session["AtnAdminDetails"] = ds;
                     grdAttandence.DataSource = ds;
                     grdAttandence.DataBind();
@@ -3860,7 +3863,7 @@ namespace Attendance
         {
             try
             {
-               
+
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
 
@@ -3945,7 +3948,7 @@ namespace Attendance
         }
         protected void grdMonthlyAttendance_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            
+
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
 
@@ -4151,14 +4154,7 @@ namespace Attendance
                     HeaderCell.ColumnSpan = 2;
                     HeaderCell.CssClass = "bL bR";
                     HeaderGridRow.Cells.Add(HeaderCell);
-
-
                     grdWeeklyAttendance.Controls[0].Controls.AddAt(0, HeaderGridRow);
-
-
-
-
-
 
                 }
             }
@@ -4366,29 +4362,29 @@ namespace Attendance
                             }
 
                             bool bnew = obj.UpdateSignInSignOut(EmpID, loguserID, signInTime, signOutTime, signInnotes, Signoutnotes);
-                        
+
                         }
                         else
                         {
                             bool bnew = obj.UpdateSignInSignOutDelete(loguserID);
                         }
-                        
-                      
 
-                      
+
+
+
                     }
 
                 }
-                 DataTable ds=GetReportAdmin(StartDate, EndDate, LocationID);
-                 Session["AtnAdminDetails"] = ds;
-                 grdAttandence.DataSource = ds;
-                 grdAttandence.DataBind();
-                 grdMonthlyAttendance.DataSource = null;
-                 grdMonthlyAttendance.DataBind();
-                 grdWeeklyAttendance.DataSource = null;
-                 grdWeeklyAttendance.DataBind();
-             // Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
-               
+                DataTable ds = GetReportAdmin(StartDate, EndDate, LocationID, Convert.ToInt32(ddlShift.SelectedItem.Value));
+                Session["AtnAdminDetails"] = ds;
+                grdAttandence.DataSource = ds;
+                grdAttandence.DataBind();
+                grdMonthlyAttendance.DataSource = null;
+                grdMonthlyAttendance.DataBind();
+                grdWeeklyAttendance.DataSource = null;
+                grdWeeklyAttendance.DataBind();
+                // Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
+
 
                 mdlMultipleEditEditPopUp.Hide();
             }
@@ -4400,7 +4396,198 @@ namespace Attendance
 
         }
 
-        
+        protected void ddlShift_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+            ViewState["Location"] = ddlLocation.SelectedItem.Text.Trim();
+           try
+            {
+                if (ddlReportType.SelectedItem.Value == "0")
+                {
+                    lblReport.Text = "Report type";
+                    ddlReportType.Visible = true;
+                    lblReport.Visible = true;
+                    lblGrdLocaton.Visible = true;
+                    lblGrdLocaton.Text = "Location";
+                    ddlLocation.Visible = true;
+                    int LocationId = Convert.ToInt32(ddlLocation.SelectedItem.Value.ToString());
+                    DateTime TodayDate = Convert.ToDateTime(Session["TodayDate"]);
+                    DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
+                    DateTime EndDate = GeneralFunction.GetLastDayOfWeekDate(TodayDate);
+                    btnFreeze.Visible = true;
+                    lblFreeze.Visible = true;
+                    //   DateTime TodayDate = Convert.ToDateTime(Session["TodayDate"]);
+                    DateTime StartOfMonth = StartDate.AddDays(-1);
+                    DateTime FreezeDate = StartOfMonth;
+                    Attendance.BAL.Report obj = new Report();
+                    //  int CNT = obj.GetFreezedDate(FreezeDate);
+                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim());
+                    lblFreezedate.Text = FreezeDate.ToString("MM/dd/yyyy");
+                    hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
+                    if (CNT.ToString("MM/dd/yyyy") != "01/01/1900")
+                    {
+                        lblFreeze.Text = "Attendance freezed until " + CNT.ToString("MM/dd/yyyy");
+                        ViewState["FreezeDate"] = CNT.ToString("MM/dd/yyyy");
+                        btnFreeze.CssClass = "btn btn-warning btn-small disabled";
+                        btnFreeze.Enabled = false;
+                    }
+                    else
+                    {
+                        lblFreeze.Visible = false;
+                        btnFreeze.CssClass = "btn btn-warning btn-small enabled";
+                        btnFreeze.Enabled = true;
+                    }
+
+                    if (GeneralFunction.GetFirstDayOfWeekDate(TodayDate).ToString("MM/dd/yyyy") == GeneralFunction.GetFirstDayOfWeekDate(DateTime.Now).ToString("MM/dd/yyyy"))
+                    {
+                        btnNext.CssClass = "btn btn-danger btn-small disabled";
+                        btnNext.Enabled = false;
+                    }
+                    else
+                    {
+                        btnNext.CssClass = "btn btn-danger btn-small enabled";
+                        btnNext.Enabled = true;
+                    }
+
+                    DataTable ds = GetReportAdmin(StartDate, EndDate, LocationId, Convert.ToInt32(ddlShift.SelectedItem.Value));
+                    Session["AtnAdminDetails"] = ds;
+                    grdAttandence.DataSource = ds;
+                    grdAttandence.DataBind();
+                    grdWeeklyAttendance.DataSource = null;
+                    grdWeeklyAttendance.DataBind();
+                    grdMonthlyAttendance.DataSource = null;
+                    grdMonthlyAttendance.DataBind();
+                }
+                else if (ddlReportType.SelectedItem.Value == "1")
+                {
+                    lblReport.Text = "Report type";
+                    ddlReportType.Visible = true;
+                    lblReport.Visible = true;
+                    lblGrdLocaton.Visible = true;
+                    lblGrdLocaton.Text = "Location";
+                    ddlLocation.Visible = true;
+                    btnFreeze.Visible = false;
+                    lblFreeze.Visible = false;
+
+                    int LocationId = Convert.ToInt32(ddlLocation.SelectedItem.Value.ToString());
+                    DateTime todayDate = Convert.ToDateTime(Session["TodayDate1"]);
+
+                    // DateTime startOfMonth = new DateTime(todayDate.Year, todayDate.Month, 1);
+                    DateTime startDate = GeneralFunction.GetFirstDayOfWeekDate(todayDate);
+                    DateTime StartDate = startDate.AddDays(-21);
+                    ViewState["TodayDate1"] = StartDate;
+                    ViewState["CurrentWeek"] = StartDate;
+                    hdnWeeklyStartDt.Value = StartDate.ToString();
+                    DateTime endDate = startDate.AddDays(6);
+                    ViewState["CrntWkEnd"] = endDate;
+
+
+                    if (GeneralFunction.GetFirstDayOfWeekDate(endDate).ToString("MM/dd/yyyy") == GeneralFunction.GetFirstDayOfWeekDate(DateTime.Now).ToString("MM/dd/yyyy"))
+                    {
+                        btnNext.CssClass = "btn btn-danger btn-small disabled";
+                        btnNext.Enabled = false;
+                    }
+                    else
+                    {
+                        btnNext.CssClass = "btn btn-danger btn-small enabled";
+                        btnNext.Enabled = true;
+
+                    }
+
+
+                    DataTable dt = GetWeeklyReport(StartDate, endDate, Convert.ToInt32(ddlShift.SelectedItem.Value));
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        grdAttandence.DataSource = null;
+                        grdAttandence.DataBind();
+                        grdWeeklyAttendance.DataSource = dt;
+                        grdWeeklyAttendance.DataBind();
+                        grdMonthlyAttendance.DataSource = null;
+                        grdMonthlyAttendance.DataBind();
+                    }
+                }
+
+
+
+                else if (ddlReportType.SelectedItem.Value == "2")
+                {
+                    lblReport.Text = "Report type";
+                    ddlReportType.Visible = true;
+                    lblReport.Visible = true;
+                    lblGrdLocaton.Visible = true;
+                    lblGrdLocaton.Text = "Location";
+                    ddlLocation.Visible = true;
+                    btnFreeze.Visible = false;
+                    lblFreeze.Visible = false;
+
+                    int LocationId = Convert.ToInt32(ddlLocation.SelectedItem.Value.ToString());
+
+
+                    DateTime todayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
+
+                    // DateTime startOfMonth = new DateTime(todayDate.Year, todayDate.Month, 1);
+                    DateTime startDate = todayDate;
+                    DateTime StartDate = startDate.AddDays(1 - startDate.Day);
+                    ViewState["StartMonth"] = StartDate.AddMonths(-6);
+                    ViewState["CurrentMonth"] = StartDate.AddMonths(-6);
+                    hdnMonthlyStartDt.Value = StartDate.AddMonths(-6).ToString();
+                    DateTime endDate = StartDate.AddSeconds(-1);
+                    ViewState["CrntMonthEnd"] = endDate;
+                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate, Convert.ToInt32(ddlShift.SelectedItem.Value));
+                    btnFreeze.Visible = false;
+                    lblFreeze.Visible = false;
+
+
+                    if (endDate.ToString("MM/dd/yyyy") == (DateTime.Now.AddDays(1 - DateTime.Now.Day)).AddDays(-1).ToString("MM/dd/yyyy"))
+                    {
+                        btnNext.CssClass = "btn btn-danger btn-small disabled";
+                        btnNext.Enabled = false;
+                    }
+                    else
+                    {
+                        btnNext.CssClass = "btn btn-danger btn-small enabled";
+                        btnNext.Enabled = true;
+
+                    }
+                    if (dt.Rows.Count > 0)
+                    {
+                        grdAttandence.DataSource = null;
+                        grdAttandence.DataBind();
+                        grdWeeklyAttendance.DataSource = null;
+                        grdWeeklyAttendance.DataBind();
+                        grdMonthlyAttendance.DataSource = dt;
+                        grdMonthlyAttendance.DataBind();
+                    }
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void GetShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShift.DataSource = dsShifts;
+            ddlShift.DataTextField = "shiftname";
+            ddlShift.DataValueField = "shiftID";
+            ddlShift.DataBind();
+            ddlShift.Items.Insert(0, new ListItem("ALL", "0"));
+        }
+        private void GetMasterShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShifts.DataSource = dsShifts;
+            ddlShifts.DataTextField = "shiftname";
+            ddlShifts.DataValueField = "shiftID";
+            ddlShifts.DataBind();
+        }
     }
 }

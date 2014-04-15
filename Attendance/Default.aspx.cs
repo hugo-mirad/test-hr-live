@@ -35,90 +35,83 @@ namespace Attendance
             SqlCommand cmd = null;
             try
             {
-                DataSet dsLocation = new DataSet();
-                String strHostName = Request.UserHostAddress.ToString();
-                string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
-                dsLocation = business.GetLocationDetailsByIp(strIp);
-                if (dsLocation.Tables.Count > 0)
-                {
-                    if (dsLocation.Tables[0].Rows.Count > 0)
+              
+                    if (!IsPostBack)
                     {
-
-                        int TimeZoneId = Convert.ToInt32(dsLocation.Tables[0].Rows[0]["TimeZoneId"].ToString());
-                        Session["TimeZoneID"] = TimeZoneId;
-                        string timezone = "";
-                        if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                        DataSet dsLocation = new DataSet();
+                        String strHostName = Request.UserHostAddress.ToString();
+                        string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
+                        dsLocation = business.GetLocationDetailsByIp(strIp);
+                        if (dsLocation.Tables.Count > 0)
                         {
-                            timezone = "Eastern Standard Time";
+                            if (dsLocation.Tables[0].Rows.Count > 0)
+                            {
+
+                                int TimeZoneId = Convert.ToInt32(dsLocation.Tables[0].Rows[0]["TimeZoneId"].ToString());
+                                Session["TimeZoneID"] = TimeZoneId;
+                                string timezone = "";
+                                if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                                {
+                                    timezone = "Eastern Standard Time";
+                                }
+                                else
+                                {
+                                    timezone = "India Standard Time";
+                                }
+                                DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+
+                                var CurentDatetime = ISTTime;
+
+                                lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
+                                lblDate.Text = CurentDatetime.TimeOfDay.TotalSeconds.ToString();
+                                Session["TimeZoneName"] = dsLocation.Tables[0].Rows[0]["TimeZoneName"].ToString();
+                                lblTimeZoneName.Text = dsLocation.Tables[0].Rows[0]["TimeZoneName"].ToString();
+                                lblLocation.Text = dsLocation.Tables[0].Rows[0]["LocationName"].ToString();
+                                Session["LocationName"] = dsLocation.Tables[0].Rows[0]["LocationName"].ToString().Trim();
+
+                                string LocationName = lblLocation.Text;
+                                GetShifts(LocationName);
+                                int shiftID = 0;
+                                if (Session["ShiftID"] != null)
+                                {
+                                    if (Session["ShiftID"].ToString() != "")
+                                    {
+                                        shiftID = Convert.ToInt32(Session["ShiftID"].ToString());
+                                    }
+                                    else
+                                    {
+                                        shiftID = GetCurrentShiftBytime(CurentDatetime, LocationName);
+                                    }
+                                }
+                                else
+                                {
+                                    shiftID = GetCurrentShiftBytime(CurentDatetime, LocationName);
+                                }
+                                Session["ShiftID"] = shiftID;
+                                ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(shiftID.ToString()));                           
+                                BindAttendanceData(LocationName, CurentDatetime);
+                            }
+                            else
+                            {
+                                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "stopLoading();", true);
+                            }
                         }
                         else
                         {
-                            timezone = "India Standard Time";
+                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "stopLoading();", true);
                         }
-                        DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-
-                        var CurentDatetime = ISTTime;
-
-                        lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
-
-                        lblDate.Text = CurentDatetime.TimeOfDay.TotalSeconds.ToString();
-
-                        //  lblTimeZoneName.Text = dsLocation.Tables[0].Rows[0]["TimeZoneName"].ToString();
-                        Session["TimeZoneName"] = dsLocation.Tables[0].Rows[0]["TimeZoneName"].ToString();
-                        lblTimeZoneName.Text = dsLocation.Tables[0].Rows[0]["TimeZoneName"].ToString();
-
-
-                        lblLocation.Text = dsLocation.Tables[0].Rows[0]["LocationName"].ToString();
-
-                        Session["LocationName"] = dsLocation.Tables[0].Rows[0]["LocationName"].ToString().Trim();
-
-
-                        string LocationName = lblLocation.Text;
-                        DataSet dsImages = new DataSet();
-                        dsImages = business.BindData(LocationName, CurentDatetime);
-                        Session["Employee"] = dsImages;
-                        rpEmp.DataSource = dsImages;
-                        rpEmp.DataBind();
-
-
-                        rpLeave.DataSource = dsImages.Tables[1];
-                        rpLeave.DataBind();
-
-                        DataSet dsImages1 = new DataSet();
-                        dsImages1 = business.BindLogin(LocationName, CurentDatetime);
-                        Session["LoginEmployee"] = dsImages1;
-                        rpLogin.DataSource = dsImages1;
-                        rpLogin.DataBind();
-
-                        DataSet dsImages2 = new DataSet();
-                        dsImages2 = business.BindLogout(LocationName, CurentDatetime);
-                        rplogout.DataSource = dsImages2;
-                        rplogout.DataBind();
-
-                    }
-                    else
-                    {
-                        System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "stopLoading();", true);
                     }
                 }
-                else
-                {
-                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "stopLoading();", true);
-
-                }
-            }
+           
             catch (Exception ex)
             {
             }
 
         }
-
-
         protected void rpLogin_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-
                 HiddenField hdnFirstName = (HiddenField)e.Item.FindControl("hdnFirstName1");
                 HiddenField hdnUserID = (HiddenField)e.Item.FindControl("hdnUserID1");
                 HiddenField hdnliStartTime = (HiddenField)e.Item.FindControl("hdnStartTime2");
@@ -130,22 +123,17 @@ namespace Attendance
                 if (imgAgent.ImageUrl == "")
                 {
                     imgAgent.AlternateText = hdnFirstName.Value.ToString();
-
                 }
                 else
                 {
-
                     imgAgent.ImageUrl = @"Photos/" + imgAgent.ImageUrl;
-
                 }
-
             }
         }
         protected void rplogout_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-
                 HiddenField hdnFirstName = (HiddenField)e.Item.FindControl("hdnFirstName2");
                 HiddenField hdnUserID = (HiddenField)e.Item.FindControl("hdnUserID2");
                 HiddenField hdnLoginout = (HiddenField)e.Item.FindControl("hdnLoginout");
@@ -154,29 +142,24 @@ namespace Attendance
                 HiddenField hdnloEndTime = (HiddenField)e.Item.FindControl("hdnEndTime3");
                 Label lblBindLogout = (Label)e.Item.FindControl("hdnDeptName3");
                 Label hdnDesgLogout = (Label)e.Item.FindControl("hdnDesignationLogout");
-
                 Image imgAgent = (Image)e.Item.FindControl("imgPicture2");
                 if (imgAgent.ImageUrl == "")
                 {
                     imgAgent.AlternateText = hdnFirstName.Value.ToString();
-
                 }
                 else
                 {
                     imgAgent.ImageUrl = @"Photos/" + imgAgent.ImageUrl;
                 }
-
-
             }
         }
         public void subm_Click(object sender, EventArgs e)
         {
 
-            string id = ""; string LocationName = lblLocation.Text;
+            string id = ""; 
+            string LocationName = lblLocation.Text;
             int bnew = 0;
             entities.UserID = Convert.ToInt32(txtUserID.Text);
-
-
             string timezone = "";
             if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
             {
@@ -209,7 +192,7 @@ namespace Attendance
                         logintin1.Text = ds.Tables[0].Rows[0]["Logindate"].ToString();
                         DataSet dsImages1 = new DataSet();
 
-                        dsImages1 = business.BindLogin(LocationName, entities.LoginDate);
+                        dsImages1 = business.BindLogin(LocationName, entities.LoginDate,Convert.ToInt32(ddlShifts.SelectedItem.Value));
                         rpLogin.DataSource = dsImages1;
                         rpLogin.DataBind();
                         mdlLoginpopup.Hide();
@@ -227,7 +210,6 @@ namespace Attendance
                         lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                         lblLIError.Text = "Invalid passcode";
                         mdlLoginpopup.Show();
-                        // userPass.Value = "";
                         userPass.Focus();
                     }
 
@@ -244,13 +226,11 @@ namespace Attendance
                     lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                     lblLIError.Text = "Invalid passcode";
                     mdlLoginpopup.Show();
-                    // userPass.Value = "";
                     userPass.Focus();
                 }
-
-
+              //  BindAttendanceData(LocationName, entities.LoginDate);
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "changeSuccess1(" + bnew + ");", true);
-
+               
             }
             else
             {
@@ -287,7 +267,7 @@ namespace Attendance
                             logintin1.Text = ds.Tables[0].Rows[0]["Logindate"].ToString();
                             DataSet dsImages1 = new DataSet();
 
-                            dsImages1 = business.BindLogin(LocationName, entities.LoginDate);
+                            dsImages1 = business.BindLogin(LocationName, entities.LoginDate,Convert.ToInt32(ddlShifts.SelectedItem.Value));
                             rpLogin.DataSource = dsImages1;
                             rpLogin.DataBind();
                             mdlLoginpopup.Hide();
@@ -305,7 +285,6 @@ namespace Attendance
                             lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                             lblLIError.Text = "Invalid passcode";
                             mdlLoginpopup.Show();
-                            // userPass.Value = "";
                             userPass.Focus();
                         }
 
@@ -322,20 +301,14 @@ namespace Attendance
                         lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                         lblLIError.Text = "Invalid passcode";
                         mdlLoginpopup.Show();
-                        // userPass.Value = "";
                         userPass.Focus();
                     }
-
-
+                   // BindAttendanceData(LocationName, entities.LoginDate);
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "changeSuccess1(" + bnew + ");", true);
-
-
                 }
                 dr.Close();
-                // Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
-            }
+             }
         }
-
         public void logout_Click(object sender, EventArgs e)
         {
 
@@ -359,22 +332,17 @@ namespace Attendance
 
             DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
             entities.LogOutDate = ISTTime;
-
-
+            
             DataSet dslogout = Session["LoginEmployee"] as DataSet;
-            // DataSet dsEmp = Session["Employee"] as DataSet;
             DataTable dt = new DataTable();
             DataView dv = new DataView();
             dv = dslogout.Tables[0].DefaultView;
             dv.RowFilter = "userid=" + entities.UserID;
             dt = dv.ToTable();
-            //int UserLogId = Convert.ToInt32(hdnLogoutUserID.Value);
             int UserLogId = Convert.ToInt32(dt.Rows[0]["LogUserID"].ToString().Trim());
 
-
-
             if (cn.State != ConnectionState.Open)
-                cn.Open();
+            cn.Open();
             SqlCommand cmd = new SqlCommand();
             SqlDataReader dr;
             cmd = new SqlCommand("USP_ChkForLogoutByDate", cn);
@@ -385,12 +353,8 @@ namespace Attendance
             dr = cmd.ExecuteReader();
             if (dr.Read())
             {
-                //mdlLoginpopup.Hide();
                 Duplicate.Text = "true";
-                //System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "Duplicate();", true);
                 lblLOError.Text = "You are already signed out.You cannot signed out again.";
-
-
             }
             else
             {
@@ -403,14 +367,11 @@ namespace Attendance
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         logintin = ds.Tables[0].Rows[0]["Logindate"].ToString();
-                        //   logouttime = ds.Tables[0].Rows[0]["logoutdate"].ToString();
                         logintin1.Text = ds.Tables[0].Rows[0]["logoutdate"].ToString();
-                        // ScLOStartTime.Text = ds.Tables[0].Rows[0]["StartTime"].ToString();
-                        // ScLOEndTime.Text = ds.Tables[0].Rows[0]["EndTime"].ToString();
                         mdlLogoutPopup.Hide();
 
                         DataSet dsImages2 = new DataSet();
-                        dsImages2 = business.BindLogout(LocationName, entities.LogOutDate);
+                        dsImages2 = business.BindLogout(LocationName, entities.LogOutDate,Convert.ToInt32(ddlShifts.SelectedItem.Value));
                         rplogout.DataSource = dsImages2;
                         rplogout.DataBind();
                         bnew = 1;
@@ -421,7 +382,6 @@ namespace Attendance
                         lblLOName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                         lblLOError.Text = "Invalid passcode";
                         mdlLogoutPopup.Show();
-                        // userPass.Value = "";
                         userPass2.Focus();
                     }
 
@@ -433,17 +393,13 @@ namespace Attendance
                     lblLOName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                     lblLOError.Text = "Invalid passcode";
                     mdlLogoutPopup.Show();
-                    // userPass.Value = "";
                     userPass2.Focus();
                 }
             }
-
-
+         //   BindAttendanceData(LocationName, entities.LoginDate);
             System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "changeSuccess2(" + bnew + ");", true);
-            //Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
+           
         }
-
-
         protected void rpEmp_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
 
@@ -470,7 +426,6 @@ namespace Attendance
                 }
             }
         }
-
         protected void btnManager_Click(object sender, EventArgs e)
         {
             entities.EMPID = txtUserIdM.Text;
@@ -533,22 +488,18 @@ namespace Attendance
 
 
         }
-
         protected void lnkClose_Click(object sender, EventArgs e)
         {
             mdlLoginpopup.Hide();
         }
-
         protected void lnkLOClose_Click(object sender, EventArgs e)
         {
             mdlLogoutPopup.Hide();
         }
-
         protected void lnkMNClose_Click(object sender, EventArgs e)
         {
             mdlManagerPopup1.Hide();
         }
-
         protected void LeaveSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -566,79 +517,130 @@ namespace Attendance
 
                 }
                 DateTime CurrentDt = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                int UserID = Convert.ToInt32(hdnLeaveUserID.Value);
+                DateTime FromDt = Convert.ToDateTime(txtFromDt.Text);
+                DateTime ToDt = Convert.ToDateTime(txtToDt.Text);
+                string Passcode = txtLeavePassCode.Text.ToString();
+                string Reason = txtReason.Text == "" ? "" : GeneralFunction.ToProperNotes(txtReason.Text);
+                string EmpID = txtLeaveEmpID.Text;
+                DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
 
-                
-                //if (rdSelf.Checked)
-                //{
-                    //int UserID = Convert.ToInt32(hdnLeaveUserID.Value);
-                    //DateTime FromDt = Convert.ToDateTime(txtFromDt.Text);
-                    //DateTime ToDt = Convert.ToDateTime(txtToDt.Text);
-                    //string Passcode = txtLeavePassCode.Text.ToString();
-                    //string Reason = txtReason.Text ==""?"":GeneralFunction.ToProperNotes(txtReason.Text);
-                    //string EmpID = txtLeaveEmpID.Text;
-
-                    //DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
-                    //if (ds.Tables.Count > 0)
-                    //{
-                    //    if (ds.Tables[0].Rows.Count > 0)
-                    //    {
-                    //        System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
-
-                    //    }
-                    //    else
-                    //    {
-                    //        lblLeaveError.Text = "Invalid passcode";
-                    //        lblLeaveError.Visible = true;
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    lblLeaveError.Text = "Invalid passcode";
-                    //    lblLeaveError.Visible = true;
-                    //}
-
-                //}
-                //else if(rdOther.Checked)
-                //{
-                    int UserID = Convert.ToInt32(hdnLeaveUserID.Value);
-                    DateTime FromDt = Convert.ToDateTime(txtFromDt.Text);
-                    DateTime ToDt = Convert.ToDateTime(txtToDt.Text);
-                    string Passcode = txtLeavePassCode.Text.ToString();
-                    string Reason = txtReason.Text == "" ? "" : GeneralFunction.ToProperNotes(txtReason.Text);
-                    string EmpID = txtLeaveEmpID.Text;
-                    DataSet ds = obj.SaveLeaveRequestDetails(UserID, EmpID, FromDt, ToDt, CurrentDt, Reason, Passcode);
-
-                    if (ds.Tables.Count > 0)
+                if (ds.Tables.Count > 0)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
                     {
-                        if (ds.Tables[0].Rows.Count > 0)
+                        if (ds.Tables[0].Rows[0]["LeaveID"].ToString() == "Applied")
                         {
-                            if (ds.Tables[0].Rows[0]["LeaveID"].ToString() == "Applied")
-                            {
-                                lblLeaveError.Text = "You have already applied leave for these days";
-                                lblLeaveError.Visible = true;
-                                txtReason.Text = "";
-                                txtFromDt.Text = "";
-                                txtToDt.Text = "";
-                            }
-                            else
-                            {
-                                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
-                            }
+                            lblLeaveError.Text = "You have already applied leave for these days";
+                            lblLeaveError.Visible = true;
+                            txtReason.Text = "";
+                            txtFromDt.Text = "";
+                            txtToDt.Text = "";
                         }
                         else
                         {
-                            lblLeaveError.Text = "Invalid employee id and passcode";
-                            lblLeaveError.Visible = true;
+                            System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "showLeaveSuccess();", true);
                         }
-
                     }
                     else
                     {
                         lblLeaveError.Text = "Invalid employee id and passcode";
                         lblLeaveError.Visible = true;
                     }
+                }
+                else
+                {
+                    lblLeaveError.Text = "Invalid employee id and passcode";
+                    lblLeaveError.Visible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        private void GetShifts(string LocationName)
+        {
+         
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShifts.DataSource = dsShifts;
+            ddlShifts.DataTextField = "shiftname";
+            ddlShifts.DataValueField = "shiftID";
+            ddlShifts.DataBind(); 
+        }
+        private int GetCurrentShiftBytime(DateTime CurentDatetime,string LocationName)
+        {
+            int shiftIDs=0;
+            try
+            {
+                
 
-                //}
+                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+
+                for (int i = 0; i < dsShifts.Tables[0].Rows.Count; i++)
+                {
+                    DateTime stime = Convert.ToDateTime(dsShifts.Tables[0].Rows[i]["shiftStime"].ToString());
+                    DateTime eTime = Convert.ToDateTime(dsShifts.Tables[0].Rows[i]["shiftendtime"].ToString());
+
+                    if (stime <= CurentDatetime && eTime >= CurentDatetime)
+                    {
+                        shiftIDs = Convert.ToInt32(dsShifts.Tables[0].Rows[i]["shiftID"].ToString());
+                      
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return shiftIDs;
+        }
+        protected void ddlShifts_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string LocationName = Session["LocationName"].ToString();
+                var timezone = "";
+                if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                {
+                    timezone = "Eastern Standard Time";
+                }
+                else
+                {
+                    timezone = "India Standard Time";
+                }
+                DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                var CurentDatetime = ISTTime;
+                BindAttendanceData(LocationName, CurentDatetime);
+               
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        private void BindAttendanceData(string LocationName, DateTime CurentDatetime)
+        {
+            try
+            {
+                int shiftID = Convert.ToInt32(ddlShifts.SelectedItem.Value);
+                DataSet dsImages = new DataSet();
+                dsImages = business.BindData(LocationName, CurentDatetime,shiftID);
+                Session["Employee"] = dsImages;
+                rpEmp.DataSource = dsImages;
+                rpEmp.DataBind();
+
+                rpLeave.DataSource = dsImages.Tables[1];
+                rpLeave.DataBind();
+             
+                DataSet dsImages1 = new DataSet();
+                dsImages1 = business.BindLogin(LocationName, CurentDatetime,shiftID);
+                Session["LoginEmployee"] = dsImages1;
+                rpLogin.DataSource = dsImages1;
+                rpLogin.DataBind();
+
+                DataSet dsImages2 = new DataSet();
+                dsImages2 = business.BindLogout(LocationName, CurentDatetime,shiftID);
+                rplogout.DataSource = dsImages2;
+                rplogout.DataBind();
             }
             catch (Exception ex)
             {

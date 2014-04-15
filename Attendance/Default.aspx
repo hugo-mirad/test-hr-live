@@ -347,6 +347,11 @@
                 <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
                 <asp:Label ID="lblLocation" runat="server"></asp:Label>
             </a>
+            
+            <div class="shifts">
+                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" 
+                    onselectedindexchanged="ddlShifts_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            </div>
             <div class="tDate">
                 <%--  <asp:Label ID="lblPrevTime" runat="server" Text=""></asp:Label>--%>
                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px;"></span>
@@ -355,11 +360,13 @@
                     <a href="javascript:location.reload();" class="refresh btn btn-small btn-mini btn-success">
                         Refresh</a></div>
             </div>
+           
             <div style="display: inline-block; float: right; color: #AAA; font-size: 10px; background: #444;
                 padding: 2px 5px; margin: 22px 14px 0 0;">
                 Last Update: <span style="font-size: 10px; color: #55B355; display: inline-bolck;"
                     id="rTime"></span>
             </div>
+             
             <div style="display: none">
                 <asp:Label ID="lblDate" runat="server"></asp:Label>
                 <asp:Label ID="lblDate2" runat="server"></asp:Label>

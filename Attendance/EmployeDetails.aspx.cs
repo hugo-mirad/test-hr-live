@@ -72,6 +72,7 @@ namespace Attendance
                         Getdepartments();
                         GetSchedules();
                         GetAllWages();
+                        GetShifts(Session["LocationName"].ToString().Trim());
                     }
 
                 }
@@ -168,7 +169,8 @@ namespace Attendance
                 lblDeuctions.Text = dt.Rows[0]["Deductions"].ToString();
                 lblGender.Text = dt.Rows[0]["gender"].ToString();
                 lblFilling.Text = dt.Rows[0]["MaritalStatus"].ToString();
-              
+                lblShift.Text = dt.Rows[0]["Shiftname"].ToString();
+                hdnShiftID.Value = dt.Rows[0]["ShiftID"].ToString();
                
                 lblDateofBirth.Text = dt.Rows[0]["dateofbirth"].ToString() == "" ? "" : Convert.ToDateTime(dt.Rows[0]["dateofbirth"].ToString().Trim()).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(dt.Rows[0]["dateofbirth"].ToString()).ToString("MM/dd/yyyy");
                 lblPhoneNum.Text = dt.Rows[0]["phoneNum"].ToString() == "" ? "" : GeneralFunction.FormatUsTelephoneNo(dt.Rows[0]["phoneNum"].ToString());
@@ -353,6 +355,7 @@ namespace Attendance
             try
             {
                 txtEditEmpID.Text = lblEmpID.Text.Trim();
+                ddlShift.SelectedIndex=ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(hdnShiftID.Value.ToString()));
                 txtEditFirstname.Text = hdnFirst.Value.Trim();
                 txtEditLastname.Text = hdnLastname.Value.Trim();
 
@@ -569,6 +572,7 @@ namespace Attendance
 
                 //objInfo.Lastname = GeneralFunction.ToProper(txtEditLastname.Text.Trim());
                 objInfo.ScheduleID = Convert.ToInt32(ddlSchedule.SelectedItem.Value);
+                objInfo.ShiftID = Convert.ToInt32(ddlShift.SelectedItem.Value);
                 objInfo.EmpTypeID = Convert.ToInt32(ddlEmpType.SelectedItem.Value);
                 objInfo.Deptname = ddlEditDepart.SelectedItem.Text.ToString();
                 objInfo.Designation = GeneralFunction.ToProper(txtEditDesg.Text.Trim());
@@ -1187,6 +1191,16 @@ namespace Attendance
             txtResetNewPassword.Text = "";
             txtResetConfirmPassword.Text = "";
             mdlResetPassword.Hide();
+        }
+
+        private void GetShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShift.DataSource = dsShifts;
+            ddlShift.DataTextField = "shiftname";
+            ddlShift.DataValueField = "shiftID";
+            ddlShift.DataBind();
         }
 
     }

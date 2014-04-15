@@ -347,6 +347,24 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.Label lbldepartment;
         
         /// <summary>
+        /// lblShift control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblShift;
+        
+        /// <summary>
+        /// hdnShiftID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnShiftID;
+        
+        /// <summary>
         /// lblSchedule control.
         /// </summary>
         /// <remarks>
@@ -1038,6 +1056,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnToday;
+        
+        /// <summary>
+        /// ddlShift control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlShift;
         
         /// <summary>
         /// txtEditFirstname control.

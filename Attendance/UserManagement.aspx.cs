@@ -54,6 +54,7 @@ namespace Attendance
                    // GetLocations();
                     Getdepartments();
                     GetEmployeeTypes();
+                    GetShifts(Session["LocationName"].ToString().Trim());
                     GetSchedules();
                     GetAllWages();
                     GetUserDetails(sort);
@@ -309,6 +310,7 @@ namespace Attendance
                 objInfo.Deptname = ddlDeptment.SelectedItem.Text.ToString();
                 objInfo.Designation = txtDesignation.Text == "" ? "" : GeneralFunction.ToProper(txtDesignation.Text.Trim());
                 objInfo.ScheduleID = Convert.ToInt32(ddlSchedule.SelectedItem.Value);
+                objInfo.ShiftID = Convert.ToInt32(ddlShift.SelectedItem.Value);
                 objInfo.StartDt = txtStartDt.Text == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(txtStartDt.Text);
                 if (rdActiveFalse.Checked == true)
                 {
@@ -1126,6 +1128,15 @@ namespace Attendance
 
             mdlSchedulepopup.Hide();
            
+        }
+        private void GetShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShift.DataSource = dsShifts;
+            ddlShift.DataTextField = "shiftname";
+            ddlShift.DataValueField = "shiftID";
+            ddlShift.DataBind();
         }
         
     }

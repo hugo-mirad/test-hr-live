@@ -965,7 +965,6 @@ namespace Attendance
                 dvpayrollreport.RenderControl(htw);
                 Response.Write("<h2 style=\"font-size:12px; font-weight:normal; font-family:\"Century Gothic\">"+PayrollDate+"</br>"+lblWeekPayrollReport.Text+"</h2>");
                 Response.Write(sw.ToString());
-
                 Response.End();
 
             }
@@ -1748,13 +1747,16 @@ namespace Attendance
             dtPayroll.Columns.Add("TotalPay", typeof(double));
             try
             {
+                int shiftID = 0;
                 DataSet ds = new DataSet();
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
                 SqlCommand cmd = new SqlCommand();
                 SqlDataAdapter da = new SqlDataAdapter("[USP_FnAdmin]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", LocationID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndTime));
+               
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
                 EmployeeBL obj = new EmployeeBL();

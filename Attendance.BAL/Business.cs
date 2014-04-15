@@ -55,54 +55,46 @@ namespace Attendance.BAL
             }
         }
        
-        public DataSet BindData(string LocationName,DateTime CurentDatetime)
+        public DataSet BindData(string LocationName,DateTime CurentDatetime,int shiftID)
         {
             try
             {
-                //   SqlCommand cmd = new SqlCommand();
+             
                 DataSet dsImage = new DataSet();
 
                 SqlDataAdapter daPhotos = new SqlDataAdapter("[USP_GetPhotoByIPAdressId1]", connectionString);
-                //  cmd.Parameters.AddWithValue("@locationname", LocationName);
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@locationname", LocationName));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@CurrentDate", CurentDatetime));
+                daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 daPhotos.SelectCommand.CommandType = CommandType.StoredProcedure;
 
                 daPhotos.Fill(dsImage);
                 return dsImage;
-
-                //dlEmp.DataSource = dsImage;
-                //dlEmp.DataBind();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public DataSet BindLogin(string LocationName, DateTime CurentDatetime)
+        public DataSet BindLogin(string LocationName, DateTime CurentDatetime,int shiftID)
         {
             try
             {
                 SqlDataAdapter daPhotos = new SqlDataAdapter("USP_GetPhotoByLogin1", connectionString);
-                //daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@UserID", entities.UserID));
-                //daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@LoginDate", Convert.ToDateTime((entities.LoginDate))));
-                //daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@LoginNotes", entities.LoginNotes));
-                daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@locationname", LocationName));
+                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@locationname", LocationName));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@CurrentDate", CurentDatetime));
+                daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 daPhotos.SelectCommand.CommandType = CommandType.StoredProcedure;
                 DataSet dsImage = new DataSet();
                 daPhotos.Fill(dsImage);
                 return dsImage;
-
-                //dlEmp.DataSource = dsImage;
-                //dlEmp.DataBind();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public DataSet BindLogout(string LocationName, DateTime CurentDatetime)
+        public DataSet BindLogout(string LocationName, DateTime CurentDatetime, int shiftID)
         {
             try
             {
@@ -110,15 +102,11 @@ namespace Attendance.BAL
                 SqlDataAdapter daPhotos = new SqlDataAdapter("USP_GetPhotoByLogout1", connectionString);
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@locationname", LocationName));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@CurrentDate", CurentDatetime));
+                daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 daPhotos.SelectCommand.CommandType = CommandType.StoredProcedure;
-
                 DataSet dsImage = new DataSet();
-
                 daPhotos.Fill(dsImage);
                 return dsImage;
-
-                //dlEmp.DataSource = dsImage;
-                //dlEmp.DataBind();
             }
             catch (Exception ex)
             {
@@ -507,6 +495,27 @@ namespace Attendance.BAL
                  throw ex;
              }
              return dsLoginDet;
+
+
+         }
+
+
+         public DataSet GetShiftsByLocationName(string LocationName)
+         {
+             try
+             {
+                 SqlCommand cmd = new SqlCommand();
+                 SqlDataAdapter daLocation = new SqlDataAdapter("USP_GetShiftsByLocationName", connectionString);
+                 daLocation.SelectCommand.CommandType = CommandType.StoredProcedure;
+                 daLocation.SelectCommand.Parameters.Add(new SqlParameter("@locationName", LocationName));
+                 DataSet dsLocation = new DataSet();
+                 daLocation.Fill(dsLocation);
+                 return dsLocation;
+             }
+             catch (Exception ex)
+             {
+                 throw ex;
+             }
 
 
          }

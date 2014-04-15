@@ -686,7 +686,7 @@ function changeSuccess1(aa) {
 
            */
 
-        location.reload();
+      location.reload();
 
     } else {
         //alert('Something went wrong please try again later');
@@ -766,7 +766,7 @@ function changeSuccess2(success) {
             dropped.removeClass('lateTime');
         }
         */
-        location.reload();
+      location.reload();
         
 
     } else {
