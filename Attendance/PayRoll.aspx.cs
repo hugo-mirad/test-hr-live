@@ -54,28 +54,27 @@ namespace Attendance
                     lblLocation.Text = Session["LocationName"].ToString();
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
                     int userid = Convert.ToInt32(Session["UserID"]);
+                    GetMasterShifts(Session["LocationName"].ToString());
+                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
 
                     getLocations();
                     ddlLocation.SelectedIndex = (ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(Session["LocationName"].ToString())));
-
+                    ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
+                    GetShifts(ddlLocation.SelectedItem.Text.ToString());
+                    ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(Session["ShiftID"].ToString()));
 
                     if (Session["IsAdmin"].ToString() == "True")
                     {
-
                         if (ddlLocation.SelectedItem.Text.Trim() == "INBH" || ddlLocation.SelectedItem.Text.Trim() == "INDG")
                         {
                             DateTime CurrentDate = Convert.ToDateTime(ISTTime.ToString("MM/dd/yyyy"));
                             CurrentDate = CurrentDate.AddMonths(-1);
                             DateTime MonthStart = CurrentDate.AddDays(1 - CurrentDate.Day);
                             DateTime MonthEnd = MonthStart.AddMonths(1).AddSeconds(-1);
-
                             txtToDate.Text = MonthEnd.ToString("MM/dd/yyyy");
                             txtFromDate.Text = MonthStart.ToString("MM/dd/yyyy");
-
                             ViewState["StartRptDt"] = MonthStart;
                             ViewState["EndRptDt"] = MonthEnd;
-
-
                             Attendance.BAL.Report obj = new Report();
                             DateTime Count = obj.GetFreezedDate(MonthEnd, ddlLocation.SelectedItem.Text.Trim());
                             if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
@@ -86,9 +85,7 @@ namespace Attendance
                             {
                                 lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                             }
-
                             bool final = obj.GetFinalPayrollDate(MonthStart,Convert.ToInt32(ddlLocation.SelectedItem.Value));
-
                             if (final)
                             {
                                 btnFinal.CssClass = "btn btn-small btn-warning disabled";
@@ -107,8 +104,7 @@ namespace Attendance
                                 hdnFreeze.Value = "false";
                                // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
                             }
-
-                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
                             lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                             GetEditHistory(MonthStart, MonthEnd);
                             lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
@@ -116,7 +112,6 @@ namespace Attendance
                             grdPayRollIndia.DataSource = dt;
                             grdPayRollIndia.DataBind();
                             Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
-
 
                             grdPayRoll.DataSource = null;
                             grdPayRoll.DataBind();
@@ -145,7 +140,7 @@ namespace Attendance
                             txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
                             ViewState["StartRptDt"] = EndDate;
                             ViewState["EndRptDt"] = StartDate.AddDays(-1);
-                            GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim());
+                            GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(),Convert.ToInt32(ddlShift.SelectedValue));
                             btnSave.Visible = false;
                             btnFinal.Visible = false;
                             btnPrint.Visible = false;
@@ -198,7 +193,7 @@ namespace Attendance
                                 // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
                             }
 
-                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                             lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                             GetEditHistory(MonthStart, MonthEnd);
                             lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
@@ -230,7 +225,7 @@ namespace Attendance
                             txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
                             ViewState["StartRptDt"] = EndDate;
                             ViewState["EndRptDt"] = StartDate.AddDays(-1);
-                            GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim());
+                            GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                             btnSave.Visible = false;
                             btnFinal.Visible = false;
                             btnPrint.Visible = false;
@@ -406,7 +401,7 @@ namespace Attendance
                             hdnFreeze.Value = "false";
                             // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
                         }
-                        DataTable dt = GetReportIndia(StartDate, EndTime, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        DataTable dt = GetReportIndia(StartDate, EndTime, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(StartDate, EndTime);
                         lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
@@ -424,7 +419,7 @@ namespace Attendance
                     {
                         txtFromDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
                         txtToDate.Text = EndTime.ToString("MM/dd/yyyy");
-                        GetReport(EndTime, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim());
+                        GetReport(EndTime, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                         btnSave.Visible = false;
                         btnFinal.Visible = false;
                         btnPrint.Visible = false;
@@ -436,7 +431,7 @@ namespace Attendance
                 }
                 else
                 {
-                    GetReport(StartDate, EndTime, userid, "");
+                    GetReport(StartDate, EndTime, userid, "", Convert.ToInt32(ddlShift.SelectedValue));
                     lblGrdLocaton.Visible = false;
                     ddlLocation.Visible = false;
                     btnSave.Visible = false;
@@ -1063,6 +1058,8 @@ namespace Attendance
             try
             {
                 int userid = Convert.ToInt32(Session["UserID"]);
+                GetShifts(ddlLocation.SelectedItem.Text.ToString());
+               
                 string timezone = "";
                 if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
                 {
@@ -1125,7 +1122,7 @@ namespace Attendance
                             hdnFreeze.Value = "false";
                             // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
                         }
-                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
                         lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
@@ -1159,7 +1156,7 @@ namespace Attendance
                         txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
                         ViewState["StartRptDt"] = EndDate;
                         ViewState["EndRptDt"] = StartDate.AddDays(-1);
-                        GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim());
+                        GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                         btnSave.Visible = false;
                         btnFinal.Visible = false;
                         btnPrint.Visible = false;
@@ -1218,7 +1215,7 @@ namespace Attendance
                         }
 
 
-                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
                         lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
@@ -1254,7 +1251,7 @@ namespace Attendance
                         txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
                         ViewState["StartRptDt"] = EndDate;
                         ViewState["EndRptDt"] = StartDate.AddDays(-1);
-                        GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim());
+                        GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                         btnSave.Visible = false;
                         btnFinal.Visible = false;
                         btnPrint.Visible = false;
@@ -1488,7 +1485,7 @@ namespace Attendance
                     // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
                 }
 
-                DataTable dst=GetReportIndia(dt, EndDate, Convert.ToInt32(ddlLocation.SelectedValue));
+                DataTable dst = GetReportIndia(dt, EndDate, Convert.ToInt32(ddlLocation.SelectedValue), Convert.ToInt32(ddlShift.SelectedValue));
                 lblWeekPayrollReport.Text = "( " + dt.ToString("MM/dd/yyyy") + " - " + EndDate.ToString("MM/dd/yyyy") + " )";
                 GetEditHistory(dt, EndDate);
               //  lblTotal.Text = "Employee record count: " + dst.Rows.Count.ToString().Trim();
@@ -1662,7 +1659,7 @@ namespace Attendance
                     // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
                 }
 
-                DataTable dst = GetReportIndia(dt, EndDate, Convert.ToInt32(ddlLocation.SelectedValue));
+                DataTable dst = GetReportIndia(dt, EndDate, Convert.ToInt32(ddlLocation.SelectedValue),Convert.ToInt32(ddlShift.SelectedValue));
                 lblWeekPayrollReport.Text = "( " + dt.ToString("MM/dd/yyyy") + " - " + EndDate.ToString("MM/dd/yyyy") + " )";
                 GetEditHistory(dt, EndDate);
              
@@ -1688,12 +1685,12 @@ namespace Attendance
 
             }
         }
-        private void GetReport(DateTime StartDate, DateTime EndTime, int userid, string Location)
+        private void GetReport(DateTime StartDate, DateTime EndTime, int userid, string Location,int shiftID)
         {
             try
             {
                 Attendance.BAL.Report obj = new Report();
-                DataSet ds = obj.GetPayrollReport(StartDate, EndTime, userid, Location);
+                DataSet ds = obj.GetPayrollReport(StartDate, EndTime, userid, Location,shiftID);
                 lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
                 GetEditHistory(StartDate, EndTime);
                 lblTotal.Text = ds.Tables[0].Rows[0]["LocDescriptiom"].ToString().Trim() == "" ? "Employee record count: " + ds.Tables[0].Rows.Count.ToString().Trim() : ds.Tables[0].Rows[0]["LocDescriptiom"].ToString().Trim() + "  location; Employee record count: " + ds.Tables[0].Rows.Count.ToString().Trim();
@@ -1709,7 +1706,7 @@ namespace Attendance
             {
             }
         }
-        private DataTable GetReportIndia(DateTime StartDate, DateTime EndTime, int LocationID)
+        private DataTable GetReportIndia(DateTime StartDate, DateTime EndTime, int LocationID, int shiftID)
         {
 
             DataTable dtPayroll = new DataTable();
@@ -1744,10 +1741,10 @@ namespace Attendance
             dtPayroll.Columns.Add("AdvancePaid", typeof(double));
             dtPayroll.Columns.Add("Expenses", typeof(double));
             dtPayroll.Columns.Add("LoanDeduct", typeof(double));
-            dtPayroll.Columns.Add("TotalPay", typeof(double));
+            dtPayroll.Columns.Add("TotalPay", typeof(double)); 
             try
             {
-                int shiftID = 0;
+               
                 DataSet ds = new DataSet();
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
                 SqlCommand cmd = new SqlCommand();
@@ -2882,6 +2879,247 @@ namespace Attendance
                 i++;
             }
             return dt;
+        }
+        private void GetShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShift.DataSource = dsShifts;
+            ddlShift.DataTextField = "shiftname";
+            ddlShift.DataValueField = "shiftID";
+            ddlShift.DataBind();
+            ddlShift.Items.Insert(0, new System.Web.UI.WebControls.ListItem("ALL", "0"));
+        }
+        private void GetMasterShifts(string LocationName)
+        {
+            try
+            {
+                Business business = new Business();
+                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+                ddlShifts.DataSource = dsShifts;
+                ddlShifts.DataTextField = "shiftname";
+                ddlShifts.DataValueField = "shiftID";
+                ddlShifts.DataBind();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        protected void ddlShift_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int userid = Convert.ToInt32(Session["UserID"]);
+                string timezone = "";
+                if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                {
+                    timezone = "Eastern Standard Time";
+                }
+                else
+                {
+                    timezone = "India Standard Time";
+                }
+                DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+
+                var CurentDatetime = ISTTime;
+                DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
+
+                if (Session["IsAdmin"].ToString() == "True")
+                {
+
+                    if (ddlLocation.SelectedItem.Text.Trim() == "INBH" || ddlLocation.SelectedItem.Text.Trim() == "INDG")
+                    {
+                        DateTime CurrentDate = Convert.ToDateTime(ISTTime.ToString("MM/dd/yyyy"));
+                        CurrentDate = CurrentDate.AddMonths(-1);
+                        DateTime MonthStart = CurrentDate.AddDays(1 - CurrentDate.Day);
+                        DateTime MonthEnd = MonthStart.AddMonths(1).AddSeconds(-1);
+
+                        txtToDate.Text = MonthEnd.ToString("MM/dd/yyyy");
+                        txtFromDate.Text = MonthStart.ToString("MM/dd/yyyy");
+
+                        ViewState["StartRptDt"] = MonthStart;
+                        ViewState["EndRptDt"] = MonthEnd;
+
+
+                        Attendance.BAL.Report obj = new Report();
+                        DateTime Count = obj.GetFreezedDate(MonthEnd, ddlLocation.SelectedItem.Text.Trim());
+                        if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
+                        {
+                            lblFreeze.Text = "";
+                        }
+                        else
+                        {
+                            lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
+                        }
+
+                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+
+                        if (final)
+                        {
+                            btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                            btnSave.CssClass = "btn btn-small btn-warning disabled";
+                            btnFinal.Enabled = false;
+                            btnSave.Enabled = false;
+                            hdnFreeze.Value = "true"; ;
+                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                        }
+                        else
+                        {
+                            btnFinal.CssClass = "btn btn-small btn-warning";
+                            btnSave.CssClass = "btn btn-small btn-warning";
+                            btnFinal.Enabled = true;
+                            btnSave.Enabled = true;
+                            hdnFreeze.Value = "false";
+                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                        }
+                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
+                        GetEditHistory(MonthStart, MonthEnd);
+                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                        grdPayRollIndia.DataSource = dt;
+                        grdPayRollIndia.DataBind();
+                        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+
+                        grdPayRoll.DataSource = null;
+                        grdPayRoll.DataBind();
+                        btnSave.Visible = true;
+                        btnFinal.Visible = true;
+                        btnPrint.Visible = true;
+                    }
+                    else
+                    {
+                        DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
+                        DateTime EndDate = StartDate.AddDays(-14);
+
+                        Attendance.BAL.Report obj = new Report();
+                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString());
+                        if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
+                        {
+                            lblFreeze.Text = "";
+                        }
+                        else
+                        {
+                            lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
+                        }
+                        txtToDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
+                        txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
+                        ViewState["StartRptDt"] = EndDate;
+                        ViewState["EndRptDt"] = StartDate.AddDays(-1);
+                        GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
+                        btnSave.Visible = false;
+                        btnFinal.Visible = false;
+                        btnPrint.Visible = false;
+                        rppayslip.DataSource = null;
+                        rppayslip.DataBind();
+                    }
+
+                    lblGrdLocaton.Visible = true;
+                    ddlLocation.Visible = true;
+                }
+                else
+                {
+                    if (ddlLocation.SelectedItem.Text.Trim() == "INBH" || ddlLocation.SelectedItem.Text.Trim() == "INDG")
+                    {
+                        DateTime CurrentDate = Convert.ToDateTime(ISTTime.ToString("MM/dd/yyyy"));
+                        CurrentDate = CurrentDate.AddMonths(-1);
+                        DateTime MonthStart = CurrentDate.AddDays(1 - CurrentDate.Day);
+                        DateTime MonthEnd = MonthStart.AddMonths(1).AddSeconds(-1);
+
+                        txtToDate.Text = MonthEnd.ToString("MM/dd/yyyy");
+                        txtFromDate.Text = MonthStart.ToString("MM/dd/yyyy");
+
+                        ViewState["StartRptDt"] = MonthStart;
+                        ViewState["EndRptDt"] = MonthEnd;
+
+                        Attendance.BAL.Report obj = new Report();
+                        DateTime Count = obj.GetFreezedDate(MonthEnd, Session["LocationName"].ToString());
+                        if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
+                        {
+                            lblFreeze.Text = "";
+                        }
+                        else
+                        {
+                            lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
+                        }
+
+                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+
+                        if (final)
+                        {
+                            btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                            btnSave.CssClass = "btn btn-small btn-warning disabled";
+                            btnFinal.Enabled = false;
+                            btnSave.Enabled = false;
+                            hdnFreeze.Value = "true"; ;
+                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                        }
+                        else
+                        {
+                            btnFinal.CssClass = "btn btn-small btn-warning";
+                            btnSave.CssClass = "btn btn-small btn-warning";
+                            btnFinal.Enabled = true;
+                            btnSave.Enabled = true;
+                            hdnFreeze.Value = "false";
+                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                        }
+
+
+                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
+                        GetEditHistory(MonthStart, MonthEnd);
+                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                        grdPayRollIndia.DataSource = dt;
+                        grdPayRollIndia.DataBind();
+                        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+
+                        grdPayRoll.DataSource = null;
+                        grdPayRoll.DataBind();
+                        btnSave.Visible = true;
+                        btnFinal.Visible = true;
+                        btnPrint.Visible = true;
+                    }
+                    else
+                    {
+                        DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
+                        DateTime EndDate = StartDate.AddDays(-14);
+
+                        Attendance.BAL.Report obj = new Report();
+                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString());
+                        if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
+                        {
+                            lblFreeze.Text = "";
+                        }
+                        else
+                        {
+                            lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
+                        }
+
+
+                        txtToDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
+                        txtFromDate.Text = EndDate.ToString("MM/dd/yyyy");
+                        ViewState["StartRptDt"] = EndDate;
+                        ViewState["EndRptDt"] = StartDate.AddDays(-1);
+                        GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
+                        btnSave.Visible = false;
+                        btnFinal.Visible = false;
+                        btnPrint.Visible = false;
+                        rppayslip.DataSource = null;
+                        rppayslip.DataBind();
+                    }
+
+                    lblGrdLocaton.Visible = true;
+                    ddlLocation.Enabled = false;
+
+                }
+                BindListOfNewEmployee();
+                BindListofChanges();
+
+            }
+            catch (Exception ex)
+            {
+            }
         }
     }
 }

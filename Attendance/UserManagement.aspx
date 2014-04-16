@@ -772,6 +772,9 @@
                 <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
                 <asp:Label ID="lblLocation" runat="server"></asp:Label>
             </a>
+            <div class="shifts">
+                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
+            </div>
             <div class="right">
                 <div class="wel">
                     <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -862,6 +865,12 @@
                             <asp:ListItem Value="1">Active</asp:ListItem>
                             <asp:ListItem Value="0">Inactive</asp:ListItem>
                         </asp:DropDownList>
+                        
+                          &nbsp;&nbsp; <b>
+                                <asp:Label ID="lblShift" runat="server" Text="Shifts"></asp:Label></b>&nbsp;&nbsp;
+                            <asp:DropDownList ID="ddlgridShift" runat="server" AutoPostBack="true" 
+                                Style="width: 70px;" 
+                                onselectedindexchanged="ddlgridShift_SelectedIndexChanged"></asp:DropDownList>
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
@@ -877,6 +886,8 @@
                             Processing
                             <img src="images/loading.gif" />
                         </div>
+                        <h4>
+                        </h4>
                     </h4>
                 </div>
             </ProgressTemplate>
@@ -890,6 +901,8 @@
                             Processing
                             <img src="images/loading.gif" />
                         </div>
+                        <h4>
+                        </h4>
                     </h4>
                 </div>
             </ProgressTemplate>

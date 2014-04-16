@@ -304,6 +304,9 @@
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
         </a>
+        <div class="shifts">
+                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
+         </div>
         <div class="right">
             <div class="wel">
                 <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -518,7 +521,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                </h4>
+               </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
@@ -547,6 +550,12 @@
                         Height="23px" AppendDataBoundItems="true" OnSelectedIndexChanged="ddlLocation_SelectedIndexChanged">
                         <asp:ListItem Text="Select" Value="0"></asp:ListItem>
                     </asp:DropDownList>
+                       &nbsp;&nbsp; <b>
+                <asp:Label ID="lblShift" runat="server" Text="Shifts"></asp:Label></b>&nbsp;&nbsp;
+            <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" 
+               Style="width: 70px;" onselectedindexchanged="ddlShift_SelectedIndexChanged">
+             </asp:DropDownList>
+                    
                     <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="btn btn-small btn-warning" />
                     <asp:Button ID="btnFinal" runat="server" Text="Freeze" CssClass="btn btn-small btn-warning"
                         OnClientClick="return validFinal();" OnClick="btnFinal_Click" />
@@ -979,7 +988,7 @@
                 <tr>
                     <td style="vertical-align: top; width: 90px;">
                         Internal notes
-                        <asp:TextBox ID="txtPopNotes" runat="server" MaxLength="250" TextMode="MultiLine"
+                        h="250" TextMode="MultiLine"
                             Rows="6"></asp:TextBox>
                     </td>
                 </tr>

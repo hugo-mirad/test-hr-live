@@ -870,6 +870,9 @@
                 <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
                 <asp:Label ID="lblLocation" runat="server"></asp:Label>
             </a>
+            <div class="shifts">
+                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
+            </div>
             <div class="right">
                 <div class="wel">
                     <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -974,6 +977,12 @@
                                 Height="23px" AppendDataBoundItems="true" OnSelectedIndexChanged="ddlLocation_SelectedIndexChanged">
                                 <asp:ListItem Text="Select" Value="0"></asp:ListItem>
                             </asp:DropDownList>
+                            &nbsp;&nbsp; <b>
+                                <asp:Label ID="lblShift" runat="server" Text="Shifts"></asp:Label></b>&nbsp;&nbsp;
+                            <asp:DropDownList ID="ddlgridShift" runat="server" AutoPostBack="true" 
+                                Style="width: 70px;" 
+                                onselectedindexchanged="ddlgridShift_SelectedIndexChanged">
+                            </asp:DropDownList>
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </div>
@@ -992,6 +1001,8 @@
                         </div>
                         <h4>
                         </h4>
+                        <h4>
+                        </h4>
                     </h4>
                 </div>
             </ProgressTemplate>
@@ -1007,6 +1018,8 @@
                         </div>
                         <h4>
                         </h4>
+                        <h4>
+                        </h4>
                     </h4>
                 </div>
             </ProgressTemplate>
@@ -1020,6 +1033,8 @@
                             Processing
                             <img src="images/loading.gif" />
                         </div>
+                        <h4>
+                        </h4>
                         <h4>
                         </h4>
                     </h4>
@@ -1160,7 +1175,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="ddlCn1State" EventName="SelectedIndexChanged" />
                                     <asp:AsyncPostBackTrigger ControlID="ddlCn2State" EventName="SelectedIndexChanged" />
                                     <asp:AsyncPostBackTrigger ControlID="ddlCn3State" EventName="SelectedIndexChanged" />
-                                     <asp:AsyncPostBackTrigger ControlID="ddlShift" EventName="SelectedIndexChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="ddlShift" EventName="SelectedIndexChanged" />
                                     <asp:PostBackTrigger ControlID="btnAdd" />
                                 </Triggers>
                             </asp:UpdatePanel>
@@ -1406,7 +1421,7 @@
                             </td>
                             <td style="width: 5%">
                             </td>
-                            <td style="vertical-align:top;">
+                            <td style="vertical-align: top;">
                                 <table style="width: 99%; vertical-align: top;">
                                     <tr>
                                         <td style="width: 150px; vertical-align: top">

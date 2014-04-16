@@ -4085,7 +4085,7 @@ namespace Attendance
 
                 }
 
-                  Double TotalHrs1 = 0;
+                Double TotalHrs1 = 0;
                 Double TotalHrs2 = 0;
                 Double TotalHrs3 = 0;
                 Double TotalHrs4 = 0;
@@ -4120,10 +4120,8 @@ namespace Attendance
                     Days3 += dtAttandence.Rows[i]["Days3"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days3"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days3"]);
                     Days4 += dtAttandence.Rows[i]["Days4"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days4"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days4"]);
 
-                    TotalDays += dtAttandence.Rows[i]["Days"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days"].ToString());
-
+                   TotalDays += dtAttandence.Rows[i]["Days"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days"].ToString());
                 }
-
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Week1"] = TotalHrs1;
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Week2"] = TotalHrs2;
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Week3"] = TotalHrs3;
@@ -4148,7 +4146,6 @@ namespace Attendance
             try
             {
                 lblWeekReportheading.Text = "Monthly summary attendance report";
-
                 lblWeekReport.Text = "( " + startdate.ToString("MM/dd/yyyy") + " - " + endMonth.ToString("MM/dd/yyyy") + " )";
                 dtAttandence.Columns.Add("empid", typeof(string));
                 dtAttandence.Columns.Add("Empname", typeof(string));
@@ -4158,17 +4155,11 @@ namespace Attendance
                 dtAttandence.Columns.Add("Days", typeof(int));
                 dtAttandence.Rows.Add();
                 Attendance.BAL.Report obj = new Report();
-
-
                 DateTime enddate = startdate.AddMonths(1).AddSeconds(-1);
-
                 DataSet ds = obj.GetActiveUsers(startdate, endMonth, userid, ViewState["Location"].ToString().Trim(),shiftID);
-
                 for (int j = 0; j < 6; j++)
                 {
-
                     DataSet dsResult = obj.GetWeeklyReport(startdate, enddate, userid, ViewState["Location"].ToString().Trim(),shiftID);
-
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         dtAttandence.Columns.Add("Month" + (j + 1), typeof(string));
@@ -4200,15 +4191,11 @@ namespace Attendance
                                     }
                                 }
                             }
-
-
                         }
                         startdate = enddate.AddSeconds(1);
                         enddate = startdate.AddMonths(1).AddSeconds(-1);
                     }
-
                 }
-
                 Double TotalHrs1 = 0;
                 Double TotalHrs2 = 0;
                 Double TotalHrs3 = 0;
@@ -4216,17 +4203,13 @@ namespace Attendance
                 Double TotalHrs5 = 0;
                 Double TotalHrs6 = 0;
                 int TotalDays = 0;
-
-
                 int Days1 = 0;
                 int Days2 = 0;
                 int Days3 = 0;
                 int Days4 = 0;
                 int Days5 = 0;
                 int Days6 = 0;
-
                 dtAttandence.Columns.Add("Totalhrs");
-
                 for (int i = 0; i < dtAttandence.Rows.Count - 1; i++)
                 {
                     TotalHrs1 = TotalHrs1 + ((dtAttandence.Rows[i]["Month1"].ToString() == "Null") ? 0 : (dtAttandence.Rows[i]["Month1"].ToString() == "") ? 0 : Convert.ToDouble(dtAttandence.Rows[i]["Month1"]));
@@ -4257,10 +4240,8 @@ namespace Attendance
                     Days4 += dtAttandence.Rows[i]["Days4"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days4"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days4"]);
                     Days5 += dtAttandence.Rows[i]["Days5"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days5"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days5"]);
                     Days6 += dtAttandence.Rows[i]["Days6"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days6"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days6"]);
-
                     TotalDays += dtAttandence.Rows[i]["Days"].ToString() == "NULL" ? 0 : dtAttandence.Rows[i]["Days"].ToString() == "" ? 0 : Convert.ToInt32(dtAttandence.Rows[i]["Days"].ToString());
                 }
-
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month1"] = TotalHrs1 == 0 ? "" : TotalHrs1.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month2"] = TotalHrs2 == 0 ? "" : TotalHrs2.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month3"] = TotalHrs3 == 0 ? "" : TotalHrs3.ToString();
@@ -4270,8 +4251,6 @@ namespace Attendance
                 Double sum = TotalHrs1 + TotalHrs2 + TotalHrs3 + TotalHrs4 + TotalHrs5 + TotalHrs6;
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Totalhrs"] = sum == 0 ? "" : GeneralFunction.CalDoubleToTime(sum);
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days"] = TotalDays;
-
-
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["empid"] = "<b>Totals</b>";
             }
             catch (Exception ex)
@@ -4282,12 +4261,9 @@ namespace Attendance
         protected void ddlReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
             int userid = Convert.ToInt32(Session["UserID"]);
-
-
             if (ddlReportType.SelectedItem.Value == "2")
             {
                 DateTime todayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
-
                 // DateTime startOfMonth = new DateTime(todayDate.Year, todayDate.Month, 1);
                 DateTime startDate = GeneralFunction.GetFirstDayOfWeekDate(todayDate);
                 DateTime StartDate = startDate.AddDays(1 - startDate.Day);
@@ -4299,7 +4275,6 @@ namespace Attendance
                 DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                 btnFreeze.Visible = false;
                 lblFreeze.Visible = false;
-
                 if (dt.Rows.Count > 0)
                 {
                     grdAttandence.DataSource = null;
@@ -4309,12 +4284,10 @@ namespace Attendance
                     grdMonthlyAttendance.DataSource = dt;
                     grdMonthlyAttendance.DataBind();
                 }
-
             }
             else if (ddlReportType.SelectedItem.Value == "1")
             {
                 DateTime todayDate = Convert.ToDateTime(Session["TodayDate1"]);
-
                 // DateTime startOfMonth = new DateTime(todayDate.Year, todayDate.Month, 1);
                 DateTime startDate = GeneralFunction.GetFirstDayOfWeekDate(todayDate);
                 DateTime StartDate = startDate.AddDays(-21);
@@ -4326,7 +4299,6 @@ namespace Attendance
                 DataTable dt = GetWeeklyReport(StartDate, endDate, userid, Convert.ToInt32(ddlShift.SelectedItem.Value));
                 btnFreeze.Visible = false;
                 lblFreeze.Visible = false;
-
                 if (GeneralFunction.GetFirstDayOfWeekDate(endDate).ToString("MM/dd/yyyy") == GeneralFunction.GetFirstDayOfWeekDate(DateTime.Now).ToString("MM/dd/yyyy"))
                 {
                     btnNext.CssClass = "btn btn-danger btn-small disabled";
@@ -4336,10 +4308,7 @@ namespace Attendance
                 {
                     btnNext.CssClass = "btn btn-danger btn-small enabled";
                     btnNext.Enabled = true;
-
                 }
-
-
                 if (dt.Rows.Count > 0)
                 {
                     grdAttandence.DataSource = null;
@@ -4381,8 +4350,6 @@ namespace Attendance
                     btnFreeze.CssClass = "btn btn-warning btn-small enabled";
                     btnFreeze.Enabled = true;
                 }
-
-
                 Session["AtnDetails"] = ds;
                 grdAttandence.DataSource = ds;
                 grdAttandence.DataBind();
@@ -5158,7 +5125,6 @@ namespace Attendance
 
             }
         }
-
         protected void lnkLeaveReq_Click(object sender, EventArgs e)
         {
             try
@@ -5177,7 +5143,6 @@ namespace Attendance
             }
 
         }
-
         protected void lnkNewLeaveReq_Click(object sender, EventArgs e)
         {
             try
@@ -5192,7 +5157,6 @@ namespace Attendance
 
             }
         }
-
         protected void btnLeaveReqSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -5249,7 +5213,6 @@ namespace Attendance
             {
             }
         }
-
         private void GetShifts(string LocationName)
         {
             Business business = new Business();

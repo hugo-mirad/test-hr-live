@@ -609,7 +609,6 @@ function clearDisposableItems( sender , args ) {
         </a>
          <div class="shifts">
                 Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
-                   
          </div>
         <div class="right">
             <div class="wel">

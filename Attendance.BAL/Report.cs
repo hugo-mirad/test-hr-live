@@ -73,7 +73,7 @@ namespace Attendance.BAL
 
         }
 
-        public DataTable GetUsers(string Locationname,int sort)
+        public DataTable GetUsers(string Locationname,int sort,int shiftID)
         {
             DataSet ds = new DataSet();
 
@@ -84,6 +84,7 @@ namespace Attendance.BAL
                 SqlDataAdapter da = new SqlDataAdapter("[USP_GetAllUsersData]", con);
                 da.SelectCommand.Parameters.Add(new SqlParameter("@Locationname", Locationname));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@Bit", sort));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
 
@@ -393,7 +394,7 @@ namespace Attendance.BAL
             }
             return ds;
         }
-        public DataSet GetPayrollReport(DateTime startdate, DateTime EndDate, int userid, string LocationName)
+        public DataSet GetPayrollReport(DateTime startdate, DateTime EndDate, int userid, string LocationName,int shiftID)
         {
             DataSet ds = new DataSet();
 
@@ -405,6 +406,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", startdate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@endDate", EndDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationName", LocationName));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);

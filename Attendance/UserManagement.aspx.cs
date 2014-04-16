@@ -52,12 +52,15 @@ namespace Attendance
                     Session["SortBy"] = 1;
                     ddlSelect.SelectedIndex = 1;
                    // GetLocations();
+                    GetMasterShifts(lblLocation.Text.ToString());
+                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
                     Getdepartments();
                     GetEmployeeTypes();
                     GetShifts(Session["LocationName"].ToString().Trim());
+                    ddlgridShift.SelectedIndex = ddlgridShift.Items.IndexOf(ddlgridShift.Items.FindByValue(Session["ShiftID"].ToString()));
                     GetSchedules();
                     GetAllWages();
-                    GetUserDetails(sort);
+                    GetUserDetails(sort,Convert.ToInt32(ddlgridShift.SelectedItem.Value));
                     GetStates(Session["LocationName"].ToString().Trim());
                     GetSSN();
 
@@ -89,13 +92,13 @@ namespace Attendance
             }
         }
 
-        private void GetUserDetails(int sort)
+        private void GetUserDetails(int sort,int shiftID)
         {
             try
             {
                 Attendance.BAL.Report obj = new Report();
              
-                DataTable dt = obj.GetUsers(Session["LocationName"].ToString().Trim(), sort);
+                DataTable dt = obj.GetUsers(Session["LocationName"].ToString().Trim(), sort,shiftID);
                 Session["AllusersData"] = dt;
                 if (dt.Rows.Count > 0)
                 {
@@ -476,7 +479,7 @@ namespace Attendance
                             ddlSchedule.SelectedIndex = 0;
 
                             mdlAddPopUp.Hide();
-                            GetUserDetails(Convert.ToInt32(Session["SortBy"]));
+                            GetUserDetails(Convert.ToInt32(Session["SortBy"]),Convert.ToInt32(ddlgridShift.SelectedValue));
                         }
                     }
                     else
@@ -533,7 +536,7 @@ namespace Attendance
                          ddlSchedule.SelectedIndex = 0;
 
                          mdlAddPopUp.Hide();
-                         GetUserDetails(Convert.ToInt32(Session["SortBy"]));
+                         GetUserDetails(Convert.ToInt32(Session["SortBy"]), Convert.ToInt32(ddlgridShift.SelectedValue));
                      }
                 }
             }
@@ -912,7 +915,7 @@ namespace Attendance
         {
             int sort=Convert.ToInt32(ddlSelect.SelectedItem.Value);
             Session["SortBy"] = sort;
-            GetUserDetails(sort);
+            GetUserDetails(sort, Convert.ToInt32(ddlgridShift.SelectedValue));
         }
 
         protected void grdUsers_Sorting(object sender, GridViewSortEventArgs e)
@@ -1137,7 +1140,35 @@ namespace Attendance
             ddlShift.DataTextField = "shiftname";
             ddlShift.DataValueField = "shiftID";
             ddlShift.DataBind();
+
+            ddlgridShift.DataSource = dsShifts;
+            ddlgridShift.DataTextField = "shiftname";
+            ddlgridShift.DataValueField = "shiftID";
+            ddlgridShift.DataBind();
+            ddlgridShift.Items.Insert(0, new ListItem("ALL", "0"));
+          
         }
-        
+        private void GetMasterShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShifts.DataSource = dsShifts;
+            ddlShifts.DataTextField = "shiftname";
+            ddlShifts.DataValueField = "shiftID";
+            ddlShifts.DataBind();
+        }
+
+        protected void ddlgridShift_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int sort = Convert.ToInt32(ddlSelect.SelectedItem.Value);
+                Session["SortBy"] = sort;
+                GetUserDetails(sort, Convert.ToInt32(ddlgridShift.SelectedValue));
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 }
