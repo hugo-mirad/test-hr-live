@@ -101,7 +101,7 @@ namespace Attendance
                 Session["AllusersData"] = dt;
                 if (dt.Rows.Count > 0)
                 {
-                    
+
                     if (sort == 0)
                     {
                         lblTotal.Text = "Total employee: " + dt.Rows[0]["TotalCount"].ToString() + " " + " " + " " + " " + "Active employee: " + dt.Rows[0]["ActiveCount"].ToString() + " " + " " + " " + " " + "Incative employee: " + dt.Rows[0]["InactiveCount"].ToString();
@@ -117,7 +117,17 @@ namespace Attendance
                     grdUsers.DataSource = dt;
                     grdUsers.DataBind();
 
+                    lblGrdNodata.Text = "";
+                    dvNodata.Style["display"] = "none";
                     BizUtility.GridSortInitail("Ascending", "Firstname", grdUsers, 0, dt);
+                }
+                else
+                {
+                    lblTotal.Text = "";
+                    lblGrdNodata.Text = "No data found";
+                    dvNodata.Style["display"] = "block";
+                    grdUsers.DataSource = null;
+                    grdUsers.DataBind();
                 }
             }
             catch (Exception ex)
@@ -1109,6 +1119,17 @@ namespace Attendance
             }
             catch (Exception ex)
             {
+                ////Shobha, I cannot and will not be relieving you. I 
+                //expect you to continue working as we have agreed earlier. 
+                //    I have made it very clear in our long conversation. 
+                //There is no second thoughts on my end. When we talked, 
+                //you have not mentioned anything about blank check.
+                //Even if you did now, I cannot help. Please understand 
+                //we have to honor each of our commitments and fulfill our obligations. 
+                //I expect you to stick to your end of the relationship. 
+                //    Anything else from you will cause immense damage and hurt to me and the organization.
+                //        It is simply not acceptable.
+
             }
         }
         private void GetMasterShifts(string LocationName)
@@ -1126,7 +1147,6 @@ namespace Attendance
             {
             }
         }
-
         protected void ddlgridShift_SelectedIndexChanged(object sender, EventArgs e)
         {
             try

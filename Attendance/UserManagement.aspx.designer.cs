@@ -275,6 +275,24 @@ namespace Attendance {
         protected global::System.Web.UI.UpdatePanel upgrd;
         
         /// <summary>
+        /// dvNodata control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNodata;
+        
+        /// <summary>
+        /// lblGrdNodata control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGrdNodata;
+        
+        /// <summary>
         /// lblTotal control.
         /// </summary>
         /// <remarks>

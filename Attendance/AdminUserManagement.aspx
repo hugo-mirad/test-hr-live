@@ -1043,6 +1043,8 @@
         </asp:UpdateProgress>
         <asp:UpdatePanel ID="upgrd" runat="server">
             <ContentTemplate>
+            <div style="font-size: 20px;font-weight: bold;padding-top: 150px;text-align: center;" runat="server" id="dvNodata">
+            <asp:Label ID="lblGrdNodata" runat="server"></asp:Label></div>
                 <div>
                     <asp:Label ID="lblTotal" runat="server" Style="font-size: 11px; font-weight: bold;
                         margin-left: 10px;"></asp:Label>
@@ -2085,7 +2087,9 @@
                 <asp:LinkButton ID="lnkPwdClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+        <asp:UpdatePanel ID="uppwddv" runat="server">
+        <ContentTemplate>
+          <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                     <td>
                         Old password<span class="must">*</span>
@@ -2131,6 +2135,9 @@
                     </td>
                 </tr>
             </table>
+        </ContentTemplate>
+        </asp:UpdatePanel>
+          
         </div>
     </div>
     <!--Change password popup End-->
@@ -2186,7 +2193,9 @@
                 <asp:LinkButton ID="lnkPasscodeClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+        <asp:UpdatePanel ID="uppassdv" runat="server">
+        <ContentTemplate>
+          <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                     <td>
                         Old passcode<span class="must">*</span>
@@ -2232,6 +2241,9 @@
                     </td>
                 </tr>
             </table>
+        </ContentTemplate>
+        </asp:UpdatePanel>
+          
         </div>
     </div>
     <!--Change password popup End-->

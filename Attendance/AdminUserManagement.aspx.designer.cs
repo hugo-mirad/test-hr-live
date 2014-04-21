@@ -311,6 +311,24 @@ namespace Attendance {
         protected global::System.Web.UI.UpdatePanel upgrd;
         
         /// <summary>
+        /// dvNodata control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNodata;
+        
+        /// <summary>
+        /// lblGrdNodata control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGrdNodata;
+        
+        /// <summary>
         /// lblTotal control.
         /// </summary>
         /// <remarks>
@@ -1364,6 +1382,15 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.LinkButton lnkPwdClose;
         
         /// <summary>
+        /// uppwddv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel uppwddv;
+        
+        /// <summary>
         /// txtOldpwd control.
         /// </summary>
         /// <remarks>
@@ -1533,6 +1560,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkPasscodeClose;
+        
+        /// <summary>
+        /// uppassdv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel uppassdv;
         
         /// <summary>
         /// txtOldpasscode control.

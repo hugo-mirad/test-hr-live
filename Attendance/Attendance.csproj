@@ -269,6 +269,7 @@
     <Content Include="Photos\Xavier-Blackwell.jpg" />
     <Content Include="Photos\Yaswanth.jpg" />
     <Content Include="Reports.aspx" />
+    <Content Include="SingleReport.aspx" />
     <Content Include="USDG\Anil.jpg" />
     <Content Include="USDG\Anusha.jpg" />
     <Content Include="USDG\Arun.jpg" />
@@ -411,6 +412,13 @@
     </Compile>
     <Compile Include="Reports.aspx.designer.cs">
       <DependentUpon>Reports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SingleReport.aspx.cs">
+      <DependentUpon>SingleReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SingleReport.aspx.designer.cs">
+      <DependentUpon>SingleReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserControl\CalControl1.ascx.cs">
       <DependentUpon>CalControl1.ascx</DependentUpon>

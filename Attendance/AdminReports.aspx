@@ -783,6 +783,8 @@ function clearDisposableItems( sender , args ) {
         </asp:UpdateProgress>
         <asp:UpdatePanel ID="up" runat="server">
             <ContentTemplate>
+            <div style="font-size: 20px;font-weight: bold;padding-top: 150px;text-align: center;" runat="server" id="dvNodata">
+            <asp:Label ID="lblGrdNodata" runat="server"></asp:Label></div>
                 <asp:HiddenField runat="server" ID="hdnFreeze" />
                  <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
                     OnRowCreated="grdAttandence_RowCreated" CssClass="table1" >
@@ -1700,6 +1702,8 @@ function clearDisposableItems( sender , args ) {
                 <asp:LinkButton ID="lnkPwdClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
+        <asp:UpdatePanel ID="UpPwdDv" runat="server">
+        <ContentTemplate>
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                     <td>
@@ -1746,6 +1750,8 @@ function clearDisposableItems( sender , args ) {
                     </td>
                 </tr>
             </table>
+            </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--Change password popup End-->
@@ -1765,6 +1771,8 @@ function clearDisposableItems( sender , args ) {
                 <asp:LinkButton ID="lnkPasscodeClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
+        <asp:UpdatePanel ID="upPasscd" runat="server">
+        <ContentTemplate>
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                     <td>
@@ -1811,6 +1819,8 @@ function clearDisposableItems( sender , args ) {
                     </td>
                 </tr>
             </table>
+            </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--Change password popup End-->
@@ -1970,7 +1980,10 @@ function clearDisposableItems( sender , args ) {
            });
            
            
-           
+             $('.atnLeave').each(function(){
+             $(this).prev().removeAttr('class').addClass('atnLeave')
+             $(this).next().removeAttr('class').addClass('atnLeave')
+           });
             
            
            

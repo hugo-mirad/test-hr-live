@@ -1291,7 +1291,9 @@
                 <asp:LinkButton ID="lnkPwdClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+        <asp:UpdatePanel ID="uppwddv" runat="server">
+        <ContentTemplate>
+         <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                     <td>
                         Old password
@@ -1337,6 +1339,9 @@
                     </td>
                 </tr>
             </table>
+        </ContentTemplate>
+        </asp:UpdatePanel>
+           
         </div>
     </div>
     <!--Change password popup End-->
@@ -1356,7 +1361,9 @@
                 <asp:LinkButton ID="lnkPasscodeClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+        <asp:UpdatePanel ID="uppassdv" runat="server">
+        <ContentTemplate>
+         <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                     <td>
                         Old passcode<span class="must">*</span>
@@ -1402,6 +1409,9 @@
                     </td>
                 </tr>
             </table>
+        </ContentTemplate>
+        </asp:UpdatePanel>
+           
         </div>
     </div>
     <!--Change password popup End-->

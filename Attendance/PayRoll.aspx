@@ -581,6 +581,9 @@
                 <td style="padding: 10px">
                     <asp:UpdatePanel ID="up1" runat="server">
                         <ContentTemplate>
+                        
+                          <div style="font-size: 20px;font-weight: bold;padding-top: 150px;text-align: center;" runat="server" id="dvNodata">
+            <asp:Label ID="lblGrdNodata" runat="server"></asp:Label></div>
                             <asp:HiddenField ID="hdnPayrollPdf" runat="server" />
                             <div>
                                 <asp:Label ID="lblTotal" runat="server" Style="margin-left: 10px;"></asp:Label>
@@ -657,6 +660,7 @@
                                 </Columns>
                             </asp:GridView>
                             <asp:HiddenField ID="hdnFreeze" runat="server" Value="false" />
+                            
                             <asp:GridView runat="server" AutoGenerateColumns="false" ID="grdPayRollIndia" CssClass="table1 grdPayRollIndia"
                                 OnRowDataBound="grdPayRollIndia_RowDataBound" BorderWidth="1" CellPadding="0"
                                 CellSpacing="0" Width="800px" OnRowCreated="grdPayRollIndia_RowCreated">

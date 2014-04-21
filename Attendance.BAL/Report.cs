@@ -60,9 +60,6 @@ namespace Attendance.BAL
                     obj.Add(objInfo);
                 }
                con.Close();
-
-               
-
             }
             catch (Exception ex)
             {
@@ -910,7 +907,7 @@ namespace Attendance.BAL
                 }
                 return success;
             }
-            public bool GetFinalPayrollDate(DateTime MonthStart, int LocationID)
+            public bool GetFinalPayrollDate(DateTime MonthStart, int LocationID, int shiftID)
             {
                 bool Count = false;
                 DataSet ds = new DataSet();
@@ -921,6 +918,7 @@ namespace Attendance.BAL
                     SqlDataAdapter da = new SqlDataAdapter("[USP_GetFinalPayrollDate]", con);
                     da.SelectCommand.Parameters.Add(new SqlParameter("@startDate", MonthStart));
                     da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", LocationID));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                     da.SelectCommand.CommandType = CommandType.StoredProcedure;
                     da.Fill(ds);
                     if (ds.Tables.Count > 0)

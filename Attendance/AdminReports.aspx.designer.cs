@@ -383,6 +383,24 @@ namespace Attendance {
         protected global::System.Web.UI.UpdatePanel up;
         
         /// <summary>
+        /// dvNodata control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvNodata;
+        
+        /// <summary>
+        /// lblGrdNodata control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblGrdNodata;
+        
+        /// <summary>
         /// hdnFreeze control.
         /// </summary>
         /// <remarks>
@@ -914,6 +932,15 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.LinkButton lnkPwdClose;
         
         /// <summary>
+        /// UpPwdDv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpPwdDv;
+        
+        /// <summary>
         /// txtOldpwd control.
         /// </summary>
         /// <remarks>
@@ -1020,6 +1047,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkPasscodeClose;
+        
+        /// <summary>
+        /// upPasscd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upPasscd;
         
         /// <summary>
         /// txtOldpasscode control.

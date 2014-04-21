@@ -241,7 +241,7 @@ namespace Attendance.BAL
             return ds.Tables[0];
         }
 
-        public DataTable Usp_GetEmployeePayrollDataByLocation(int location, DateTime StartDt, DateTime EndDt)
+        public DataTable Usp_GetEmployeePayrollDataByLocation(int location, DateTime StartDt, DateTime EndDt,int shiftID)
         {
             DataSet ds = new DataSet();
 
@@ -253,6 +253,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDt));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", location));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
                 DataTable dt = ds.Tables[0];

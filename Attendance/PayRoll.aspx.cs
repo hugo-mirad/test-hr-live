@@ -85,7 +85,7 @@ namespace Attendance
                             {
                                 lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                             }
-                            bool final = obj.GetFinalPayrollDate(MonthStart,Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                            bool final = obj.GetFinalPayrollDate(MonthStart,Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
                             if (final)
                             {
                                 btnFinal.CssClass = "btn btn-small btn-warning disabled";
@@ -107,17 +107,34 @@ namespace Attendance
                             DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
                             lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                             GetEditHistory(MonthStart, MonthEnd);
-                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
-                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                            grdPayRollIndia.DataSource = dt;
-                            grdPayRollIndia.DataBind();
-                            Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
 
-                            grdPayRoll.DataSource = null;
-                            grdPayRoll.DataBind();
-                            btnSave.Visible = true;
-                            btnFinal.Visible = true;
-                            btnPrint.Visible = true;
+                            if (dt.Rows.Count > 0)
+                            {
+                                lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                                lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                                grdPayRollIndia.DataSource = dt;
+                                grdPayRollIndia.DataBind();
+                                Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                                grdPayRoll.DataSource = null;
+                                grdPayRoll.DataBind();
+                                btnSave.Visible = true;
+                                btnFinal.Visible = true;
+                                btnPrint.Visible = true;
+                                lblGrdNodata.Text = "";
+                                dvNodata.Style["display"] = "none";
+
+                            }
+                            else
+                            {
+                                lblTotal.Text = "";
+                                lblReportDate.Text = "";
+                                lblGrdNodata.Text = "No data found";
+                                dvNodata.Style["display"] = "block";
+                                grdPayRollIndia.DataSource = null;
+                                grdPayRollIndia.DataBind();
+                                grdPayRoll.DataSource = null;
+                                grdPayRoll.DataBind();
+                            }
                         }
                         else
                         {
@@ -173,7 +190,7 @@ namespace Attendance
                             {
                                 lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                             }
-                            bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                            bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                             if (final)
                             {
                                 btnFinal.CssClass = "btn btn-small btn-warning disabled";
@@ -196,16 +213,34 @@ namespace Attendance
                             DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                             lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                             GetEditHistory(MonthStart, MonthEnd);
-                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
-                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                            grdPayRollIndia.DataSource = dt;
-                            grdPayRollIndia.DataBind();
-                            Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
-                            grdPayRoll.DataSource = null;
-                            grdPayRoll.DataBind();
-                            btnSave.Visible = true;
-                            btnFinal.Visible = true;
-                            btnPrint.Visible = true;
+
+
+                            if (dt.Rows.Count > 0)
+                            {
+                                lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                                lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                                grdPayRollIndia.DataSource = dt;
+                                grdPayRollIndia.DataBind();
+                                Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                                grdPayRoll.DataSource = null;
+                                grdPayRoll.DataBind();
+                                btnSave.Visible = true;
+                                btnFinal.Visible = true;
+                                btnPrint.Visible = true;
+                                lblGrdNodata.Text = "";
+                                dvNodata.Style["display"] = "none";
+                            }
+                            else
+                            {
+                                lblTotal.Text = "";
+                                lblReportDate.Text = "";
+                                lblGrdNodata.Text = "No data found";
+                                dvNodata.Style["display"] = "block";
+                                grdPayRollIndia.DataSource = null;
+                                grdPayRollIndia.DataBind();
+                                grdPayRoll.DataSource = null;
+                                grdPayRoll.DataBind();
+                            }
                         }
                         else
                         {
@@ -382,7 +417,7 @@ namespace Attendance
                     {
                         txtFromDate.Text = StartDate.ToString("MM/dd/yyyy");
                         txtToDate.Text = EndTime.ToString("MM/dd/yyyy");
-                        bool final = obj.GetFinalPayrollDate(StartDate, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        bool final = obj.GetFinalPayrollDate(StartDate, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                         if (final)
                         {
                             btnFinal.CssClass = "btn btn-small btn-warning disabled";
@@ -404,16 +439,33 @@ namespace Attendance
                         DataTable dt = GetReportIndia(StartDate, EndTime, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(StartDate, EndTime);
-                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
-                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                        grdPayRollIndia.DataSource = dt;
-                        grdPayRollIndia.DataBind();
-                        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
-                        grdPayRoll.DataSource = null;
-                        grdPayRoll.DataBind();
-                        btnSave.Visible = true;
-                        btnFinal.Visible = true;
-                        btnPrint.Visible = true;
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                            grdPayRollIndia.DataSource = dt;
+                            grdPayRollIndia.DataBind();
+                            Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                            btnSave.Visible = true;
+                            btnFinal.Visible = true;
+                            btnPrint.Visible = true;
+                            lblGrdNodata.Text = "";
+                            dvNodata.Style["display"] = "none";
+                        }
+                        else
+                        {
+                            lblTotal.Text = "";
+                            lblReportDate.Text = "";
+                            lblGrdNodata.Text = "No data found";
+                            dvNodata.Style["display"] = "block";
+                            grdPayRollIndia.DataSource = null;
+                            grdPayRollIndia.DataBind();
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                        }
                     }
                     else
                     {
@@ -1102,7 +1154,7 @@ namespace Attendance
                             lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                         }
 
-                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
                         if (final)
                         {
@@ -1125,17 +1177,33 @@ namespace Attendance
                         DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
-                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
-                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                        grdPayRollIndia.DataSource = dt;
-                        grdPayRollIndia.DataBind();
-                        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                        if (dt.Rows.Count > 0)
+                        {
+                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                            grdPayRollIndia.DataSource = dt;
+                            grdPayRollIndia.DataBind();
+                            Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
 
-                        grdPayRoll.DataSource = null;
-                        grdPayRoll.DataBind();
-                        btnSave.Visible = true;
-                        btnFinal.Visible = true;
-                        btnPrint.Visible = true;
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                            btnSave.Visible = true;
+                            btnFinal.Visible = true;
+                            btnPrint.Visible = true;
+                            lblGrdNodata.Text = "";
+                            dvNodata.Style["display"] = "none";
+                        }
+                        else
+                        {
+                            lblTotal.Text = "";
+                            lblReportDate.Text = "";
+                            lblGrdNodata.Text = "No data found";
+                            dvNodata.Style["display"] = "block";
+                            grdPayRollIndia.DataSource = null;
+                            grdPayRollIndia.DataBind();
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                        }
                     }
                     else
                     {
@@ -1193,7 +1261,7 @@ namespace Attendance
                             lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                         }
 
-                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
                         if (final)
                         {
@@ -1218,17 +1286,32 @@ namespace Attendance
                         DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
-                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
-                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                        grdPayRollIndia.DataSource = dt;
-                        grdPayRollIndia.DataBind();
-                        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
-
-                        grdPayRoll.DataSource = null;
-                        grdPayRoll.DataBind();
-                        btnSave.Visible = true;
-                        btnFinal.Visible = true;
-                        btnPrint.Visible = true;
+                        if (dt.Rows.Count > 0)
+                        {
+                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                            grdPayRollIndia.DataSource = dt;
+                            grdPayRollIndia.DataBind();
+                            Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                            btnSave.Visible = true;
+                            btnFinal.Visible = true;
+                            btnPrint.Visible = true;
+                            lblGrdNodata.Text = "";
+                            dvNodata.Style["display"] = "none";
+                        }
+                        else
+                        {
+                            lblTotal.Text = "";
+                            lblReportDate.Text = "";
+                            lblGrdNodata.Text = "No data found";
+                            dvNodata.Style["display"] = "block";
+                            grdPayRollIndia.DataSource = null;
+                            grdPayRollIndia.DataBind();
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                        }
                     }
                     else
                     {
@@ -1464,7 +1547,7 @@ namespace Attendance
                     bool bnew = obj.SaveSalaryHistory(objSal);
                 }
 
-                bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
                 if (final)
                 {
@@ -1638,7 +1721,7 @@ namespace Attendance
 
                 }
                 bool bnewf = obj.FinalizePayrollReport(locationID, dt, Convert.ToInt32(Session["UserID"]));
-                bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
                 if (final)
                 {
@@ -1693,14 +1776,27 @@ namespace Attendance
                 DataSet ds = obj.GetPayrollReport(StartDate, EndTime, userid, Location,shiftID);
                 lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
                 GetEditHistory(StartDate, EndTime);
-                lblTotal.Text = ds.Tables[0].Rows[0]["LocDescriptiom"].ToString().Trim() == "" ? "Employee record count: " + ds.Tables[0].Rows.Count.ToString().Trim() : ds.Tables[0].Rows[0]["LocDescriptiom"].ToString().Trim() + "  location; Employee record count: " + ds.Tables[0].Rows.Count.ToString().Trim();
-                lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                grdPayRoll.DataSource = ds.Tables[0];
-                grdPayRoll.DataBind();
-
-                grdPayRollIndia.DataSource = null;
-                grdPayRollIndia.DataBind();
-                Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    lblTotal.Text = ds.Tables[0].Rows[0]["LocDescriptiom"].ToString().Trim() == "" ? "Employee record count: " + ds.Tables[0].Rows.Count.ToString().Trim() : ds.Tables[0].Rows[0]["LocDescriptiom"].ToString().Trim() + "  location; Employee record count: " + ds.Tables[0].Rows.Count.ToString().Trim();
+                    lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                    grdPayRoll.DataSource = ds.Tables[0];
+                    grdPayRoll.DataBind();
+                    grdPayRollIndia.DataSource = null;
+                    grdPayRollIndia.DataBind();
+                    Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                }
+                else
+                {
+                    lblTotal.Text = "";
+                    lblReportDate.Text = "";
+                    dvNodata.Style["display"] = "block";
+                    lblGrdNodata.Text = "No data found";
+                    grdPayRoll.DataSource = null;
+                    grdPayRoll.DataBind();
+                    grdPayRollIndia.DataSource = null;
+                    grdPayRollIndia.DataBind();
+                }
             }
             catch (Exception ex)
             {
@@ -1759,7 +1855,7 @@ namespace Attendance
                 EmployeeBL obj = new EmployeeBL();
 
                 // DataTable dtPaid = GetPayrollDataByLoc(LocationID, StartDate.AddMonths(-1), StartDate.AddSeconds(-1));
-                DataTable dtPaid1 = obj.Usp_GetEmployeePayrollDataByLocation(LocationID, StartDate, EndTime);
+                DataTable dtPaid1 = obj.Usp_GetEmployeePayrollDataByLocation(LocationID, StartDate, EndTime,Convert.ToInt32(ddlShift.SelectedValue));
                 DataTable dtPaid = obj.GetEmpPaidleavesDetailsByLocation(LocationID, StartDate.AddMonths(-1), StartDate.AddSeconds(-1));
                 int days = (Convert.ToInt32(EndTime.ToString("dd")) - Convert.ToInt32(StartDate.ToString("dd"))) + 1;
                 if (ds.Tables.Count > 0)
@@ -2952,7 +3048,7 @@ namespace Attendance
                             lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                         }
 
-                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
                         if (final)
                         {
@@ -2975,17 +3071,32 @@ namespace Attendance
                         DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
-                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
-                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                        grdPayRollIndia.DataSource = dt;
-                        grdPayRollIndia.DataBind();
-                        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
-
-                        grdPayRoll.DataSource = null;
-                        grdPayRoll.DataBind();
-                        btnSave.Visible = true;
-                        btnFinal.Visible = true;
-                        btnPrint.Visible = true;
+                        if (dt.Rows.Count > 0)
+                        {
+                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                            grdPayRollIndia.DataSource = dt;
+                            grdPayRollIndia.DataBind();
+                            Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                            btnSave.Visible = true;
+                            btnFinal.Visible = true;
+                            btnPrint.Visible = true;
+                            lblGrdNodata.Text = "";
+                            dvNodata.Style["display"] = "none";
+                        }
+                        else
+                        {
+                            lblTotal.Text = "";
+                            lblReportDate.Text = "";
+                            lblGrdNodata.Text = "No data found";
+                            dvNodata.Style["display"] = "block";
+                            grdPayRollIndia.DataSource = null;
+                            grdPayRollIndia.DataBind();
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                        }
                     }
                     else
                     {
@@ -3043,7 +3154,7 @@ namespace Attendance
                             lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                         }
 
-                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
                         if (final)
                         {
@@ -3068,17 +3179,32 @@ namespace Attendance
                         DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
-                        lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
-                        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                        grdPayRollIndia.DataSource = dt;
-                        grdPayRollIndia.DataBind();
-                        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
-
-                        grdPayRoll.DataSource = null;
-                        grdPayRoll.DataBind();
-                        btnSave.Visible = true;
-                        btnFinal.Visible = true;
-                        btnPrint.Visible = true;
+                        if (dt.Rows.Count > 0)
+                        {
+                            lblTotal.Text = "Employee record count: " + dt.Rows.Count.ToString().Trim();
+                            lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+                            grdPayRollIndia.DataSource = dt;
+                            grdPayRollIndia.DataBind();
+                            Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                            btnSave.Visible = true;
+                            btnFinal.Visible = true;
+                            btnPrint.Visible = true;
+                            lblGrdNodata.Text = "";
+                            dvNodata.Style["display"] = "none";
+                        }
+                        else
+                        {
+                            lblTotal.Text = "";
+                            lblReportDate.Text = "";
+                            lblGrdNodata.Text = "No data found";
+                            dvNodata.Style["display"] = "block";
+                            grdPayRollIndia.DataSource = null;
+                            grdPayRollIndia.DataBind();
+                            grdPayRoll.DataSource = null;
+                            grdPayRoll.DataBind();
+                        }
                     }
                     else
                     {

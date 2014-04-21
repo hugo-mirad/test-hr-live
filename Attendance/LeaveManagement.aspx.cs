@@ -15,8 +15,7 @@ using Attendance.BAL;
 namespace Attendance
 {
     public partial class LeaveManagement : System.Web.UI.Page
-    {
-        
+    {       
         public GeneralFunction objFun = new GeneralFunction();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -46,8 +45,6 @@ namespace Attendance
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
                     getLocations();
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
-
-
                     if (Session["IsAdmin"].ToString() == "True")
                     {
                         ddlLocation.Enabled = true;
@@ -86,7 +83,6 @@ namespace Attendance
                 }
             }
         }
-
         private void GetpaidLeavesData(int locationID, DateTime startDt, DateTime EndDt)
         {
             try
@@ -116,9 +112,7 @@ namespace Attendance
             catch (Exception ex)
             {
             }
-        }
-        
-   
+        }    
         private void getLocations()
         {
             try
@@ -140,7 +134,6 @@ namespace Attendance
             Session.Abandon();
             Response.Redirect("Default.aspx");
         }
-
         protected void lnkChangepwd_Click(object sender, EventArgs e)
         {
             try
@@ -156,12 +149,10 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPwd_Click(object sender, EventArgs e)
         {
             mdlChangePwd.Hide();
         }
-
         protected void btnUpdatePwd_Click(object sender, EventArgs e)
         {
             try
@@ -214,7 +205,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPasscode_Click(object sender, EventArgs e)
         {
             txtOldpasscode.Text = "";
@@ -222,7 +212,6 @@ namespace Attendance
             txtConfirmPasscode.Text = "";
             mdlChangePasscode.Hide();
         }
-
         protected void lnkChangePasscode_Click(object sender, EventArgs e)
         {
             try
@@ -238,7 +227,6 @@ namespace Attendance
             {
             }
         }
-
         protected void lnkUserMangement_Click(object sender, EventArgs e)
         {
             if (Session["IsAdmin"].ToString() == "True")
@@ -250,7 +238,6 @@ namespace Attendance
                 Response.Redirect("UserManagement.aspx");
             }
         }
-
         protected void lnkReport_Click(object sender, EventArgs e)
         {
             if (Session["IsAdmin"].ToString() == "True")
@@ -262,7 +249,6 @@ namespace Attendance
                 Response.Redirect("Reports.aspx");
             }
         }
-
         protected void grdUsers_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
@@ -292,7 +278,6 @@ namespace Attendance
             }
             catch (Exception ex) { }
         }
-
         protected void grdUsers_Sorting(object sender, GridViewSortEventArgs e)
         {
             try
@@ -310,12 +295,10 @@ namespace Attendance
                 throw ex;
             }
         }
-
         protected void grdUsers_RowCommand(object sender, GridViewCommandEventArgs e)
         {
 
         }
-
         protected void ddlLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -329,7 +312,6 @@ namespace Attendance
             {
             }
         }
-
         protected void grdUsers_RowEditing(object sender, GridViewEditEventArgs e)
         {
             try
@@ -347,7 +329,6 @@ namespace Attendance
             }
 
         }
-
         protected void grdUsers_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             try
@@ -398,7 +379,6 @@ namespace Attendance
             {
             }
         }
-
         protected void grdUsers_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             try
@@ -413,7 +393,6 @@ namespace Attendance
             {
             }
         }
-
         private string CreateSignInTable(string Employeename, string SignInNotes)
         {
             //SignInNotes = SignInNotes.Replace("<br>", Environment.NewLine);
@@ -445,7 +424,6 @@ namespace Attendance
             return strTransaction;
 
         }
-
         protected void grdUsers_RowUpdated(object sender, GridViewUpdatedEventArgs e)
         {
             try
@@ -460,9 +438,6 @@ namespace Attendance
             {
             }
         }
-
-
-
         protected void grdUsers_RowCreated(object sender, GridViewRowEventArgs e)
         {
             try
@@ -493,7 +468,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnPrev_Click(object sender, EventArgs e)
         {
             try
@@ -522,7 +496,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCurrent_Click(object sender, EventArgs e)
         {
             try
@@ -551,7 +524,6 @@ namespace Attendance
             }
 
         }
-
         protected void btnNext_Click(object sender, EventArgs e)
         {
             try
@@ -579,11 +551,8 @@ namespace Attendance
             catch (Exception ex)
             {
             }
-        }
+        }    
         
-        }
-
-
-
+    }
 
 }

@@ -909,6 +909,8 @@
         </asp:UpdateProgress>
         <asp:UpdatePanel ID="upgrd" runat="server">
             <ContentTemplate>
+              <div style="font-size: 20px;font-weight: bold;padding-top: 150px;text-align: center;" runat="server" id="dvNodata">
+            <asp:Label ID="lblGrdNodata" runat="server"></asp:Label></div>
                 <div>
                     <asp:Label ID="lblTotal" runat="server" Style="font-size: 11px; font-weight: bold;
                         margin-left: 10px;"></asp:Label>

@@ -696,7 +696,7 @@ function clearDisposableItems( sender , args ) {
             <asp:DropDownList ID="ddlReportType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlReportType_SelectedIndexChanged"
                 Visible="true">
                 <asp:ListItem Text="Weekly Report - Detail" Value="0"></asp:ListItem>
-                <asp:ListItem Text="Weekly Reprot - Summary" Value="1"></asp:ListItem>
+                <asp:ListItem Text="Weekly Report - Summary" Value="1"></asp:ListItem>
                 <asp:ListItem Text="Monthly Report - Summary" Value="2"></asp:ListItem>
             </asp:DropDownList>
             &nbsp;&nbsp; <b>
@@ -707,11 +707,12 @@ function clearDisposableItems( sender , args ) {
              &nbsp;&nbsp; <b>
                 <asp:Label ID="lblShift" runat="server" Text="Shifts"></asp:Label></b>&nbsp;&nbsp;
             <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" enable="false"
-                Style="width: 70px;">
+                Style="width: 70px;" 
+                onselectedindexchanged="ddlShift_SelectedIndexChanged">
              </asp:DropDownList>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <div>
+   
         <div style="margin-bottom: 6px;">
             <div style="display: inline-block; width: 1007px">
                 <asp:UpdatePanel ID="upbtns" runat="server">
@@ -740,6 +741,8 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
+                        <h4>
+                        </h4>
                        </h4>
                 </div>
             </ProgressTemplate>
@@ -753,6 +756,8 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
+                        <h4>
+                        </h4>
                      </h4>
                 </div>
             </ProgressTemplate>
@@ -766,12 +771,16 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
+                        <h4>
+                        </h4>
                        </h4>
                 </div>
             </ProgressTemplate>
         </asp:UpdateProgress>
         <asp:UpdatePanel ID="up" runat="server">
             <ContentTemplate>
+              <div style="font-size: 20px;font-weight: bold;padding-top: 150px;text-align: center;" runat="server" id="dvNodata">
+            <asp:Label ID="lblGrdNodata" runat="server"></asp:Label></div>
                 <asp:HiddenField runat="server" ID="hdnFreeze" />
         <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
                     OnRowCreated="grdAttandence_RowCreated" CssClass="table1" >
@@ -1459,128 +1468,7 @@ function clearDisposableItems( sender , args ) {
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
-        <div id="DvSingleRep" runat="server"> 
-        <div style="float:right;padding-right: 250px;">
-        <asp:UpdatePanel ID="upLeave" runat="server">
-        <ContentTemplate>
-            <asp:LinkButton ID="lnkLeaveReq" Text="Show Leave Requests" runat="server" 
-                 onclick="lnkLeaveReq_Click"></asp:LinkButton> <br />
-            <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server" 
-                onclick="lnkNewLeaveReq_Click"></asp:LinkButton>    
-         </ContentTemplate>
-        </asp:UpdatePanel>
-        </div>
-        <br />
-        <asp:UpdatePanel ID="upSingle" runat="server">
-            <ContentTemplate>
-                <asp:Label ID="lblID" runat="server" Visible="false"></asp:Label>
-                <asp:Label ID="lblName" runat="server" Visible="false"></asp:Label>
-                <asp:GridView ID="grdAttendanceSingle" runat="server" AutoGenerateColumns="false"
-                    CssClass="table2" OnRowCreated="grdAttendanceSingle_RowCreated" OnRowDataBound="grdAttendanceSingle_RowDataBound">
-                    <Columns>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblHeadDay" runat="server" Text="Day"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblDay" runat="server" Text='<%#Eval("Day")%>'></asp:Label>
-                                <asp:HiddenField ID="hdnLogUserID" runat="server" Value='<%#Eval("LogUserID")%>' />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblHeadSchIn" runat="server" Text="Schedule"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblScIn" runat="server" Text='<%#Eval("SchIn")==""?"":Eval("SchIn")+"-"+Eval("SchOut")%>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblHeadIN" runat="server" Text="SignIn-Out"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblSignIn" runat="server" Font-Underline="False" Text='<%#Eval("SignIn")%>'></asp:Label>
-                                <asp:Label ID="lblSignOut" runat="server" Font-Underline="False" Visible="false" Text='<%#Eval("SignOut")%>'></asp:Label>
-                                <asp:HiddenField ID="hdnMultiple" runat="server" Value='<%#Eval("Multiple")%>' />
-                                <asp:HiddenField ID="hdnSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "LoginNotes"))%>' />
-                                <asp:HiddenField ID="hdnSignInFlag" runat="server" Value='<%#Eval("LoginFlag")%>' />
-                                <asp:HiddenField ID="hdnLvStatus" runat="server" Value='<%#Eval("LvStatus")%>' />
-                            <%--    <asp:HiddenField ID="hdnSignOutNotes" runat="server" Value='<%#Eval("LogoutNotes")%>' />--%>
-                                <asp:HiddenField ID="hdnSignOutFlag" runat="server" Value='<%#Eval("LogoutFlag")%>' />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblMonHeadHours" runat="server" Text="Hrs"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblMonHours" runat="server" Font-Underline="False" Text='<%#Eval("Hrs")%>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                </asp:GridView>
-                
-                
-                
-                <br />
-                <br /><br />
-                <asp:GridView ID="grdSingleLeaveReq" runat="server" AutoGenerateColumns="false" CssClass="tableLeave">
-                <Columns>
-                   <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
-                            <ItemTemplate>
-                                <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="50" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
-                            <ItemTemplate>
-                                <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")+" "+Eval("lastname")%>'></asp:Label>
-                                <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("lastname")%>' Visible="false"></asp:Label>
-                                <asp:HiddenField ID="hdnPhoto" runat="server" Value='<%#Eval("photolink")%>' />
-                            </ItemTemplate>
-                            <ItemStyle Width="150" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="Fromdate" HeaderText="From date">
-                            <ItemTemplate>
-                                <asp:Label ID="lblFromdate" runat="server" Text='<%# Bind("Fromdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="60" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="Todate" HeaderText="To date">
-                            <ItemTemplate>
-                                <asp:Label ID="lblTodate" runat="server" Text='<%#Bind("Todate","{0:MM/dd/yyyy}") %>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="60" />
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Reason">
-                            <ItemTemplate>
-                                <asp:Label ID="lblReason" runat="server" Text='<%#Eval("Reason")%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="130" />
-                        </asp:TemplateField>
-                        <asp:TemplateField SortExpression="ApprovedStatus" HeaderText="Approval status">
-                            <ItemTemplate>
-                                <asp:Label ID="lblApprovedStatus" runat="server" Text='<%#Eval("ApprovedStatus")%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="130" />
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Notes">
-                            <ItemTemplate>
-                                <asp:Label ID="lblNotes" runat="server" Text='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "Notes"))%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle Width="130" />
-                        </asp:TemplateField>
-                </Columns>
-                
-                </asp:GridView>
-                
-                
-                
-            </ContentTemplate>
-        </asp:UpdatePanel>
-        </div>
+    
    
     <!--Loginedit popup start-->
     <cc1:ModalPopupExtender ID="mdlLoginEditPopUp" BackgroundCssClass="popupHolder" runat="server"
@@ -1805,26 +1693,9 @@ function clearDisposableItems( sender , args ) {
             </table>
         </div>
     </div>
- 
-    
-    
-    
+
     <!--Multiple edit popup-->
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+     
     <!--Change password popup start-->
     <cc1:ModalPopupExtender ID="mdlChangePwd" runat="server" BackgroundCssClass="popupHolder"
         CancelControlID="lnkPwdClose" TargetControlID="hdnChangePwd" PopupControlID="ChangePwd">
@@ -1841,12 +1712,16 @@ function clearDisposableItems( sender , args ) {
                 <asp:LinkButton ID="lnkPwdClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
+        <asp:UpdatePanel ID="uppwddv" runat="server">
+        <ContentTemplate>
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                       <td>
-                        Old password      <td>
+                        Old password   
+                        </td>
+                        <td>
                         <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
-                    </td>
+                        </td>
                 </tr>
                 <tr>
                     <td>
@@ -1885,6 +1760,8 @@ function clearDisposableItems( sender , args ) {
                     </td>
                 </tr>
             </table>
+            </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--Change password popup End-->
@@ -1904,6 +1781,8 @@ function clearDisposableItems( sender , args ) {
                 <asp:LinkButton ID="lnkPasscodeClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
+        <asp:UpdatePanel ID="uppassdv" runat="server">
+        <ContentTemplate>
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
                 <tr>
                     <td>
@@ -1950,6 +1829,8 @@ function clearDisposableItems( sender , args ) {
                     </td>
                 </tr>
             </table>
+            </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--Change password popup End-->
@@ -2002,76 +1883,6 @@ function clearDisposableItems( sender , args ) {
     </div>
     <!--Successfull alert popup End-->
     
-    
-    
-      <!--Loginedit popup start-->
-    <cc1:ModalPopupExtender ID="mdlNewLeaveRequest" BackgroundCssClass="popupHolder" runat="server"
-        PopupControlID="NewLeaveRequest" TargetControlID="hdnNewleaveReq" CancelControlID="lnkLeaveClose">
-    </cc1:ModalPopupExtender>
-    <asp:HiddenField ID="hdnNewleaveReq" runat="server" />
-    <div id="NewLeaveRequest" runat="server" class="popContent" style="width: 400px; display: none">
-        <h2>
-          New Leave Request
-            <span class="close">
-                <asp:LinkButton ID="lnkLeaveClose" runat="server"></asp:LinkButton></span>
-        </h2>
-        <div class="inner">
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                <tr>
-                    <td>
-                        From <span class="must">*</span>
-                    </td>
-                    <td>
-                         <asp:TextBox ID="txtLeaveFrom" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>
-                        To <span class="must">*</span>
-                    </td>
-                    <td>
-                          <asp:TextBox ID="txtLeaveTo" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-               
-                  <tr>
-                    <td>
-                        Reason <span class="must">*</span>
-                    </td>
-                    <td>
-                          <asp:TextBox ID="txtReason" runat="server" TextMode="MultiLine" Rows="5"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel18" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnLeaveReqSubmit" runat="server" Text="Submit" 
-                                        OnClientClick="return validLeaveReq();" CssClass="btn btn-danger" 
-                                        onclick="btnLeaveReqSubmit_Click" />
-                                        <br />
-                                        <asp:Label ID="lblLeaveError" runat="server" ForeColor="Red" ></asp:Label>
-                                </ContentTemplate>
-                             
-                            </asp:UpdatePanel>
-                        </div>
-                       <input type="button" class="btn" value="Cancel" name="btnLvCancel" onclick="return hideNewleave();" />
-                        <br />
-                        
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <!--Loginedit popup end-->
-    
-    
-    
-    
     </form>
 
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
@@ -2095,11 +1906,7 @@ function clearDisposableItems( sender , args ) {
 
     <script type="text/javascript" language="javascript">
     
-      function hideNewleave()
-      {
-         $find('mdlNewLeaveRequest').hide();
-      }
-      
+          
     
       function Multiplecancle()
       {
@@ -2107,42 +1914,14 @@ function clearDisposableItems( sender , args ) {
          
       }
     
-      function validLeaveReq()
-      {
-      
-       if($.trim($('#txtLeaveFrom').val()).length<=0)
-       {
-         alert('Please select from date');
-             $('#txtLeaveFrom').focus();
-             return false;
-       }
-        if($.trim($('#txtLeaveTo').val()).length<=0)
-       {
-         alert('Please select to date');
-         $('#txtLeaveTo').focus();
-          return false;
-       }
-       if($.trim($('#txtReason').val()).length<=0)
-       {
-         alert('Please enter reason');
-        $('#txtReason').focus();
-         return false;
-       }
-       return true;
-      }
-    
     
     
     
         $(window).load(function(){
         $('#spinner').hide();
-              //  $('.table1 tr:last-child').remove();
-            $('.table2 tr:last-child').remove();
-            // $('.table3 tr:last-child').remove();
-            
-        
-            
-        
+              
+       //     $('.table2 tr:last-child').remove();
+
             var start = 2;
             var totalRO = $(".table1 tr").length;
             var totalTD = $('.table1 tr:eq(1) th').length;
@@ -2163,10 +1942,15 @@ function clearDisposableItems( sender , args ) {
                 $(this).prev().removeAttr('class').addClass('atnUnLeave')
                 $(this).next().removeAttr('class').addClass('atnUnLeave')
            });
-           
+                
             $('.atnEdit').each(function(){
                 $(this).prev().removeAttr('class').addClass('atnEdit')
                 $(this).next().removeAttr('class').addClass('atnEdit')
+           });
+           
+            $('.atnLeave').each(function(){
+             $(this).prev().removeAttr('class').addClass('atnLeave')
+             $(this).next().removeAttr('class').addClass('atnLeave')
            });
            
             
@@ -2575,6 +2359,31 @@ function clearDisposableItems( sender , args ) {
         
         function pageLoad(){
         
+             $('.atnHoliday').each(function(){
+                $(this).prev().removeAttr('class').addClass('atnHoliday')
+                $(this).next().removeAttr('class').addClass('atnHoliday')
+           });
+           
+           $('.atnSun').each(function(){
+                $(this).prev().removeAttr('class').addClass('atnSun')
+                $(this).next().removeAttr('class').addClass('atnSun')
+           });
+           
+           $('.atnUnLeave').each(function(){
+                $(this).prev().removeAttr('class').addClass('atnUnLeave')
+                $(this).next().removeAttr('class').addClass('atnUnLeave')
+           });
+           
+           $('.atnEdit').each(function(){
+                $(this).prev().removeAttr('class').addClass('atnEdit')
+                $(this).next().removeAttr('class').addClass('atnEdit')
+           });
+           
+           $('.atnLeave').each(function(){
+                $(this).prev().removeAttr('class').addClass('atnLeave')
+                $(this).next().removeAttr('class').addClass('atnLeave')
+           });
+        
         
          $('.tooltip2').tipsy({html: true, gravity:'sw' });
             
@@ -2587,11 +2396,7 @@ function clearDisposableItems( sender , args ) {
                  $('#txtSignOut').timepicker({                    
 	                timeFormat: "hh:mm TT"	                
                 });
-  
-              
-  
-            $('.table2 tr:last-child').remove();
-         
+           
            style1('table1')
        
               // Counter    start     

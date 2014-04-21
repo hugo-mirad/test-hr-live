@@ -463,9 +463,13 @@ namespace Attendance
                         Response.Redirect("AdminReports.aspx");
 
                     }
-                    else
+                    else if (Session["IsManage"].ToString() == "True")
                     {
                         Response.Redirect("Reports.aspx");
+                    }
+                    else
+                    {
+                        Response.Redirect("SingleReport.aspx");
                     }
                 }
                 else

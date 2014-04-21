@@ -117,8 +117,18 @@ namespace Attendance
                     }
                     grdUsers.DataSource = dt;
                     grdUsers.DataBind();
+                    lblGrdNodata.Text = "";
+                    dvNodata.Style["display"] = "none";
 
                     BizUtility.GridSortInitail("Ascending", "Firstname", grdUsers, 0, dt);
+                }
+                else
+                {
+                    lblTotal.Text = "";
+                    lblGrdNodata.Text = "No data found";
+                    dvNodata.Style["display"] = "block";
+                    grdUsers.DataSource = null;
+                    grdUsers.DataBind();
                 }
             }
             catch (Exception ex)
