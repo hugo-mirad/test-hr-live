@@ -50,6 +50,15 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.Label lblLocation;
         
         /// <summary>
+        /// ddlShifts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlShifts;
+        
+        /// <summary>
         /// lblHeadSchedule control.
         /// </summary>
         /// <remarks>
@@ -237,6 +246,24 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSelect;
+        
+        /// <summary>
+        /// ddlGrdLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlGrdLocation;
+        
+        /// <summary>
+        /// ddlShift control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlShift;
         
         /// <summary>
         /// lnkUpdate control.
@@ -428,6 +455,15 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.LinkButton lnkPwdClose;
         
         /// <summary>
+        /// upPwddv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upPwddv;
+        
+        /// <summary>
         /// txtOldpwd control.
         /// </summary>
         /// <remarks>
@@ -534,6 +570,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkPasscodeClose;
+        
+        /// <summary>
+        /// upPassdv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upPassdv;
         
         /// <summary>
         /// txtOldpasscode control.

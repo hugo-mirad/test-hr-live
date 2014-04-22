@@ -44,6 +44,8 @@ namespace Attendance
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
+                    GetMasterShifts(lblLocation.Text.ToString());
+                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
 
                     DateTime startdate = Convert.ToDateTime(CurentDatetime.ToString("MM/dd/yyyy")).AddDays(1 - Convert.ToDateTime(CurentDatetime.ToString("MM/dd/yyyy")).Day);
                     DateTime Enddate=startdate.AddMonths(1).AddSeconds(-1);
@@ -52,9 +54,20 @@ namespace Attendance
                     ViewState["EndMonth"] = Enddate;
                     ViewState["CurrentMonth"] = startdate;
                     int AppovedStatusID = 0;
-
+                    getLocations();
+                    GetShifts(lblLocation.Text.ToString());
+                    ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(Session["ShiftID"].ToString()));
+                    if(Session["IsAdmin"].ToString()=="True")
+                    {
+                        ddlGrdLocation.Enabled = true;
+                    }
+                    else
+                    {
+                        ddlGrdLocation.Enabled = false;
+                    }
+                    ddlGrdLocation.SelectedIndex = ddlGrdLocation.Items.IndexOf(ddlGrdLocation.Items.FindByText(lblLocation.Text.ToString()));
                     GetStatus();
-                    GetLeavesDetails(lblLocation.Text, startdate, Enddate, AppovedStatusID);
+                    GetLeavesDetails(lblLocation.Text, startdate, Enddate, AppovedStatusID,Convert.ToInt32(ddlShift.SelectedValue));
                     if (startdate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentMonth"]).ToString("MM/dd/yyyy"))
                     {
                         btnNext.CssClass = "btn btn-danger btn-small disabled";
@@ -89,12 +102,12 @@ namespace Attendance
             {
             }
         }
-        private void GetLeavesDetails(string p, DateTime startdate, DateTime Enddate, int AppovedStatusID)
+        private void GetLeavesDetails(string p, DateTime startdate, DateTime Enddate, int AppovedStatusID,int shiftID)
         {
             try
             {
                 EmployeeBL obj = new EmployeeBL();
-                DataTable dt = obj.GetLeaveDetailsByLoction(p, startdate, Enddate, AppovedStatusID);
+                DataTable dt = obj.GetLeaveDetailsByLoction(p, startdate, Enddate, AppovedStatusID,shiftID);
                 if (dt.Rows.Count > 0)
                 {
 
@@ -159,6 +172,14 @@ namespace Attendance
                     //mdlSuccessfullAlert.Show();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Password changed successfully..');", true);
                 }
+                else
+                {
+                    txtOldpwd.Text = "";
+                    txtNewPwd.Text = "";
+                    txtConfirmPwd.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and password..');", true);
+                    txtOldpwd.Focus();
+                }
 
             }
             catch (Exception ex)
@@ -183,6 +204,14 @@ namespace Attendance
                     txtConfirmPasscode.Text = "";
                     mdlChangePasscode.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Passcode changed successfully..');", true);
+                }
+                else
+                {
+                    txtOldpasscode.Text = "";
+                    txtNewPasscode.Text = "";
+                    txtConfirmPasscode.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and old passcode..');", true);
+                    txtOldpasscode.Focus();
                 }
             }
             catch (Exception ex)
@@ -288,7 +317,7 @@ namespace Attendance
             try
             {
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
-                GetLeavesDetails(lblLocation.Text, Convert.ToDateTime(ViewState["StartMonth"]), Convert.ToDateTime(ViewState["EndMonth"]), StatusID);
+                GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), Convert.ToDateTime(ViewState["StartMonth"]), Convert.ToDateTime(ViewState["EndMonth"]), StatusID,Convert.ToInt32(ddlShift.SelectedValue));
             }
             catch (Exception ex)
             {
@@ -335,7 +364,7 @@ namespace Attendance
                 }
                 mdlLeaveStatusUpdate.Hide();
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
-                GetLeavesDetails(lblLocation.Text, Convert.ToDateTime(ViewState["StartMonth"]), Convert.ToDateTime(ViewState["EndMonth"]), StatusID);
+                GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), Convert.ToDateTime(ViewState["StartMonth"]), Convert.ToDateTime(ViewState["EndMonth"]), StatusID, Convert.ToInt32(ddlShift.SelectedValue));
             }
             catch (Exception ex)
             {
@@ -352,7 +381,7 @@ namespace Attendance
                 ViewState["EndMonth"]=PrevEnd;
 
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
-                GetLeavesDetails(lblLocation.Text, PrevStart, PrevEnd, StatusID);
+                GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), PrevStart, PrevEnd, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
 
 
                 if (PrevStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentMonth"]).ToString("MM/dd/yyyy"))
@@ -395,7 +424,7 @@ namespace Attendance
                 }
 
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
-                GetLeavesDetails(lblLocation.Text, CurrentStart, CurrentEnd, StatusID);
+                GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), CurrentStart, CurrentEnd, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
 
             }
             catch (Exception ex)
@@ -427,7 +456,7 @@ namespace Attendance
                 }
 
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
-                GetLeavesDetails(lblLocation.Text, NextStart, NextEnd, StatusID);
+                GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), NextStart, NextEnd, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
 
             }
             catch (Exception ex)
@@ -467,6 +496,82 @@ namespace Attendance
             }
             return strTransaction;
 
+        }
+        private void GetMasterShifts(string LocationName)
+        {
+            try
+            {
+                Business business = new Business();
+                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+                ddlShifts.DataSource = dsShifts;
+                ddlShifts.DataTextField = "shiftname";
+                ddlShifts.DataValueField = "shiftID";
+                ddlShifts.DataBind();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private void getLocations()
+        {
+            try
+            {
+                Attendance.BAL.Report obj = new Report();
+                DataTable dt = obj.GetLocations();
+                ddlGrdLocation.DataSource = dt;
+                ddlGrdLocation.DataTextField = "LocationName";
+                ddlGrdLocation.DataValueField = "LocationId";
+                ddlGrdLocation.DataBind();
+             
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void GetShifts(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShift.DataSource = dsShifts;
+            ddlShift.DataTextField = "shiftname";
+            ddlShift.DataValueField = "shiftID";
+            ddlShift.DataBind();
+            ddlShift.Items.Insert(0, new ListItem("ALL", "0"));
+        }
+
+        protected void ddlShift_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                DateTime Start = Convert.ToDateTime(ViewState["StartMonth"]);
+                DateTime End = Convert.ToDateTime(ViewState["EndMonth"]);
+                int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
+                GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), Start, End, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        protected void ddlGrdLocation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                GetShifts(ddlGrdLocation.SelectedValue.ToString());
+                DateTime Start = Convert.ToDateTime(ViewState["StartMonth"]);
+                DateTime End = Convert.ToDateTime(ViewState["EndMonth"]);
+                int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
+                GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), Start, End, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
+
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
     }

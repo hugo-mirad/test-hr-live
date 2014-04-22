@@ -265,6 +265,7 @@
 
         function stopLoading() {
             //  alert('Stop')
+            $('body').empty();
             if ($.browser.msie) {
                 document.execCommand("Stop");
             } else {

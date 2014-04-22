@@ -833,6 +833,14 @@ namespace Attendance
                     mdlChangePwd.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Password changed successfully..');", true);
                 }
+                else
+                {
+                    txtOldpwd.Text = "";
+                    txtNewPwd.Text = "";
+                    txtConfirmPwd.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and password..');", true);
+                    txtOldpwd.Focus();
+                }
 
             }
             catch (Exception ex)
@@ -859,7 +867,14 @@ namespace Attendance
                     mdlChangePasscode.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Passcode changed successfully..');", true);
                 }
-
+                else
+                {
+                    txtOldpasscode.Text = "";
+                    txtNewPasscode.Text = "";
+                    txtConfirmPasscode.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and old passcode..');", true);
+                    txtOldpasscode.Focus();
+                }
             }
             catch (Exception ex)
             {

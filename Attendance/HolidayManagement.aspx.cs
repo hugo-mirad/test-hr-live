@@ -44,8 +44,10 @@ namespace Attendance
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
-                    DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
 
+                    GetMasterShifts(lblLocation.Text.ToString());
+                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
+                    DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
                     Getdepartments();
                     GetYear();
                     getLocations();
@@ -311,6 +313,14 @@ namespace Attendance
                     mdlChangePwd.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Password changed successfully..');", true);
                 }
+                else
+                {
+                    txtOldpwd.Text = "";
+                    txtNewPwd.Text = "";
+                    txtConfirmPwd.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and password..');", true);
+                    txtOldpwd.Focus();
+                }
 
             }
             catch (Exception ex)
@@ -336,6 +346,14 @@ namespace Attendance
                     txtConfirmPasscode.Text = "";
                     mdlChangePasscode.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Passcode changed successfully..');", true);
+                }
+                else
+                {
+                    txtOldpasscode.Text = "";
+                    txtNewPasscode.Text = "";
+                    txtConfirmPasscode.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and old passcode..');", true);
+                    txtOldpasscode.Focus();
                 }
 
             }
@@ -974,7 +992,21 @@ namespace Attendance
             {
             }   
         }
-
+        private void GetMasterShifts(string LocationName)
+        {
+            try
+            {
+                Business business = new Business();
+                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+                ddlShifts.DataSource = dsShifts;
+                ddlShifts.DataTextField = "shiftname";
+                ddlShifts.DataValueField = "shiftID";
+                ddlShifts.DataBind();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
     }
 }

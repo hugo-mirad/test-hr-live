@@ -992,8 +992,9 @@
                 <tr>
                     <td style="vertical-align: top; width: 90px;">
                         Internal notes
-                        h="250" TextMode="MultiLine"
-                            Rows="6"></asp:TextBox>
+                        </td>
+                        <td>
+                        <asp:TextBox ID="txtPopNotes" runat="server" width="220" TextMode="MultiLine" Rows="6"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>

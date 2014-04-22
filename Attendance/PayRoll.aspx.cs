@@ -76,7 +76,7 @@ namespace Attendance
                             ViewState["StartRptDt"] = MonthStart;
                             ViewState["EndRptDt"] = MonthEnd;
                             Attendance.BAL.Report obj = new Report();
-                            DateTime Count = obj.GetFreezedDate(MonthEnd, ddlLocation.SelectedItem.Text.Trim());
+                            DateTime Count = obj.GetFreezedDate(MonthEnd, ddlLocation.SelectedItem.Text.Trim(),Convert.ToInt32(ddlShift.SelectedValue));
                             if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                             {
                                 lblFreeze.Text = "";
@@ -142,7 +142,7 @@ namespace Attendance
                             DateTime EndDate = StartDate.AddDays(-14);
 
                             Attendance.BAL.Report obj = new Report();
-                            DateTime Count = obj.GetFreezedDate(EndDate, ddlLocation.SelectedItem.Text.Trim());
+                            DateTime Count = obj.GetFreezedDate(EndDate, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                             if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                             {
                                 lblFreeze.Text = "";
@@ -181,7 +181,7 @@ namespace Attendance
                             ViewState["StartRptDt"] = MonthStart;
                             ViewState["EndRptDt"] = MonthEnd;
                             Attendance.BAL.Report obj = new Report();
-                            DateTime Count = obj.GetFreezedDate(MonthEnd, Session["LocationName"].ToString());
+                            DateTime Count = obj.GetFreezedDate(MonthEnd, Session["LocationName"].ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                             if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                             {
                                 lblFreeze.Text = "";
@@ -247,7 +247,7 @@ namespace Attendance
                             DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
                             DateTime EndDate = StartDate.AddDays(-14);
                             Attendance.BAL.Report obj = new Report();
-                            DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString());
+                            DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                             if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                             {
                                 lblFreeze.Text = "";
@@ -340,6 +340,14 @@ namespace Attendance
                     mdlChangePwd.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Password changed successfully..');", true);
                 }
+                else
+                {
+                    txtOldpwd.Text = "";
+                    txtNewPwd.Text = "";
+                    txtConfirmPwd.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and password..');", true);
+                    txtOldpwd.Focus();
+                }
 
             }
             catch (Exception ex)
@@ -365,7 +373,14 @@ namespace Attendance
                     mdlChangePasscode.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Passcode changed successfully..');", true);
                 }
-
+                else
+                {
+                    txtOldpasscode.Text = "";
+                    txtNewPasscode.Text = "";
+                    txtConfirmPasscode.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and old passcode..');", true);
+                    txtOldpasscode.Focus();
+                }
             }
             catch (Exception ex)
             {
@@ -402,7 +417,7 @@ namespace Attendance
                 ViewState["StartRptDt"] = StartDate;
                 ViewState["EndRptDt"] = EndTime;
                 Attendance.BAL.Report obj = new Report();
-                DateTime Count = obj.GetFreezedDate(EndTime, ddlLocation.SelectedItem.Text.ToString());
+                DateTime Count = obj.GetFreezedDate(EndTime, ddlLocation.SelectedItem.Text.ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                 if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                 {
                     lblFreeze.Text = "";
@@ -1144,7 +1159,7 @@ namespace Attendance
 
 
                         Attendance.BAL.Report obj = new Report();
-                        DateTime Count = obj.GetFreezedDate(MonthEnd, ddlLocation.SelectedItem.Text.Trim());
+                        DateTime Count = obj.GetFreezedDate(MonthEnd, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                         if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                         {
                             lblFreeze.Text = "";
@@ -1211,7 +1226,7 @@ namespace Attendance
                         DateTime EndDate = StartDate.AddDays(-14);
 
                         Attendance.BAL.Report obj = new Report();
-                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString());
+                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                         if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                         {
                             lblFreeze.Text = "";
@@ -1251,7 +1266,7 @@ namespace Attendance
                         ViewState["EndRptDt"] = MonthEnd;
 
                         Attendance.BAL.Report obj = new Report();
-                        DateTime Count = obj.GetFreezedDate(MonthEnd, Session["LocationName"].ToString());
+                        DateTime Count = obj.GetFreezedDate(MonthEnd, Session["LocationName"].ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                         if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                         {
                             lblFreeze.Text = "";
@@ -1319,7 +1334,7 @@ namespace Attendance
                         DateTime EndDate = StartDate.AddDays(-14);
 
                         Attendance.BAL.Report obj = new Report();
-                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString());
+                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                         if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                         {
                             lblFreeze.Text = "";
@@ -1720,7 +1735,7 @@ namespace Attendance
                     bool bnew = obj.SaveSalaryHistory(objSal);
 
                 }
-                bool bnewf = obj.FinalizePayrollReport(locationID, dt, Convert.ToInt32(Session["UserID"]));
+                bool bnewf = obj.FinalizePayrollReport(locationID, dt, Convert.ToInt32(Session["UserID"]),Convert.ToInt32(ddlShift.SelectedValue));
                 bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
                 if (final)
@@ -1785,6 +1800,8 @@ namespace Attendance
                     grdPayRollIndia.DataSource = null;
                     grdPayRollIndia.DataBind();
                     Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+                    dvNodata.Style["display"] = "none";
+                    lblGrdNodata.Text = "";
                 }
                 else
                 {
@@ -1856,7 +1873,7 @@ namespace Attendance
 
                 // DataTable dtPaid = GetPayrollDataByLoc(LocationID, StartDate.AddMonths(-1), StartDate.AddSeconds(-1));
                 DataTable dtPaid1 = obj.Usp_GetEmployeePayrollDataByLocation(LocationID, StartDate, EndTime,Convert.ToInt32(ddlShift.SelectedValue));
-                DataTable dtPaid = obj.GetEmpPaidleavesDetailsByLocation(LocationID, StartDate.AddMonths(-1), StartDate.AddSeconds(-1));
+                DataTable dtPaid = obj.GetEmpPaidleavesDetailsByLocation(LocationID, StartDate.AddMonths(-1), StartDate.AddSeconds(-1),Convert.ToInt32(ddlShift.SelectedValue));
                 int days = (Convert.ToInt32(EndTime.ToString("dd")) - Convert.ToInt32(StartDate.ToString("dd"))) + 1;
                 if (ds.Tables.Count > 0)
                 {
@@ -2984,7 +3001,7 @@ namespace Attendance
             ddlShift.DataTextField = "shiftname";
             ddlShift.DataValueField = "shiftID";
             ddlShift.DataBind();
-            ddlShift.Items.Insert(0, new System.Web.UI.WebControls.ListItem("ALL", "0"));
+           // ddlShift.Items.Insert(0, new System.Web.UI.WebControls.ListItem("ALL", "0"));
         }
         private void GetMasterShifts(string LocationName)
         {
@@ -3038,7 +3055,7 @@ namespace Attendance
 
 
                         Attendance.BAL.Report obj = new Report();
-                        DateTime Count = obj.GetFreezedDate(MonthEnd, ddlLocation.SelectedItem.Text.Trim());
+                        DateTime Count = obj.GetFreezedDate(MonthEnd, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                         if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                         {
                             lblFreeze.Text = "";
@@ -3104,7 +3121,7 @@ namespace Attendance
                         DateTime EndDate = StartDate.AddDays(-14);
 
                         Attendance.BAL.Report obj = new Report();
-                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString());
+                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                         if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                         {
                             lblFreeze.Text = "";
@@ -3144,7 +3161,7 @@ namespace Attendance
                         ViewState["EndRptDt"] = MonthEnd;
 
                         Attendance.BAL.Report obj = new Report();
-                        DateTime Count = obj.GetFreezedDate(MonthEnd, Session["LocationName"].ToString());
+                        DateTime Count = obj.GetFreezedDate(MonthEnd, Session["LocationName"].ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                         if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                         {
                             lblFreeze.Text = "";
@@ -3212,7 +3229,7 @@ namespace Attendance
                         DateTime EndDate = StartDate.AddDays(-14);
 
                         Attendance.BAL.Report obj = new Report();
-                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString());
+                        DateTime Count = obj.GetFreezedDate(EndDate, Session["LocationName"].ToString(), Convert.ToInt32(ddlShift.SelectedValue));
                         if (Count.ToString("MM/dd/yyyy") != "01/01/1900")
                         {
                             lblFreeze.Text = "";

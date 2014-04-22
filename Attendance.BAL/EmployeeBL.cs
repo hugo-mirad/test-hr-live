@@ -13,21 +13,26 @@ namespace Attendance.BAL
         public bool UpdatePasswordByUserID(int userid, string Oldpassword, string Newpassword)
         {
             bool success = false;
+
+            DataSet ds = new DataSet();
+
             try
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
-                con.Open();
-                SqlCommand command = new SqlCommand("[USP_UpdatePasswordByUserID]", con);
-                command.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_UpdatePasswordByUserID]", con);
 
-                command.Parameters.Add("@Userid", SqlDbType.Int).Value = userid;
-                // command.Parameters.Add("@EmpID", SqlDbType.VarChar).Value = objInfo.EmpID;
-                command.Parameters.Add("@Oldpwd", SqlDbType.VarChar).Value = Oldpassword;
-                command.Parameters.Add("@NewPwd", SqlDbType.VarChar).Value = Newpassword;
-              //  command.Parameters.Add("@Startdate", SqlDbType.DateTime).Value = Location;
-                command.ExecuteNonQuery();
-                con.Close();
-                success = true;
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Userid", userid));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Oldpwd", Oldpassword));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@NewPwd", Newpassword));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    success = true;
+                }
+              
+
             }
             catch (Exception ex)
             {
@@ -36,28 +41,33 @@ namespace Attendance.BAL
         }
         public bool UpdatePasscodeByUserID(int userid, string oldpasscode, string newpasscode)
         {
+
             bool success = false;
+
+            DataSet ds = new DataSet();
+
             try
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
-                con.Open();
-                SqlCommand command = new SqlCommand("[USP_UpdatePassCodeByUserID]", con);
-                command.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_UpdatePassCodeByUserID]", con);
 
-                command.Parameters.Add("@Userid", SqlDbType.Int).Value = userid;
-                // command.Parameters.Add("@EmpID", SqlDbType.VarChar).Value = objInfo.EmpID;
-                command.Parameters.Add("@OldPasscode", SqlDbType.VarChar).Value = oldpasscode;
-                command.Parameters.Add("@NewPasscode", SqlDbType.VarChar).Value = newpasscode;
-                //  command.Parameters.Add("@Startdate", SqlDbType.DateTime).Value = Location;
-                command.ExecuteNonQuery();
-                con.Close();
-                success = true;
+                da.SelectCommand.Parameters.Add(new SqlParameter("@Userid", userid));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@OldPasscode", oldpasscode));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@NewPasscode", newpasscode));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    success = true;
+                }
             }
             catch (Exception ex)
             {
             }
             return success;
-        }
+
+       }
         public bool ResetPasscodeByAdmin(int userid, string ip, string newpasscode,DateTime currentDate,string EmpID)
         {
             bool success = false;
@@ -168,7 +178,7 @@ namespace Attendance.BAL
             }
             return ID;
         }
-        public DataTable GetLeaveDetailsByLoction(string LocationName,DateTime Startdate,DateTime EndDate,int ApprovedStatusID)
+        public DataTable GetLeaveDetailsByLoction(string LocationName,DateTime Startdate,DateTime EndDate,int ApprovedStatusID,int shiftID)
         {
             DataSet ds = new DataSet();
 
@@ -181,6 +191,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocatinName", LocationName));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@Startdate", Startdate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@Enddate", EndDate));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@ApproveStatusID", ApprovedStatusID));
            
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
@@ -219,7 +230,7 @@ namespace Attendance.BAL
             }
             return success;
         }
-        public DataTable GetEmpPaidleavesDetailsByLocation(int location,DateTime StartDt,DateTime EndDt)
+        public DataTable GetEmpPaidleavesDetailsByLocation(int location,DateTime StartDt,DateTime EndDt,int shiftID)
         {
             DataSet ds = new DataSet();
 
@@ -231,6 +242,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDt));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", location));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
                 DataTable dt = ds.Tables[0];

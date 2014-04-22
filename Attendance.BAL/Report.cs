@@ -661,7 +661,7 @@ namespace Attendance.BAL
                 }
                 return success;
             }
-            public bool UpdateFreeze(int userid, string Location,DateTime FreezeDate)
+            public bool UpdateFreeze(int userid, string Location,DateTime FreezeDate,int shiftID)
             {
                 bool success = false;
                  try
@@ -674,6 +674,7 @@ namespace Attendance.BAL
                     command.Parameters.Add("@Locationname", SqlDbType.VarChar).Value = Location;
                     command.Parameters.Add("@CurrentDate", SqlDbType.DateTime).Value = FreezeDate;
                     command.Parameters.Add("@Userid", SqlDbType.Int).Value = userid;
+                    command.Parameters.Add("@shiftID", SqlDbType.Int).Value = shiftID;
                     command.ExecuteNonQuery();
                     con.Close();
                     success = true;
@@ -684,7 +685,7 @@ namespace Attendance.BAL
                 }
                 return success;
             }
-            public DateTime GetFreezedDate(DateTime FreezedDate, string LocationName)
+            public DateTime GetFreezedDate(DateTime FreezedDate, string LocationName,int shiftID)
             {
                 DataSet ds = new DataSet();
                 DateTime Count = Convert.ToDateTime("01/01/1900"); 
@@ -694,6 +695,7 @@ namespace Attendance.BAL
                     SqlCommand cmd = new SqlCommand();
                     SqlDataAdapter da = new SqlDataAdapter("[USP_GetFreezedDate]", con);
                     da.SelectCommand.Parameters.Add(new SqlParameter("@Currentdate", FreezedDate));
+                    da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
                     da.SelectCommand.Parameters.Add(new SqlParameter("@LocationName", LocationName));
                     da.SelectCommand.CommandType = CommandType.StoredProcedure;
                     da.Fill(ds);
@@ -855,7 +857,7 @@ namespace Attendance.BAL
                 }
                 return success;
             }
-            public bool FinalizePayrollReport(int LocationID, DateTime startDate,int enterBy)
+            public bool FinalizePayrollReport(int LocationID, DateTime startDate,int enterBy,int shiftID)
             {
                 
                     bool success = false;
@@ -868,7 +870,7 @@ namespace Attendance.BAL
                         command.Parameters.Add("@locationID", SqlDbType.Int).Value = LocationID;
                         command.Parameters.Add("@startDate", SqlDbType.DateTime).Value = startDate;
                         command.Parameters.Add("@enterBy", SqlDbType.Int).Value = enterBy;
-
+                        command.Parameters.Add("@shiftID", SqlDbType.Int).Value = shiftID;
                         command.ExecuteNonQuery();
                         con.Close();
                         success = true;

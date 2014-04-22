@@ -303,6 +303,9 @@
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
         </a>
+         <div class="shifts">
+                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
+            </div>
         <div class="right">
             <div class="wel">
                 <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">

@@ -84,7 +84,7 @@ namespace Attendance
                     hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
                     Attendance.BAL.Report obj = new Report();
                     //int CNT = obj.GetFreezedDate(FreezeDate);
-                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim());
+                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                     lblFreezedate.Text = FreezeDate.ToString("MM/dd/yyyy");
                     hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
                     if (CNT.ToString("MM/dd/yyyy") != "01/01/1900")
@@ -179,6 +179,14 @@ namespace Attendance
                     //mdlSuccessfullAlert.Show();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Password changed successfully..');", true);
                 }
+                else
+                {
+                    txtOldpwd.Text = "";
+                    txtNewPwd.Text = "";
+                    txtConfirmPwd.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and password..');", true);
+                    txtOldpwd.Focus();
+                }
 
             }
             catch (Exception ex)
@@ -205,7 +213,14 @@ namespace Attendance
                     mdlChangePasscode.Hide();
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Passcode changed successfully..');", true);
                 }
-
+                else
+                {
+                    txtOldpasscode.Text = "";
+                    txtNewPasscode.Text = "";
+                    txtConfirmPasscode.Text = "";
+                    System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and old passcode..');", true);
+                    txtOldpasscode.Focus();
+                }
             }
             catch (Exception ex)
             {
@@ -2200,7 +2215,7 @@ namespace Attendance
 
                     Attendance.BAL.Report obj = new Report();
                     // int CNT = obj.GetFreezedDate(FreezeDate);
-                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim());
+                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                     lblFreezedate.Text = FreezeDate.ToString("MM/dd/yyyy");
                     hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
                     if (CNT.ToString("MM/dd/yyyy") != "01/01/1900")
@@ -2390,7 +2405,7 @@ namespace Attendance
                     DateTime FreezeDate = StartOfMonth;
                     Attendance.BAL.Report obj = new Report();
                     //  int CNT = obj.GetFreezedDate(FreezeDate);
-                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim());
+                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                     lblFreezedate.Text = FreezeDate.ToString("MM/dd/yyyy");
                     hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
                     if (CNT.ToString("MM/dd/yyyy") != "01/01/1900")
@@ -3196,7 +3211,7 @@ namespace Attendance
                     DateTime FreezeDate = StartOfMonth.AddDays(-1);
                     Attendance.BAL.Report obj = new Report();
                     //  int CNT = obj.GetFreezedDate(FreezeDate);
-                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim());
+                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                     lblFreezedate.Text = FreezeDate.ToString("MM/dd/yyyy");
                     hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
                     if (CNT.ToString("MM/dd/yyyy") != "01/01/1900")
@@ -3378,7 +3393,7 @@ namespace Attendance
                     DateTime FreezeDate = StartOfMonth;
                     Attendance.BAL.Report obj = new Report();
                     //  int CNT = obj.GetFreezedDate(FreezeDate);
-                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim());
+                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                     lblFreezedate.Text = FreezeDate.ToString("MM/dd/yyyy");
                     hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
                     if (CNT.ToString("MM/dd/yyyy") != "01/01/1900")
@@ -4024,7 +4039,7 @@ namespace Attendance
                     DateTime StartOfMonth = StartDate.AddDays(-1);
                     DateTime FreezeDate = StartOfMonth;
                     Attendance.BAL.Report obj = new Report();
-                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim());
+                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                     lblFreezedate.Text = FreezeDate.ToString("MM/dd/yyyy");
                     hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
                     if (CNT.ToString("MM/dd/yyyy") != "01/01/1900")
@@ -4129,7 +4144,7 @@ namespace Attendance
                 // DateTime TodayDate = Convert.ToDateTime(Session["TodayDate"]);
                 //  DateTime StartOfMonth = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
                 DateTime FreezeDate = Convert.ToDateTime(hdnFreeze.Value);
-                bool bnew = obj.UpdateFreeze(userid, location, FreezeDate);
+                bool bnew = obj.UpdateFreeze(userid, location, FreezeDate,Convert.ToInt32(ddlShift.SelectedValue));
 
                 if (bnew)
                 {
@@ -4632,7 +4647,7 @@ namespace Attendance
                     DateTime FreezeDate = StartOfMonth;
                     Attendance.BAL.Report obj = new Report();
                     //  int CNT = obj.GetFreezedDate(FreezeDate);
-                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim());
+                    DateTime CNT = obj.GetFreezedDate(FreezeDate, ddlLocation.SelectedItem.Text.ToString().Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                     lblFreezedate.Text = FreezeDate.ToString("MM/dd/yyyy");
                     hdnFreeze.Value = FreezeDate.ToString("MM/dd/yyyy");
                     if (CNT.ToString("MM/dd/yyyy") != "01/01/1900")

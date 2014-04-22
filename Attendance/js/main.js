@@ -10,7 +10,7 @@ var tt = self.setInterval('pageRefresh()', timeInt);
 
 function pageRefresh() {
     //console.log('Refe')
-    location.reload();
+    window.location.reload();
 }
 
 
@@ -686,7 +686,7 @@ function changeSuccess1(aa) {
 
            */
 
-      location.reload();
+      window.location.reload();
 
     } else {
         //alert('Something went wrong please try again later');
@@ -766,7 +766,7 @@ function changeSuccess2(success) {
             dropped.removeClass('lateTime');
         }
         */
-      location.reload();
+      window.location.reload();
         
 
     } else {

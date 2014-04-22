@@ -88,6 +88,8 @@ namespace Attendance
                                     shiftID = GetCurrentShiftBytime(CurentDatetime, LocationName);
                                 }
                                 Session["ShiftID"] = shiftID;
+                              
+
                                 ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(shiftID.ToString()));                           
                                 BindAttendanceData(LocationName, CurentDatetime);
                             }
@@ -615,7 +617,7 @@ namespace Attendance
                 DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                 var CurentDatetime = ISTTime;
                 BindAttendanceData(LocationName, CurentDatetime);
-               
+                Session["ShiftID"] = ddlShifts.SelectedValue.ToString();
             }
             catch (Exception ex)
             {

@@ -7,11 +7,14 @@
 <head runat="server">
 
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+
     <link rel="stylesheet" href="css/reset.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/UI.css" />
     <link rel="stylesheet" href="css/inputs.css" type="text/css" />
     <link href="css/admin.css" rel="stylesheet" type="text/css" />
+
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
+
     <script src="js/jquery.tools.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
@@ -25,6 +28,7 @@
      }
      
     </script>
+
     <style type="text/css">
         .tooltip
         {
@@ -48,6 +52,11 @@
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
         </a>
+        <div class="shifts">
+            Shifts:
+            <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false">
+            </asp:DropDownList>
+        </div>
         <div class="right">
             <div class="wel">
                 <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -97,7 +106,6 @@
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                         </li>
-                                        
                                     </ul>
                                 </li>
                             </ul>
@@ -129,9 +137,9 @@
         Leave Approval management
         <br />
         <asp:UpdatePanel ID="uplvAp" runat="server">
-        <ContentTemplate>
-        <asp:Label ID="lblMonthRep" runat="server" CssClass="lbl"></asp:Label>
-        </ContentTemplate>
+            <ContentTemplate>
+                <asp:Label ID="lblMonthRep" runat="server" CssClass="lbl"></asp:Label>
+            </ContentTemplate>
         </asp:UpdatePanel>
     </h2>
     <div style="display: inline-block; margin-left: 10px;">
@@ -142,8 +150,17 @@
                     AppendDataBoundItems="true" AutoPostBack="true">
                     <asp:ListItem Value="0">All</asp:ListItem>
                 </asp:DropDownList>
+                &nbsp;&nbsp; <b>Location </b>&nbsp;&nbsp;
+                <asp:DropDownList ID="ddlGrdLocation" runat="server" Width="83px" Height="23px" AppendDataBoundItems="true"
+                    AutoPostBack="true" OnSelectedIndexChanged="ddlGrdLocation_SelectedIndexChanged">
+                    <asp:ListItem Value="0">All</asp:ListItem>
+                </asp:DropDownList>
+                &nbsp;&nbsp; <b>Shifts </b>&nbsp;&nbsp;
+                <asp:DropDownList ID="ddlShift" runat="server" Width="83px" Height="23px" AutoPostBack="true"
+                    OnSelectedIndexChanged="ddlShift_SelectedIndexChanged">
+                </asp:DropDownList>
                 <asp:Button ID="lnkUpdate" runat="server" Text="Update" CssClass="btn btn-danger w996"
-                    Style="margin-left: 815px" OnClientClick="return validPop();" OnClick="lnkUpdate_Click">
+                    Style="margin-left: 489px;" OnClientClick="return validPop();" OnClick="lnkUpdate_Click">
                 </asp:Button>
                 <div style="display: none">
                     <input type="button" id="lnkUpdate2" value="Update" cssclass="btn btn-danger w996" />
@@ -160,6 +177,8 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
+                    <h4>
+                    </h4>
                 </h4>
             </div>
         </ProgressTemplate>
@@ -173,6 +192,8 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
+                    <h4>
+                    </h4>
                 </h4>
             </div>
         </ProgressTemplate>
@@ -186,6 +207,8 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
+                    <h4>
+                    </h4>
                 </h4>
             </div>
         </ProgressTemplate>
@@ -272,13 +295,13 @@
                             </ItemTemplate>
                             <ItemStyle Width="130" />
                         </asp:TemplateField>
-                         <asp:TemplateField SortExpression="ApprovedByName" HeaderText="Approved by">
+                        <asp:TemplateField SortExpression="ApprovedByName" HeaderText="Approved by">
                             <ItemTemplate>
                                 <asp:Label ID="lblApprovedByName" runat="server" Text='<%#Eval("ApprovedByName")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle Width="120" />
                         </asp:TemplateField>
-                         <asp:TemplateField SortExpression="ApprovedStatus" HeaderText="Approved status">
+                        <asp:TemplateField SortExpression="ApprovedStatus" HeaderText="Approved status">
                             <ItemTemplate>
                                 <asp:Label ID="lblApprovedStatus" runat="server" Text='<%#Eval("ApprovedStatus")%>'></asp:Label>
                             </ItemTemplate>
@@ -316,49 +339,53 @@
                 <asp:LinkButton ID="lnkPwdClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                <tr>
-                    <td>
-                        Old password<asp:TextBox ID="txtOldpwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        New password<span class="must">*</span>
-                        <br />
-                        <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtNewPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Confirm password<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtConfirmPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel9" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnUpdatePwd" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validPwd();" OnClick="btnUpdatePwd_Click" />
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnCancelPwd" EventName="Click" />
-                                </Triggers>
-                            </asp:UpdatePanel>
-                        </div>
-                        <asp:Button ID="btnCancelPwd" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPwd_Click" />
-                    </td>
-                </tr>
-            </table>
+            <asp:UpdatePanel ID="upPwddv" runat="server">
+                <ContentTemplate>
+                    <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                Old password<asp:TextBox ID="txtOldpwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                New password<span class="must">*</span>
+                                <br />
+                                <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtNewPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Confirm password<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtConfirmPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div style="display: inline-block">
+                                    <asp:UpdatePanel ID="UpdatePanel9" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Button ID="btnUpdatePwd" runat="server" Text="Update" CssClass="btn btn-danger"
+                                                OnClientClick="return validPwd();" OnClick="btnUpdatePwd_Click" />
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="btnCancelPwd" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </div>
+                                <asp:Button ID="btnCancelPwd" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPwd_Click" />
+                            </td>
+                        </tr>
+                    </table>
+                </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--Change password popup End-->
@@ -378,52 +405,56 @@
                 <asp:LinkButton ID="lnkPasscodeClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                <tr>
-                    <td>
-                        Old passcode<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtOldpasscode" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        New passcode<span class="must">*</span>
-                        <br />
-                        <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtNewPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Confirm passcode<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtConfirmPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel12" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnUpdatePassCode" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validPasscode();" OnClick="btnUpdatePassCode_Click" />
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnCancelPasscode" EventName="Click" />
-                                </Triggers>
-                            </asp:UpdatePanel>
-                        </div>
-                        <asp:Button ID="btnCancelPasscode" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPasscode_Click" />
-                    </td>
-                </tr>
-            </table>
+            <asp:UpdatePanel ID="upPassdv" runat="server">
+                <ContentTemplate>
+                    <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                Old passcode<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtOldpasscode" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                New passcode<span class="must">*</span>
+                                <br />
+                                <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtNewPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Confirm passcode<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtConfirmPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div style="display: inline-block">
+                                    <asp:UpdatePanel ID="UpdatePanel12" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Button ID="btnUpdatePassCode" runat="server" Text="Update" CssClass="btn btn-danger"
+                                                OnClientClick="return validPasscode();" OnClick="btnUpdatePassCode_Click" />
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="btnCancelPasscode" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </div>
+                                <asp:Button ID="btnCancelPasscode" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPasscode_Click" />
+                            </td>
+                        </tr>
+                    </table>
+                </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--Change passcode popup End-->
@@ -448,9 +479,9 @@
                         <div style="display: inline-block; margin-left: 10px;">
                             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                 <ContentTemplate>
-                                    <asp:DropDownList ID="ddlLeaveApprove" runat="server" width="250" OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged"
+                                    <asp:DropDownList ID="ddlLeaveApprove" runat="server" Width="250" OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged"
                                         AppendDataBoundItems="true" AutoPostBack="true">
-                                      <asp:ListItem Value="0">Select</asp:ListItem>
+                                        <asp:ListItem Value="0">Select</asp:ListItem>
                                     </asp:DropDownList>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
@@ -461,9 +492,9 @@
                     <td style="width: 30%;">
                         Notes
                     </td>
-                    <td style="text-align:right">
-                        <asp:TextBox ID="txtLeaveNotes" runat="server" MaxLength="250" TextMode="MultiLine" Width="243"
-                            Rows="5"></asp:TextBox>
+                    <td style="text-align: right">
+                        <asp:TextBox ID="txtLeaveNotes" runat="server" MaxLength="250" TextMode="MultiLine"
+                            Width="243" Rows="5"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>

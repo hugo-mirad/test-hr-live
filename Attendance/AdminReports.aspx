@@ -1958,7 +1958,7 @@ function clearDisposableItems( sender , args ) {
             
             
            
-           
+           /*
             $('.atnHoliday').each(function(){
                 $(this).prev().removeAttr('class').addClass('atnHoliday')
                 $(this).next().removeAttr('class').addClass('atnHoliday')
@@ -1985,7 +1985,7 @@ function clearDisposableItems( sender , args ) {
              $(this).next().removeAttr('class').addClass('atnLeave')
            });
             
-           
+           */
            
            
            
@@ -2681,6 +2681,9 @@ function clearDisposableItems( sender , args ) {
          txtMultipleSignOut,
          lblMultipleEditPopName,lblMultipleEditDay
          */
+         
+         if($this.attr('disabled') != 'disabled'){
+         
          var empid= $this.attr('empid');
          var empName = $this.attr('empname');
          var logUid = $this.attr('loguid');
@@ -2776,7 +2779,7 @@ function clearDisposableItems( sender , args ) {
          
         
          return true;
-         
+         }
          
          
         }
