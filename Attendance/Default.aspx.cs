@@ -208,8 +208,21 @@ namespace Attendance
                         dv = dsEmp.Tables[0].DefaultView;
                         dv.RowFilter = "userid=" + entities.UserID;
                         dt = dv.ToTable();
-
-                        lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                        if (dt.Rows.Count > 0)
+                        {
+                            lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                        }
+                        else
+                        {
+                            dsEmp = Session["LogoutEmployee"] as DataSet;
+                            dv = dsEmp.Tables[0].DefaultView;
+                            dv.RowFilter = "userid=" + entities.UserID;
+                            dt = dv.ToTable();
+                            if (dt.Rows.Count > 0)
+                            {
+                                lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                            }
+                        }
                         lblLIError.Text = "Invalid passcode";
                         mdlLoginpopup.Show();
                         userPass.Focus();
@@ -225,7 +238,22 @@ namespace Attendance
                     dv.RowFilter = "userid=" + entities.UserID;
                     dt = dv.ToTable();
 
-                    lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                    if (dt.Rows.Count > 0)
+                    {
+                        lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                    }
+                    else
+                    {
+                        dsEmp = Session["LogoutEmployee"] as DataSet;
+                        dv = dsEmp.Tables[0].DefaultView;
+                        dv.RowFilter = "userid=" + entities.UserID;
+                        dt = dv.ToTable();
+                        if (dt.Rows.Count > 0)
+                        {
+                            lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                        }
+                    }
+
                     lblLIError.Text = "Invalid passcode";
                     mdlLoginpopup.Show();
                     userPass.Focus();
@@ -283,8 +311,21 @@ namespace Attendance
                             dv = dsEmp.Tables[0].DefaultView;
                             dv.RowFilter = "userid=" + entities.UserID;
                             dt = dv.ToTable();
-
-                            lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                            if (dt.Rows.Count > 0)
+                            {
+                                lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                            }
+                            else
+                            {
+                               
+                                dv = dsEmp.Tables[1].DefaultView;
+                                dv.RowFilter = "userid=" + entities.UserID;
+                                dt = dv.ToTable();
+                                if (dt.Rows.Count > 0)
+                                {
+                                    lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                                }
+                            }
                             lblLIError.Text = "Invalid passcode";
                             mdlLoginpopup.Show();
                             userPass.Focus();
@@ -299,8 +340,20 @@ namespace Attendance
                         dv = dsEmp.Tables[0].DefaultView;
                         dv.RowFilter = "userid=" + entities.UserID;
                         dt = dv.ToTable();
-
-                        lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                        if (dt.Rows.Count > 0)
+                        {
+                            lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                        }
+                        else
+                        {
+                            dv = dsEmp.Tables[1].DefaultView;
+                            dv.RowFilter = "userid=" + entities.UserID;
+                            dt = dv.ToTable();
+                            if (dt.Rows.Count > 0)
+                            {
+                                lblLIName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
+                            }
+                        }
                         lblLIError.Text = "Invalid passcode";
                         mdlLoginpopup.Show();
                         userPass.Focus();
@@ -645,6 +698,7 @@ namespace Attendance
 
                 DataSet dsImages2 = new DataSet();
                 dsImages2 = business.BindLogout(LocationName, CurentDatetime,shiftID);
+                Session["LogoutEmployee"] = dsImages2;
                 rplogout.DataSource = dsImages2;
                 rplogout.DataBind();
             }

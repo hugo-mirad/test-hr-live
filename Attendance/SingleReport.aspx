@@ -1,9 +1,8 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SingleReport.aspx.cs" Inherits="Attendance.SingleReport" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title></title>
     <!-- <script src="js/overlibmws.js" type="text/javascript"></script>  -->
@@ -14,16 +13,16 @@
     <!-- <link rel="stylesheet" href="css/style.css" type="text/css" />  -->
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
-       .tooltip {
-        display: none;
-        background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
-        font-size: 12px;
-        height: 167px;
-        width: 320px;
-        padding: 25px;
-        color: #EEE;
+        .tooltip
+        {
+            display: none;
+            background: rgba(0, 0, 0, 0) url(images/black_arrow_big.png);
+            font-size: 12px;
+            height: 167px;
+            width: 320px;
+            padding: 25px;
+            color: #EEE;
         }
-        
         body, html
         {
             font-family: Arial;
@@ -92,30 +91,30 @@
         {
             white-space: nowrap;
         }
-        .table2,.tableLeave td
+        .table2, .tableLeave td
         {
             border: #ccc 1px dotted;
             padding: 2px 4px;
             white-space: nowrap;
         }
-        .table2 th, .table2 tr:first-child td,.tableLeave th, .tableLeave tr:first-child td
+        .table2 th, .table2 tr:first-child td, .tableLeave th, .tableLeave tr:first-child td
         {
             padding: 2px 4px;
             vertical-align: middle;
             background: #ccc;
             text-align: center;
         }
-        .table2,.tableLeave
+        .table2, .tableLeave
         {
             font-size: 13px;
         }
-        .table2 tr:first-child td,.tableLeave tr:first-child td
+        .table2 tr:first-child td, .tableLeave tr:first-child td
         {
             /* border:#888 2px solid;*/
             font-weight: bold;
             font-size: 13px;
         }
-        .table2,.tableLeave
+        .table2, .tableLeave
         {
             border: #999 1px solid;
             border-collapse: collapse;
@@ -125,7 +124,7 @@
             margin-right: 25%;
             padding-left: 99px;
         }
-        .table2 td span,.tableLeave td span
+        .table2 td span, .tableLeave td span
         {
             white-space: nowrap;
             font-size: 14px;
@@ -154,9 +153,11 @@
         {
             background: url(../images/popupBack.png) repeat;
         }
-        
-        .popupHolder2{ background: url(../images/popupBack.png) repeat; z-index:100002;  }
-
+        .popupHolder2
+        {
+            background: url(../images/popupBack.png) repeat;
+            z-index: 100002;
+        }
         .popContent
         {
             border: #ccc 1px solid;
@@ -414,8 +415,7 @@
             padding-top: 55px;
         }
     </style>
-     
-     
+
     <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script>
 
     <link href="css/tipsy.css" rel="stylesheet" type="text/css" />
@@ -431,9 +431,9 @@
     <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
 
     <script type="text/javascript" src="js/jquery-ui-sliderAccess.js"></script>
-    
-    
+
     <script src="js/jquery.tools.min.js" type="text/javascript"></script>
+
     <script type="text/javascript">
        
       $(function(){
@@ -469,31 +469,7 @@
         }) 
 });
       $(window).load(function(){
-            $('.atnHoliday').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnHoliday')
-                $(this).next().removeAttr('class').addClass('atnHoliday')
-           });
-           
-           $('.atnSun').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnSun')
-                $(this).next().removeAttr('class').addClass('atnSun')
-           });
-           
-           $('.atnUnLeave').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnUnLeave')
-                $(this).next().removeAttr('class').addClass('atnUnLeave')
-           });
-           
-           $('.atnEdit').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnEdit')
-                $(this).next().removeAttr('class').addClass('atnEdit')
-           });
-           
-           $('.atnLeave').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnLeave')
-                $(this).next().removeAttr('class').addClass('atnLeave')
-           });
-      
+                   $('[rel=tooltip]').tooltip();
            $('.table2 tr:last-child').remove();
      })
     </script>
@@ -501,17 +477,18 @@
 </head>
 <body>
     <form id="form1" runat="server">
-     <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server">
+    <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server">
     </cc1:ToolkitScriptManager>
-
     <div class="headder">
         <a href="#" class="logo">
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
         </a>
-         <div class="shifts">
-                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
-         </div>
+        <div class="shifts">
+            Shifts:
+            <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false">
+            </asp:DropDownList>
+        </div>
         <div class="right">
             <div class="wel">
                 <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -572,7 +549,7 @@
             </div>
         </div>
     </div>
-      <h2 class="pageHeadding">
+    <h2 class="pageHeadding">
         <asp:UpdatePanel ID="UpdatePanel7" runat="server">
             <ContentTemplate>
                 <asp:Label ID="lblWeekReportheading" runat="server"></asp:Label>
@@ -581,90 +558,210 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </h2>
-        <div style="margin-bottom: 6px;">
-            <div style="display: inline-block; width: 1007px">
-                <asp:UpdatePanel ID="upbtns" runat="server">
-                    <ContentTemplate>
-                        <asp:Button ID="btnPrevious" runat="server" Text="Previous" CssClass="btn btn-danger btn-small"
-                            OnClick="btnPrevious_Click" />&nbsp;
-                        <asp:Button ID="btnCurrent" runat="server" Text="Current" CssClass="btn btn-danger btn-small"
-                            OnClick="btnCurrent_Click" />&nbsp;
-                        <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
-                            OnClick="btnNext_Click" />&nbsp;
-                      </ContentTemplate>
-                </asp:UpdatePanel>
-            </div>
-        </div>
-       <div id="DvSingleRep" runat="server"> 
-        <div style="float:right;padding-right: 250px;">
-        <asp:UpdatePanel ID="upLeave" runat="server">
+    
+    <div style="display:inline-block;">
+    <div style="float:left;width: 855px; padding: 5px;">
+     <asp:UpdatePanel ID="updd" runat="server">
         <ContentTemplate>
-            <asp:LinkButton ID="lnkLeaveReq" Text="Show Leave Requests" runat="server" 
-                 onclick="lnkLeaveReq_Click"></asp:LinkButton> <br />
-            <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server" 
-                onclick="lnkNewLeaveReq_Click"></asp:LinkButton>    
-         </ContentTemplate>
-        </asp:UpdatePanel>
+            <b>
+               Report type</b>&nbsp;
+            <asp:DropDownList ID="ddlReportType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlReportType_SelectedIndexChanged"
+                Visible="true">
+                <asp:ListItem Text="Weekly Report" Value="0"></asp:ListItem>
+                <asp:ListItem Text="Monthly Report" Value="1"></asp:ListItem>
+            </asp:DropDownList>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+     <div style="margin-bottom: 6px;">
+        <div style="display: inline-block; width: 1007px">
+            <asp:UpdatePanel ID="upbtns" runat="server">
+                <ContentTemplate>
+                    <asp:Button ID="btnPrevious" runat="server" Text="Previous" CssClass="btn btn-danger btn-small"
+                        OnClick="btnPrevious_Click" />&nbsp;
+                    <asp:Button ID="btnCurrent" runat="server" Text="Current" CssClass="btn btn-danger btn-small"
+                        OnClick="btnCurrent_Click" />&nbsp;
+                    <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
+                        OnClick="btnNext_Click" />&nbsp;
+                </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
-        <br />
+    </div>
+    </div>
+    
+      <div style="float: right; padding-right: 250px;">
+      <br />
+            <asp:UpdatePanel ID="upLeave" runat="server">
+                <ContentTemplate>
+                    <asp:LinkButton ID="lnkLeaveReq" Text="Show Leave Requests" runat="server" OnClick="lnkLeaveReq_Click"></asp:LinkButton>
+                    <br />
+                    <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server" OnClick="lnkNewLeaveReq_Click"></asp:LinkButton>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </div>
+    </div>
+    
+    <div id="DvSingleRep" runat="server">
         <asp:UpdatePanel ID="upSingle" runat="server">
             <ContentTemplate>
                 <asp:Label ID="lblID" runat="server" Visible="false"></asp:Label>
                 <asp:Label ID="lblName" runat="server" Visible="false"></asp:Label>
-                <asp:GridView ID="grdAttendanceSingle" runat="server" AutoGenerateColumns="false"
-                    CssClass="table2" OnRowCreated="grdAttendanceSingle_RowCreated" OnRowDataBound="grdAttendanceSingle_RowDataBound">
-                    <Columns>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblHeadDay" runat="server" Text="Day"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblDay" runat="server" Text='<%#Eval("Day")%>'></asp:Label>
-                                <asp:HiddenField ID="hdnLogUserID" runat="server" Value='<%#Eval("LogUserID")%>' />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblHeadSchIn" runat="server" Text="Schedule"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblScIn" runat="server" Text='<%#Eval("SchIn")==""?"":Eval("SchIn")+"-"+Eval("SchOut")%>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblHeadIN" runat="server" Text="SignIn-Out"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblSignIn" runat="server" Font-Underline="False" Text='<%#Eval("SignIn")%>'></asp:Label>
-                                <asp:Label ID="lblSignOut" runat="server" Font-Underline="False" Visible="false" Text='<%#Eval("SignOut")%>'></asp:Label>
-                                <asp:HiddenField ID="hdnMultiple" runat="server" Value='<%#Eval("Multiple")%>' />
-                                <asp:HiddenField ID="hdnSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "LoginNotes"))%>' />
-                                <asp:HiddenField ID="hdnSignInFlag" runat="server" Value='<%#Eval("LoginFlag")%>' />
-                                <asp:HiddenField ID="hdnLvStatus" runat="server" Value='<%#Eval("LvStatus")%>' />
-                            <%--    <asp:HiddenField ID="hdnSignOutNotes" runat="server" Value='<%#Eval("LogoutNotes")%>' />--%>
-                                <asp:HiddenField ID="hdnSignOutFlag" runat="server" Value='<%#Eval("LogoutFlag")%>' />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    
-                        <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblMonHeadHours" runat="server" Text="Hrs"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblMonHours" runat="server" Font-Underline="False" Text='<%#Eval("Hrs")%>'></asp:Label>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                </asp:GridView>
-                
-                
-                
+                <div style="display: block" id="dvSingle" runat="server">
+                    <asp:GridView ID="grdAttendanceSingle" runat="server" AutoGenerateColumns="false"
+                        CssClass="table2" OnRowCreated="grdAttendanceSingle_RowCreated" OnRowDataBound="grdAttendanceSingle_RowDataBound">
+                        <Columns>
+                            <asp:TemplateField>
+                                <HeaderTemplate>
+                                    <asp:Label ID="lblHeadDay" runat="server" Text="Day"></asp:Label>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <asp:Label ID="lblDay" runat="server" Text='<%#Eval("Day")%>'></asp:Label>
+                                    <asp:HiddenField ID="hdnLogUserID" runat="server" Value='<%#Eval("LogUserID")%>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField>
+                                <HeaderTemplate>
+                                    <asp:Label ID="lblHeadSchIn" runat="server" Text="Schedule"></asp:Label>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <asp:Label ID="lblScIn" runat="server" Text='<%#Eval("SchIn")==""?"":Eval("SchIn")+"-"+Eval("SchOut")%>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField>
+                                <HeaderTemplate>
+                                    <asp:Label ID="lblHeadIN" runat="server" Text="SignIn-Out"></asp:Label>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <asp:Label ID="lblSignIn" runat="server" Font-Underline="False" Text='<%#Eval("SignIn")%>'></asp:Label>
+                                    <asp:Label ID="lblSignOut" runat="server" Font-Underline="False" Visible="false"
+                                        Text='<%#Eval("SignOut")%>'></asp:Label>
+                                    <asp:HiddenField ID="hdnMultiple" runat="server" Value='<%#Eval("Multiple")%>' />
+                                    <asp:HiddenField ID="hdnSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "LoginNotes"))%>' />
+                                    <asp:HiddenField ID="hdnSignInFlag" runat="server" Value='<%#Eval("LoginFlag")%>' />
+                                    <asp:HiddenField ID="hdnLvStatus" runat="server" Value='<%#Eval("LvStatus")%>' />
+                                    <%--    <asp:HiddenField ID="hdnSignOutNotes" runat="server" Value='<%#Eval("LogoutNotes")%>' />--%>
+                                    <asp:HiddenField ID="hdnSignOutFlag" runat="server" Value='<%#Eval("LogoutFlag")%>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField>
+                                <HeaderTemplate>
+                                    <asp:Label ID="lblMonHeadHours" runat="server" Text="Hrs"></asp:Label>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <asp:Label ID="lblMonHours" runat="server" Font-Underline="False" Text='<%#Eval("Hrs")%>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+                </div>
+                <div style="margin: 10px;" id="dvMonthrep" runat="server">
+                    <div class="picker calender">
+                        <div class="header">
+                       <table style="width:100%">
+                          <tr>
+                          <td style="text-align:left;width:35%; padding-left: 10px;"><span id="lblMonthEmp" class="current" runat="server"></span></td>
+                          <td style="text-align:center"><span id="lblMonth" class="current" runat="server"></span></td>
+                          <td style="text-align:right;width:35%;padding-right: 10px;"><span id="lblMonthHrs" class="current" runat="server"></span></td>
+                          </tr>
+                         </table>
+                        </div>
+                        <asp:GridView ID="grdMonthlyRep" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdMonthlyRep_RowDataBound"
+                            CssClass="table1 tblCal">
+                            <Columns>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:Label ID="lblDaySun" runat="server" Text="Sun"></asp:Label>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <div class="calIn">
+                                            <asp:Label ID="lblSun" runat="server" Text='<%#Eval("Sunday")%>' CssClass="dateSpan "></asp:Label>
+                                            <asp:Label ID="lblSunSignIn" runat="server"></asp:Label>
+                                            <asp:Label ID="lblSunHrs" runat="server" CssClass="hours"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:Label ID="lblDayMon" runat="server" Text="Mon"></asp:Label>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <div class="calIn">
+                                            <asp:Label ID="lblMon" runat="server" Text='<%#Eval("Monday")%>' CssClass="dateSpan "></asp:Label>
+                                            <asp:Label ID="lblMonSignIn" runat="server"></asp:Label>
+                                            <asp:Label ID="lblMonHrs" runat="server" CssClass="hours"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:Label ID="lblDayTue" runat="server" Text="Tue"></asp:Label>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <div class="calIn">
+                                            <asp:Label ID="lblTue" runat="server" Text='<%#Eval("Tuesday")%>' CssClass="dateSpan "></asp:Label>
+                                            <asp:Label ID="lblTueSignIn" runat="server"></asp:Label>
+                                            <asp:Label ID="lblTueHrs" runat="server" CssClass="hours"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:Label ID="lblDayWed" runat="server" Text="Wed"></asp:Label>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <div class="calIn">
+                                            <asp:Label ID="lblWed" runat="server" Text='<%#Eval("Wednesday")%>' CssClass="dateSpan "></asp:Label>
+                                            <asp:Label ID="lblWedSignIn" runat="server"></asp:Label>
+                                            <asp:Label ID="lblWedHrs" runat="server" CssClass="hours"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:Label ID="lblDayThu" runat="server" Text="Thu"></asp:Label>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <div class="calIn">
+                                            <asp:Label ID="lblThu" runat="server" Text='<%#Eval("Thursday")%>' CssClass="dateSpan "></asp:Label>
+                                            <asp:Label ID="lblThuSignIn" runat="server"></asp:Label>
+                                            <asp:Label ID="lblThuHrs" runat="server" CssClass="hours"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:Label ID="lblDayFri" runat="server" Text="Fri"></asp:Label>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <div class="calIn">
+                                            <asp:Label ID="lblFri" runat="server" Text='<%#Eval("Friday")%>' CssClass="dateSpan "></asp:Label>
+                                            <asp:Label ID="lblFriSignIn" runat="server"></asp:Label>
+                                            <asp:Label ID="lblFriHrs" runat="server" CssClass="hours"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <HeaderTemplate>
+                                        <asp:Label ID="lblDaySat" runat="server" Text="Sat"></asp:Label>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <div class="calIn">
+                                            <asp:Label ID="lblSat" runat="server" Text='<%#Eval("Saturday")%>' CssClass="dateSpan "></asp:Label>
+                                            <asp:Label ID="lblSatSignIn" runat="server"></asp:Label>
+                                            <asp:Label ID="lblSatHrs" runat="server" CssClass="hours"></asp:Label>
+                                        </div>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+                    </div>
+                </div>
                 <br />
-                <br /><br />
-                <asp:GridView ID="grdSingleLeaveReq" runat="server" AutoGenerateColumns="false" CssClass="tableLeave">
-                <Columns>
-                   <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
+                <br />
+                <br />
+                <asp:GridView ID="grdSingleLeaveReq" runat="server" AutoGenerateColumns="false" CssClass="tableLeave"
+                    OnRowDataBound="grdSingleLeaveReq_RowDataBound">
+                    <Columns>
+                        <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
                             <ItemTemplate>
                                 <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"></asp:Label>
                             </ItemTemplate>
@@ -708,15 +805,12 @@
                             </ItemTemplate>
                             <ItemStyle Width="130" />
                         </asp:TemplateField>
-                </Columns>
+                    </Columns>
                 </asp:GridView>
-             </ContentTemplate>
+            </ContentTemplate>
         </asp:UpdatePanel>
-        </div>
-    
-    
-    
-     <!--Change password popup start-->
+    </div>
+    <!--Change password popup start-->
     <cc1:ModalPopupExtender ID="mdlChangePwd" runat="server" BackgroundCssClass="popupHolder"
         CancelControlID="lnkPwdClose" TargetControlID="hdnChangePwd" PopupControlID="ChangePwd">
     </cc1:ModalPopupExtender>
@@ -732,55 +826,55 @@
                 <asp:LinkButton ID="lnkPwdClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-        <asp:UpdatePanel ID="uppwddv" runat="server">
-        <ContentTemplate>
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                <tr>
-                      <td>
-                        Old password   
-                        </td>
-                        <td>
-                        <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
-                        </td>
-                </tr>
-                <tr>
-                    <td>
-                        New password<span class="must">*</span>
-                        <br />
-                        <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtNewPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Confirm password<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtConfirmPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel9" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnUpdatePwd" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validPwd();" OnClick="btnUpdatePwd_Click" />
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnCancelPwd" EventName="Click" />
-                                </Triggers>
-                            </asp:UpdatePanel>
-                        </div>
-                        <asp:Button ID="btnCancelPwd" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPwd_Click" />
-                    </td>
-                </tr>
-            </table>
-            </ContentTemplate>
+            <asp:UpdatePanel ID="uppwddv" runat="server">
+                <ContentTemplate>
+                    <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                Old password
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                New password<span class="must">*</span>
+                                <br />
+                                <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtNewPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Confirm password<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtConfirmPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div style="display: inline-block">
+                                    <asp:UpdatePanel ID="UpdatePanel9" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Button ID="btnUpdatePwd" runat="server" Text="Update" CssClass="btn btn-danger"
+                                                OnClientClick="return validPwd();" OnClick="btnUpdatePwd_Click" />
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="btnCancelPwd" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </div>
+                                <asp:Button ID="btnCancelPwd" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPwd_Click" />
+                            </td>
+                        </tr>
+                    </table>
+                </ContentTemplate>
             </asp:UpdatePanel>
         </div>
     </div>
@@ -801,159 +895,155 @@
                 <asp:LinkButton ID="lnkPasscodeClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-        <asp:UpdatePanel ID="uppassdv" runat="server">
-        <ContentTemplate>
-            <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                <tr>
-                    <td>
-                        Old passcode<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtOldpasscode" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        New passcode<span class="must">*</span>
-                        <br />
-                        <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtNewPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Confirm passcode<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtConfirmPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel12" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnUpdatePassCode" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validPasscode();" OnClick="btnUpdatePassCode_Click" />
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnCancelPasscode" EventName="Click" />
-                                </Triggers>
-                            </asp:UpdatePanel>
-                        </div>
-                        <asp:Button ID="btnCancelPasscode" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPasscode_Click" />
-                    </td>
-                </tr>
-            </table>
-            </ContentTemplate>
+            <asp:UpdatePanel ID="uppassdv" runat="server">
+                <ContentTemplate>
+                    <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                Old passcode<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtOldpasscode" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                New passcode<span class="must">*</span>
+                                <br />
+                                <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtNewPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Confirm passcode<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtConfirmPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div style="display: inline-block">
+                                    <asp:UpdatePanel ID="UpdatePanel12" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Button ID="btnUpdatePassCode" runat="server" Text="Update" CssClass="btn btn-danger"
+                                                OnClientClick="return validPasscode();" OnClick="btnUpdatePassCode_Click" />
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="btnCancelPasscode" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </div>
+                                <asp:Button ID="btnCancelPasscode" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPasscode_Click" />
+                            </td>
+                        </tr>
+                    </table>
+                </ContentTemplate>
             </asp:UpdatePanel>
         </div>
     </div>
     <!--Change password popup End-->
-        <!--New leave request start-->
-    <cc1:ModalPopupExtender ID="mdlNewLeaveRequest" BackgroundCssClass="popupHolder" runat="server"
-        PopupControlID="NewLeaveRequest" TargetControlID="hdnNewleaveReq" CancelControlID="lnkLeaveClose">
+    <!--New leave request start-->
+    <cc1:ModalPopupExtender ID="mdlNewLeaveRequest" BackgroundCssClass="popupHolder"
+        runat="server" PopupControlID="NewLeaveRequest" TargetControlID="hdnNewleaveReq"
+        CancelControlID="lnkLeaveClose">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnNewleaveReq" runat="server" />
-    <div id="NewLeaveRequest" runat="server" class="popContent" style="width: 400px; display: none">
+    <div id="NewLeaveRequest" runat="server" class="popContent" style="width: 400px;
+        display: none">
         <h2>
-          New Leave Request
-            <span class="close">
+            New Leave Request <span class="close">
                 <asp:LinkButton ID="lnkLeaveClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-        <asp:UpdatePanel ID="upNewl" runat="server">
-        <ContentTemplate>
-          <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                <tr>
-                    <td>
-                        From <span class="must">*</span>
-                    </td>
-                    <td>
-                         <asp:TextBox ID="txtLeaveFrom" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>
-                        To <span class="must">*</span>
-                    </td>
-                    <td>
-                          <asp:TextBox ID="txtLeaveTo" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-               
-                  <tr>
-                    <td>
-                        Reason <span class="must">*</span>
-                    </td>
-                    <td>
-                          <asp:TextBox ID="txtReason" runat="server" TextMode="MultiLine" Rows="5"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel18" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnLeaveReqSubmit" runat="server" Text="Submit" 
-                                        OnClientClick="return validLeaveReq();" CssClass="btn btn-danger" 
-                                        onclick="btnLeaveReqSubmit_Click" />
-                                        <br />
-                                        <asp:Label ID="lblLeaveError" runat="server" ForeColor="Red" ></asp:Label>
-                                </ContentTemplate>
-                             
-                            </asp:UpdatePanel>
-                        </div>
-                       <input type="button" class="btn" value="Cancel" name="btnLvCancel" onclick="return hideNewleave();" />
-                        <br />
-                        
-                    </td>
-                </tr>
-            </table>
-        </ContentTemplate>
-        </asp:UpdatePanel>
-          
+            <asp:UpdatePanel ID="upNewl" runat="server">
+                <ContentTemplate>
+                    <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                From <span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtLeaveFrom" runat="server"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                To <span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtLeaveTo" runat="server"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Reason <span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtReason" runat="server" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div style="display: inline-block">
+                                    <asp:UpdatePanel ID="UpdatePanel18" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Button ID="btnLeaveReqSubmit" runat="server" Text="Submit" OnClientClick="return validLeaveReq();"
+                                                CssClass="btn btn-danger" OnClick="btnLeaveReqSubmit_Click" />
+                                            <br />
+                                            <asp:Label ID="lblLeaveError" runat="server" ForeColor="Red"></asp:Label>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                </div>
+                                <input type="button" class="btn" value="Cancel" name="btnLvCancel" onclick="return hideNewleave();" />
+                                <br />
+                            </td>
+                        </tr>
+                    </table>
+                </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--New leave request popup end-->
-    
-    
     </form>
+
     <script type="text/javascript">
       function pageLoad()
     {
+      $('[rel=tooltip]').tooltip();
+    
             $('.table2 tr:last-child').remove();
-             $('.atnHoliday').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnHoliday')
-                $(this).next().removeAttr('class').addClass('atnHoliday')
-           });
-           
-           $('.atnSun').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnSun')
-                $(this).next().removeAttr('class').addClass('atnSun')
-           });
-           
-           $('.atnUnLeave').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnUnLeave')
-                $(this).next().removeAttr('class').addClass('atnUnLeave')
-           });
-           
-           $('.atnEdit').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnEdit')
-                $(this).next().removeAttr('class').addClass('atnEdit')
-           });
-           
-           $('.atnLeave').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnLeave')
-                $(this).next().removeAttr('class').addClass('atnLeave')
-           });
+//             $('.atnHoliday').each(function(){
+//                $(this).prev().removeAttr('class').addClass('atnHoliday')
+//                $(this).next().removeAttr('class').addClass('atnHoliday')
+//           });
+//           
+//           $('.atnSun').each(function(){
+//                $(this).prev().removeAttr('class').addClass('atnSun')
+//                $(this).next().removeAttr('class').addClass('atnSun')
+//           });
+//           
+//           $('.atnUnLeave').each(function(){
+//                $(this).prev().removeAttr('class').addClass('atnUnLeave')
+//                $(this).next().removeAttr('class').addClass('atnUnLeave')
+//           });
+//           
+//           $('.atnEdit').each(function(){
+//                $(this).prev().removeAttr('class').addClass('atnEdit')
+//                $(this).next().removeAttr('class').addClass('atnEdit')
+//           });
+//           
+//           $('.atnLeave').each(function(){
+//                $(this).prev().removeAttr('class').addClass('atnLeave')
+//                $(this).next().removeAttr('class').addClass('atnLeave')
+//           });
      }
             
   
@@ -1102,8 +1192,6 @@
        }
  
     </script>
+
 </body>
-
-
-
 </html>

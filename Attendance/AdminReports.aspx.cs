@@ -497,6 +497,162 @@ namespace Attendance
                             dtAttandence.Rows[j]["Termdate"] = ds.Tables[0].Rows[j]["Termdate"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : ds.Tables[0].Rows[j]["Termdate"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(Convert.ToDateTime(ds.Tables[0].Rows[j]["Termdate"]).ToString("MM/dd/yyyy"));
                             dtAttandence.Rows[j]["Startdate"] = ds.Tables[0].Rows[j]["Startdate"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : ds.Tables[0].Rows[j]["Startdate"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(Convert.ToDateTime(ds.Tables[0].Rows[j]["Startdate"]).ToString("MM/dd/yyyy"));
 
+
+                            if (dtLeave.Rows.Count > 0)
+                            {
+                                DateTime startDate = StartDate;
+                                DateTime nextdate = NextDate;
+                                for (int i = 0; i < 7; i++)
+                                {
+                                    DataView dL = dtLeave.DefaultView;
+                                    dL.RowFilter = "Fromdate<=#" + startDate + "# and #" + startDate + "#<=Todate";
+                                    DataTable dtLvResult = dL.ToTable();
+                                    if (dtLvResult.Rows.Count > 0)
+                                    {
+                                        DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
+
+                                        switch (GetDay)
+                                        {
+                                            case DayOfWeek.Sunday:
+                                                dtAttandence.Rows[j]["SunSignIn"] = "L";
+                                                dtAttandence.Rows[j]["SunSignOut"] = "L";
+                                                dtAttandence.Rows[j]["SunHrs"] = "";
+                                                dtAttandence.Rows[j]["SunLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Monday:
+                                                dtAttandence.Rows[j]["MonSignIn"] = "L";
+                                                dtAttandence.Rows[j]["MonSignOut"] = "L";
+                                                dtAttandence.Rows[j]["MonHrs"] = "";
+                                                dtAttandence.Rows[j]["MonLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Tuesday:
+                                                dtAttandence.Rows[j]["TueSignIn"] = "L";
+                                                dtAttandence.Rows[j]["TueSignOut"] = "L";
+                                                dtAttandence.Rows[j]["TueHrs"] = "";
+                                                dtAttandence.Rows[j]["TueLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break; // TODO: might not be correct. Was : Exit Select
+
+                                            case DayOfWeek.Wednesday:
+                                                dtAttandence.Rows[j]["WedSignIn"] = "L";
+                                                dtAttandence.Rows[j]["WedSignOut"] = "L";
+                                                dtAttandence.Rows[j]["WedHrs"] = "";
+                                                dtAttandence.Rows[j]["WedLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Thursday:
+                                                dtAttandence.Rows[j]["ThuSignIn"] = "L";
+                                                dtAttandence.Rows[j]["ThuSignOut"] = "L";
+                                                dtAttandence.Rows[j]["ThuHrs"] = "";
+                                                dtAttandence.Rows[j]["ThuLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Friday:
+                                                dtAttandence.Rows[j]["FriSignIn"] = "L";
+                                                dtAttandence.Rows[j]["FriSignOut"] = "L";
+                                                dtAttandence.Rows[j]["FriHrs"] = "";
+                                                dtAttandence.Rows[j]["FriLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Saturday:
+                                                dtAttandence.Rows[j]["SatSignIn"] = "L";
+                                                dtAttandence.Rows[j]["SatSignOut"] = "L";
+                                                dtAttandence.Rows[j]["SatHrs"] = "";
+                                                dtAttandence.Rows[j]["SatLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+                                        }
+
+                                    }
+                                    dL.RowFilter = null;
+                                    startDate = nextdate;
+                                    nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
+
+                                    Double SumHours = (dtAttandence.Rows[j]["SunHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SunHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SunHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["MonHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["MonHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["MonHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["TueHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["TueHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["TueHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["WedHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["WedHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["WedHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["ThuHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["ThuHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["ThuHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["FriHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["FriHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["FriHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["SatHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SatHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SatHrs"])));
+                                    dtAttandence.Rows[j]["TotalHours"] = (SumHours).ToString();
+                                }
+                            }
+
+                            if (dtHoliday.Rows.Count > 0)
+                            {
+                                DateTime startDate = StartDate;
+                                DateTime nextdate = NextDate;
+                                for (int i = 0; i < 7; i++)
+                                {
+                                    DataView dH = dtHoliday.DefaultView;
+                                    dH.RowFilter = "HolidayDate >= #" + startDate + "# and HolidayDate<#" + nextdate + "#";
+                                    DataTable dtHolResult = dH.ToTable();
+                                    if (dtHolResult.Rows.Count > 0)
+                                    {
+                                        DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
+                                        switch (GetDay)
+                                        {
+                                            case DayOfWeek.Sunday:
+                                                dtAttandence.Rows[j]["SunSignIn"] = "S";
+                                                dtAttandence.Rows[j]["SunSignOut"] = "S";
+                                                dtAttandence.Rows[j]["SunHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Monday:
+                                                dtAttandence.Rows[j]["MonSignIn"] = "H";
+                                                dtAttandence.Rows[j]["MonSignOut"] = "H";
+                                                dtAttandence.Rows[j]["MonHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Tuesday:
+                                                dtAttandence.Rows[j]["TueSignIn"] = "H";
+                                                dtAttandence.Rows[j]["TueSignOut"] = "H";
+                                                dtAttandence.Rows[j]["TueHrs"] = "";
+                                                break; // TODO: might not be correct. Was : Exit Select
+
+                                            case DayOfWeek.Wednesday:
+                                                dtAttandence.Rows[j]["WedSignIn"] = "H";
+                                                dtAttandence.Rows[j]["WedSignOut"] = "H";
+                                                dtAttandence.Rows[j]["WedHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Thursday:
+                                                dtAttandence.Rows[j]["ThuSignIn"] = "H";
+                                                dtAttandence.Rows[j]["ThuSignOut"] = "H";
+                                                dtAttandence.Rows[j]["ThuHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Friday:
+                                                dtAttandence.Rows[j]["FriSignIn"] = "H";
+                                                dtAttandence.Rows[j]["FriSignOut"] = "H";
+                                                dtAttandence.Rows[j]["FriHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Saturday:
+                                                dtAttandence.Rows[j]["SatSignIn"] = "H";
+                                                dtAttandence.Rows[j]["SatSignOut"] = "H";
+                                                dtAttandence.Rows[j]["SatHrs"] = "";
+                                                break;
+                                        }
+
+                                    }
+                                    dH.RowFilter = null;
+                                    startDate = nextdate;
+                                    nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
+
+                                    Double SumHours = (dtAttandence.Rows[j]["SunHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SunHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SunHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["MonHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["MonHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["MonHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["TueHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["TueHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["TueHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["WedHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["WedHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["WedHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["ThuHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["ThuHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["ThuHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["FriHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["FriHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["FriHrs"])));
+                                    SumHours = SumHours + (dtAttandence.Rows[j]["SatHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SatHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SatHrs"])));
+                                    dtAttandence.Rows[j]["TotalHours"] = (SumHours).ToString();
+                                }
+                            }
+
+
                             if (dtname.Rows.Count > 0)
                             {
                                 DateTime startDate = StartDate;
@@ -516,6 +672,116 @@ namespace Attendance
                                     DataView dH = dtHoliday.DefaultView;
                                     dH.RowFilter = "HolidayDate >= #" + startDate + "# and HolidayDate<#" + nextdate + "#";
                                     DataTable dtHolResult = dH.ToTable();
+
+
+                                    if (dtLvResult.Rows.Count > 0)
+                                    {
+
+                                        DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
+
+                                        switch (GetDay)
+                                        {
+                                            case DayOfWeek.Sunday:
+                                                dtAttandence.Rows[j]["SunSignIn"] = "L";
+                                                dtAttandence.Rows[j]["SunSignOut"] = "L";
+                                                dtAttandence.Rows[j]["SunHrs"] = "";
+                                                dtAttandence.Rows[j]["SunLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Monday:
+                                                dtAttandence.Rows[j]["MonSignIn"] = "L";
+                                                dtAttandence.Rows[j]["MonSignOut"] = "L";
+                                                dtAttandence.Rows[j]["MonHrs"] = "";
+                                                dtAttandence.Rows[j]["MonLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Tuesday:
+                                                dtAttandence.Rows[j]["TueSignIn"] = "L";
+                                                dtAttandence.Rows[j]["TueSignOut"] = "L";
+                                                dtAttandence.Rows[j]["TueHrs"] = "";
+                                                dtAttandence.Rows[j]["TueLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break; // TODO: might not be correct. Was : Exit Select
+
+                                            case DayOfWeek.Wednesday:
+                                                dtAttandence.Rows[j]["WedSignIn"] = "L";
+                                                dtAttandence.Rows[j]["WedSignOut"] = "L";
+                                                dtAttandence.Rows[j]["WedHrs"] = "";
+                                                dtAttandence.Rows[j]["WedLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Thursday:
+                                                dtAttandence.Rows[j]["ThuSignIn"] = "L";
+                                                dtAttandence.Rows[j]["ThuSignOut"] = "L";
+                                                dtAttandence.Rows[j]["ThuHrs"] = "";
+                                                dtAttandence.Rows[j]["ThuLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Friday:
+                                                dtAttandence.Rows[j]["FriSignIn"] = "L";
+                                                dtAttandence.Rows[j]["FriSignOut"] = "L";
+                                                dtAttandence.Rows[j]["FriHrs"] = "";
+                                                dtAttandence.Rows[j]["FriLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+
+                                            case DayOfWeek.Saturday:
+                                                dtAttandence.Rows[j]["SatSignIn"] = "L";
+                                                dtAttandence.Rows[j]["SatSignOut"] = "L";
+                                                dtAttandence.Rows[j]["SatHrs"] = "";
+                                                dtAttandence.Rows[j]["SatLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
+                                                break;
+                                        }
+                                    }
+                                    if (dtHolResult.Rows.Count > 0)
+                                    {
+
+                                        DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
+
+                                        switch (GetDay)
+                                        {
+                                            case DayOfWeek.Sunday:
+                                                dtAttandence.Rows[j]["SunSignIn"] = "S";
+                                                dtAttandence.Rows[j]["SunSignOut"] = "S";
+                                                dtAttandence.Rows[j]["SunHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Monday:
+                                                dtAttandence.Rows[j]["MonSignIn"] = "H";
+                                                dtAttandence.Rows[j]["MonSignOut"] = "H";
+                                                dtAttandence.Rows[j]["MonHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Tuesday:
+                                                dtAttandence.Rows[j]["TueSignIn"] = "H";
+                                                dtAttandence.Rows[j]["TueSignOut"] = "H";
+                                                dtAttandence.Rows[j]["TueHrs"] = "";
+                                                break; // TODO: might not be correct. Was : Exit Select
+
+                                            case DayOfWeek.Wednesday:
+                                                dtAttandence.Rows[j]["WedSignIn"] = "H";
+                                                dtAttandence.Rows[j]["WedSignOut"] = "H";
+                                                dtAttandence.Rows[j]["WedHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Thursday:
+                                                dtAttandence.Rows[j]["ThuSignIn"] = "H";
+                                                dtAttandence.Rows[j]["ThuSignOut"] = "H";
+                                                dtAttandence.Rows[j]["ThuHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Friday:
+                                                dtAttandence.Rows[j]["FriSignIn"] = "H";
+                                                dtAttandence.Rows[j]["FriSignOut"] = "H";
+                                                dtAttandence.Rows[j]["FriHrs"] = "";
+                                                break;
+
+                                            case DayOfWeek.Saturday:
+                                                dtAttandence.Rows[j]["SatSignIn"] = "H";
+                                                dtAttandence.Rows[j]["SatSignOut"] = "H";
+                                                dtAttandence.Rows[j]["SatHrs"] = "";
+                                                break;
+                                        }
+                                    }
+
 
                                     if (dt1.Rows.Count > 0)
                                     {
@@ -940,116 +1206,11 @@ namespace Attendance
                                     }
 
 
+//holiday block
+                                    
 
-                                    else if (dtHolResult.Rows.Count > 0)
-                                    {
-
-                                        DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
-
-                                        switch (GetDay)
-                                        {
-                                            case DayOfWeek.Sunday:
-                                                dtAttandence.Rows[j]["SunSignIn"] = "S";
-                                                dtAttandence.Rows[j]["SunSignOut"] = "S";
-                                                dtAttandence.Rows[j]["SunHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Monday:
-                                                dtAttandence.Rows[j]["MonSignIn"] = "H";
-                                                dtAttandence.Rows[j]["MonSignOut"] = "H";
-                                                dtAttandence.Rows[j]["MonHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Tuesday:
-                                                dtAttandence.Rows[j]["TueSignIn"] = "H";
-                                                dtAttandence.Rows[j]["TueSignOut"] = "H";
-                                                dtAttandence.Rows[j]["TueHrs"] = "";
-                                                break; // TODO: might not be correct. Was : Exit Select
-
-                                            case DayOfWeek.Wednesday:
-                                                dtAttandence.Rows[j]["WedSignIn"] = "H";
-                                                dtAttandence.Rows[j]["WedSignOut"] = "H";
-                                                dtAttandence.Rows[j]["WedHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Thursday:
-                                                dtAttandence.Rows[j]["ThuSignIn"] = "H";
-                                                dtAttandence.Rows[j]["ThuSignOut"] = "H";
-                                                dtAttandence.Rows[j]["ThuHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Friday:
-                                                dtAttandence.Rows[j]["FriSignIn"] = "H";
-                                                dtAttandence.Rows[j]["FriSignOut"] = "H";
-                                                dtAttandence.Rows[j]["FriHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Saturday:
-                                                dtAttandence.Rows[j]["SatSignIn"] = "H";
-                                                dtAttandence.Rows[j]["SatSignOut"] = "H";
-                                                dtAttandence.Rows[j]["SatHrs"] = "";
-                                                break;
-                                        }
-                                    }
-
-
-                                    else if (dtLvResult.Rows.Count > 0)
-                                    {
-
-                                        DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
-
-                                        switch (GetDay)
-                                        {
-                                            case DayOfWeek.Sunday:
-                                                dtAttandence.Rows[j]["SunSignIn"] = "L";
-                                                dtAttandence.Rows[j]["SunSignOut"] = "L";
-                                                dtAttandence.Rows[j]["SunHrs"] = "";
-                                                dtAttandence.Rows[j]["SunLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Monday:
-                                                dtAttandence.Rows[j]["MonSignIn"] = "L";
-                                                dtAttandence.Rows[j]["MonSignOut"] = "L";
-                                                dtAttandence.Rows[j]["MonHrs"] = "";
-                                                dtAttandence.Rows[j]["MonLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Tuesday:
-                                                dtAttandence.Rows[j]["TueSignIn"] = "L";
-                                                dtAttandence.Rows[j]["TueSignOut"] = "L";
-                                                dtAttandence.Rows[j]["TueHrs"] = "";
-                                                dtAttandence.Rows[j]["TueLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break; // TODO: might not be correct. Was : Exit Select
-
-                                            case DayOfWeek.Wednesday:
-                                                dtAttandence.Rows[j]["WedSignIn"] = "L";
-                                                dtAttandence.Rows[j]["WedSignOut"] = "L";
-                                                dtAttandence.Rows[j]["WedHrs"] = "";
-                                                dtAttandence.Rows[j]["WedLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Thursday:
-                                                dtAttandence.Rows[j]["ThuSignIn"] = "L";
-                                                dtAttandence.Rows[j]["ThuSignOut"] = "L";
-                                                dtAttandence.Rows[j]["ThuHrs"] = "";
-                                                dtAttandence.Rows[j]["ThuLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Friday:
-                                                dtAttandence.Rows[j]["FriSignIn"] = "L";
-                                                dtAttandence.Rows[j]["FriSignOut"] = "L";
-                                                dtAttandence.Rows[j]["FriHrs"] = "";
-                                                dtAttandence.Rows[j]["FriLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Saturday:
-                                                dtAttandence.Rows[j]["SatSignIn"] = "L";
-                                                dtAttandence.Rows[j]["SatSignOut"] = "L";
-                                                dtAttandence.Rows[j]["SatHrs"] = "";
-                                                dtAttandence.Rows[j]["SatLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-                                        }
-                                    }
+//leave block
+                                   
 
 
                                     dL.RowFilter = null;
@@ -1071,161 +1232,10 @@ namespace Attendance
                             }
 
 
-                            else if (dtLeave.Rows.Count > 0)
-                            {
-                                DateTime startDate = StartDate;
-                                DateTime nextdate = NextDate;
-                                for (int i = 0; i < 7; i++)
-                                {
-                                    DataView dL = dtLeave.DefaultView;
-                                    dL.RowFilter = "Fromdate<=#" + startDate + "# and #" + startDate + "#<=Todate";
-                                    DataTable dtLvResult = dL.ToTable();
-                                    if (dtLvResult.Rows.Count > 0)
-                                    {
-                                        DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
+                            //leave block 
 
-                                        switch (GetDay)
-                                        {
-                                            case DayOfWeek.Sunday:
-                                                dtAttandence.Rows[j]["SunSignIn"] = "L";
-                                                dtAttandence.Rows[j]["SunSignOut"] = "L";
-                                                dtAttandence.Rows[j]["SunHrs"] = "";
-                                                dtAttandence.Rows[j]["SunLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Monday:
-                                                dtAttandence.Rows[j]["MonSignIn"] = "L";
-                                                dtAttandence.Rows[j]["MonSignOut"] = "L";
-                                                dtAttandence.Rows[j]["MonHrs"] = "";
-                                                dtAttandence.Rows[j]["MonLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Tuesday:
-                                                dtAttandence.Rows[j]["TueSignIn"] = "L";
-                                                dtAttandence.Rows[j]["TueSignOut"] = "L";
-                                                dtAttandence.Rows[j]["TueHrs"] = "";
-                                                dtAttandence.Rows[j]["TueLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break; // TODO: might not be correct. Was : Exit Select
-
-                                            case DayOfWeek.Wednesday:
-                                                dtAttandence.Rows[j]["WedSignIn"] = "L";
-                                                dtAttandence.Rows[j]["WedSignOut"] = "L";
-                                                dtAttandence.Rows[j]["WedHrs"] = "";
-                                                dtAttandence.Rows[j]["WedLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Thursday:
-                                                dtAttandence.Rows[j]["ThuSignIn"] = "L";
-                                                dtAttandence.Rows[j]["ThuSignOut"] = "L";
-                                                dtAttandence.Rows[j]["ThuHrs"] = "";
-                                                dtAttandence.Rows[j]["ThuLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Friday:
-                                                dtAttandence.Rows[j]["FriSignIn"] = "L";
-                                                dtAttandence.Rows[j]["FriSignOut"] = "L";
-                                                dtAttandence.Rows[j]["FriHrs"] = "";
-                                                dtAttandence.Rows[j]["FriLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-
-                                            case DayOfWeek.Saturday:
-                                                dtAttandence.Rows[j]["SatSignIn"] = "L";
-                                                dtAttandence.Rows[j]["SatSignOut"] = "L";
-                                                dtAttandence.Rows[j]["SatHrs"] = "";
-                                                dtAttandence.Rows[j]["SatLvStatus"] = dtLvResult.Rows[0]["ApprovedStatus"].ToString();
-                                                break;
-                                        }
-
-                                    }
-                                    dL.RowFilter = null;
-                                    startDate = nextdate;
-                                    nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
-
-                                    Double SumHours = (dtAttandence.Rows[j]["SunHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SunHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SunHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["MonHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["MonHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["MonHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["TueHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["TueHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["TueHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["WedHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["WedHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["WedHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["ThuHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["ThuHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["ThuHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["FriHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["FriHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["FriHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["SatHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SatHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SatHrs"])));
-                                    dtAttandence.Rows[j]["TotalHours"] = (SumHours).ToString();
-                                }
-                            }
-
-
-                            if (dtHoliday.Rows.Count > 0)
-                            {
-                                DateTime startDate = StartDate;
-                                DateTime nextdate = NextDate;
-                                for (int i = 0; i < 7; i++)
-                                {
-                                    DataView dH = dtHoliday.DefaultView;
-                                    dH.RowFilter = "HolidayDate >= #" + startDate + "# and HolidayDate<#" + nextdate + "#";
-                                    DataTable dtHolResult = dH.ToTable();
-                                    if (dtHolResult.Rows.Count > 0)
-                                    {
-                                        DayOfWeek GetDay = Convert.ToDateTime(startDate).DayOfWeek;
-                                        switch (GetDay)
-                                        {
-                                            case DayOfWeek.Sunday:
-                                                dtAttandence.Rows[j]["SunSignIn"] = "S";
-                                                dtAttandence.Rows[j]["SunSignOut"] = "S";
-                                                dtAttandence.Rows[j]["SunHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Monday:
-                                                dtAttandence.Rows[j]["MonSignIn"] = "H";
-                                                dtAttandence.Rows[j]["MonSignOut"] = "H";
-                                                dtAttandence.Rows[j]["MonHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Tuesday:
-                                                dtAttandence.Rows[j]["TueSignIn"] = "H";
-                                                dtAttandence.Rows[j]["TueSignOut"] = "H";
-                                                dtAttandence.Rows[j]["TueHrs"] = "";
-                                                break; // TODO: might not be correct. Was : Exit Select
-
-                                            case DayOfWeek.Wednesday:
-                                                dtAttandence.Rows[j]["WedSignIn"] = "H";
-                                                dtAttandence.Rows[j]["WedSignOut"] = "H";
-                                                dtAttandence.Rows[j]["WedHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Thursday:
-                                                dtAttandence.Rows[j]["ThuSignIn"] = "H";
-                                                dtAttandence.Rows[j]["ThuSignOut"] = "H";
-                                                dtAttandence.Rows[j]["ThuHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Friday:
-                                                dtAttandence.Rows[j]["FriSignIn"] = "H";
-                                                dtAttandence.Rows[j]["FriSignOut"] = "H";
-                                                dtAttandence.Rows[j]["FriHrs"] = "";
-                                                break;
-
-                                            case DayOfWeek.Saturday:
-                                                dtAttandence.Rows[j]["SatSignIn"] = "H";
-                                                dtAttandence.Rows[j]["SatSignOut"] = "H";
-                                                dtAttandence.Rows[j]["SatHrs"] = "";
-                                                break;
-                                        }
-
-                                    }
-                                    dH.RowFilter = null;
-                                    startDate = nextdate;
-                                    nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
-
-                                    Double SumHours = (dtAttandence.Rows[j]["SunHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SunHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SunHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["MonHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["MonHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["MonHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["TueHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["TueHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["TueHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["WedHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["WedHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["WedHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["ThuHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["ThuHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["ThuHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["FriHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["FriHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["FriHrs"])));
-                                    SumHours = SumHours + (dtAttandence.Rows[j]["SatHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SatHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SatHrs"])));
-                                    dtAttandence.Rows[j]["TotalHours"] = (SumHours).ToString();
-                                }
-                            }
-
+                            //holiday block
+                         
 
 
 

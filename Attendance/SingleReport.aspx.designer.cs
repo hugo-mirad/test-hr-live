@@ -194,6 +194,24 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.Label lblWeekReport;
         
         /// <summary>
+        /// updd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updd;
+        
+        /// <summary>
+        /// ddlReportType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlReportType;
+        
+        /// <summary>
         /// upbtns control.
         /// </summary>
         /// <remarks>
@@ -230,15 +248,6 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.Button btnNext;
         
         /// <summary>
-        /// DvSingleRep control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DvSingleRep;
-        
-        /// <summary>
         /// upLeave control.
         /// </summary>
         /// <remarks>
@@ -264,6 +273,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkNewLeaveReq;
+        
+        /// <summary>
+        /// DvSingleRep control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DvSingleRep;
         
         /// <summary>
         /// upSingle control.
@@ -293,6 +311,15 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.Label lblName;
         
         /// <summary>
+        /// dvSingle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvSingle;
+        
+        /// <summary>
         /// grdAttendanceSingle control.
         /// </summary>
         /// <remarks>
@@ -300,6 +327,51 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView grdAttendanceSingle;
+        
+        /// <summary>
+        /// dvMonthrep control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dvMonthrep;
+        
+        /// <summary>
+        /// lblMonthEmp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblMonthEmp;
+        
+        /// <summary>
+        /// lblMonth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblMonth;
+        
+        /// <summary>
+        /// lblMonthHrs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblMonthHrs;
+        
+        /// <summary>
+        /// grdMonthlyRep control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grdMonthlyRep;
         
         /// <summary>
         /// grdSingleLeaveReq control.

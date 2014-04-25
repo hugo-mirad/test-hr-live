@@ -288,7 +288,7 @@ namespace Attendance
                     Label lblEmpFirstname = (Label)e.Row.FindControl("lblEmpFirstname");
                     if (lblNotes.Text.Trim() != "")
                     {
-                        string sTable = sTable = CreateSignInTable(lblEmpFirstname.Text, lblNotes.Text);
+                        string sTable = CreateSignInTable(lblEmpFirstname.Text, lblNotes.Text);
                         lblNotes.Attributes.Add("rel", "tooltip");
                         lblNotes.Attributes.Add("title", sTable);
                     }

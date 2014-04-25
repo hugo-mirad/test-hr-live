@@ -1927,31 +1927,7 @@ function clearDisposableItems( sender , args ) {
             var totalTD = $('.table1 tr:eq(1) th').length;
             //console.log(start, totalRO, totalTD)
             
-                 
-            $('.atnHoliday').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnHoliday')
-                $(this).next().removeAttr('class').addClass('atnHoliday')
-           });
-           
-            $('.atnSun').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnSun')
-                $(this).next().removeAttr('class').addClass('atnSun')
-           });
-           
-            $('.atnUnLeave').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnUnLeave')
-                $(this).next().removeAttr('class').addClass('atnUnLeave')
-           });
-                
-            $('.atnEdit').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnEdit')
-                $(this).next().removeAttr('class').addClass('atnEdit')
-           });
-           
-            $('.atnLeave').each(function(){
-             $(this).prev().removeAttr('class').addClass('atnLeave')
-             $(this).next().removeAttr('class').addClass('atnLeave')
-           });
+          
            
             
            style1('table1')

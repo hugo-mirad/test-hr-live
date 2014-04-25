@@ -523,7 +523,7 @@ margin-right: -4px;
 a.SinglemultipleLogin, .SinglemultipleLogin
 {
 	text-decoration: none;
-background: url(../images/errorBlock.png) no-repeat 107% 7%;
+background: url(../images/errorBlock.png) no-repeat right -14px;
 background-size: 10%;
 padding-right: -1px;
 display: block;
@@ -584,6 +584,7 @@ font-weight: bold;
 div.picker {
 width: 450px;
 color: #34495e;
+padding-bottom:4px;
 -webkit-touch-callout: none;
 -webkit-user-select: none;
 -khtml-user-select: none;
@@ -802,3 +803,56 @@ border: #777 1px solid;
 background: #BBB;
 height: 26px;	
 }
+
+
+/* New 4-25-2014 */
+
+
+
+div.picker.calender{ min-width:1000px }
+
+div.picker.calender .header{
+	border-bottom: 4px solid #888;
+	background-color: #BEBEBE;
+}
+
+
+
+div.picker.calender a, 
+div.picker.calender span{ color:#555; }
+
+
+#grdMonthlyRep td{ background:none;   overflow:hidden; width:140px; height:90px; text-align:center; font-size:12px; line-height:22px; padding:0px; vertical-align:top; }
+
+#grdMonthlyRep .calIn{ display:block; width:136px; background:#fff; height:90px; border-radius: 6px;margin: 2px; overflow:hidden; }
+
+
+#grdMonthlyRep th{ padding:10px; font-size:16px; text-align:center; }
+#grdMonthlyRep .dateSpan{ font-size:25px; font-weight:bold; display:block; text-align:center; color:#777; padding:10px 0; }
+
+
+
+#grdMonthlyRep  td.greenTag div {
+	background: url(../images/editBlock.png) -11px -17px no-repeat;
+}
+
+
+#grdMonthlyRep  td.atnEdit.greenTag,
+#grdMonthlyRep  td.greenTag { background:none; 	}
+#grdMonthlyRep  td.atnEdit.greenTag div{
+	background: #FFB125 url(../images/editBlock.png) -11px -17px no-repeat;
+}
+
+
+
+
+#grdMonthlyRep .SinglemultipleLogin { background:url(../images/errorBlock.png) no-repeat right -21px;   }
+
+#grdMonthlyRep td.atnSun div,
+#grdMonthlyRep td.atnHoliday div{ background:#eee; }
+
+ #grdMonthlyRep td.atnUnLeave div{ background:#F7CC7D; }
+ 
+ #grdMonthlyRep span.hours{ color:#222; font-weight:bold; text-align:center; display:block; }
+   
+

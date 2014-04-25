@@ -2078,7 +2078,7 @@ namespace Attendance
                                         nextdate = GeneralFunction.GetNextDayOfWeekDate(nextdate);
                                     }
                                 }
-                                else if (dtHoliday.Rows.Count > 0)
+                                if (dtHoliday.Rows.Count > 0)
                                 {
                                     DateTime startDate = StartDate;
                                     DateTime nextdate = NextDate;
