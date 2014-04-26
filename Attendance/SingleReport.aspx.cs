@@ -60,6 +60,8 @@ namespace Attendance
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayDate"]);
                     ViewState["MonthSatrt"] = TodayDate.AddDays(1 - TodayDate.Day);
                     ViewState["CurrentMonth"] = TodayDate.AddDays(1 - TodayDate.Day);
+               
+
                     Session["TodayDate1"] = Convert.ToDateTime(Session["TodayBannerDate"]);
                     if (GeneralFunction.GetFirstDayOfWeekDate(TodayDate).ToString("MM/dd/yyyy") == GeneralFunction.GetFirstDayOfWeekDate(DateTime.Now).ToString("MM/dd/yyyy"))
                     {
@@ -75,11 +77,9 @@ namespace Attendance
 
                     DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
                     DateTime EndDate = GeneralFunction.GetLastDayOfWeekDate(TodayDate);
-
                     ViewState["CurrentStart"] = StartDate;
                     ViewState["CurrentEnd"] = EndDate;
                     int userid = Convert.ToInt32(Session["UserID"]);
-                    string Ismanage = Session["IsManage"].ToString();
                     DataTable ds = new DataTable();
                     ddlReportType.SelectedIndex = 0;
 
@@ -101,8 +101,6 @@ namespace Attendance
                 Response.Redirect("Default.aspx");
             }
         }
-
-       
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", " $('#spinner').show();", true);
@@ -228,12 +226,23 @@ namespace Attendance
             try
             {
                 EmployeeBL obj = new EmployeeBL();
-                DateTime startDate = Convert.ToDateTime(Session["TodayDate"]);
-                DateTime endDate = startDate.AddDays(7);
 
-                DataTable ds = obj.GetLeaveRequestDetByUserID(Convert.ToInt32(Session["UserID"]), startDate, endDate);
-                grdSingleLeaveReq.DataSource = ds;
-                grdSingleLeaveReq.DataBind();
+                if (ddlReportType.SelectedValue.ToString() == "0")
+                {
+                    DateTime startDate = Convert.ToDateTime(Session["TodayDate"]);
+                    DateTime endDate = startDate.AddDays(7);
+                    DataTable ds = obj.GetLeaveRequestDetByUserID(Convert.ToInt32(Session["UserID"]), startDate, endDate);
+                    grdSingleLeaveReq.DataSource = ds;
+                    grdSingleLeaveReq.DataBind();
+                }
+                else
+                {
+                    DateTime startDate = Convert.ToDateTime(ViewState["MonthSatrt"]);
+                    DateTime endDate = startDate.AddMonths(1).AddSeconds(-1);
+                    DataTable ds = obj.GetLeaveRequestDetByUserID(Convert.ToInt32(Session["UserID"]), startDate, endDate);
+                    grdSingleLeaveReq.DataSource = ds;
+                    grdSingleLeaveReq.DataBind();
+                }
 
             }
             catch (Exception ex)
@@ -573,8 +582,6 @@ namespace Attendance
                     DateTime PreWeekEnd = GeneralFunction.GetLastDayOfWeekDate(PrevWeek);
                     DataTable ds = new DataTable();
                     ds = GetReportSingle(PreWeekStart, PreWeekEnd, userid);
-                    DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, PreWeekStart, PreWeekEnd);
-
                     Session["AtnDetails"] = ds;
                     if (ds.Rows.Count > 0)
                     {
@@ -583,8 +590,8 @@ namespace Attendance
                         dvSingle.Style["display"] = "block";
                         dvMonthrep.Style["display"] = "none";
 
-                        grdSingleLeaveReq.DataSource = ds1;
-                        grdSingleLeaveReq.DataBind();
+                        //grdSingleLeaveReq.DataSource = ds1;
+                        //grdSingleLeaveReq.DataBind();
 
                     }
                 }
@@ -595,9 +602,9 @@ namespace Attendance
                     ViewState["MonthSatrt"] = monthStart;
 
                     GetCalender(monthStart, monthEnd, 1);
-                    DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
-                    grdSingleLeaveReq.DataSource = ds1;
-                    grdSingleLeaveReq.DataBind();
+                  //  DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
+                  //  grdSingleLeaveReq.DataSource = ds1;
+                  //  grdSingleLeaveReq.DataBind();
                     dvSingle.Style["display"] = "none";
                     dvMonthrep.Style["display"] = "block";
 
@@ -649,7 +656,7 @@ namespace Attendance
                     string IsAdmin = Session["IsAdmin"].ToString();
                     DataTable ds = new DataTable();
                     ds = GetReportSingle(NextWeekStart, NextWeekEnd, userid);
-                    DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, NextWeekStart, NextWeekEnd);
+                    //DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, NextWeekStart, NextWeekEnd);
                     Session["AtnDetails"] = ds;
                     if (ds.Rows.Count > 0)
                     {
@@ -658,8 +665,8 @@ namespace Attendance
                         dvSingle.Style["display"] = "block";
                         dvMonthrep.Style["display"] = "none";
 
-                        grdSingleLeaveReq.DataSource = ds1;
-                        grdSingleLeaveReq.DataBind();
+                        //grdSingleLeaveReq.DataSource = ds1;
+                        //grdSingleLeaveReq.DataBind();
                     }
                 }
                 else
@@ -669,9 +676,9 @@ namespace Attendance
                     ViewState["MonthSatrt"] = monthStart;
 
                     GetCalender(monthStart, monthEnd, 1);
-                    DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
-                    grdSingleLeaveReq.DataSource = ds1;
-                    grdSingleLeaveReq.DataBind();
+                    //DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
+                    //grdSingleLeaveReq.DataSource = ds1;
+                    //grdSingleLeaveReq.DataBind();
                     dvSingle.Style["display"] = "none";
                     dvMonthrep.Style["display"] = "block";
 
@@ -722,27 +729,27 @@ namespace Attendance
                     ds = GetReportSingle(StartDate, EndDate, userid);
                     Session["AtnDetails"] = ds;
                    
-                    DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, StartDate, EndDate);
+                   // DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, StartDate, EndDate);
                     if (ds.Rows.Count > 0)
                     {
                         grdAttendanceSingle.DataSource = ds;
                         grdAttendanceSingle.DataBind();
                         dvSingle.Style["display"] = "block";
                         dvMonthrep.Style["display"] = "none";
-                        grdSingleLeaveReq.DataSource = ds1;
-                        grdSingleLeaveReq.DataBind();
+                        //grdSingleLeaveReq.DataSource = ds1;
+                        //grdSingleLeaveReq.DataBind();
                     }
                 }
                 else
                 {
-                    DateTime monthStart = Convert.ToDateTime(ViewState["CurrentMonth"]).AddMonths(1);
+                    DateTime monthStart = Convert.ToDateTime(ViewState["CurrentMonth"]);
                     DateTime monthEnd = monthStart.AddMonths(1).AddSeconds(-1);
                     ViewState["MonthSatrt"] = monthStart;
 
                     GetCalender(monthStart, monthEnd, 1);
-                    DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
-                    grdSingleLeaveReq.DataSource = ds1;
-                    grdSingleLeaveReq.DataBind();
+                    //DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
+                    //grdSingleLeaveReq.DataSource = ds1;
+                    //grdSingleLeaveReq.DataBind();
                     dvSingle.Style["display"] = "none";
                     dvMonthrep.Style["display"] = "block";
 
@@ -1566,9 +1573,9 @@ namespace Attendance
                     DateTime monthEnd = monthStart.AddMonths(1).AddSeconds(-1);
                    
                     GetCalender(monthStart, monthEnd, 1);
-                    DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
-                    grdSingleLeaveReq.DataSource = ds1;
-                    grdSingleLeaveReq.DataBind();
+                    //DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
+                    //grdSingleLeaveReq.DataSource = ds1;
+                    //grdSingleLeaveReq.DataBind();
                     dvSingle.Style["display"] = "none";
                     dvMonthrep.Style["display"] = "block";
 
@@ -1604,7 +1611,7 @@ namespace Attendance
                     DataTable ds = new DataTable();
                     ds = GetReportSingle(Start, End, userid);
                   
-                    DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, Start, End);
+                   // DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, Start, End);
                     Session["AtnDetails"] = ds;
                     if (ds.Rows.Count > 0)
                     {
@@ -1612,8 +1619,8 @@ namespace Attendance
                         grdAttendanceSingle.DataBind();
                         dvSingle.Style["display"] = "block";
                         dvMonthrep.Style["display"] = "none";
-                        grdSingleLeaveReq.DataSource = ds1;
-                        grdSingleLeaveReq.DataBind();
+                        //grdSingleLeaveReq.DataSource = ds1;
+                        //grdSingleLeaveReq.DataBind();
 
                     }
 

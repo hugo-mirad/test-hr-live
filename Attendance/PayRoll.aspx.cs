@@ -63,6 +63,17 @@ namespace Attendance
                     GetShifts(ddlLocation.SelectedItem.Text.ToString());
                     ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(Session["ShiftID"].ToString()));
 
+                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    {
+                        lnkLeavemangement.Enabled = false;
+                        lnkLeavemangement.Style["Color"] = "Gray";
+                    }
+                    else
+                    {
+                        lnkLeavemangement.Enabled = true;
+                    }
+
+
                     if (Session["IsAdmin"].ToString() == "True")
                     {
                         if (ddlLocation.SelectedItem.Text.Trim() == "INBH" || ddlLocation.SelectedItem.Text.Trim() == "INDG")
@@ -486,7 +497,7 @@ namespace Attendance
                     {
                         txtFromDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
                         txtToDate.Text = EndTime.ToString("MM/dd/yyyy");
-                        GetReport(EndTime, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
+                        GetReport( StartDate.AddDays(-1),EndTime,0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                         btnSave.Visible = false;
                         btnFinal.Visible = false;
                         btnPrint.Visible = false;

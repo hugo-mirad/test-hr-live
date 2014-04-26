@@ -63,6 +63,16 @@ namespace Attendance
                     GetUserDetails(sort,Convert.ToInt32(ddlgridShift.SelectedItem.Value));
                     GetStates(Session["LocationName"].ToString().Trim());
                     GetSSN();
+                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    {
+                        lnkLeavemangement.Enabled = false;
+                        lnkLeavemangement.Style["Color"] = "Gray";
+                    }
+                    else
+                    {
+                        
+                        lnkLeavemangement.Enabled = true;
+                    }
 
                 }
                

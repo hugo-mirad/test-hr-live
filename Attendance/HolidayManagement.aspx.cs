@@ -59,7 +59,15 @@ namespace Attendance
                     int locationID = Convert.ToInt32(ddlLocation.SelectedItem.Value);
                     Session["HCurrentDay"] = TodayDate;
 
-
+                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    {
+                        lnkLeavemangement.Enabled = false;
+                        lnkLeavemangement.Style["Color"] = "Gray";
+                    }
+                    else
+                    {
+                        lnkLeavemangement.Enabled = true;
+                    }
                     if (Session["IsAdmin"].ToString() == "True")
                     {
                         ddlLocation.Enabled = true;

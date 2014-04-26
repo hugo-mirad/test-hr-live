@@ -231,11 +231,14 @@
           return false;
         }
         
-       if($('#txtHolidayName').val().length<=0)
-       { 
-        alert('Please enter holiday name');
-        $('#txtHolidayName').focus();
-         return false;
+        if($('#trHol').css('display') != 'none')
+        {
+           if($('#txtHolidayName').val().length<=0)
+           { 
+            alert('Please enter holiday name');
+            $('#txtHolidayName').focus();
+             return false;
+           }
        }
         return true;
     }

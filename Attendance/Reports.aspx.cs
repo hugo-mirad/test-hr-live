@@ -76,6 +76,16 @@ namespace Attendance
                         btnNext.Enabled = true;
                     }
 
+                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    {
+                        lnkLeavemangement.Enabled = false;
+                        lnkLeavemangement.Style["Color"] = "Gray";
+                    }
+                    else
+                    {
+                        lnkLeavemangement.Enabled = true;
+                    }
+
 
                     DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
                     DateTime EndDate = GeneralFunction.GetLastDayOfWeekDate(TodayDate);

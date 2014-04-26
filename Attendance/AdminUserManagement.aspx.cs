@@ -51,6 +51,17 @@ namespace Attendance
                     GetMasterShifts(lblLocation.Text.ToString());
                     ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
 
+
+                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    {
+                        lnkLeavemangement.Enabled = false;
+                        lnkLeavemangement.Style["Color"] = "Gray";
+                    }
+                    else
+                    {
+                        lnkLeavemangement.Enabled = true;
+                    }
+
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(Session["LocationName"].ToString().Trim()));
                     int sort = 1;
                     Session["SortBy"] = 1;

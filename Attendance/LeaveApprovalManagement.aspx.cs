@@ -35,6 +35,8 @@ namespace Attendance
                         timezone = "India Standard Time";
 
                     }
+
+
                     DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                     var CurentDatetime = ISTTime;
 
@@ -78,6 +80,15 @@ namespace Attendance
                         btnNext.CssClass = "btn btn-danger btn-small enabled";
                         btnNext.Enabled = true;
 
+                    }
+                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    {
+                        lnkLeavemangement.Enabled = false;
+                        lnkLeavemangement.Style["Color"] = "Gray";
+                    }
+                    else
+                    {
+                        lnkLeavemangement.Enabled = true;
                     }
                 }
             }

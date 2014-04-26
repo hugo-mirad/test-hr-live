@@ -522,6 +522,13 @@
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                         </li>
+                                        <li>
+                                            <asp:UpdatePanel ID="uplev" runat="server">
+                                                <ContentTemplate>
+                                                    <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server" OnClick="lnkNewLeaveReq_Click"></asp:LinkButton>
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -558,48 +565,42 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </h2>
-    
-    <div style="display:inline-block;">
-    <div style="float:left;width: 855px; padding: 5px;">
-     <asp:UpdatePanel ID="updd" runat="server">
-        <ContentTemplate>
-            <b>
-               Report type</b>&nbsp;
-            <asp:DropDownList ID="ddlReportType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlReportType_SelectedIndexChanged"
-                Visible="true">
-                <asp:ListItem Text="Weekly Report" Value="0"></asp:ListItem>
-                <asp:ListItem Text="Monthly Report" Value="1"></asp:ListItem>
-            </asp:DropDownList>
-        </ContentTemplate>
-    </asp:UpdatePanel>
-     <div style="margin-bottom: 6px;">
-        <div style="display: inline-block; width: 1007px">
-            <asp:UpdatePanel ID="upbtns" runat="server">
+    <div style="display: inline-block;">
+        <div style="float: left; width: 855px; padding: 5px;">
+            <asp:UpdatePanel ID="updd" runat="server">
                 <ContentTemplate>
-                    <asp:Button ID="btnPrevious" runat="server" Text="Previous" CssClass="btn btn-danger btn-small"
-                        OnClick="btnPrevious_Click" />&nbsp;
-                    <asp:Button ID="btnCurrent" runat="server" Text="Current" CssClass="btn btn-danger btn-small"
-                        OnClick="btnCurrent_Click" />&nbsp;
-                    <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
-                        OnClick="btnNext_Click" />&nbsp;
+                    <b>Report type</b>&nbsp;
+                    <asp:DropDownList ID="ddlReportType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlReportType_SelectedIndexChanged"
+                        Visible="true">
+                        <asp:ListItem Text="Weekly Report" Value="0"></asp:ListItem>
+                        <asp:ListItem Text="Monthly Report" Value="1"></asp:ListItem>
+                    </asp:DropDownList>
                 </ContentTemplate>
             </asp:UpdatePanel>
+            <div style="margin-bottom: 6px;">
+                <div style="display: inline-block; width: 1007px">
+                    <asp:UpdatePanel ID="upbtns" runat="server">
+                        <ContentTemplate>
+                            <asp:Button ID="btnPrevious" runat="server" Text="Previous" CssClass="btn btn-danger btn-small"
+                                OnClick="btnPrevious_Click" />&nbsp;
+                            <asp:Button ID="btnCurrent" runat="server" Text="Current" CssClass="btn btn-danger btn-small"
+                                OnClick="btnCurrent_Click" />&nbsp;
+                            <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
+                                OnClick="btnNext_Click" />&nbsp;
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
-    
-      <div style="float: right; padding-right: 250px;">
-      <br />
+        <div style="float: right; padding-right: 250px;">
+            <br />
             <asp:UpdatePanel ID="upLeave" runat="server">
                 <ContentTemplate>
                     <asp:LinkButton ID="lnkLeaveReq" Text="Show Leave Requests" runat="server" OnClick="lnkLeaveReq_Click"></asp:LinkButton>
-                    <br />
-                    <asp:LinkButton ID="lnkNewLeaveReq" Text="New Leave Request" runat="server" OnClick="lnkNewLeaveReq_Click"></asp:LinkButton>
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
     </div>
-    
     <div id="DvSingleRep" runat="server">
         <asp:UpdatePanel ID="upSingle" runat="server">
             <ContentTemplate>
@@ -656,13 +657,19 @@
                 <div style="margin: 10px;" id="dvMonthrep" runat="server">
                     <div class="picker calender">
                         <div class="header">
-                       <table style="width:100%">
-                          <tr>
-                          <td style="text-align:left;width:35%; padding-left: 10px;"><span id="lblMonthEmp" class="current" runat="server"></span></td>
-                          <td style="text-align:center"><span id="lblMonth" class="current" runat="server"></span></td>
-                          <td style="text-align:right;width:35%;padding-right: 10px;"><span id="lblMonthHrs" class="current" runat="server"></span></td>
-                          </tr>
-                         </table>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td style="text-align: left; width: 35%; padding-left: 10px;">
+                                        <span id="lblMonthEmp" class="current" runat="server"></span>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <span id="lblMonth" class="current" runat="server"></span>
+                                    </td>
+                                    <td style="text-align: right; width: 35%; padding-right: 10px;">
+                                        <span id="lblMonthHrs" class="current" runat="server"></span>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <asp:GridView ID="grdMonthlyRep" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdMonthlyRep_RowDataBound"
                             CssClass="table1 tblCal">
@@ -755,8 +762,6 @@
                         </asp:GridView>
                     </div>
                 </div>
-                <br />
-                <br />
                 <br />
                 <asp:GridView ID="grdSingleLeaveReq" runat="server" AutoGenerateColumns="false" CssClass="tableLeave"
                     OnRowDataBound="grdSingleLeaveReq_RowDataBound">

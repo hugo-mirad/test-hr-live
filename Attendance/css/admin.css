@@ -809,7 +809,7 @@ height: 26px;
 
 
 
-div.picker.calender{ min-width:1000px }
+div.picker.calender{ min-width:920px }
 
 div.picker.calender .header{
 	border-bottom: 4px solid #888;
@@ -822,13 +822,13 @@ div.picker.calender a,
 div.picker.calender span{ color:#555; }
 
 
-#grdMonthlyRep td{ background:none;   overflow:hidden; width:140px; height:90px; text-align:center; font-size:12px; line-height:22px; padding:0px; vertical-align:top; }
+#grdMonthlyRep td{ background:none;   overflow:hidden; width:130px; height:75px; text-align:center; font-size:12px; line-height:22px; padding:0px; vertical-align:top; }
 
-#grdMonthlyRep .calIn{ display:block; width:136px; background:#fff; height:90px; border-radius: 6px;margin: 2px; overflow:hidden; }
+#grdMonthlyRep .calIn{ display:block; width:126px; background:#fff; height:75px; border-radius: 6px;margin: 2px; overflow:hidden; }
 
 
-#grdMonthlyRep th{ padding:10px; font-size:16px; text-align:center; }
-#grdMonthlyRep .dateSpan{ font-size:25px; font-weight:bold; display:block; text-align:center; color:#777; padding:10px 0; }
+#grdMonthlyRep th{ padding:-5px; font-size:16px; text-align:center; }
+#grdMonthlyRep .dateSpan{ font-size:23px; font-weight:bold; display:block; text-align:center; color:#777; padding:8px 0; }
 
 
 
