@@ -869,10 +869,9 @@
             <a href="#" class="logo">
                 <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
                 <asp:Label ID="lblLocation" runat="server"></asp:Label>
+                 <asp:Label ID="lblShiftName" runat="server"></asp:Label>
             </a>
-            <div class="shifts">
-                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
-            </div>
+        
             <div class="right">
                 <div class="wel">
                     <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -932,7 +931,7 @@
                                     <span class="cDate" style="margin-bottom: 1px; margin-top: 2px; float: left; display: inline-block">
                                     </span>
                                     <div class="cTime" style="display: inline-block; float: right; margin-left: 10px;">
-                                        <b>--:--:-- AM </b><strong>(<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
+                                        <b>--:--:-- AM </b><strong> (<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
                                     </div>
 
                                     <script src="js/clock.js" type="text/javascript"></script>
@@ -978,7 +977,7 @@
                                 <asp:ListItem Text="Select" Value="0"></asp:ListItem>
                             </asp:DropDownList>
                             &nbsp;&nbsp; <b>
-                                <asp:Label ID="lblShift" runat="server" Text="Shifts"></asp:Label></b>&nbsp;&nbsp;
+                                <asp:Label ID="lblShift" runat="server" Text="Shift"></asp:Label></b>&nbsp;&nbsp;
                             <asp:DropDownList ID="ddlgridShift" runat="server" AutoPostBack="true" 
                                 Style="width: 70px;" 
                                 onselectedindexchanged="ddlgridShift_SelectedIndexChanged">
@@ -1066,7 +1065,7 @@
                             </ItemTemplate>
                             <ItemStyle Width="50" />
                         </asp:TemplateField>
-                        <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
+                        <asp:TemplateField SortExpression="Firstname" HeaderText="BusinessName">
                             <%--   <HeaderTemplate>
                                 <asp:LinkButton ID="lblHeadEmpFirstname" runat="server" Text="Firstname"></asp:LinkButton>
                             </HeaderTemplate>--%>
@@ -1077,6 +1076,14 @@
                             </ItemTemplate>
                             <ItemStyle Width="150" />
                         </asp:TemplateField>
+                        <asp:TemplateField SortExpression="PEmpname" HeaderText="Name">
+                            <ItemTemplate>
+                                <asp:Label ID="lblEmpname" runat="server" Text='<%#Eval("PEmpname")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle Width="150" />
+                        </asp:TemplateField>
+                        
+                        
                         <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
                             <%--<HeaderTemplate>
                                 <asp:LinkButton ID="lblHeadStarted" runat="server" Text="StartedDt"></asp:LinkButton>
@@ -1150,7 +1157,7 @@
     <asp:HiddenField ID="hdnAddpopup" runat="server" />
     <div id="AddPopUp" runat="server" class="popContent" style="width: 900px; display: none">
         <h2>
-            Add user <span class="close">
+            Add employee for <asp:Label ID="lbladdLoc" runat="server" style="font-size:17px;font-weight:bold"></asp:Label> <span class="close">
                 <asp:LinkButton ID="lnkClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
@@ -1316,8 +1323,8 @@
                                 Shift<span class="must">*</span>
                             </td>
                             <td>
-                                <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" AppendDataBoundItems="true">
-                                    <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                                <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" >
+                                    
                                 </asp:DropDownList>
                             </td>
                         </tr>

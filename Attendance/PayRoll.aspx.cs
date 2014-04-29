@@ -52,26 +52,25 @@ namespace Attendance
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
+                    lblShiftName.Text = "-" + Session["ShiftName"].ToString();
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
                     int userid = Convert.ToInt32(Session["UserID"]);
-                    GetMasterShifts(Session["LocationName"].ToString());
-                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
-
+                   
                     getLocations();
                     ddlLocation.SelectedIndex = (ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(Session["LocationName"].ToString())));
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
                     GetShifts(ddlLocation.SelectedItem.Text.ToString());
                     ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(Session["ShiftID"].ToString()));
 
-                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                    {
-                        lnkLeavemangement.Enabled = false;
-                        lnkLeavemangement.Style["Color"] = "Gray";
-                    }
-                    else
-                    {
-                        lnkLeavemangement.Enabled = true;
-                    }
+                    //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    //{
+                    //    lnkLeavemangement.Enabled = false;
+                    //    lnkLeavemangement.Style["Color"] = "Gray";
+                    //}
+                    //else
+                    //{
+                    //    lnkLeavemangement.Enabled = true;
+                    //}
 
 
                     if (Session["IsAdmin"].ToString() == "True")
@@ -3014,21 +3013,7 @@ namespace Attendance
             ddlShift.DataBind();
            // ddlShift.Items.Insert(0, new System.Web.UI.WebControls.ListItem("ALL", "0"));
         }
-        private void GetMasterShifts(string LocationName)
-        {
-            try
-            {
-                Business business = new Business();
-                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-                ddlShifts.DataSource = dsShifts;
-                ddlShifts.DataTextField = "shiftname";
-                ddlShifts.DataValueField = "shiftID";
-                ddlShifts.DataBind();
-            }
-            catch (Exception ex)
-            {
-            }
-        }
+   
         protected void ddlShift_SelectedIndexChanged(object sender, EventArgs e)
         {
             try

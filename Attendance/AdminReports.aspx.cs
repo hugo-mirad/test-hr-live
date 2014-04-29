@@ -44,21 +44,20 @@ namespace Attendance
                     hdnTodaydt.Value = CurentDatetime.ToString("MM/dd/yyyy");
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
+                    lblShiftName.Text = "-"+Session["ShiftName"].ToString();
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
-                    GetMasterShifts(Session["LocationName"].ToString());
-                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
                     getLocations();
 
-                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                    {
-                        lnkLeavemangement.Enabled = false;
-                        lnkLeavemangement.Style["Color"] = "Gray";
-                    }
-                    else
-                    {
-                        lnkLeavemangement.Enabled = true;
+                    //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    //{
+                    //    lnkLeavemangement.Enabled = false;
+                    //    lnkLeavemangement.Style["Color"] = "Gray";
+                    //}
+                    //else
+                    //{
+                    //    lnkLeavemangement.Enabled = true;
                         
-                    }
+                    //}
 
                     ViewState["Location"] = Session["LocationName"].ToString();
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
@@ -120,6 +119,8 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
+                        //System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+                        
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -1312,7 +1313,7 @@ namespace Attendance
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["TotalHours"] = WeeklyTotalHrs == 0 ? "" : "<b>" + GeneralFunction.CalDoubleToTime(WeeklyTotalHrs) + "</b>";
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["PresentDays"] = "<b>" + totalPresent.ToString() + "</b>";
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["empid"] = "<b>Totals</b>";
-                        dtAttandence.Rows.Add();
+                        
                     }
 
                 }
@@ -1330,6 +1331,38 @@ namespace Attendance
             try
             {
                 Report obj = new Report();
+
+                if (e.Row.RowType == DataControlRowType.Header)
+                {
+                     if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[3].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[6].CssClass += " current ";
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[9].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[12].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[15].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[18].CssClass.Replace("hideColumn", " ");
+                    }
+                    else
+                    {
+                        e.Row.Cells[21].CssClass.Replace("hideColumn", " ");
+                    }
+                }
 
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
@@ -1350,7 +1383,7 @@ namespace Attendance
                     Label lblPName = (Label)e.Row.FindControl("lblPName");
                     Label lblName = (Label)e.Row.FindControl("lblName");
 
-                    string tip = CreateNameTable(lblPName.Text.Trim(), Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy"), Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy"));
+                    string tip = CreateNameTable(lblName.Text.Trim(),lblPName.Text.Trim(), Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy"), Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy"));
                     lblName.Attributes.Add("class", "tooltip2");
                     lblName.Attributes.Add("title", tip);
 
@@ -1544,7 +1577,7 @@ namespace Attendance
                     HiddenField hdnMonSignOutFlag = (HiddenField)e.Row.FindControl("hdnMonSignOutFlag");
                     if (hdnMonSignInFlag.Value == "True" || hdnMonSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[3].CssClass += " atnEdit";
+                        e.Row.Cells[3].CssClass += " atnEdit ";
                         lblMonIn.CssClass.Replace("greenTag", "");
                         //lblMonIn.ForeColor = System.Drawing.Color.Moccasin ;
                     }
@@ -1616,7 +1649,7 @@ namespace Attendance
                     HiddenField hdnTueSignOutFlag = (HiddenField)e.Row.FindControl("hdnTueSignOutFlag");
                     if (hdnTueSignInFlag.Value == "True" || hdnTueSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[6].CssClass += " atnEdit";
+                        e.Row.Cells[6].CssClass += " atnEdit ";
 
                     }
                     HiddenField hdnTueSigninNotes = (HiddenField)e.Row.FindControl("hdnTueSigninNotes");
@@ -1690,7 +1723,7 @@ namespace Attendance
                     HiddenField hdnWedSignOutFlag = (HiddenField)e.Row.FindControl("hdnWedSignOutFlag");
                     if (hdnWedSignInFlag.Value == "True" || hdnWedSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[9].CssClass += " atnEdit";
+                        e.Row.Cells[9].CssClass += " atnEdit ";
                         lblWedIn.CssClass.Replace("greenTag", "");
                         // lblWedIn.ForeColor = System.Drawing.Color.Moccasin ;
                     }
@@ -1713,7 +1746,7 @@ namespace Attendance
                     {
                         lblWedIn.Attributes.Add("rel", "tooltip");
                         lblWedIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[9].CssClass += " greenTag";
+                        e.Row.Cells[9].CssClass += " greenTag ";
 
                     }
                     lblWedIn.Attributes.Add("sMultiple", sWedMultiple);
@@ -1765,7 +1798,7 @@ namespace Attendance
                     HiddenField hdnThuSignOutFlag = (HiddenField)e.Row.FindControl("hdnThuSignOutFlag");
                     if (hdnThuSignInFlag.Value == "True" || hdnThuSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[12].CssClass += " atnEdit";
+                        e.Row.Cells[12].CssClass += " atnEdit ";
                         lblThuIn.Attributes["class"] = "";
                         //lblThuIn.ForeColor = System.Drawing.Color.Moccasin ;
                     }
@@ -1788,7 +1821,7 @@ namespace Attendance
                     {
                         lblThuIn.Attributes.Add("rel", "tooltip");
                         lblThuIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[12].CssClass += " greenTag";
+                        e.Row.Cells[12].CssClass += " greenTag ";
                     }
                     lblThuIn.Attributes.Add("sMultiple", sThuMultiple);
                     lblThuIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["ThuDate"].ToString()).ToString("MM/dd/yyyy"));
@@ -1835,7 +1868,7 @@ namespace Attendance
                     HiddenField hdnFriSignOutFlag = (HiddenField)e.Row.FindControl("hdnFriSignOutFlag");
                     if (hdnFriSignInFlag.Value == "True" || hdnFriSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[15].CssClass += " atnEdit";
+                        e.Row.Cells[15].CssClass += " atnEdit ";
                         lblFriIn.CssClass.Replace("greenTag", "");
 
                     }
@@ -1860,7 +1893,7 @@ namespace Attendance
                     {
                         lblFriIn.Attributes.Add("rel", "tooltip");
                         lblFriIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[15].CssClass += " greenTag";
+                        e.Row.Cells[15].CssClass += " greenTag ";
                     }
 
                     lblFriIn.Attributes.Add("sMultiple", sFriMultiple);
@@ -1909,7 +1942,7 @@ namespace Attendance
                     HiddenField hdnSatSignOutFlag = (HiddenField)e.Row.FindControl("hdnSatSignOutFlag");
                     if (hdnSatSignInFlag.Value == "True" || hdnSatSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[18].CssClass += " atnEdit";
+                        e.Row.Cells[18].CssClass += " atnEdit ";
                         lblSatIn.CssClass.Replace("greenTag", "");
                     }
                     HiddenField hdnSatSignInNotes = (HiddenField)e.Row.FindControl("hdnSatSignInNotes");
@@ -1931,7 +1964,7 @@ namespace Attendance
                     {
                         lblSatIn.Attributes.Add("rel", "tooltip");
                         lblSatIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[18].CssClass += " greenTag";
+                        e.Row.Cells[18].CssClass += " greenTag ";
 
                     }
 
@@ -1983,7 +2016,7 @@ namespace Attendance
 
                     if (hdnSunSignInFlag.Value == "True" || hdnSunSignOutFlag.Value == "True")
                     {
-                        e.Row.Cells[21].CssClass += " atnEdit";
+                        e.Row.Cells[21].CssClass += " atnEdit ";
                         lblSatIn.CssClass.Replace("greenTag", "");
                     }
 
@@ -2007,7 +2040,7 @@ namespace Attendance
                     {
                         lblSunIn.Attributes.Add("rel", "tooltip");
                         lblSunIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[21].CssClass += " greenTag";
+                        e.Row.Cells[21].CssClass += " greenTag ";
                     }
 
                     lblSunIn.Attributes.Add("sMultiple", sSunMultiple);
@@ -2064,8 +2097,6 @@ namespace Attendance
                     HiddenField hdnThuLvStatus = (HiddenField)e.Row.FindControl("hdnThuLvStatus");
                     HiddenField hdnFriLvStatus = (HiddenField)e.Row.FindControl("hdnFriLvStatus");
                     HiddenField hdnSatLvStatus = (HiddenField)e.Row.FindControl("hdnSatLvStatus");
-
-
                     e.Row.Cells[3].CssClass += GeneralFunction.GetColor(lblMonIn.Text.Trim(), hdnMonLvStatus.Value.Trim());
 
                     e.Row.Cells[6].CssClass += GeneralFunction.GetColor(lblTueIn.Text.Trim(), hdnTueLvStatus.Value.Trim());
@@ -2078,6 +2109,48 @@ namespace Attendance
 
                     e.Row.Cells[18].CssClass += GeneralFunction.GetColor(lblSatIn.Text.Trim(), hdnSatLvStatus.Value.Trim());
                     e.Row.Cells[21].CssClass += GeneralFunction.GetColor(lblSunIn.Text.Trim(), hdnSunLvStatus.Value.Trim());
+
+
+                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[3].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[6].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[9].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[12].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[15].CssClass.Replace("hideColumn", " ");
+                    }
+                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        e.Row.Cells[18].CssClass.Replace("hideColumn", " ");
+                    }
+                    else
+                    {
+                        e.Row.Cells[21].CssClass.Replace("hideColumn", " ");
+                    }
+                    //grdAttandence.Columns[3].ItemStyle.CssClass += " hideColumn";
+
+                    //grdAttandence.Columns[6].ItemStyle.CssClass += " hideColumn";
+
+                    //grdAttandence.Columns[9].ItemStyle.CssClass += " hideColumn";
+
+                    //grdAttandence.Columns[12].ItemStyle.CssClass += " hideColumn";
+
+                    //grdAttandence.Columns[15].ItemStyle.CssClass += " hideColumn";
+
+                    //grdAttandence.Columns[18].ItemStyle.CssClass += " hideColumn";
+                    //grdAttandence.Columns[21].ItemStyle.CssClass += " hideColumn";
 
                 }
             }
@@ -2143,6 +2216,12 @@ namespace Attendance
                     HeaderCell.Style["font-weight"] = "bold";
                     HeaderGridRow.Cells.Add(HeaderCell);
 
+                    if((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        HeaderCell.CssClass="Current";
+                    }
+
+
                     HeaderCell = new TableCell();
                     HeaderCell.Text = startdate.AddDays(2).ToString("dddd") + ", " + startdate.AddDays(2).ToString("MMMM dd, yyyy");
                     ViewState["WedDate"] = startdate.AddDays(2);
@@ -2191,6 +2270,9 @@ namespace Attendance
 
 
                     grdAttandence.Controls[0].Controls.AddAt(0, HeaderGridRow);
+
+                    
+                   
 
                 }
             }
@@ -2259,6 +2341,8 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
+                        //System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -2448,6 +2532,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
+                        //System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -3259,6 +3344,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
+                       // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -3448,6 +3534,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
+                       // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -3704,6 +3791,7 @@ namespace Attendance
                 lblWeekReport.Text = "( Wk of " + startdate.ToString("MM/dd/yyyy") + " - Wk of " + endOfMonth.ToString("MM/dd/yyyy") + " )";
                 dtAttandence.Columns.Add("empid", typeof(string));
                 dtAttandence.Columns.Add("Empname", typeof(string));
+                dtAttandence.Columns.Add("PEmpName", typeof(string)); 
                 dtAttandence.Columns.Add("StatingDate", typeof(string));
                 dtAttandence.Columns.Add("TermDate", typeof(string));
                 dtAttandence.Columns.Add("TermReason", typeof(string));
@@ -3727,6 +3815,7 @@ namespace Attendance
                                 dtAttandence.Rows.Add();
                             }
                             dtAttandence.Rows[i]["empid"] = ds.Tables[0].Rows[i]["empid"].ToString();
+                            dtAttandence.Rows[i]["PEmpName"] = ds.Tables[0].Rows[i]["personalName"].ToString();
                             dtAttandence.Rows[i]["empname"] = ds.Tables[0].Rows[i]["firstName"].ToString() + " " + ds.Tables[0].Rows[i]["lastname"].ToString();
                             dtAttandence.Rows[i]["StatingDate"] = ds.Tables[0].Rows[i]["Startdate"].ToString() == "NULL" ? "" : ds.Tables[0].Rows[i]["Startdate"].ToString();
                             dtAttandence.Rows[i]["TermDate"] = ds.Tables[0].Rows[i]["Termdate"].ToString() == "NULL" ? "" : ds.Tables[0].Rows[i]["Termdate"].ToString();
@@ -3818,6 +3907,7 @@ namespace Attendance
                 lblWeekReport.Text = "( " + startdate.ToString("MM/dd/yyyy") + " - " + endMonth.ToString("MM/dd/yyyy") + " )";
                 dtAttandence.Columns.Add("empid", typeof(string));
                 dtAttandence.Columns.Add("Empname", typeof(string));
+                dtAttandence.Columns.Add("PEmpName", typeof(string)); 
                 dtAttandence.Columns.Add("StatingDate", typeof(string));
                 dtAttandence.Columns.Add("TermDate", typeof(string));
                 dtAttandence.Columns.Add("TermReason", typeof(string));
@@ -3846,6 +3936,7 @@ namespace Attendance
                                 dtAttandence.Rows.Add();
                             }
                             dtAttandence.Rows[i]["empid"] = ds.Tables[0].Rows[i]["empid"].ToString();
+                            dtAttandence.Rows[i]["PEmpName"] = ds.Tables[0].Rows[i]["personalName"].ToString();
                             dtAttandence.Rows[i]["empname"] = ds.Tables[0].Rows[i]["firstName"].ToString() + " " + ds.Tables[0].Rows[i]["lastname"].ToString();
                             dtAttandence.Rows[i]["StatingDate"] = ds.Tables[0].Rows[i]["Startdate"].ToString();
                             dtAttandence.Rows[i]["TermDate"] = ds.Tables[0].Rows[i]["Termdate"].ToString();
@@ -3933,6 +4024,15 @@ namespace Attendance
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month4"] = TotalHrs4 == 0 ? "" : TotalHrs4.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month5"] = TotalHrs5 == 0 ? "" : TotalHrs5.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month6"] = TotalHrs6 == 0 ? "" : TotalHrs6.ToString();
+
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days1"] = Days1 == 0 ? "" : Days1.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days2"] = Days2 == 0 ? "" : Days2.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days3"] = Days3 == 0 ? "" : Days3.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days4"] = Days4 == 0 ? "" : Days4.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days5"] = Days5 == 0 ? "" : Days5.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days6"] = Days6 == 0 ? "" : Days6.ToString();
+
+
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["empid"] = "<b>Totals</b>";
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days"] = TotalDays;
                 Double sum = TotalHrs1 + TotalHrs2 + TotalHrs3 + TotalHrs4 + TotalHrs5 + TotalHrs6;
@@ -4082,6 +4182,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
+                       // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -4114,6 +4215,13 @@ namespace Attendance
 
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
+
+                    Label lblEmpname=(Label)e.Row.FindControl("lblEmpname");
+                    Label lblName=(Label)e.Row.FindControl("lblName");
+
+                    string s = CreateNameTable(lblEmpname.Text.ToString().Trim(), lblName.Text.Trim(), "", "");
+                    lblEmpname.Attributes.Add("class", "tooltip2");
+                    lblEmpname.Attributes.Add("title", s);    
 
                     Label lblStartDt = (Label)e.Row.FindControl("lblStartDt");
                     lblStartDt.Text = lblStartDt.Text == "" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy");
@@ -4200,6 +4308,13 @@ namespace Attendance
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
 
+                Label lblEmpname = (Label)e.Row.FindControl("lblEmpname");
+                Label lblName = (Label)e.Row.FindControl("lblName");
+
+                string s = CreateNameTable(lblEmpname.Text.ToString().Trim(), lblName.Text.Trim(), "", "");
+                lblEmpname.Attributes.Add("class", "tooltip2");
+                lblEmpname.Attributes.Add("title", s);    
+
                 Label lblStartDt = (Label)e.Row.FindControl("lblStartDt");
                 lblStartDt.Text = lblStartDt.Text == "" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy");
                 Label lblTermDt = (Label)e.Row.FindControl("lblTermDt");
@@ -4249,19 +4364,27 @@ namespace Attendance
             }
 
         }
-        private string CreateNameTable(string Employeename, string StartDate, string TermDate)
+        private string CreateNameTable(string EmpBusiness, string Employeename, string StartDate, string TermDate)
         {
             string strTransaction = string.Empty;
             strTransaction = "<table class=\"noPading\"  id=\"SalesStatus\" style=\"display: table; border-collapse:collapse;  width:100%; min-width:200px; text-align:left;   \">";
             strTransaction += "<tr>";
-            strTransaction += "<td style=\"width:45%;\">";
-            strTransaction += "Personal name:";
+            strTransaction += "<td style=\"width:50%;vertical-align: top;\">";
+            strTransaction += "Business name:";
+            strTransaction += "</td>";
+            strTransaction += "<td>";
+            strTransaction += EmpBusiness;
+            strTransaction += "</td>";
+            strTransaction += "</tr>";
+
+            strTransaction += "<tr>";
+            strTransaction += "<td style=\"width:50%;vertical-align: top;\">";
+            strTransaction += "Name:";
             strTransaction += "</td>";
             strTransaction += "<td>";
             strTransaction += Employeename;
             strTransaction += "</td>";
             strTransaction += "</tr>";
-
 
             if (StartDate != "01/01/1900" && StartDate != "")
             {
@@ -4702,6 +4825,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
+                      //  System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -4864,14 +4988,26 @@ namespace Attendance
             ddlShift.DataBind();
             ddlShift.Items.Insert(0, new ListItem("ALL", "0"));
         }
-        private void GetMasterShifts(string LocationName)
+
+        protected void grdAttandence_DataBound(object sender, EventArgs e)
         {
-            Business business = new Business();
-            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-            ddlShifts.DataSource = dsShifts;
-            ddlShifts.DataTextField = "shiftname";
-            ddlShifts.DataValueField = "shiftID";
-            ddlShifts.DataBind();
+            try
+            {
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+                        
+            }
+            catch (Exception ex)
+            {
+            }
         }
+
+        protected void grdAttandence_Load(object sender, EventArgs e)
+        {
+
+
+           // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+                       
+        }
+      
     }
 }

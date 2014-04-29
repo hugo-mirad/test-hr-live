@@ -669,6 +669,7 @@
         <a href="#" class="logo">
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
+            <asp:Label ID="lblShiftName" runat="server"></asp:Label>
         </a>
         <div class="right">
             <div class="wel">
@@ -729,7 +730,7 @@
                                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px; float: left; display: inline-block">
                                 </span>
                                 <div class="cTime" style="display: inline-block; float: right; margin-left: 10px;">
-                                    <b>--:--:-- AM </b><strong>(<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
+                                    <b>--:--:-- AM </b><strong> (<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
                                 </div>
 
                                 <script src="js/clock.js" type="text/javascript"></script>

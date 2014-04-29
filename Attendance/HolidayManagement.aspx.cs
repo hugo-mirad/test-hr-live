@@ -44,9 +44,8 @@ namespace Attendance
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
-
-                    GetMasterShifts(lblLocation.Text.ToString());
-                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
+                    lblShiftName.Text = "-" + Session["ShiftName"].ToString();
+                    
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
                     Getdepartments();
                     GetYear();
@@ -59,15 +58,15 @@ namespace Attendance
                     int locationID = Convert.ToInt32(ddlLocation.SelectedItem.Value);
                     Session["HCurrentDay"] = TodayDate;
 
-                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                    {
-                        lnkLeavemangement.Enabled = false;
-                        lnkLeavemangement.Style["Color"] = "Gray";
-                    }
-                    else
-                    {
-                        lnkLeavemangement.Enabled = true;
-                    }
+                    //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    //{
+                    //    lnkLeavemangement.Enabled = false;
+                    //    lnkLeavemangement.Style["Color"] = "Gray";
+                    //}
+                    //else
+                    //{
+                    //    lnkLeavemangement.Enabled = true;
+                    //}
                     if (Session["IsAdmin"].ToString() == "True")
                     {
                         ddlLocation.Enabled = true;
@@ -1000,21 +999,6 @@ namespace Attendance
             {
             }   
         }
-        private void GetMasterShifts(string LocationName)
-        {
-            try
-            {
-                Business business = new Business();
-                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-                ddlShifts.DataSource = dsShifts;
-                ddlShifts.DataTextField = "shiftname";
-                ddlShifts.DataValueField = "shiftID";
-                ddlShifts.DataBind();
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-
+     
     }
 }

@@ -45,22 +45,20 @@ namespace Attendance
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
                     lblLocation.Text = Session["LocationName"].ToString();
+                    lblShiftName.Text = "-" + Session["ShiftName"].ToString();
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
                     getLocations();
-                    GetMasterShifts(lblLocation.Text.ToString());
-                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
 
-
-                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                    {
-                        lnkLeavemangement.Enabled = false;
-                        lnkLeavemangement.Style["Color"] = "Gray";
-                    }
-                    else
-                    {
-                        lnkLeavemangement.Enabled = true;
-                    }
+                    //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    //{
+                    //    lnkLeavemangement.Enabled = false;
+                    //    lnkLeavemangement.Style["Color"] = "Gray";
+                    //}
+                    //else
+                    //{
+                    //    lnkLeavemangement.Enabled = true;
+                    //}
 
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(Session["LocationName"].ToString().Trim()));
                     int sort = 1;
@@ -204,6 +202,7 @@ namespace Attendance
             ddlWagetype.SelectedIndex = 0;
             ddlDeductions.SelectedIndex = 0;
 
+            lbladdLoc.Text = ddlLocation.SelectedItem.Text.Trim();
 
 
             lblError.Text = "";
@@ -1136,6 +1135,7 @@ namespace Attendance
                 ddlShift.DataTextField = "shiftname";
                 ddlShift.DataValueField = "shiftID";
                 ddlShift.DataBind();
+                ddlShift.Items.Insert(0, new ListItem("Select", "0"));
 
                 ddlgridShift.DataSource = dsShifts;
                 ddlgridShift.DataTextField = "shiftname";
@@ -1158,21 +1158,7 @@ namespace Attendance
 
             }
         }
-        private void GetMasterShifts(string LocationName)
-        {
-            try
-            {
-                Business business = new Business();
-                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-                ddlShifts.DataSource = dsShifts;
-                ddlShifts.DataTextField = "shiftname";
-                ddlShifts.DataValueField = "shiftID";
-                ddlShifts.DataBind();
-            }
-            catch (Exception ex)
-            {
-            }
-        }
+       
         protected void ddlgridShift_SelectedIndexChanged(object sender, EventArgs e)
         {
             try

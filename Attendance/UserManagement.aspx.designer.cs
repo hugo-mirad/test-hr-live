@@ -50,13 +50,13 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.Label lblLocation;
         
         /// <summary>
-        /// ddlShifts control.
+        /// lblShiftName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlShifts;
+        protected global::System.Web.UI.WebControls.Label lblShiftName;
         
         /// <summary>
         /// lblHeadSchedule control.
@@ -354,6 +354,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl AddPopUp;
+        
+        /// <summary>
+        /// lbladdLoc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbladdLoc;
         
         /// <summary>
         /// lnkClose control.

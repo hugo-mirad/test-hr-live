@@ -45,14 +45,12 @@ namespace Attendance
                     lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
                     hdnTodaydt.Value = CurentDatetime.ToString("MM/dd/yyyy");
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
-                    lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
-                    GetMasterShifts(Session["LocationName"].ToString());
-                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
+                    lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();      
                     getLocations();
-
 
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
                     lblLocation.Text = Session["LocationName"].ToString();
+                    lblShiftName.Text = "-" + Session["ShiftName"].ToString();
                     ViewState["Location"] = Session["LocationName"].ToString();
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
 
@@ -76,15 +74,15 @@ namespace Attendance
                         btnNext.Enabled = true;
                     }
 
-                    if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                    {
-                        lnkLeavemangement.Enabled = false;
-                        lnkLeavemangement.Style["Color"] = "Gray";
-                    }
-                    else
-                    {
-                        lnkLeavemangement.Enabled = true;
-                    }
+                    //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                    //{
+                    //    lnkLeavemangement.Enabled = false;
+                    //    lnkLeavemangement.Style["Color"] = "Gray";
+                    //}
+                    //else
+                    //{
+                    //    lnkLeavemangement.Enabled = true;
+                    //}
 
 
                     DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
@@ -1474,8 +1472,6 @@ namespace Attendance
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["FriHrs"] = WeeklySumFriHrs == 0 ? "" : "<b>" + GeneralFunction.ConverttoTime(WeeklySumFriHrs) + "</b>";
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["SatHrs"] = WeeklySumSatHrs == 0 ? "" : "<b>" + GeneralFunction.ConverttoTime(WeeklySumSatHrs) + "</b>";
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["TotalHours"] = WeeklyTotalHrs == 0 ? "" : "<b>" + GeneralFunction.ConverttoTime(WeeklyTotalHrs) + "</b>";
-                        dtAttandence.Rows.Add();
-
                     }
 
                 }
@@ -1516,7 +1512,7 @@ namespace Attendance
                     Label lblPName = (Label)e.Row.FindControl("lblPName");
                     Label lblName = (Label)e.Row.FindControl("lblName");
 
-                    string tip = CreateNameTable(lblPName.Text.Trim(), Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy"), Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy"));
+                    string tip = CreateNameTable(lblName.Text,lblPName.Text.Trim(), Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy"), Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy"));
                     lblName.Attributes.Add("class", "tooltip2");
                     lblName.Attributes.Add("title", tip);
 
@@ -3446,19 +3442,27 @@ namespace Attendance
             return strTransaction;
 
         }
-        private string CreateNameTable(string Employeename, string StartDate, string TermDate)
+        private string CreateNameTable(string EmpBusiness,string Employeename, string StartDate, string TermDate)
         {
             string strTransaction = string.Empty;
             strTransaction = "<table class=\"noPading\"  id=\"SalesStatus\" style=\"display: table; border-collapse:collapse;  width:100%; min-width:200px; text-align:left;   \">";
             strTransaction += "<tr>";
-            strTransaction += "<td style=\"width:45%;\">";
-            strTransaction += "Personal name:";
+            strTransaction += "<td style=\"width:50%;vertical-align: top;\">";
+            strTransaction += "Business name:";
+            strTransaction += "</td>";
+            strTransaction += "<td>";
+            strTransaction += EmpBusiness;
+            strTransaction += "</td>";
+            strTransaction += "</tr>";
+
+            strTransaction += "<tr>";
+            strTransaction += "<td style=\"width:50%;vertical-align: top;\">";
+            strTransaction += "Name:";
             strTransaction += "</td>";
             strTransaction += "<td>";
             strTransaction += Employeename;
             strTransaction += "</td>";
             strTransaction += "</tr>";
-
 
             if (StartDate != "01/01/1900" && StartDate != "")
             {
@@ -3532,8 +3536,6 @@ namespace Attendance
             return strTransaction;
 
         }
-
-
         protected void lnkLogout_Click(object sender, EventArgs e)
         {
 
@@ -3677,6 +3679,7 @@ namespace Attendance
                 lblWeekReport.Text = "( Wk of " + startdate.ToString("MM/dd/yyyy") + " - Wk of" + endOfMonth.ToString("MM/dd/yyyy") + " )";
                 dtAttandence.Columns.Add("empid", typeof(string));
                 dtAttandence.Columns.Add("Empname", typeof(string));
+                dtAttandence.Columns.Add("PEmpName", typeof(string)); 
                 dtAttandence.Columns.Add("StatingDate", typeof(string));
                 dtAttandence.Columns.Add("TermDate", typeof(string));
                 dtAttandence.Columns.Add("TermReason", typeof(string));
@@ -3703,6 +3706,7 @@ namespace Attendance
                                 dtAttandence.Rows.Add();
                             }
                             dtAttandence.Rows[i]["empid"] = ds.Tables[0].Rows[i]["empid"].ToString();
+                            dtAttandence.Rows[i]["PEmpName"] = ds.Tables[0].Rows[i]["personalName"].ToString();
                             dtAttandence.Rows[i]["empname"] = ds.Tables[0].Rows[i]["firstName"].ToString() + " " + ds.Tables[0].Rows[i]["lastname"].ToString();
                             dtAttandence.Rows[i]["StatingDate"] = ds.Tables[0].Rows[i]["Startdate"].ToString();
                             dtAttandence.Rows[i]["TermDate"] = ds.Tables[0].Rows[i]["Termdate"].ToString();
@@ -3793,6 +3797,7 @@ namespace Attendance
                 lblWeekReport.Text = "( " + startdate.ToString("MM/dd/yyyy") + " - " + endMonth.ToString("MM/dd/yyyy") + " )";
                 dtAttandence.Columns.Add("empid", typeof(string));
                 dtAttandence.Columns.Add("Empname", typeof(string));
+                dtAttandence.Columns.Add("PEmpName", typeof(string)); 
                 dtAttandence.Columns.Add("StatingDate", typeof(string));
                 dtAttandence.Columns.Add("TermDate", typeof(string));
                 dtAttandence.Columns.Add("TermReason", typeof(string));
@@ -3815,6 +3820,7 @@ namespace Attendance
                                 dtAttandence.Rows.Add();
                             }
                             dtAttandence.Rows[i]["empid"] = ds.Tables[0].Rows[i]["empid"].ToString();
+                            dtAttandence.Rows[i]["PEmpName"] = ds.Tables[0].Rows[i]["personalName"].ToString();
                             dtAttandence.Rows[i]["empname"] = ds.Tables[0].Rows[i]["firstName"].ToString() + " " + ds.Tables[0].Rows[i]["lastname"].ToString();
                             dtAttandence.Rows[i]["StatingDate"] = ds.Tables[0].Rows[i]["Startdate"].ToString();
                             dtAttandence.Rows[i]["TermDate"] = ds.Tables[0].Rows[i]["Termdate"].ToString();
@@ -3892,6 +3898,17 @@ namespace Attendance
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month4"] = TotalHrs4 == 0 ? "" : TotalHrs4.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month5"] = TotalHrs5 == 0 ? "" : TotalHrs5.ToString();
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Month6"] = TotalHrs6 == 0 ? "" : TotalHrs6.ToString();
+
+
+
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days1"] = Days1 == 0 ? "" : Days1.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days2"] = Days2 == 0 ? "" : Days2.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days3"] = Days3 == 0 ? "" : Days3.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days4"] = Days4 == 0 ? "" : Days4.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days5"] = Days5 == 0 ? "" : Days5.ToString();
+                dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days6"] = Days6 == 0 ? "" : Days6.ToString();
+
+
                 Double sum = TotalHrs1 + TotalHrs2 + TotalHrs3 + TotalHrs4 + TotalHrs5 + TotalHrs6;
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Totalhrs"] = sum == 0 ? "" : GeneralFunction.CalDoubleToTime(sum);
                 dtAttandence.Rows[dtAttandence.Rows.Count - 1]["Days"] = TotalDays;
@@ -4046,6 +4063,13 @@ namespace Attendance
 
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
+
+                    Label lblEmpname = (Label)e.Row.FindControl("lblEmpname");
+                    Label lblName = (Label)e.Row.FindControl("lblName");
+
+                    string s = CreateNameTable(lblEmpname.Text.ToString().Trim(), lblName.Text.Trim(), "", "");
+                    lblEmpname.Attributes.Add("class", "tooltip2");
+                    lblEmpname.Attributes.Add("title", s);    
 
                     Label lblStartDt = (Label)e.Row.FindControl("lblStartDt");
                     lblStartDt.Text = lblStartDt.Text == "" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy");
@@ -4310,26 +4334,16 @@ namespace Attendance
         }
         protected void grdMonthlyAttendance_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            //if (e.Row.RowType == DataControlRowType.Header)
-            //{
-
-            //    Label lblMonth1Head = (Label)e.Row.FindControl("lblMonth1Head");
-            //    lblMonth1Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).ToString("yyyy");
-            //    Label lblMonth2Head = (Label)e.Row.FindControl("lblMonth2Head");
-            //    lblMonth2Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(1).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(1).ToString("yyyy");
-            //    Label lblMonth3Head = (Label)e.Row.FindControl("lblMonth3Head");
-            //    lblMonth3Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(2).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(2).ToString("yyyy");
-            //    Label lblMonth4Head = (Label)e.Row.FindControl("lblMonth4Head");
-            //    lblMonth4Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(3).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(3).ToString("yyyy");
-            //    Label lblMonth5Head = (Label)e.Row.FindControl("lblMonth5Head");
-            //    lblMonth5Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(4).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(4).ToString("yyyy");
-            //    Label lblMonth6Head = (Label)e.Row.FindControl("lblMonth6Head");
-            //    lblMonth6Head.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(5).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).AddMonths(5).ToString("yyyy"); 
-
-
-            //}
+            
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+
+                Label lblEmpname = (Label)e.Row.FindControl("lblEmpname");
+                Label lblName = (Label)e.Row.FindControl("lblName");
+
+                string s = CreateNameTable(lblEmpname.Text.ToString().Trim(), lblName.Text.Trim(), "", "");
+                lblEmpname.Attributes.Add("class", "tooltip2");
+                lblEmpname.Attributes.Add("title", s);    
 
                 Label lblStartDt = (Label)e.Row.FindControl("lblStartDt");
                 lblStartDt.Text = lblStartDt.Text == "" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy");
@@ -4802,15 +4816,7 @@ namespace Attendance
             ddlShift.DataBind();
             ddlShift.Items.Insert(0, new ListItem("ALL", "0"));
         }
-        private void GetMasterShifts(string LocationName)
-        {
-            Business business = new Business();
-            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-            ddlShifts.DataSource = dsShifts;
-            ddlShifts.DataTextField = "shiftname";
-            ddlShifts.DataValueField = "shiftID";
-            ddlShifts.DataBind();
-        }
+     
         protected void ddlShift_SelectedIndexChanged(object sender, EventArgs e)
         {
             try

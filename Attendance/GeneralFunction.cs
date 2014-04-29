@@ -387,25 +387,25 @@ namespace Attendance
                 switch (name)
                 {
                     case "H":
-                         c=" atnHoliday";
+                         c=" atnHoliday ";
                          break;
                         
                     case "L":
                         if (flag == "Approved")
                         {
-                            c= " atnLeave";
+                            c= " atnLeave ";
                         }
                         else if(flag=="Open") 
                         {
-                            c= " atnUnLeave";
+                            c= " atnUnLeave ";
                         }
                         else if (flag == "Denied")
                         {
-                            c = " atnUnLeave";
+                            c = " atnUnLeave ";
                         }
                         break;
                     case "S":
-                        c= " atnSun";
+                        c= " atnSun ";
                         break;
                  }
             }

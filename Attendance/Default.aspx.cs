@@ -90,8 +90,8 @@ namespace Attendance
                                 Session["ShiftID"] = shiftID;
                               
 
-                                ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(shiftID.ToString()));                           
-                                BindAttendanceData(LocationName, CurentDatetime);
+                                ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(shiftID.ToString()));
+                                                                BindAttendanceData(LocationName, CurentDatetime);
                             }
                             else
                             {
@@ -512,7 +512,8 @@ namespace Attendance
                     Session["Photo"] = "~/Photos/" + dsman.Tables[0].Rows[0]["photolink"].ToString().Trim();
                     Session["EmpName"] = dsman.Tables[0].Rows[0]["firstname"].ToString().Trim() + " " + dsman.Tables[0].Rows[0]["lastname"].ToString().Trim();
                     Session["ScheduleInOut"] = dsman.Tables[0].Rows[0]["StartTime"].ToString().Trim() + "-" + dsman.Tables[0].Rows[0]["EndTime"].ToString().Trim();
-
+                    Session["ShiftID"] = dsman.Tables[0].Rows[0]["shiftID"].ToString();
+                    Session["ShiftName"] = dsman.Tables[0].Rows[0]["Shiftname"].ToString();
                     if (Session["IsAdmin"].ToString() == "True")
                     {
                         Response.Redirect("AdminReports.aspx");
@@ -643,7 +644,7 @@ namespace Attendance
                     if (stime <= CurentDatetime && eTime >= CurentDatetime)
                     {
                         shiftIDs = Convert.ToInt32(dsShifts.Tables[0].Rows[i]["shiftID"].ToString());
-                      
+                        
                     }
                 }
 

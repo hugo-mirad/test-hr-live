@@ -42,8 +42,7 @@ namespace Attendance
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
-                    GetMasterShifts(lblLocation.Text.ToString());
-                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
+                    lblShiftName.Text = "-" + Session["ShiftName"].ToString();
                     GetShifts(lblLocation.Text.ToString());
                     ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(Session["ShiftID"].ToString()));
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
@@ -83,6 +82,22 @@ namespace Attendance
                                 btnNext.Enabled = true;
                             }
                         }
+                        else
+                        {
+                            lblNodata.Visible = true;
+                            dvlblNodata.Style["display"] = "block";
+                            lblNodata.Text = "No data found";
+                            grdUsers.DataSource = null;
+                            grdUsers.DataBind();
+                        }
+                    }
+                    else
+                    {
+                        lblNodata.Visible = true;
+                        dvlblNodata.Style["display"] = "block";
+                        lblNodata.Text = "No data found";
+                        grdUsers.DataSource = null;
+                        grdUsers.DataBind();
                     }
                 }
             }
@@ -323,9 +338,43 @@ namespace Attendance
             try
             {
                 GetShifts(ddlLocation.SelectedItem.Text);
-                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
-                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
-                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate, Convert.ToInt32(ddlShift.SelectedValue));
+                if (ViewState["PaidStartDate"] == null)
+                {
+                    Report obj = new Report();
+                    DataSet ds = obj.GetFinalPayrollDate(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            DateTime StartDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["FinalMonth"].ToString() + "/01/" + ds.Tables[0].Rows[0]["FinalYear"].ToString());
+                            ViewState["PaidStartDate"] = StartDate.ToString("MM/dd/yyyy");
+                            ViewState["CurrentStDt"] = StartDate.ToString("MM/dd/yyyy");
+                            DateTime EndDate = StartDate.AddMonths(1).AddSeconds(-1);
+                            ViewState["PaidEndDate"] = EndDate.ToString("MM/dd/yyyy");
+                            ViewState["CurrentEndDt"] = EndDate.ToString("MM/dd/yyyy");
+
+                            GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate, Convert.ToInt32(ddlShift.SelectedValue));
+                            if (StartDate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentStDt"]).ToString("MM/dd/yyyy"))
+                            {
+                                btnNext.CssClass = "btn btn-danger btn-small disabled";
+                                btnNext.Enabled = false;
+                            }
+                            else
+                            {
+                                btnNext.CssClass = "btn btn-danger btn-small enabled";
+                                btnNext.Enabled = true;
+                            }
+                        }
+                    }
+                }
+
+                else
+                {
+            
+                    DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
+                    DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
+                    GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate, Convert.ToInt32(ddlShift.SelectedValue));
+                }
             }
             catch (Exception ex)
             {
@@ -571,23 +620,6 @@ namespace Attendance
             {
             }
         }
-
-        private void GetMasterShifts(string LocationName)
-        {
-            try
-            {
-                Business business = new Business();
-                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-                ddlShifts.DataSource = dsShifts;
-                ddlShifts.DataTextField = "shiftname";
-                ddlShifts.DataValueField = "shiftID";
-                ddlShifts.DataBind();
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-
         private void GetShifts(string LocationName)
         {
             Business business = new Business();
@@ -602,9 +634,43 @@ namespace Attendance
         {
             try
             {
-                DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
-                DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
-                GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate, Convert.ToInt32(ddlShift.SelectedValue));
+                if (ViewState["PaidStartDate"] == null)
+                {
+                    Report obj = new Report();
+                    DataSet ds = obj.GetFinalPayrollDate(Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                    if (ds.Tables.Count > 0)
+                    {
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            DateTime StartDate = Convert.ToDateTime(ds.Tables[0].Rows[0]["FinalMonth"].ToString() + "/01/" + ds.Tables[0].Rows[0]["FinalYear"].ToString());
+                            ViewState["PaidStartDate"] = StartDate.ToString("MM/dd/yyyy");
+                            ViewState["CurrentStDt"] = StartDate.ToString("MM/dd/yyyy");
+                            DateTime EndDate = StartDate.AddMonths(1).AddSeconds(-1);
+                            ViewState["PaidEndDate"] = EndDate.ToString("MM/dd/yyyy");
+                            ViewState["CurrentEndDt"] = EndDate.ToString("MM/dd/yyyy");
+
+                            GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate, Convert.ToInt32(ddlShift.SelectedValue));
+                            if (StartDate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentStDt"]).ToString("MM/dd/yyyy"))
+                            {
+                                btnNext.CssClass = "btn btn-danger btn-small disabled";
+                                btnNext.Enabled = false;
+                            }
+                            else
+                            {
+                                btnNext.CssClass = "btn btn-danger btn-small enabled";
+                                btnNext.Enabled = true;
+                            }
+                        }
+                    }
+                }
+
+                else
+                {
+
+                    DateTime StartDate = Convert.ToDateTime(ViewState["PaidStartDate"]);
+                    DateTime EndDate = Convert.ToDateTime(ViewState["PaidEndDate"]);
+                    GetpaidLeavesData(Convert.ToInt32(ddlLocation.SelectedItem.Value), StartDate, EndDate, Convert.ToInt32(ddlShift.SelectedValue));
+                }
             }
             catch (Exception ex)
             {

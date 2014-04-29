@@ -29,7 +29,7 @@
         body, html
         {
             font-family: Arial;
-            font-size: 12px;
+            font-size: 12px;    
             color: #333;
             background: #fff;
         }
@@ -601,15 +601,12 @@ function clearDisposableItems( sender , args ) {
         </h4>
     </div>
     <div class="headder">
-    
-  
-        <a href="#" class="logo">
+       <a href="#" class="logo">
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
+            <asp:Label ID="lblShiftName" runat="server"></asp:Label>
         </a>
-         <div class="shifts">
-                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
-         </div>
+        
         <div class="right">
             <div class="wel">
                 <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -658,10 +655,7 @@ function clearDisposableItems( sender , args ) {
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                         </li>
-                                   <%--   <div style="display:none">--%>
-                                          
-                                       <%-- </div>--%>
-                                    </ul>
+                                     </ul>
                                 </li>
                             </ul>
                             <!-- Show Clock Start  -->
@@ -672,9 +666,8 @@ function clearDisposableItems( sender , args ) {
                                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px; float: left; display: inline-block">
                                 </span>
                                 <div class="cTime" style="display: inline-block; float: right; margin-left: 10px;">
-                                    <b>--:--:-- AM </b><strong>(<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
+                                    <b>--:--:-- AM </b><strong> (<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
                                 </div>
-
                                 <script src="js/clock.js" type="text/javascript"></script>
 
                             </div>
@@ -703,8 +696,8 @@ function clearDisposableItems( sender , args ) {
                 <asp:Label ID="lblReport" runat="server" Text="Report type"></asp:Label></b>&nbsp;
             <asp:DropDownList ID="ddlReportType" runat="server" AutoPostBack="true" Visible="true"
                 OnSelectedIndexChanged="ddlReportType_SelectedIndexChanged">
-                <asp:ListItem Text="Weekly Report - Detail" Value="0"></asp:ListItem>
-                <asp:ListItem Text="Weekly Reprot - Summary" Value="1"></asp:ListItem>
+                <asp:ListItem Text="Weekly Report - by day" Value="0"></asp:ListItem>
+                <asp:ListItem Text="Weekly Report - Summary" Value="1"></asp:ListItem>
                 <asp:ListItem Text="Monthly Report - Summary" Value="2"></asp:ListItem>
             </asp:DropDownList>
             &nbsp;&nbsp; <b>
@@ -715,7 +708,7 @@ function clearDisposableItems( sender , args ) {
             </asp:DropDownList>
             
              &nbsp;&nbsp; <b>
-                <asp:Label ID="lblShift" runat="server" Text="Shifts"></asp:Label></b>&nbsp;&nbsp;
+                <asp:Label ID="lblShift" runat="server" Text="Shift"></asp:Label></b>&nbsp;&nbsp;
             <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" 
                 OnSelectedIndexChanged="ddlShift_SelectedIndexChanged" Style="width: 70px;">
              </asp:DropDownList>
@@ -777,6 +770,8 @@ function clearDisposableItems( sender , args ) {
                             Processing
                             <img src="images/loading.gif" />
                         </div>
+                        <h4>
+                        </h4>
                     </h4>
                 </div>
             </ProgressTemplate>
@@ -787,7 +782,8 @@ function clearDisposableItems( sender , args ) {
             <asp:Label ID="lblGrdNodata" runat="server"></asp:Label></div>
                 <asp:HiddenField runat="server" ID="hdnFreeze" />
                  <asp:GridView ID="grdAttandence" runat="server" AutoGenerateColumns="false" OnRowDataBound="grdAttandence_RowDataBound"
-                    OnRowCreated="grdAttandence_RowCreated" CssClass="table1" >
+                    OnRowCreated="grdAttandence_RowCreated" CssClass="table1" 
+                    ondatabound="grdAttandence_DataBound" onload="grdAttandence_Load" >
                    <Columns>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -851,10 +847,10 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblMonHeadHours" runat="server" Text="Hrs"></asp:Label>
                             </HeaderTemplate>
                             <ItemTemplate>
-                                <asp:Label ID="lblMonHours" runat="server" Font-Underline="False" Text='<%#Eval("MonHrs")%>'></asp:Label>
+                                <asp:Label ID="lblMonHours" runat="server" Font-Underline="False" Text='<%#Eval("MonHrs")%>' ></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="bR" />
-                            <HeaderStyle CssClass="bR bT" />
+                            <ItemStyle CssClass="bR hideColumn  "  />
+                            <HeaderStyle CssClass="bR bT hideColumn  " />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -895,8 +891,8 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:Label ID="lblTueHours" runat="server" Text='<%#Eval("TueHrs")%>'></asp:Label>
                             </ItemTemplate>
-                            <ItemStyle CssClass="bR" />
-                            <HeaderStyle CssClass="bR bT" />
+                            <ItemStyle CssClass="bR hideColumn " />
+                            <HeaderStyle CssClass="bR bT hideColumn " />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -938,8 +934,8 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblWedHours" runat="server" Text='<%#Eval("WedHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnWedFreeze" runat="server" Value='<%#Eval("WedFreeze")%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="bR" />
-                            <HeaderStyle CssClass="bR bT" />
+                            <ItemStyle CssClass="bR hideColumn " />
+                            <HeaderStyle CssClass="bR bT hideColumn " />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -981,8 +977,8 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblThuHours" runat="server" Text='<%#Eval("ThuHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnThuFreeze" runat="server" Value='<%#Eval("ThuFreeze")%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="bR" />
-                            <HeaderStyle CssClass="bR bT" />
+                            <ItemStyle CssClass="bR hideColumn " />
+                            <HeaderStyle CssClass="bR bT hideColumn " />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -1025,8 +1021,8 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblFriHours" runat="server" Text='<%#Eval("FriHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnFriFreeze" runat="server" Value='<%#Eval("FriFreeze")%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="bR" />
-                            <HeaderStyle CssClass="bR bT" />
+                            <ItemStyle CssClass="bR hideColumn " />
+                            <HeaderStyle CssClass="bR bT hideColumn " />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -1070,8 +1066,8 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblSatHours" runat="server" Text='<%#Eval("SatHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnSatFreeze" runat="server" Value='<%#Eval("SatFreeze")%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="bR" />
-                            <HeaderStyle CssClass="bR bT" />
+                            <ItemStyle CssClass="bR hideColumn " />
+                            <HeaderStyle CssClass="bR bT hideColumn " />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -1084,15 +1080,6 @@ function clearDisposableItems( sender , args ) {
                             </ItemTemplate>
                             <ItemStyle  />
                         </asp:TemplateField>
-                        <%--   <asp:TemplateField>
-                            <HeaderTemplate>
-                                <asp:Label ID="lblSunSCout" runat="server" Text="SchOut"></asp:Label>
-                            </HeaderTemplate>
-                            <ItemTemplate>
-                                <asp:Label ID="lblSunScOut" runat="server" Text='<%#Eval("SunSchOut")%>'></asp:Label>
-                            </ItemTemplate>
-                            <ItemStyle CssClass="col1" />
-                        </asp:TemplateField>--%>
                         <asp:TemplateField>
                             <HeaderTemplate>
                                 <asp:Label ID="lblSunIN" runat="server" Text="In-Out"></asp:Label>
@@ -1121,8 +1108,8 @@ function clearDisposableItems( sender , args ) {
                                 <asp:Label ID="lblSunHours" runat="server" Text='<%#Eval("SunHrs")%>'></asp:Label>
                                 <asp:HiddenField ID="hdnSunFreeze" runat="server" Value='<%#Eval("SunFreeze")%>' />
                             </ItemTemplate>
-                            <ItemStyle CssClass="bR" />
-                            <HeaderStyle CssClass="bR bT" />
+                            <ItemStyle CssClass="bR hideColumn " />
+                            <HeaderStyle CssClass="bR bT hideColumn " />
                         </asp:TemplateField>
                         <asp:TemplateField>
                             <HeaderTemplate>
@@ -1170,6 +1157,7 @@ function clearDisposableItems( sender , args ) {
                             <asp:TemplateField HeaderText="Name">
                                 <ItemTemplate>
                                     <asp:Label ID="lblEmpname" runat="server" Text='<%#Eval("empname")%>'></asp:Label>
+                                    <asp:Label ID="lblName" runat="server" Text='<%#Eval("PEmpName")%>' Visible="false"></asp:Label>
                                 </ItemTemplate>
                                  <ItemStyle Width="160px" />
                             </asp:TemplateField>
@@ -1322,6 +1310,7 @@ function clearDisposableItems( sender , args ) {
                             <asp:TemplateField HeaderText="Name">
                                 <ItemTemplate>
                                     <asp:Label ID="lblEmpname" runat="server" Text='<%#Eval("empname")%>'></asp:Label>
+                                     <asp:Label ID="lblName" runat="server" Text='<%#Eval("PEmpName")%>' Visible="false"></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="StartDt">
@@ -1645,8 +1634,7 @@ function clearDisposableItems( sender , args ) {
     <asp:HiddenField ID="hdnFeezedDat" runat="server" />
     <div id="Alertpopup" runat="server" class="popContent" style="width: 500px; display: none">
         <h2>
-            Freeze alert <span class="close">
-                <asp:LinkButton ID="lnkFeezeClose" runat="server"></asp:LinkButton></span>
+            Freeze alert FeezeClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
             <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
@@ -1945,8 +1933,11 @@ function clearDisposableItems( sender , args ) {
 
     <script type="text/javascript" language="javascript">
         $(window).load(function(){
+        
+        
+        
         $('#spinner').hide();
-              $('.table1 tr:last-child').remove();
+            //  $('.table1 tr:last-child').remove();
             $('.table2 tr:last-child').remove();
             // $('.table3 tr:last-child').remove();
             
@@ -2028,7 +2019,7 @@ function clearDisposableItems( sender , args ) {
             
             $lastRow.children('td').children('a').removeAttr('href');
             
-            
+            addCssAfterBind();
             
             
         });
@@ -2298,36 +2289,125 @@ function clearDisposableItems( sender , args ) {
             minuteMax = parseInt(mMax);
         }
         
-        function pageLoad(){
-        
-         
-
-       
-           $('.atnHoliday').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnHoliday')
-                $(this).next().removeAttr('class').addClass('atnHoliday')
+      function addCssAfterBind()
+        {
+          $('.atnHoliday').each(function(){
+                $(this).prev().addClass('atnHoliday')
+                $(this).next().addClass('atnHoliday')
            });
            
            $('.atnSun').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnSun')
-                $(this).next().removeAttr('class').addClass('atnSun')
+                $(this).prev().addClass('atnSun')
+                $(this).next().addClass('atnSun')
            });
            
            $('.atnUnLeave').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnUnLeave')
-                $(this).next().removeAttr('class').addClass('atnUnLeave')
+                $(this).prev().addClass('atnUnLeave')
+                $(this).next().addClass('atnUnLeave')
            });
            
            $('.atnEdit').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnEdit')
-                $(this).next().removeAttr('class').addClass('atnEdit')
+                $(this).prev().addClass('atnEdit')
+                $(this).next().addClass('atnEdit')
            });
            
            $('.atnLeave').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnLeave')
-                $(this).next().removeAttr('class').addClass('atnLeave')
+                $(this).prev().addClass('atnLeave')
+                $(this).next().addClass('atnLeave')
            });
            
+         
+         
+          
+           
+           
+           
+           
+           
+           
+         
+        
+        
+           $('.hideColumn').each(function(){              
+                $(this).prev().hide();
+                $(this).prev().prev().hide();                  
+           });
+           
+            var dd = 0;
+            $('th.hideColumn').each(function(){
+            
+                $(this).prepend('<span class="ui-icon ui-icon-arrowthickstop-1-e"></span>');
+            
+                var indx = ($(this).index())-(2+dd);
+                var indx2 = $(this).index();
+                
+                //console.log(indx)                
+                $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','1');                  
+                
+                $(this).click(function(){
+                    if($('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan') == '1'){
+                        $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','3')   
+                    }else{
+                        $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','1')  
+                    }                
+                                     
+                    $('.table1 tr').each(function(){
+                        if($(this).index() > 0 ){
+                            $(this).children().eq(indx2).children('span.ui-icon').toggleClass('ui-icon-arrowthickstop-1-w')                        
+                            $(this).children().eq(indx2).prev().toggle();
+                            $(this).children().eq(indx2).prev().prev().toggle(); 
+                           
+                        }
+                    });                   
+                })                
+                dd += 2;  
+                
+                
+                
+                          
+            });   
+            
+            
+            
+            
+            
+            // var currentIndex  = ($('.table1 td.Current').index()*3)-2;
+            
+            var currentIndex  = ($('.table1 td.Current').index()*3)-2;
+            
+           
+           
+           
+             $('.table1 td.Current').attr('colspan','3') 
+            
+           
+           if(currentIndex > 0){
+            $('.table1 tr').each(function(){
+                if($(this).index() > 0 ){
+                
+                    if($(this).index()==1){
+                        $(this).children().eq(currentIndex).unbind();
+                    }
+                
+                    $(this).children().eq(currentIndex).children('span.ui-icon').remove();
+                    $(this).children().eq(currentIndex).removeClass('hideColumn') ; 
+                    $(this).children().eq(currentIndex).prev().show();
+                    $(this).children().eq(currentIndex).prev().prev().show();                  
+                }
+            }); 
+            }
+                
+            
+            
+        }
+        
+        
+        
+
+        
+        function pageLoad(){
+        
+    
                    
             $('.tooltip2').tipsy({html: true, gravity:'sw' });
             //console.log('Time')
@@ -2341,7 +2421,7 @@ function clearDisposableItems( sender , args ) {
                 });
                 
                  
-            $('.table1 tr:last-child').remove();
+           // $('.table1 tr:last-child').remove();
             $('.table2 tr:last-child').remove();
           
            style1('table1')
@@ -2385,7 +2465,7 @@ function clearDisposableItems( sender , args ) {
             $('[rel=tooltip]').tooltip();
             
             
-            
+           
             
            
            

@@ -221,9 +221,9 @@ label.rdLabel{ display:inline-block; margin-left:15px; }
 	display: inline-block;
 float: left;
 color: #E7E7E7;
-margin: 11px 14px 0 15px;
+margin: 11px 14px 0 6px;
 line-height: 30px;
-font-size: 14px;;
+font-size: 14px;
 }
 .shifts select{ 
 width: 75px;

@@ -46,11 +46,11 @@ namespace Attendance
                     hdnTodaydt.Value = CurentDatetime.ToString("MM/dd/yyyy");
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
-                    GetMasterShifts(Session["LocationName"].ToString());
-                    ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(Session["ShiftID"].ToString()));
 
+                   
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
                     lblLocation.Text = Session["LocationName"].ToString();
+                    lblShiftName.Text = "-" + Session["ShiftName"].ToString();
                     ViewState["Location"] = Session["LocationName"].ToString();
                     lblEmployyName.Text = Session["EmpName"].ToString().Trim();
                     Photo.Src = Session["Photo"].ToString().Trim();
@@ -320,16 +320,7 @@ namespace Attendance
             {
             }
         }
-        private void GetMasterShifts(string LocationName)
-        {
-            Business business = new Business();
-            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-            ddlShifts.DataSource = dsShifts;
-            ddlShifts.DataTextField = "shiftname";
-            ddlShifts.DataValueField = "shiftID";
-            ddlShifts.DataBind();
-        }
-
+   
         public DataTable GetReportSingle(DateTime StartDate, DateTime EndDate, int userid)
         {
             DataSet ds = new DataSet();
@@ -361,7 +352,7 @@ namespace Attendance
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDate));
-                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", Convert.ToInt32(ddlShifts.SelectedValue)));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", Convert.ToInt32(Session["ShiftID"])));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
 
@@ -1227,7 +1218,7 @@ namespace Attendance
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@startdate", StartDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDate));
-                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", Convert.ToInt32(ddlShifts.SelectedValue)));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", Convert.ToInt32(Session["ShiftID"])));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
 

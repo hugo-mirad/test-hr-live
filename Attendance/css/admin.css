@@ -854,5 +854,12 @@ div.picker.calender span{ color:#555; }
  #grdMonthlyRep td.atnUnLeave div{ background:#F7CC7D; }
  
  #grdMonthlyRep span.hours{ color:#222; font-weight:bold; text-align:center; display:block; }
+ 
+.table1 th.hideColumn{ cursor:pointer; padding-left:15px; }
+
+
+.table1 th.hideColumn .ui-icon.ui-icon-arrowthickstop-1-e,
+.table1 th.hideColumn .ui-icon.ui-icon-arrowthickstop-1-w{  display:inline-block; vertical-align:middle; position:relative; margin-top:-3px; }
+ 
    
 

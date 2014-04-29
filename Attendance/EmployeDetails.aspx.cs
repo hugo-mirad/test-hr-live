@@ -51,6 +51,7 @@ namespace Attendance
 
                         lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
                         lblLocation.Text = Session["LocationName"].ToString();
+                        lblShiftName.Text = "-" + Session["ShiftName"].ToString();
                         if (ViewState["Location"].ToString().ToUpper().Trim() == "USMP" || ViewState["Location"].ToString().ToUpper().Trim() == "USWB")
                         {
                             SSN.Style["display"] = "table-row";
@@ -74,15 +75,15 @@ namespace Attendance
                         GetAllWages();
                         GetShifts(Session["LocationName"].ToString().Trim());
 
-                        if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                        {
-                            lnkLeavemangement.Enabled = false;
-                            lnkLeavemangement.Style["Color"] = "Gray";
-                        }
-                        else
-                        {
-                            lnkLeavemangement.Enabled = true;
-                        }
+                        //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
+                        //{
+                        //    lnkLeavemangement.Enabled = false;
+                        //    lnkLeavemangement.Style["Color"] = "Gray";
+                        //}
+                        //else
+                        //{
+                        //    lnkLeavemangement.Enabled = true;
+                        //}
                     }
 
                 }

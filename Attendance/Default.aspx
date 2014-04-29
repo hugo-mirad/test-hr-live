@@ -193,7 +193,7 @@
 		    identity: "Netscape",
 		    versionSearch: "Mozilla"
 		}
-	],
+	        ],
             dataOS: [
 		{
 		    string: navigator.platform,
@@ -295,18 +295,13 @@
                document.getElementById("txtLocationM").value = "";
                document.getElementById("txtLocationM").focus();
            }
-
-
-
            else if (document.getElementById('txtPasswordM').value.length < 1)
            {
                alert("Please enter the password .");               
                valid=false;
                document.getElementById("txtPasswordM").focus();
            }
-          
-           
-       
+               
            return valid;
        }
 
@@ -350,14 +345,14 @@
             </a>
             
             <div class="shifts">
-                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" 
+              <asp:DropDownList ID="ddlShifts" runat="server" 
                     onselectedindexchanged="ddlShifts_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
             </div>
             <div class="tDate">
                 <%--  <asp:Label ID="lblPrevTime" runat="server" Text=""></asp:Label>--%>
                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px;"></span>
                 <div class="cTime">
-                    <b>--:--:-- AM </b><strong>(<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
+                    <b>--:--:-- AM </b><strong> (<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
                     <a href="javascript:location.reload();" class="refresh btn btn-small btn-mini btn-success">
                         Refresh</a></div>
             </div>
@@ -421,7 +416,7 @@
                       <%--  <div style="display:none">--%>
                         <div class="bor boxC4" style="margin: 10px 5px 0 5px; ">
                             <h2 class="four" style="background: #fff; color: #888; border-bottom: #888 1px solid;">
-                                On Approved Leave<span>(<b></b>)</span></h2>
+                                On Leave <span>(<b></b>)</span></h2>
                             <div class="inner ">
                                <asp:Repeater ID="rpLeave" runat="server" OnItemDataBound="rpEmp_ItemDataBound" >
                                     <HeaderTemplate>
@@ -1316,44 +1311,43 @@ function hideSpinner() {
 
 function validLeave()
 {
+debugger
   var valid=true;
   if($.trim($('#txtFromDt').val())=='')
   {
    alert('Please enter from date');
    $('#txtFromDt').focus();
-   valid=false;
+   return false;
   }
    if($.trim($('#txtToDt').val())=='')
   {
    alert('Please enter to date');
      $('#txtToDt').focus();
-   valid=false;
+    return false;
   }
   if($.trim($('#txtReason').val())=='')
   {
-   alert('Please enter reason');
+   alert('Please enter reason for leave');
     $('#txtReason').focus();
-   valid=false;
+   return false;
   }
-  
-   if($('#rdOther').checked)
-  {
-    if($.trim($('#txtLeaveEmpID').val())=='')
+ 
+   if($.trim($('#txtLeaveEmpID').val())=='')
    {
    alert('Please enter employee id');
-      $('#txtLeaveEmpID').focus();
-   valid=false;
+   $('#txtLeaveEmpID').focus();
+   return false;
    }
-  }
+
   
    if($.trim($('#txtLeavePassCode').val())=='')
    {
     alert('Please enter passcode');
      $('#txtLeavePassCode').focus();
-    valid=false;
+     return false;
    }
   
-  return valid;
+  return true;
   
   
 }

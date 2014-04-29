@@ -600,10 +600,9 @@ function clearDisposableItems( sender , args ) {
         <a href="#" class="logo">
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
+             <asp:Label ID="lblShiftName" runat="server"></asp:Label>
         </a>
-         <div class="shifts">
-                Shifts: <asp:DropDownList ID="ddlShifts" runat="server" Enabled="false"></asp:DropDownList>
-         </div>
+     
         <div class="right">
             <div class="wel">
                 <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -664,7 +663,7 @@ function clearDisposableItems( sender , args ) {
                                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px; float: left; display: inline-block">
                                 </span>
                                 <div class="cTime" style="display: inline-block; float: right; margin-left: 10px;">
-                                    <b>--:--:-- AM </b><strong>(<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
+                                    <b>--:--:-- AM </b><strong> (<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
                                 </div>
 
                                 <script src="js/clock.js" type="text/javascript"></script>
@@ -695,7 +694,7 @@ function clearDisposableItems( sender , args ) {
                 <asp:Label ID="lblReport" runat="server" Visible="false"></asp:Label></b>&nbsp;
             <asp:DropDownList ID="ddlReportType" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlReportType_SelectedIndexChanged"
                 Visible="true">
-                <asp:ListItem Text="Weekly Report - Detail" Value="0"></asp:ListItem>
+                <asp:ListItem Text="Weekly Report - by day" Value="0"></asp:ListItem>
                 <asp:ListItem Text="Weekly Report - Summary" Value="1"></asp:ListItem>
                 <asp:ListItem Text="Monthly Report - Summary" Value="2"></asp:ListItem>
             </asp:DropDownList>
@@ -705,7 +704,7 @@ function clearDisposableItems( sender , args ) {
                 Visible="true" Enabled="false">
             </asp:DropDownList>
              &nbsp;&nbsp; <b>
-                <asp:Label ID="lblShift" runat="server" Text="Shifts"></asp:Label></b>&nbsp;&nbsp;
+                <asp:Label ID="lblShift" runat="server" Text="Shift"></asp:Label></b>&nbsp;&nbsp;
             <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" enable="false"
                 Style="width: 70px;" 
                 onselectedindexchanged="ddlShift_SelectedIndexChanged">
@@ -1163,6 +1162,7 @@ function clearDisposableItems( sender , args ) {
                             <asp:TemplateField HeaderText="Name">
                                 <ItemTemplate>
                                     <asp:Label ID="lblEmpname" runat="server" Text='<%#Eval("empname")%>'></asp:Label>
+                                     <asp:Label ID="lblName" runat="server" Text='<%#Eval("PEmpName")%>' Visible="false"></asp:Label>
                                 </ItemTemplate>
                                 <ItemStyle Width="160px" />
                             </asp:TemplateField>
@@ -1305,6 +1305,7 @@ function clearDisposableItems( sender , args ) {
                             <asp:TemplateField HeaderText="Name">
                                 <ItemTemplate>
                                     <asp:Label ID="lblEmpname" runat="server" Text='<%#Eval("empname")%>'></asp:Label>
+                                     <asp:Label ID="lblName" runat="server" Text='<%#Eval("PEmpName")%>' Visible="false"></asp:Label>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField HeaderText="StartDt">
@@ -1918,24 +1919,12 @@ function clearDisposableItems( sender , args ) {
     
     
         $(window).load(function(){
-        $('#spinner').hide();
-              
-       //     $('.table2 tr:last-child').remove();
-
+        $('#spinner').hide();         
             var start = 2;
             var totalRO = $(".table1 tr").length;
             var totalTD = $('.table1 tr:eq(1) th').length;
-            //console.log(start, totalRO, totalTD)
-            
-          
-           
-            
-           style1('table1')
-           //style1('table2')
-            
-           
-               // Counter    start     
-           
+            style1('table1')
+     
               var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
            
            for(kk=0;kk<arr.length; kk++){                
