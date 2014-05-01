@@ -1313,56 +1313,19 @@ namespace Attendance
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["TotalHours"] = WeeklyTotalHrs == 0 ? "" : "<b>" + GeneralFunction.CalDoubleToTime(WeeklyTotalHrs) + "</b>";
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["PresentDays"] = "<b>" + totalPresent.ToString() + "</b>";
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["empid"] = "<b>Totals</b>";
-                        
                     }
-
                 }
-
             }
             catch (Exception ex)
             {
             }
-
             return dtAttandence;
-
         }
         protected void grdAttandence_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             try
             {
                 Report obj = new Report();
-
-                if (e.Row.RowType == DataControlRowType.Header)
-                {
-                     if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[3].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[6].CssClass += " current ";
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[9].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[12].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[15].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[18].CssClass.Replace("hideColumn", " ");
-                    }
-                    else
-                    {
-                        e.Row.Cells[21].CssClass.Replace("hideColumn", " ");
-                    }
-                }
 
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
@@ -1378,780 +1341,773 @@ namespace Attendance
 
                     var dt = new List<Attendance.Entities.MultipleLogininfo>();
 
-                    Label lblStartDate = (Label)e.Row.FindControl("lblStartDate");
-                    Label lblTermDate = (Label)e.Row.FindControl("lblTermDate");
-                    Label lblPName = (Label)e.Row.FindControl("lblPName");
-                    Label lblName = (Label)e.Row.FindControl("lblName");
-
-                    string tip = CreateNameTable(lblName.Text.Trim(),lblPName.Text.Trim(), Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy"), Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy"));
-                    lblName.Attributes.Add("class", "tooltip2");
-                    lblName.Attributes.Add("title", tip);
-
-
-                    Label lblMonScIn = (Label)e.Row.FindControl("lblMonScIn");
-                    Label lblTueScIn = (Label)e.Row.FindControl("lblTueScIn");
-                    Label lblWedScIn = (Label)e.Row.FindControl("lblWedScIn");
-                    Label lblThuScIn = (Label)e.Row.FindControl("lblThuScIn");
-                    Label lblFriScIn = (Label)e.Row.FindControl("lblFriScIn");
-                    Label lblSatScIn = (Label)e.Row.FindControl("lblSatScIn");
-                    Label lblSunScIn = (Label)e.Row.FindControl("lblSunScIn");
-
-
-                    Label lblMonScOut = (Label)e.Row.FindControl("lblMonScOut");
-                    Label lblTueScOut = (Label)e.Row.FindControl("lblTueScOut");
-                    Label lblWedScOut = (Label)e.Row.FindControl("lblWedScOut");
-                    Label lblThuScOut = (Label)e.Row.FindControl("lblThuScOut");
-                    Label lblFriScOut = (Label)e.Row.FindControl("lblFriScOut");
-                    Label lblSatScOut = (Label)e.Row.FindControl("lblSatScOut");
-                    Label lblSunScOut = (Label)e.Row.FindControl("lblSunScOut");
-
-                    HiddenField hdnSunLunch = (HiddenField)e.Row.FindControl("hdnSunLunch");
-                    HiddenField hdnMonLunch = (HiddenField)e.Row.FindControl("hdnMonLunch");
-                    HiddenField hdnTueLunch = (HiddenField)e.Row.FindControl("hdnTueLunch");
-                    HiddenField hdnWedLunch = (HiddenField)e.Row.FindControl("hdnWedLunch");
-                    HiddenField hdnThuLunch = (HiddenField)e.Row.FindControl("hdnThuLunch");
-                    HiddenField hdnFriLunch = (HiddenField)e.Row.FindControl("hdnFriLunch");
-                    HiddenField hdnSatLunch = (HiddenField)e.Row.FindControl("hdnSatLunch");
-
-
-                    string lunchTip1 = CreateLunchTable(hdnSunLunch.Value.Trim());
-                    lblSunScIn.Attributes.Add("class", "tooltip2");
-                    lblSunScIn.Attributes.Add("title", lunchTip1);
-                    lblSunScOut.Attributes.Add("class", "tooltip2");
-                    lblSunScOut.Attributes.Add("title", lunchTip1);
-
-
-
-
-                    lunchTip1 = CreateLunchTable(hdnMonLunch.Value.Trim());
-                    lblMonScIn.Attributes.Add("class", "tooltip2");
-                    lblMonScIn.Attributes.Add("title", lunchTip1);
-                    lblMonScOut.Attributes.Add("class", "tooltip2");
-                    lblMonScOut.Attributes.Add("title", lunchTip1);
-
-
-
-                    lunchTip1 = CreateLunchTable(hdnTueLunch.Value.Trim());
-                    lblTueScIn.Attributes.Add("class", "tooltip2");
-                    lblTueScIn.Attributes.Add("title", lunchTip1);
-                    lblTueScOut.Attributes.Add("class", "tooltip2");
-                    lblTueScOut.Attributes.Add("title", lunchTip1);
-
-
-                    lunchTip1 = CreateLunchTable(hdnWedLunch.Value.Trim());
-                    lblWedScIn.Attributes.Add("class", "tooltip2");
-                    lblWedScIn.Attributes.Add("title", lunchTip1);
-                    lblWedScOut.Attributes.Add("class", "tooltip2");
-                    lblWedScOut.Attributes.Add("title", lunchTip1);
-
-
-
-                    lunchTip1 = CreateLunchTable(hdnSatLunch.Value.Trim());
-                    lblSatScIn.Attributes.Add("class", "tooltip2");
-                    lblSatScIn.Attributes.Add("title", lunchTip1);
-                    lblSatScOut.Attributes.Add("class", "tooltip2");
-                    lblSatScOut.Attributes.Add("title", lunchTip1);
-
-                    lunchTip1 = CreateLunchTable(hdnThuLunch.Value.Trim());
-                    lblThuScIn.Attributes.Add("class", "tooltip2");
-                    lblThuScIn.Attributes.Add("title", lunchTip1);
-                    lblThuScOut.Attributes.Add("class", "tooltip2");
-                    lblThuScOut.Attributes.Add("title", lunchTip1);
-
-                    lunchTip1 = CreateLunchTable(hdnFriLunch.Value.Trim());
-                    lblFriScIn.Attributes.Add("class", "tooltip2");
-                    lblFriScIn.Attributes.Add("title", lunchTip1);
-                    lblFriScOut.Attributes.Add("class", "tooltip2");
-                    lblFriScOut.Attributes.Add("title", lunchTip1);
-
-
-
                     Label lblID = (Label)e.Row.FindControl("lblID");
-                    string empid = lblID.Text.Trim();
 
-
-                    if ((Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["MonDate"]) < Convert.ToDateTime(lblStartDate.Text)))
+                    if (lblID.Text.Trim() != "<b>Totals</b>")
                     {
+                        Label lblStartDate = (Label)e.Row.FindControl("lblStartDate");
+                        Label lblTermDate = (Label)e.Row.FindControl("lblTermDate");
+                        Label lblPName = (Label)e.Row.FindControl("lblPName");
+                        Label lblName = (Label)e.Row.FindControl("lblName");
 
-                        lblMonScIn.Text = "";
-                        lblMonScOut.Text = "";
-                    }
-                    if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["TueDate"]) < Convert.ToDateTime(lblStartDate.Text))
-                    {
-
-                        lblTueScIn.Text = "";
-                        lblTueScOut.Text = "";
-                    }
-
-                    if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["WedDate"]) < Convert.ToDateTime(lblStartDate.Text))
-                    {
-
-                        lblWedScIn.Text = "";
-                        lblWedScOut.Text = "";
-                    }
-
-                    if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["ThuDate"]) < Convert.ToDateTime(lblStartDate.Text))
-                    {
-
-                        lblThuScIn.Text = "";
-                        lblThuScOut.Text = "";
-                    }
-                    if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["FriDate"]) < Convert.ToDateTime(lblStartDate.Text))
-                    {
-
-                        lblFriScIn.Text = "";
-                        lblFriScOut.Text = "";
-                    }
-                    if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SatDate"]) < Convert.ToDateTime(lblStartDate.Text))
-                    {
-
-                        lblSatScIn.Text = "";
-                        lblSatScOut.Text = "";
-                    }
-                    if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SunDate"]) < Convert.ToDateTime(lblStartDate.Text))
-                    {
-
-                        lblSunScIn.Text = "";
-                        lblSunScOut.Text = "";
-                    }
-
-                    if ((Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["MonDate"]) > Convert.ToDateTime(lblTermDate.Text)))
-                    {
-
-                        lblMonScIn.Text = "";
-                        lblMonScOut.Text = "";
-                    }
-                    if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["TueDate"]) > Convert.ToDateTime(lblTermDate.Text))
-                    {
-
-                        lblTueScIn.Text = "";
-                        lblTueScOut.Text = "";
-                    }
-
-                    if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["WedDate"]) > Convert.ToDateTime(lblTermDate.Text))
-                    {
-
-                        lblWedScIn.Text = "";
-                        lblWedScOut.Text = "";
-                    }
-
-                    if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["ThuDate"]) > Convert.ToDateTime(lblTermDate.Text))
-                    {
-
-                        lblThuScIn.Text = "";
-                        lblThuScOut.Text = "";
-                    }
-                    if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["FriDate"]) > Convert.ToDateTime(lblTermDate.Text))
-                    {
-                        lblFriScIn.Text = "";
-                        lblFriScOut.Text = "";
-                    }
-                    if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SatDate"]) > Convert.ToDateTime(lblTermDate.Text))
-                    {
-
-                        lblSatScIn.Text = "";
-                        lblSatScOut.Text = "";
-                    }
-                    if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SunDate"]) > Convert.ToDateTime(lblTermDate.Text))
-                    {
-                        lblSunScIn.Text = "";
-                        lblSunScOut.Text = "";
-                    }
-                    LinkButton lblMonIn = (LinkButton)e.Row.FindControl("lblMonIn");
-                    lblMonIn.Text = lblMonIn.Text == "" ? "" : lblMonIn.Text == "H" ? "H" : lblMonIn.Text == "L" ? "L" : Convert.ToDateTime(lblMonIn.Text).ToString("hh:mm tt");
-
-                    lblMonIn.Attributes.Add("date", Convert.ToDateTime(ViewState["MonDate"]).ToString("MM/dd/yyyy"));
-
-                    if (lblMonIn.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["MonDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["MonDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
-                        {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblMonIn.Text = "N/A";
-                            }
-                        }
-                    }
-
-                    HiddenField hdnMonSignInFlag = (HiddenField)e.Row.FindControl("hdnMonSignInFlag");
-                    HiddenField hdnMonSignOutFlag = (HiddenField)e.Row.FindControl("hdnMonSignOutFlag");
-                    if (hdnMonSignInFlag.Value == "True" || hdnMonSignOutFlag.Value == "True")
-                    {
-                        e.Row.Cells[3].CssClass += " atnEdit ";
-                        lblMonIn.CssClass.Replace("greenTag", "");
-                        //lblMonIn.ForeColor = System.Drawing.Color.Moccasin ;
-                    }
-                    HiddenField hdnMonSigninNotes = (HiddenField)e.Row.FindControl("hdnMonSigninNotes");
-
-                    HiddenField hdnMonMultiple = (HiddenField)e.Row.FindControl("hdnMonMultiple");
+                        string tip = CreateNameTable(lblName.Text.Trim(), lblPName.Text.Trim(), Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy"), Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy"));
+                        lblName.Attributes.Add("class", "tooltip2");
+                        lblName.Attributes.Add("title", tip);
 
 
-                    if (hdnMonMultiple.Value == "True")
-                    {
-                        lblMonIn.CssClass = "multipleLogin";
-                        dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["MonDate"]), empid);
-                        s = CreateMultipleTable(dt);
-                        sMonMultiple = CreateMultipleString(dt);
-                        dt = null;
-                    }
-                    sTable = CreateSignInTable(lblName.Text, (hdnMonSigninNotes.Value), s);
-                    s = "";
-                    if (sTable != "")
-                    {
-                        lblMonIn.Attributes.Add("rel", "tooltip");
-                        lblMonIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[3].CssClass += " greenTag";
-                    }
-                    lblMonIn.Attributes.Add("sMultiple", sMonMultiple);
-                    lblMonIn.Attributes.Add("date", Convert.ToDateTime(ViewState["MonDate"]).ToString("MM/dd/yyyy"));
-                    LinkButton lblMonOut = (LinkButton)e.Row.FindControl("lblMonOut");
-                    lblMonIn.Text = lblMonIn.Text == "" ? "" : lblMonIn.Text == "H" ? "H" : lblMonIn.Text == "L" ? "L" : lblMonIn.Text + (lblMonOut.Text == "" ? "" : lblMonOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblMonOut.Text).ToString("hh:mm tt"));
-                    if (lblMonOut.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["MonDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["MonDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
-                        {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblMonIn.Text = lblMonIn.Text == "" ? "" : lblMonIn.Text == "L" ? "L" : lblMonIn.Text == "H" ? "H" : lblMonIn.Text + " - N/A";
-                            }
+                        Label lblMonScIn = (Label)e.Row.FindControl("lblMonScIn");
+                        Label lblTueScIn = (Label)e.Row.FindControl("lblTueScIn");
+                        Label lblWedScIn = (Label)e.Row.FindControl("lblWedScIn");
+                        Label lblThuScIn = (Label)e.Row.FindControl("lblThuScIn");
+                        Label lblFriScIn = (Label)e.Row.FindControl("lblFriScIn");
+                        Label lblSatScIn = (Label)e.Row.FindControl("lblSatScIn");
+                        Label lblSunScIn = (Label)e.Row.FindControl("lblSunScIn");
 
-                        }
-                    }
-                    HiddenField hdnMonFreeze = (HiddenField)e.Row.FindControl("hdnMonFreeze");
-                    if (hdnMonFreeze.Value == "True")
-                    {
-                        lblMonIn.Enabled = false;
-                        lblMonIn.ForeColor = System.Drawing.Color.Black;
-                        lblMonOut.Enabled = false;
-                        lblMonOut.ForeColor = System.Drawing.Color.Black;
-                    }
+
+                        Label lblMonScOut = (Label)e.Row.FindControl("lblMonScOut");
+                        Label lblTueScOut = (Label)e.Row.FindControl("lblTueScOut");
+                        Label lblWedScOut = (Label)e.Row.FindControl("lblWedScOut");
+                        Label lblThuScOut = (Label)e.Row.FindControl("lblThuScOut");
+                        Label lblFriScOut = (Label)e.Row.FindControl("lblFriScOut");
+                        Label lblSatScOut = (Label)e.Row.FindControl("lblSatScOut");
+                        Label lblSunScOut = (Label)e.Row.FindControl("lblSunScOut");
+
+                        HiddenField hdnSunLunch = (HiddenField)e.Row.FindControl("hdnSunLunch");
+                        HiddenField hdnMonLunch = (HiddenField)e.Row.FindControl("hdnMonLunch");
+                        HiddenField hdnTueLunch = (HiddenField)e.Row.FindControl("hdnTueLunch");
+                        HiddenField hdnWedLunch = (HiddenField)e.Row.FindControl("hdnWedLunch");
+                        HiddenField hdnThuLunch = (HiddenField)e.Row.FindControl("hdnThuLunch");
+                        HiddenField hdnFriLunch = (HiddenField)e.Row.FindControl("hdnFriLunch");
+                        HiddenField hdnSatLunch = (HiddenField)e.Row.FindControl("hdnSatLunch");
+
+
+                        string lunchTip1 = CreateLunchTable(hdnSunLunch.Value.Trim());
+                        lblSunScIn.Attributes.Add("class", "tooltip2");
+                        lblSunScIn.Attributes.Add("title", lunchTip1);
+                        lblSunScOut.Attributes.Add("class", "tooltip2");
+                        lblSunScOut.Attributes.Add("title", lunchTip1);
 
 
 
 
-                    LinkButton lblTueIn = (LinkButton)e.Row.FindControl("lblTueIn");
-                    lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text == "L" ? "L" : Convert.ToDateTime(lblTueIn.Text).ToString("hh:mm tt");
+                        lunchTip1 = CreateLunchTable(hdnMonLunch.Value.Trim());
+                        lblMonScIn.Attributes.Add("class", "tooltip2");
+                        lblMonScIn.Attributes.Add("title", lunchTip1);
+                        lblMonScOut.Attributes.Add("class", "tooltip2");
+                        lblMonScOut.Attributes.Add("title", lunchTip1);
 
-                    if (lblTueIn.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["TueDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["TueDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+
+
+                        lunchTip1 = CreateLunchTable(hdnTueLunch.Value.Trim());
+                        lblTueScIn.Attributes.Add("class", "tooltip2");
+                        lblTueScIn.Attributes.Add("title", lunchTip1);
+                        lblTueScOut.Attributes.Add("class", "tooltip2");
+                        lblTueScOut.Attributes.Add("title", lunchTip1);
+
+
+                        lunchTip1 = CreateLunchTable(hdnWedLunch.Value.Trim());
+                        lblWedScIn.Attributes.Add("class", "tooltip2");
+                        lblWedScIn.Attributes.Add("title", lunchTip1);
+                        lblWedScOut.Attributes.Add("class", "tooltip2");
+                        lblWedScOut.Attributes.Add("title", lunchTip1);
+
+
+
+                        lunchTip1 = CreateLunchTable(hdnSatLunch.Value.Trim());
+                        lblSatScIn.Attributes.Add("class", "tooltip2");
+                        lblSatScIn.Attributes.Add("title", lunchTip1);
+                        lblSatScOut.Attributes.Add("class", "tooltip2");
+                        lblSatScOut.Attributes.Add("title", lunchTip1);
+
+                        lunchTip1 = CreateLunchTable(hdnThuLunch.Value.Trim());
+                        lblThuScIn.Attributes.Add("class", "tooltip2");
+                        lblThuScIn.Attributes.Add("title", lunchTip1);
+                        lblThuScOut.Attributes.Add("class", "tooltip2");
+                        lblThuScOut.Attributes.Add("title", lunchTip1);
+
+                        lunchTip1 = CreateLunchTable(hdnFriLunch.Value.Trim());
+                        lblFriScIn.Attributes.Add("class", "tooltip2");
+                        lblFriScIn.Attributes.Add("title", lunchTip1);
+                        lblFriScOut.Attributes.Add("class", "tooltip2");
+                        lblFriScOut.Attributes.Add("title", lunchTip1);
+
+
+
+
+                        string empid = lblID.Text.Trim();
+
+
+                        if ((Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["MonDate"]) < Convert.ToDateTime(lblStartDate.Text)))
                         {
 
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblTueIn.Text = "N/A";
-                            }
+                            lblMonScIn.Text = "";
+                            lblMonScOut.Text = "";
                         }
-                    }
-
-
-                    HiddenField hdnTueSignInFlag = (HiddenField)e.Row.FindControl("hdnTueSignInFlag");
-                    HiddenField hdnTueSignOutFlag = (HiddenField)e.Row.FindControl("hdnTueSignOutFlag");
-                    if (hdnTueSignInFlag.Value == "True" || hdnTueSignOutFlag.Value == "True")
-                    {
-                        e.Row.Cells[6].CssClass += " atnEdit ";
-
-                    }
-                    HiddenField hdnTueSigninNotes = (HiddenField)e.Row.FindControl("hdnTueSigninNotes");
-                    HiddenField hdnTueMultiple = (HiddenField)e.Row.FindControl("hdnTueMultiple");
-                    if (hdnTueMultiple.Value == "True")
-                    {
-                        lblTueIn.CssClass = "multipleLogin";
-                        //   lblMonIn.CssClass = "multipleLogin";
-                        dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["TueDate"]), empid);
-                        s = CreateMultipleTable(dt);
-                        sTueMultiple = CreateMultipleString(dt);
-                        dt = null;
-                    }
-
-                    sTable = CreateSignInTable(lblName.Text, (hdnTueSigninNotes.Value), s);
-                    s = "";
-                    if (sTable != "")
-                    {
-                        lblTueIn.Attributes.Add("rel", "tooltip");
-                        lblTueIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[6].CssClass += " greenTag";
-                    }
-
-
-                    lblTueIn.Attributes.Add("sMultiple", sTueMultiple);
-                    lblTueIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["TueDate"].ToString()).ToString("MM/dd/yyyy"));
-
-                    LinkButton lblTueOut = (LinkButton)e.Row.FindControl("lblTueOut");
-                    lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text == "L" ? "L" : lblTueIn.Text + (lblTueOut.Text == "" ? "" : lblTueOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblTueOut.Text).ToString("hh:mm tt"));
-
-                    if (lblTueOut.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["TueDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["TueDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
-                        {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "L" ? "L" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text + " - N/A";
-                            }
-
-                        }
-                    }
-
-
-                    HiddenField hdnTueFreeze = (HiddenField)e.Row.FindControl("hdnTueFreeze");
-                    if (hdnTueFreeze.Value == "True")
-                    {
-                        lblTueIn.Enabled = false;
-                        lblTueIn.ForeColor = System.Drawing.Color.Black;
-
-                        lblTueOut.Enabled = false;
-                        lblTueOut.ForeColor = System.Drawing.Color.Black;
-
-                    }
-
-
-                    LinkButton lblWedIn = (LinkButton)e.Row.FindControl("lblWedIn");
-                    lblWedIn.Text = lblWedIn.Text == "" ? "" : lblWedIn.Text == "H" ? "H" : lblWedIn.Text == "L" ? "L" : Convert.ToDateTime(lblWedIn.Text).ToString("hh:mm tt");
-                    if (lblWedIn.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["WedDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["WedDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
-                        {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblWedIn.Text = "N/A";
-                            }
-
-                        }
-                    }
-
-                    HiddenField hdnWedSignInFlag = (HiddenField)e.Row.FindControl("hdnWedSignInFlag");
-                    HiddenField hdnWedSignOutFlag = (HiddenField)e.Row.FindControl("hdnWedSignOutFlag");
-                    if (hdnWedSignInFlag.Value == "True" || hdnWedSignOutFlag.Value == "True")
-                    {
-                        e.Row.Cells[9].CssClass += " atnEdit ";
-                        lblWedIn.CssClass.Replace("greenTag", "");
-                        // lblWedIn.ForeColor = System.Drawing.Color.Moccasin ;
-                    }
-
-                    HiddenField hdnWedSignInNotes = (HiddenField)e.Row.FindControl("hdnWedSignInNotes");
-                    HiddenField hdnWedMultiple = (HiddenField)e.Row.FindControl("hdnWedMultiple");
-                    if (hdnWedMultiple.Value == "True")
-                    {
-                        lblWedIn.CssClass = "multipleLogin";
-                        //   lblMonIn.CssClass = "multipleLogin";
-                        dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["WedDate"]), empid);
-                        s = CreateMultipleTable(dt);
-                        sWedMultiple = CreateMultipleString(dt);
-                        dt = null;
-                    }
-
-                    sTable = CreateSignInTable(lblName.Text, (hdnWedSignInNotes.Value), s);
-                    s = "";
-                    if (sTable != "")
-                    {
-                        lblWedIn.Attributes.Add("rel", "tooltip");
-                        lblWedIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[9].CssClass += " greenTag ";
-
-                    }
-                    lblWedIn.Attributes.Add("sMultiple", sWedMultiple);
-                    lblWedIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["WedDate"].ToString()).ToString("MM/dd/yyyy"));
-
-                    LinkButton lblWedOut = (LinkButton)e.Row.FindControl("lblWedOut");
-                    lblWedIn.Text = lblWedIn.Text == "" ? "" : lblWedIn.Text == "H" ? "H" : lblWedIn.Text == "L" ? "L" : lblWedIn.Text + (lblWedOut.Text == "" ? "" : lblWedOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblWedOut.Text).ToString("hh:mm tt"));
-
-                    if (lblWedOut.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["WedDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["WedDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
-                        {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblWedIn.Text = lblWedIn.Text == "" ? "" : lblWedIn.Text == "L" ? "L" : lblWedIn.Text == "H" ? "H" : lblWedIn.Text + " - N/A";
-                            }
-                        }
-                    }
-
-
-                    HiddenField hdnWedFreeze = (HiddenField)e.Row.FindControl("hdnWedFreeze");
-                    if (hdnWedFreeze.Value == "True")
-                    {
-                        lblWedIn.Enabled = false;
-                        lblWedIn.ForeColor = System.Drawing.Color.Black;
-                        lblWedOut.Enabled = false;
-                        lblWedOut.ForeColor = System.Drawing.Color.Black;
-                    }
-
-
-
-                    LinkButton lblThuIn = (LinkButton)e.Row.FindControl("lblThuIn");
-                    lblThuIn.Text = lblThuIn.Text == "" ? "" : lblThuIn.Text == "H" ? "H" : lblThuIn.Text == "L" ? "L" : Convert.ToDateTime(lblThuIn.Text).ToString("hh:mm tt");
-                    if (lblThuIn.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["ThuDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["ThuDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                        if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["TueDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
 
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblThuIn.Text = "N/A";
-                            }
+                            lblTueScIn.Text = "";
+                            lblTueScOut.Text = "";
                         }
-                    }
 
-
-                    HiddenField hdnThuSignInFlag = (HiddenField)e.Row.FindControl("hdnThuSignInFlag");
-
-                    HiddenField hdnThuSignOutFlag = (HiddenField)e.Row.FindControl("hdnThuSignOutFlag");
-                    if (hdnThuSignInFlag.Value == "True" || hdnThuSignOutFlag.Value == "True")
-                    {
-                        e.Row.Cells[12].CssClass += " atnEdit ";
-                        lblThuIn.Attributes["class"] = "";
-                        //lblThuIn.ForeColor = System.Drawing.Color.Moccasin ;
-                    }
-                    HiddenField hdnThuSignInNotes = (HiddenField)e.Row.FindControl("hdnThuSignInNotes");
-
-                    HiddenField hdnThuMultiple = (HiddenField)e.Row.FindControl("hdnThuMultiple");
-                    if (hdnThuMultiple.Value == "True")
-                    {
-                        lblThuIn.CssClass = "multipleLogin";
-                        //   lblMonIn.CssClass = "multipleLogin";
-                        dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["ThuDate"]), empid);
-                        s = CreateMultipleTable(dt);
-                        sThuMultiple = CreateMultipleString(dt);
-                        dt = null;
-                    }
-
-                    sTable = CreateSignInTable(lblName.Text, (hdnThuSignInNotes.Value), s);
-                    s = "";
-                    if (sTable != "")
-                    {
-                        lblThuIn.Attributes.Add("rel", "tooltip");
-                        lblThuIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[12].CssClass += " greenTag ";
-                    }
-                    lblThuIn.Attributes.Add("sMultiple", sThuMultiple);
-                    lblThuIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["ThuDate"].ToString()).ToString("MM/dd/yyyy"));
-                    LinkButton lblThuOut = (LinkButton)e.Row.FindControl("lblThuOut");
-                    lblThuIn.Text = lblThuIn.Text == "" ? "" : lblThuIn.Text == "H" ? "H" : lblThuIn.Text == "L" ? "L" : lblThuIn.Text + (lblThuOut.Text == "" ? "" : lblThuOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblThuOut.Text).ToString("hh:mm tt"));
-                    if (lblThuOut.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["ThuDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["ThuDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                        if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["WedDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblThuIn.Text = lblThuIn.Text == "" ? "" : lblThuIn.Text == "H" ? "H" : lblThuIn.Text == "L" ? "L" : lblThuIn.Text + " - N/A";
-                            }
 
+                            lblWedScIn.Text = "";
+                            lblWedScOut.Text = "";
                         }
-                    }
 
-
-
-                    HiddenField hdnThuFreeze = (HiddenField)e.Row.FindControl("hdnThuFreeze");
-                    if (hdnThuFreeze.Value == "True")
-                    {
-                        lblThuIn.Enabled = false;
-                        lblThuIn.ForeColor = System.Drawing.Color.Black;
-                        lblThuOut.Enabled = false;
-                        lblThuOut.ForeColor = System.Drawing.Color.Black;
-                    }
-                    LinkButton lblFriIn = (LinkButton)e.Row.FindControl("lblFriIn");
-                    lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text == "H" ? "H" : lblFriIn.Text == "L" ? "L" : Convert.ToDateTime(lblFriIn.Text).ToString("hh:mm tt");
-
-                    if (lblFriIn.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["FriDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["FriDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                        if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["ThuDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblFriIn.Text = "N/A";
-                            }
 
+                            lblThuScIn.Text = "";
+                            lblThuScOut.Text = "";
                         }
-                    }
-
-                    HiddenField hdnFriSignInFlag = (HiddenField)e.Row.FindControl("hdnFriSignInFlag");
-                    HiddenField hdnFriSignOutFlag = (HiddenField)e.Row.FindControl("hdnFriSignOutFlag");
-                    if (hdnFriSignInFlag.Value == "True" || hdnFriSignOutFlag.Value == "True")
-                    {
-                        e.Row.Cells[15].CssClass += " atnEdit ";
-                        lblFriIn.CssClass.Replace("greenTag", "");
-
-                    }
-                    HiddenField hdnFriSignInNotes = (HiddenField)e.Row.FindControl("hdnFriSignInNotes");
-
-                    HiddenField hdnFriMultiple = (HiddenField)e.Row.FindControl("hdnFriMultiple");
-                    if (hdnFriMultiple.Value == "True")
-                    {
-                        lblFriIn.CssClass = "multipleLogin";
-                        //  lblMonIn.CssClass = "multipleLogin";
-                        dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["FriDate"]), empid);
-                        s = CreateMultipleTable(dt);
-                        sFriMultiple = CreateMultipleString(dt);
-                        dt = null;
-                    }
-
-
-
-                    sTable = CreateSignInTable(lblName.Text, (hdnFriSignInNotes.Value), s);
-                    s = "";
-                    if (sTable != "")
-                    {
-                        lblFriIn.Attributes.Add("rel", "tooltip");
-                        lblFriIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[15].CssClass += " greenTag ";
-                    }
-
-                    lblFriIn.Attributes.Add("sMultiple", sFriMultiple);
-                    lblFriIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["FriDate"].ToString()).ToString("MM/dd/yyyy"));
-
-                    LinkButton lblFriOut = (LinkButton)e.Row.FindControl("lblFriOut");
-                    lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text == "H" ? "H" : lblFriIn.Text == "L" ? "L" : lblFriIn.Text + (lblFriOut.Text == "" ? "" : lblFriOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblFriOut.Text).ToString("hh:mm tt"));
-                    if (lblFriOut.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["FriDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["FriDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                        if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["FriDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text == "H" ? "H" : lblFriIn.Text == "L" ? "L" : lblFriIn.Text + " - N/A";
-                            }
 
+                            lblFriScIn.Text = "";
+                            lblFriScOut.Text = "";
                         }
-                    }
-
-
-
-
-                    HiddenField hdnFriFreeze = (HiddenField)e.Row.FindControl("hdnFriFreeze");
-                    if (hdnFriFreeze.Value == "True")
-                    {
-                        lblFriIn.Enabled = false;
-                        lblFriIn.ForeColor = System.Drawing.Color.Black;
-                        lblFriOut.Enabled = false;
-                        lblFriOut.ForeColor = System.Drawing.Color.Black;
-                    }
-
-                    LinkButton lblSatIn = (LinkButton)e.Row.FindControl("lblSatIn");
-                    lblSatIn.Text = lblSatIn.Text == "" ? "" : lblSatIn.Text == "H" ? "H" : lblSatIn.Text == "L" ? "L" : Convert.ToDateTime(lblSatIn.Text).ToString("hh:mm tt");
-                    HiddenField hdnSatSignInFlag = (HiddenField)e.Row.FindControl("hdnSatSignInFlag");
-                    if (lblSatIn.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["SatDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SatDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                        if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SatDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblSatIn.Text = "N/A";
-                            }
+
+                            lblSatScIn.Text = "";
+                            lblSatScOut.Text = "";
                         }
-                    }
-
-                    HiddenField hdnSatSignOutFlag = (HiddenField)e.Row.FindControl("hdnSatSignOutFlag");
-                    if (hdnSatSignInFlag.Value == "True" || hdnSatSignOutFlag.Value == "True")
-                    {
-                        e.Row.Cells[18].CssClass += " atnEdit ";
-                        lblSatIn.CssClass.Replace("greenTag", "");
-                    }
-                    HiddenField hdnSatSignInNotes = (HiddenField)e.Row.FindControl("hdnSatSignInNotes");
-                    //lblSatIn.ForeColor = System.Drawing.Color.Moccasin ;
-
-                    HiddenField hdnSatMultiple = (HiddenField)e.Row.FindControl("hdnSatMultiple");
-                    if (hdnSatMultiple.Value == "True")
-                    {
-                        lblSatIn.CssClass = "multipleLogin";
-                        dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["SatDate"]), empid);
-                        s = CreateMultipleTable(dt);
-                        sSatMultiple = CreateMultipleString(dt);
-                        dt = null;
-                    }
-
-                    sTable = CreateSignInTable(lblName.Text, (hdnSatSignInNotes.Value), s);
-                    s = "";
-                    if (sTable != "")
-                    {
-                        lblSatIn.Attributes.Add("rel", "tooltip");
-                        lblSatIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[18].CssClass += " greenTag ";
-
-                    }
-
-                    lblSatIn.Attributes.Add("sMultiple", sSatMultiple);
-                    lblSatIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["SatDate"].ToString()).ToString("MM/dd/yyyy"));
-
-                    LinkButton lblSatOut = (LinkButton)e.Row.FindControl("lblSatOut");
-                    lblSatIn.Text = lblSatIn.Text == "" ? "" : lblSatIn.Text == "H" ? "H" : lblSatIn.Text == "L" ? "L" : lblSatIn.Text + (lblSatOut.Text == "" ? "" : lblSatOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblSatOut.Text).ToString("hh:mm tt"));
-                    if (lblSatOut.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["SatDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SatDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                        if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SunDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblSatIn.Text = lblSatIn.Text == "" ? "" : lblSatIn.Text == "H" ? "H" : lblSatIn.Text == "L" ? "L" : lblSatIn.Text + " - N/A";
-                            }
 
-
+                            lblSunScIn.Text = "";
+                            lblSunScOut.Text = "";
                         }
-                    }
 
-
-                    HiddenField hdnSatFreeze = (HiddenField)e.Row.FindControl("hdnSatFreeze");
-                    if (hdnSatFreeze.Value == "True")
-                    {
-                        lblSatIn.Enabled = false;
-                        lblSatIn.ForeColor = System.Drawing.Color.Black;
-                        lblSatOut.Enabled = false;
-                        lblSatOut.ForeColor = System.Drawing.Color.Black;
-                    }
-
-
-                    LinkButton lblSunIn = (LinkButton)e.Row.FindControl("lblSunIn");
-                    lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : Convert.ToDateTime(lblSunIn.Text).ToString("hh:mm tt");
-                    if (lblSunIn.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["SunDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SunDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                        if ((Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["MonDate"]) > Convert.ToDateTime(lblTermDate.Text)))
                         {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
-                            {
-                                lblSunIn.Text = "N/A";
-                            }
 
+                            lblMonScIn.Text = "";
+                            lblMonScOut.Text = "";
                         }
-                    }
-
-                    HiddenField hdnSunSignInFlag = (HiddenField)e.Row.FindControl("hdnSunSignInFlag");
-                    HiddenField hdnSunSignOutFlag = (HiddenField)e.Row.FindControl("hdnSunSignOutFlag");
-
-                    if (hdnSunSignInFlag.Value == "True" || hdnSunSignOutFlag.Value == "True")
-                    {
-                        e.Row.Cells[21].CssClass += " atnEdit ";
-                        lblSatIn.CssClass.Replace("greenTag", "");
-                    }
-
-
-                    HiddenField hdnSunSignInNotes = (HiddenField)e.Row.FindControl("hdnSunSignInNotes");
-
-                    HiddenField hdnSunMultiple = (HiddenField)e.Row.FindControl("hdnSunMultiple");
-                    if (hdnSunMultiple.Value == "True")
-                    {
-                        lblSunIn.CssClass = "multipleLogin";
-                        // lblMonIn.CssClass = "multipleLogin";
-                        dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["SunDate"]), empid);
-                        s = CreateMultipleTable(dt);
-                        sSunMultiple = CreateMultipleString(dt);
-                        dt = null;
-                    }
-
-                    sTable = CreateSignInTable(lblName.Text, (hdnSunSignInNotes.Value), s);
-                    s = "";
-                    if (sTable != "")
-                    {
-                        lblSunIn.Attributes.Add("rel", "tooltip");
-                        lblSunIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[21].CssClass += " greenTag ";
-                    }
-
-                    lblSunIn.Attributes.Add("sMultiple", sSunMultiple);
-                    lblSunIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["SunDate"].ToString()).ToString("MM/dd/yyyy"));
-                    LinkButton lblSunOut = (LinkButton)e.Row.FindControl("lblSunOut");
-                    lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : lblSunIn.Text + (lblSunOut.Text == "" ? "" : lblSunOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblSunOut.Text).ToString("hh:mm tt"));
-                    if (lblSunOut.Text == "")
-                    {
-                        if ((Convert.ToDateTime(ViewState["SunDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SunDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                        if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["TueDate"]) > Convert.ToDateTime(lblTermDate.Text))
                         {
-                            if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+
+                            lblTueScIn.Text = "";
+                            lblTueScOut.Text = "";
+                        }
+
+                        if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["WedDate"]) > Convert.ToDateTime(lblTermDate.Text))
+                        {
+
+                            lblWedScIn.Text = "";
+                            lblWedScOut.Text = "";
+                        }
+
+                        if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["ThuDate"]) > Convert.ToDateTime(lblTermDate.Text))
+                        {
+
+                            lblThuScIn.Text = "";
+                            lblThuScOut.Text = "";
+                        }
+                        if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["FriDate"]) > Convert.ToDateTime(lblTermDate.Text))
+                        {
+                            lblFriScIn.Text = "";
+                            lblFriScOut.Text = "";
+                        }
+                        if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SatDate"]) > Convert.ToDateTime(lblTermDate.Text))
+                        {
+
+                            lblSatScIn.Text = "";
+                            lblSatScOut.Text = "";
+                        }
+                        if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SunDate"]) > Convert.ToDateTime(lblTermDate.Text))
+                        {
+                            lblSunScIn.Text = "";
+                            lblSunScOut.Text = "";
+                        }
+                        LinkButton lblMonIn = (LinkButton)e.Row.FindControl("lblMonIn");
+                        lblMonIn.Text = lblMonIn.Text == "" ? "" : lblMonIn.Text == "H" ? "H" : lblMonIn.Text == "L" ? "L" : Convert.ToDateTime(lblMonIn.Text).ToString("hh:mm tt");
+
+                        lblMonIn.Attributes.Add("date", Convert.ToDateTime(ViewState["MonDate"]).ToString("MM/dd/yyyy"));
+
+                        if (lblMonIn.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["MonDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["MonDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
                             {
-                                lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : lblSunIn.Text + " - N/A";
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblMonIn.Text = "N/A";
+                                }
                             }
+                        }
+
+                        HiddenField hdnMonSignInFlag = (HiddenField)e.Row.FindControl("hdnMonSignInFlag");
+                        HiddenField hdnMonSignOutFlag = (HiddenField)e.Row.FindControl("hdnMonSignOutFlag");
+                        if (hdnMonSignInFlag.Value == "True" || hdnMonSignOutFlag.Value == "True")
+                        {
+                            e.Row.Cells[3].CssClass += " atnEdit ";
+                            lblMonIn.CssClass.Replace("greenTag", "");
+                            //lblMonIn.ForeColor = System.Drawing.Color.Moccasin ;
+                        }
+                        HiddenField hdnMonSigninNotes = (HiddenField)e.Row.FindControl("hdnMonSigninNotes");
+
+                        HiddenField hdnMonMultiple = (HiddenField)e.Row.FindControl("hdnMonMultiple");
+
+
+                        if (hdnMonMultiple.Value == "True")
+                        {
+                            lblMonIn.CssClass = "multipleLogin";
+                            dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["MonDate"]), empid);
+                            s = CreateMultipleTable(dt);
+                            sMonMultiple = CreateMultipleString(dt);
+                            dt = null;
+                        }
+                        sTable = CreateSignInTable(lblName.Text, (hdnMonSigninNotes.Value), s);
+                        s = "";
+                        if (sTable != "")
+                        {
+                            lblMonIn.Attributes.Add("rel", "tooltip");
+                            lblMonIn.Attributes.Add("title", sTable);
+                            e.Row.Cells[3].CssClass += " greenTag";
+                        }
+                        lblMonIn.Attributes.Add("sMultiple", sMonMultiple);
+                        lblMonIn.Attributes.Add("date", Convert.ToDateTime(ViewState["MonDate"]).ToString("MM/dd/yyyy"));
+                        LinkButton lblMonOut = (LinkButton)e.Row.FindControl("lblMonOut");
+                        lblMonIn.Text = lblMonIn.Text == "" ? "" : lblMonIn.Text == "H" ? "H" : lblMonIn.Text == "L" ? "L" : lblMonIn.Text + (lblMonOut.Text == "" ? "" : lblMonOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblMonOut.Text).ToString("hh:mm tt"));
+                        if (lblMonOut.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["MonDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["MonDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblMonIn.Text = lblMonIn.Text == "" ? "" : lblMonIn.Text == "L" ? "L" : lblMonIn.Text == "H" ? "H" : lblMonIn.Text + " - N/A";
+                                }
+
+                            }
+                        }
+                        HiddenField hdnMonFreeze = (HiddenField)e.Row.FindControl("hdnMonFreeze");
+                        if (hdnMonFreeze.Value == "True")
+                        {
+                            lblMonIn.Enabled = false;
+                            lblMonIn.ForeColor = System.Drawing.Color.Black;
+                            lblMonOut.Enabled = false;
+                            lblMonOut.ForeColor = System.Drawing.Color.Black;
+                        }
+
+
+
+
+                        LinkButton lblTueIn = (LinkButton)e.Row.FindControl("lblTueIn");
+                        lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text == "L" ? "L" : Convert.ToDateTime(lblTueIn.Text).ToString("hh:mm tt");
+
+                        if (lblTueIn.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["TueDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["TueDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblTueIn.Text = "N/A";
+                                }
+                            }
+                        }
+
+
+                        HiddenField hdnTueSignInFlag = (HiddenField)e.Row.FindControl("hdnTueSignInFlag");
+                        HiddenField hdnTueSignOutFlag = (HiddenField)e.Row.FindControl("hdnTueSignOutFlag");
+                        if (hdnTueSignInFlag.Value == "True" || hdnTueSignOutFlag.Value == "True")
+                        {
+                            e.Row.Cells[6].CssClass += " atnEdit ";
 
                         }
+                        HiddenField hdnTueSigninNotes = (HiddenField)e.Row.FindControl("hdnTueSigninNotes");
+                        HiddenField hdnTueMultiple = (HiddenField)e.Row.FindControl("hdnTueMultiple");
+                        if (hdnTueMultiple.Value == "True")
+                        {
+                            lblTueIn.CssClass = "multipleLogin";
+                            //   lblMonIn.CssClass = "multipleLogin";
+                            dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["TueDate"]), empid);
+                            s = CreateMultipleTable(dt);
+                            sTueMultiple = CreateMultipleString(dt);
+                            dt = null;
+                        }
+
+                        sTable = CreateSignInTable(lblName.Text, (hdnTueSigninNotes.Value), s);
+                        s = "";
+                        if (sTable != "")
+                        {
+                            lblTueIn.Attributes.Add("rel", "tooltip");
+                            lblTueIn.Attributes.Add("title", sTable);
+                            e.Row.Cells[6].CssClass += " greenTag";
+                        }
+
+
+                        lblTueIn.Attributes.Add("sMultiple", sTueMultiple);
+                        lblTueIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["TueDate"].ToString()).ToString("MM/dd/yyyy"));
+
+                        LinkButton lblTueOut = (LinkButton)e.Row.FindControl("lblTueOut");
+                        lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text == "L" ? "L" : lblTueIn.Text + (lblTueOut.Text == "" ? "" : lblTueOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblTueOut.Text).ToString("hh:mm tt"));
+
+                        if (lblTueOut.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["TueDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["TueDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "L" ? "L" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text + " - N/A";
+                                }
+
+                            }
+                        }
+
+
+                        HiddenField hdnTueFreeze = (HiddenField)e.Row.FindControl("hdnTueFreeze");
+                        if (hdnTueFreeze.Value == "True")
+                        {
+                            lblTueIn.Enabled = false;
+                            lblTueIn.ForeColor = System.Drawing.Color.Black;
+
+                            lblTueOut.Enabled = false;
+                            lblTueOut.ForeColor = System.Drawing.Color.Black;
+
+                        }
+
+
+                        LinkButton lblWedIn = (LinkButton)e.Row.FindControl("lblWedIn");
+                        lblWedIn.Text = lblWedIn.Text == "" ? "" : lblWedIn.Text == "H" ? "H" : lblWedIn.Text == "L" ? "L" : Convert.ToDateTime(lblWedIn.Text).ToString("hh:mm tt");
+                        if (lblWedIn.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["WedDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["WedDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblWedIn.Text = "N/A";
+                                }
+
+                            }
+                        }
+
+                        HiddenField hdnWedSignInFlag = (HiddenField)e.Row.FindControl("hdnWedSignInFlag");
+                        HiddenField hdnWedSignOutFlag = (HiddenField)e.Row.FindControl("hdnWedSignOutFlag");
+                        if (hdnWedSignInFlag.Value == "True" || hdnWedSignOutFlag.Value == "True")
+                        {
+                            e.Row.Cells[9].CssClass += " atnEdit ";
+                            lblWedIn.CssClass.Replace("greenTag", "");
+
+                        }
+
+                        HiddenField hdnWedSignInNotes = (HiddenField)e.Row.FindControl("hdnWedSignInNotes");
+                        HiddenField hdnWedMultiple = (HiddenField)e.Row.FindControl("hdnWedMultiple");
+                        if (hdnWedMultiple.Value == "True")
+                        {
+                            lblWedIn.CssClass = "multipleLogin";
+                            dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["WedDate"]), empid);
+                            s = CreateMultipleTable(dt);
+                            sWedMultiple = CreateMultipleString(dt);
+                            dt = null;
+                        }
+
+                        sTable = CreateSignInTable(lblName.Text, (hdnWedSignInNotes.Value), s);
+                        s = "";
+                        if (sTable != "")
+                        {
+                            lblWedIn.Attributes.Add("rel", "tooltip");
+                            lblWedIn.Attributes.Add("title", sTable);
+                            e.Row.Cells[9].CssClass += " greenTag ";
+
+                        }
+                        lblWedIn.Attributes.Add("sMultiple", sWedMultiple);
+                        lblWedIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["WedDate"].ToString()).ToString("MM/dd/yyyy"));
+
+                        LinkButton lblWedOut = (LinkButton)e.Row.FindControl("lblWedOut");
+                        lblWedIn.Text = lblWedIn.Text == "" ? "" : lblWedIn.Text == "H" ? "H" : lblWedIn.Text == "L" ? "L" : lblWedIn.Text + (lblWedOut.Text == "" ? "" : lblWedOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblWedOut.Text).ToString("hh:mm tt"));
+
+                        if (lblWedOut.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["WedDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["WedDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblWedIn.Text = lblWedIn.Text == "" ? "" : lblWedIn.Text == "L" ? "L" : lblWedIn.Text == "H" ? "H" : lblWedIn.Text + " - N/A";
+                                }
+                            }
+                        }
+
+
+                        HiddenField hdnWedFreeze = (HiddenField)e.Row.FindControl("hdnWedFreeze");
+                        if (hdnWedFreeze.Value == "True")
+                        {
+                            lblWedIn.Enabled = false;
+                            lblWedIn.ForeColor = System.Drawing.Color.Black;
+                            lblWedOut.Enabled = false;
+                            lblWedOut.ForeColor = System.Drawing.Color.Black;
+                        }
+
+
+
+                        LinkButton lblThuIn = (LinkButton)e.Row.FindControl("lblThuIn");
+                        lblThuIn.Text = lblThuIn.Text == "" ? "" : lblThuIn.Text == "H" ? "H" : lblThuIn.Text == "L" ? "L" : Convert.ToDateTime(lblThuIn.Text).ToString("hh:mm tt");
+                        if (lblThuIn.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["ThuDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["ThuDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblThuIn.Text = "N/A";
+                                }
+                            }
+                        }
+
+
+                        HiddenField hdnThuSignInFlag = (HiddenField)e.Row.FindControl("hdnThuSignInFlag");
+
+                        HiddenField hdnThuSignOutFlag = (HiddenField)e.Row.FindControl("hdnThuSignOutFlag");
+                        if (hdnThuSignInFlag.Value == "True" || hdnThuSignOutFlag.Value == "True")
+                        {
+                            e.Row.Cells[12].CssClass += " atnEdit ";
+                            lblThuIn.Attributes["class"] = "";
+                            //lblThuIn.ForeColor = System.Drawing.Color.Moccasin ;
+                        }
+                        HiddenField hdnThuSignInNotes = (HiddenField)e.Row.FindControl("hdnThuSignInNotes");
+
+                        HiddenField hdnThuMultiple = (HiddenField)e.Row.FindControl("hdnThuMultiple");
+                        if (hdnThuMultiple.Value == "True")
+                        {
+                            lblThuIn.CssClass = "multipleLogin";
+                            //   lblMonIn.CssClass = "multipleLogin";
+                            dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["ThuDate"]), empid);
+                            s = CreateMultipleTable(dt);
+                            sThuMultiple = CreateMultipleString(dt);
+                            dt = null;
+                        }
+
+                        sTable = CreateSignInTable(lblName.Text, (hdnThuSignInNotes.Value), s);
+                        s = "";
+                        if (sTable != "")
+                        {
+                            lblThuIn.Attributes.Add("rel", "tooltip");
+                            lblThuIn.Attributes.Add("title", sTable);
+                            e.Row.Cells[12].CssClass += " greenTag ";
+                        }
+                        lblThuIn.Attributes.Add("sMultiple", sThuMultiple);
+                        lblThuIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["ThuDate"].ToString()).ToString("MM/dd/yyyy"));
+                        LinkButton lblThuOut = (LinkButton)e.Row.FindControl("lblThuOut");
+                        lblThuIn.Text = lblThuIn.Text == "" ? "" : lblThuIn.Text == "H" ? "H" : lblThuIn.Text == "L" ? "L" : lblThuIn.Text + (lblThuOut.Text == "" ? "" : lblThuOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblThuOut.Text).ToString("hh:mm tt"));
+                        if (lblThuOut.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["ThuDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["ThuDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblThuIn.Text = lblThuIn.Text == "" ? "" : lblThuIn.Text == "H" ? "H" : lblThuIn.Text == "L" ? "L" : lblThuIn.Text + " - N/A";
+                                }
+
+                            }
+                        }
+
+
+
+                        HiddenField hdnThuFreeze = (HiddenField)e.Row.FindControl("hdnThuFreeze");
+                        if (hdnThuFreeze.Value == "True")
+                        {
+                            lblThuIn.Enabled = false;
+                            lblThuIn.ForeColor = System.Drawing.Color.Black;
+                            lblThuOut.Enabled = false;
+                            lblThuOut.ForeColor = System.Drawing.Color.Black;
+                        }
+                        LinkButton lblFriIn = (LinkButton)e.Row.FindControl("lblFriIn");
+                        lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text == "H" ? "H" : lblFriIn.Text == "L" ? "L" : Convert.ToDateTime(lblFriIn.Text).ToString("hh:mm tt");
+
+                        if (lblFriIn.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["FriDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["FriDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblFriIn.Text = "N/A";
+                                }
+
+                            }
+                        }
+
+                        HiddenField hdnFriSignInFlag = (HiddenField)e.Row.FindControl("hdnFriSignInFlag");
+                        HiddenField hdnFriSignOutFlag = (HiddenField)e.Row.FindControl("hdnFriSignOutFlag");
+                        if (hdnFriSignInFlag.Value == "True" || hdnFriSignOutFlag.Value == "True")
+                        {
+                            e.Row.Cells[15].CssClass += " atnEdit ";
+                            lblFriIn.CssClass.Replace("greenTag", "");
+
+                        }
+                        HiddenField hdnFriSignInNotes = (HiddenField)e.Row.FindControl("hdnFriSignInNotes");
+
+                        HiddenField hdnFriMultiple = (HiddenField)e.Row.FindControl("hdnFriMultiple");
+                        if (hdnFriMultiple.Value == "True")
+                        {
+                            lblFriIn.CssClass = "multipleLogin";
+                            //  lblMonIn.CssClass = "multipleLogin";
+                            dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["FriDate"]), empid);
+                            s = CreateMultipleTable(dt);
+                            sFriMultiple = CreateMultipleString(dt);
+                            dt = null;
+                        }
+
+
+
+                        sTable = CreateSignInTable(lblName.Text, (hdnFriSignInNotes.Value), s);
+                        s = "";
+                        if (sTable != "")
+                        {
+                            lblFriIn.Attributes.Add("rel", "tooltip");
+                            lblFriIn.Attributes.Add("title", sTable);
+                            e.Row.Cells[15].CssClass += " greenTag ";
+                        }
+
+                        lblFriIn.Attributes.Add("sMultiple", sFriMultiple);
+                        lblFriIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["FriDate"].ToString()).ToString("MM/dd/yyyy"));
+
+                        LinkButton lblFriOut = (LinkButton)e.Row.FindControl("lblFriOut");
+                        lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text == "H" ? "H" : lblFriIn.Text == "L" ? "L" : lblFriIn.Text + (lblFriOut.Text == "" ? "" : lblFriOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblFriOut.Text).ToString("hh:mm tt"));
+                        if (lblFriOut.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["FriDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["FriDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text == "H" ? "H" : lblFriIn.Text == "L" ? "L" : lblFriIn.Text + " - N/A";
+                                }
+
+                            }
+                        }
+
+
+
+
+                        HiddenField hdnFriFreeze = (HiddenField)e.Row.FindControl("hdnFriFreeze");
+                        if (hdnFriFreeze.Value == "True")
+                        {
+                            lblFriIn.Enabled = false;
+                            lblFriIn.ForeColor = System.Drawing.Color.Black;
+                            lblFriOut.Enabled = false;
+                            lblFriOut.ForeColor = System.Drawing.Color.Black;
+                        }
+
+                        LinkButton lblSatIn = (LinkButton)e.Row.FindControl("lblSatIn");
+                        lblSatIn.Text = lblSatIn.Text == "" ? "" : lblSatIn.Text == "H" ? "H" : lblSatIn.Text == "L" ? "L" : Convert.ToDateTime(lblSatIn.Text).ToString("hh:mm tt");
+                        HiddenField hdnSatSignInFlag = (HiddenField)e.Row.FindControl("hdnSatSignInFlag");
+                        if (lblSatIn.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["SatDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SatDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblSatIn.Text = "N/A";
+                                }
+                            }
+                        }
+
+                        HiddenField hdnSatSignOutFlag = (HiddenField)e.Row.FindControl("hdnSatSignOutFlag");
+                        if (hdnSatSignInFlag.Value == "True" || hdnSatSignOutFlag.Value == "True")
+                        {
+                            e.Row.Cells[18].CssClass += " atnEdit ";
+                            lblSatIn.CssClass.Replace("greenTag", "");
+                        }
+                        HiddenField hdnSatSignInNotes = (HiddenField)e.Row.FindControl("hdnSatSignInNotes");
+                        //lblSatIn.ForeColor = System.Drawing.Color.Moccasin ;
+
+                        HiddenField hdnSatMultiple = (HiddenField)e.Row.FindControl("hdnSatMultiple");
+                        if (hdnSatMultiple.Value == "True")
+                        {
+                            lblSatIn.CssClass = "multipleLogin";
+                            dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["SatDate"]), empid);
+                            s = CreateMultipleTable(dt);
+                            sSatMultiple = CreateMultipleString(dt);
+                            dt = null;
+                        }
+
+                        sTable = CreateSignInTable(lblName.Text, (hdnSatSignInNotes.Value), s);
+                        s = "";
+                        if (sTable != "")
+                        {
+                            lblSatIn.Attributes.Add("rel", "tooltip");
+                            lblSatIn.Attributes.Add("title", sTable);
+                            e.Row.Cells[18].CssClass += " greenTag ";
+
+                        }
+
+                        lblSatIn.Attributes.Add("sMultiple", sSatMultiple);
+                        lblSatIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["SatDate"].ToString()).ToString("MM/dd/yyyy"));
+
+                        LinkButton lblSatOut = (LinkButton)e.Row.FindControl("lblSatOut");
+                        lblSatIn.Text = lblSatIn.Text == "" ? "" : lblSatIn.Text == "H" ? "H" : lblSatIn.Text == "L" ? "L" : lblSatIn.Text + (lblSatOut.Text == "" ? "" : lblSatOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblSatOut.Text).ToString("hh:mm tt"));
+                        if (lblSatOut.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["SatDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SatDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblSatIn.Text = lblSatIn.Text == "" ? "" : lblSatIn.Text == "H" ? "H" : lblSatIn.Text == "L" ? "L" : lblSatIn.Text + " - N/A";
+                                }
+
+
+                            }
+                        }
+
+
+                        HiddenField hdnSatFreeze = (HiddenField)e.Row.FindControl("hdnSatFreeze");
+                        if (hdnSatFreeze.Value == "True")
+                        {
+                            lblSatIn.Enabled = false;
+                            lblSatIn.ForeColor = System.Drawing.Color.Black;
+                            lblSatOut.Enabled = false;
+                            lblSatOut.ForeColor = System.Drawing.Color.Black;
+                        }
+
+
+                        LinkButton lblSunIn = (LinkButton)e.Row.FindControl("lblSunIn");
+                        lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : Convert.ToDateTime(lblSunIn.Text).ToString("hh:mm tt");
+                        if (lblSunIn.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["SunDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SunDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblSunIn.Text = "N/A";
+                                }
+
+                            }
+                        }
+
+                        HiddenField hdnSunSignInFlag = (HiddenField)e.Row.FindControl("hdnSunSignInFlag");
+                        HiddenField hdnSunSignOutFlag = (HiddenField)e.Row.FindControl("hdnSunSignOutFlag");
+
+                        if (hdnSunSignInFlag.Value == "True" || hdnSunSignOutFlag.Value == "True")
+                        {
+                            e.Row.Cells[21].CssClass += " atnEdit ";
+                            lblSatIn.CssClass.Replace("greenTag", "");
+                        }
+
+
+                        HiddenField hdnSunSignInNotes = (HiddenField)e.Row.FindControl("hdnSunSignInNotes");
+
+                        HiddenField hdnSunMultiple = (HiddenField)e.Row.FindControl("hdnSunMultiple");
+                        if (hdnSunMultiple.Value == "True")
+                        {
+                            lblSunIn.CssClass = "multipleLogin";
+                            // lblMonIn.CssClass = "multipleLogin";
+                            dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["SunDate"]), empid);
+                            s = CreateMultipleTable(dt);
+                            sSunMultiple = CreateMultipleString(dt);
+                            dt = null;
+                        }
+
+                        sTable = CreateSignInTable(lblName.Text, (hdnSunSignInNotes.Value), s);
+                        s = "";
+                        if (sTable != "")
+                        {
+                            lblSunIn.Attributes.Add("rel", "tooltip");
+                            lblSunIn.Attributes.Add("title", sTable);
+                            e.Row.Cells[21].CssClass += " greenTag ";
+                        }
+
+                        lblSunIn.Attributes.Add("sMultiple", sSunMultiple);
+                        lblSunIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["SunDate"].ToString()).ToString("MM/dd/yyyy"));
+                        LinkButton lblSunOut = (LinkButton)e.Row.FindControl("lblSunOut");
+                        lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : lblSunIn.Text + (lblSunOut.Text == "" ? "" : lblSunOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblSunOut.Text).ToString("hh:mm tt"));
+                        if (lblSunOut.Text == "")
+                        {
+                            if ((Convert.ToDateTime(ViewState["SunDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["SunDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
+                            {
+                                if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
+                                {
+                                    lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text == "S" ? "S" : lblSunIn.Text == "L" ? "" : lblSunIn.Text + " - N/A";
+                                }
+
+                            }
+                        }
+
+
+
+
+                        HiddenField hdnSunFreeze = (HiddenField)e.Row.FindControl("hdnSunFreeze");
+                        if (hdnSunFreeze.Value == "True")
+                        {
+                            lblSunIn.Enabled = false;
+                            lblSunIn.ForeColor = System.Drawing.Color.Black;
+                            lblSunOut.Enabled = false;
+                            lblSunOut.ForeColor = System.Drawing.Color.Black;
+                        }
+
+
+
+                        Label lblMonHours = (Label)e.Row.FindControl("lblMonHours");
+                        lblMonHours.Text = lblMonHours.Text == "N/A" ? "" : lblMonHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblMonHours.Text)));
+                        Label lblTueHours = (Label)e.Row.FindControl("lblTueHours");
+                        lblTueHours.Text = lblTueHours.Text == "N/A" ? "" : lblTueHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblTueHours.Text)));
+                        Label lblWedHours = (Label)e.Row.FindControl("lblWedHours");
+                        lblWedHours.Text = lblWedHours.Text == "N/A" ? "" : lblWedHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblWedHours.Text)));
+                        Label lblThuHours = (Label)e.Row.FindControl("lblThuHours");
+                        lblThuHours.Text = lblThuHours.Text == "N/A" ? "" : lblThuHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblThuHours.Text)));
+                        Label lblFriHours = (Label)e.Row.FindControl("lblFriHours");
+                        lblFriHours.Text = lblFriHours.Text == "N/A" ? "" : lblFriHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblFriHours.Text)));
+                        Label lblSatHours = (Label)e.Row.FindControl("lblSatHours");
+                        lblSatHours.Text = lblSatHours.Text == "N/A" ? "" : lblSatHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblSatHours.Text)));
+                        Label lblSunHours = (Label)e.Row.FindControl("lblSunHours");
+                        lblSunHours.Text = lblSunHours.Text == "N/A" ? "" : lblSunHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblSunHours.Text)));
+                        Label lblTotalHours = (Label)e.Row.FindControl("lblTotalHours");
+                        lblTotalHours.Text = lblTotalHours.Text == "0" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblTotalHours.Text));
+
+                        HiddenField hdnMonLvStatus = (HiddenField)e.Row.FindControl("hdnMonLvStatus");
+                        HiddenField hdnSunLvStatus = (HiddenField)e.Row.FindControl("hdnSunLvStatus");
+                        HiddenField hdnTueLvStatus = (HiddenField)e.Row.FindControl("hdnTueLvStatus");
+                        HiddenField hdnWedLvStatus = (HiddenField)e.Row.FindControl("hdnWedLvStatus");
+                        HiddenField hdnThuLvStatus = (HiddenField)e.Row.FindControl("hdnThuLvStatus");
+                        HiddenField hdnFriLvStatus = (HiddenField)e.Row.FindControl("hdnFriLvStatus");
+                        HiddenField hdnSatLvStatus = (HiddenField)e.Row.FindControl("hdnSatLvStatus");
+                        e.Row.Cells[3].CssClass += GeneralFunction.GetColor(lblMonIn.Text.Trim(), hdnMonLvStatus.Value.Trim());
+
+                        e.Row.Cells[6].CssClass += GeneralFunction.GetColor(lblTueIn.Text.Trim(), hdnTueLvStatus.Value.Trim());
+
+                        e.Row.Cells[9].CssClass += GeneralFunction.GetColor(lblWedIn.Text.Trim(), hdnWedLvStatus.Value.Trim());
+
+                        e.Row.Cells[12].CssClass += GeneralFunction.GetColor(lblThuIn.Text.Trim(), hdnThuLvStatus.Value.Trim());
+
+                        e.Row.Cells[15].CssClass += GeneralFunction.GetColor(lblFriIn.Text.Trim(), hdnFriLvStatus.Value.Trim());
+
+                        e.Row.Cells[18].CssClass += GeneralFunction.GetColor(lblSatIn.Text.Trim(), hdnSatLvStatus.Value.Trim());
+                        e.Row.Cells[21].CssClass += GeneralFunction.GetColor(lblSunIn.Text.Trim(), hdnSunLvStatus.Value.Trim());
                     }
-
-
-
-
-                    HiddenField hdnSunFreeze = (HiddenField)e.Row.FindControl("hdnSunFreeze");
-                    if (hdnSunFreeze.Value == "True")
+                    else if (lblID.Text.Trim() == "<b>Totals</b>")
                     {
-                        lblSunIn.Enabled = false;
-                        lblSunIn.ForeColor = System.Drawing.Color.Black;
-                        lblSunOut.Enabled = false;
-                        lblSunOut.ForeColor = System.Drawing.Color.Black;
+                        LinkButton lblMonIn = (LinkButton)e.Row.FindControl("lblMonIn");
+                        LinkButton lblMonOut = (LinkButton)e.Row.FindControl("lblMonOut");
+                        lblMonIn.Text = lblMonIn.Text==""?"":lblMonIn.Text + " - " + lblMonOut.Text;
+
+
+                        LinkButton lblTueIn = (LinkButton)e.Row.FindControl("lblTueIn");
+                        LinkButton lblTueOut = (LinkButton)e.Row.FindControl("lblTueOut");
+                        lblTueIn.Text =lblTueIn.Text==""?"":lblTueIn.Text + " - " + lblTueOut.Text;
+
+                        LinkButton lblWedIn = (LinkButton)e.Row.FindControl("lblWedIn");
+                        LinkButton lblWedOut = (LinkButton)e.Row.FindControl("lblWedOut");
+                        lblWedIn.Text =lblWedIn.Text==""?"": lblWedIn.Text + " - " + lblWedOut.Text;
+
+                        LinkButton lblThuIn = (LinkButton)e.Row.FindControl("lblThuIn");
+                        LinkButton lblThuOut = (LinkButton)e.Row.FindControl("lblThuOut");
+                        lblThuIn.Text =lblThuIn.Text==""?"": lblThuIn.Text + " - " + lblThuOut.Text;
+
+                        LinkButton lblFriIn = (LinkButton)e.Row.FindControl("lblFriIn");
+                        LinkButton lblFriOut = (LinkButton)e.Row.FindControl("lblFriOut");
+                        lblFriIn.Text =lblFriIn.Text==""?"":lblFriIn.Text + " - " + lblFriOut.Text;
+
+                        LinkButton lblSatIn = (LinkButton)e.Row.FindControl("lblSatIn");
+                        LinkButton lblSatOut = (LinkButton)e.Row.FindControl("lblSatOut");
+                        lblSatIn.Text =lblSatIn.Text==""?"":lblSatIn.Text +" - " +lblSatOut.Text;
+
+                        LinkButton lblSunIn = (LinkButton)e.Row.FindControl("lblSunIn");
+                        LinkButton lblSunOut = (LinkButton)e.Row.FindControl("lblSunOut");
+                        lblSunIn.Text =lblSunIn.Text==""?"":lblSunIn.Text + " - " + lblSunOut.Text;
                     }
-
-
-
-                    Label lblMonHours = (Label)e.Row.FindControl("lblMonHours");
-                    lblMonHours.Text = lblMonHours.Text == "N/A" ? "" : lblMonHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblMonHours.Text)));
-                    Label lblTueHours = (Label)e.Row.FindControl("lblTueHours");
-                    lblTueHours.Text = lblTueHours.Text == "N/A" ? "" : lblTueHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblTueHours.Text)));
-                    Label lblWedHours = (Label)e.Row.FindControl("lblWedHours");
-                    lblWedHours.Text = lblWedHours.Text == "N/A" ? "" : lblWedHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblWedHours.Text)));
-                    Label lblThuHours = (Label)e.Row.FindControl("lblThuHours");
-                    lblThuHours.Text = lblThuHours.Text == "N/A" ? "" : lblThuHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblThuHours.Text)));
-                    Label lblFriHours = (Label)e.Row.FindControl("lblFriHours");
-                    lblFriHours.Text = lblFriHours.Text == "N/A" ? "" : lblFriHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblFriHours.Text)));
-                    Label lblSatHours = (Label)e.Row.FindControl("lblSatHours");
-                    lblSatHours.Text = lblSatHours.Text == "N/A" ? "" : lblSatHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblSatHours.Text)));
-                    Label lblSunHours = (Label)e.Row.FindControl("lblSunHours");
-                    lblSunHours.Text = lblSunHours.Text == "N/A" ? "" : lblSunHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblSunHours.Text)));
-                    Label lblTotalHours = (Label)e.Row.FindControl("lblTotalHours");
-                    lblTotalHours.Text = lblTotalHours.Text == "0" ? "" : GeneralFunction.CalDoubleToTime(Convert.ToDouble(lblTotalHours.Text));
-
-                    HiddenField hdnMonLvStatus = (HiddenField)e.Row.FindControl("hdnMonLvStatus");
-                    HiddenField hdnSunLvStatus = (HiddenField)e.Row.FindControl("hdnSunLvStatus");
-                    HiddenField hdnTueLvStatus = (HiddenField)e.Row.FindControl("hdnTueLvStatus");
-                    HiddenField hdnWedLvStatus = (HiddenField)e.Row.FindControl("hdnWedLvStatus");
-                    HiddenField hdnThuLvStatus = (HiddenField)e.Row.FindControl("hdnThuLvStatus");
-                    HiddenField hdnFriLvStatus = (HiddenField)e.Row.FindControl("hdnFriLvStatus");
-                    HiddenField hdnSatLvStatus = (HiddenField)e.Row.FindControl("hdnSatLvStatus");
-                    e.Row.Cells[3].CssClass += GeneralFunction.GetColor(lblMonIn.Text.Trim(), hdnMonLvStatus.Value.Trim());
-
-                    e.Row.Cells[6].CssClass += GeneralFunction.GetColor(lblTueIn.Text.Trim(), hdnTueLvStatus.Value.Trim());
-
-                    e.Row.Cells[9].CssClass += GeneralFunction.GetColor(lblWedIn.Text.Trim(), hdnWedLvStatus.Value.Trim());
-
-                    e.Row.Cells[12].CssClass += GeneralFunction.GetColor(lblThuIn.Text.Trim(), hdnThuLvStatus.Value.Trim());
-
-                    e.Row.Cells[15].CssClass += GeneralFunction.GetColor(lblFriIn.Text.Trim(), hdnFriLvStatus.Value.Trim());
-
-                    e.Row.Cells[18].CssClass += GeneralFunction.GetColor(lblSatIn.Text.Trim(), hdnSatLvStatus.Value.Trim());
-                    e.Row.Cells[21].CssClass += GeneralFunction.GetColor(lblSunIn.Text.Trim(), hdnSunLvStatus.Value.Trim());
-
-
-                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[3].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[6].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[9].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[12].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[15].CssClass.Replace("hideColumn", " ");
-                    }
-                    else if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")))
-                    {
-                        e.Row.Cells[18].CssClass.Replace("hideColumn", " ");
-                    }
-                    else
-                    {
-                        e.Row.Cells[21].CssClass.Replace("hideColumn", " ");
-                    }
-                    //grdAttandence.Columns[3].ItemStyle.CssClass += " hideColumn";
-
-                    //grdAttandence.Columns[6].ItemStyle.CssClass += " hideColumn";
-
-                    //grdAttandence.Columns[9].ItemStyle.CssClass += " hideColumn";
-
-                    //grdAttandence.Columns[12].ItemStyle.CssClass += " hideColumn";
-
-                    //grdAttandence.Columns[15].ItemStyle.CssClass += " hideColumn";
-
-                    //grdAttandence.Columns[18].ItemStyle.CssClass += " hideColumn";
-                    //grdAttandence.Columns[21].ItemStyle.CssClass += " hideColumn";
-
+                    
                 }
             }
             catch (Exception ex)
@@ -2202,14 +2158,19 @@ namespace Attendance
                     HeaderGridRow.Cells.Add(HeaderCell);
 
                     HeaderCell = new TableCell();
-                    HeaderCell.Text = startdate.ToString("dddd") + ", " + startdate.ToString("MMMM dd, yyyy");
+                    HeaderCell.Text = startdate.ToString("ddd") + ", " + startdate.ToString("MMMM dd, yyyy");
                     ViewState["MonDate"] = startdate;
                     HeaderCell.Style["text-align"] = "center";
                     HeaderCell.ColumnSpan = 3;
                     HeaderGridRow.Cells.Add(HeaderCell);
+                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["MonDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        HeaderCell.CssClass = "Current";
+                    }
+
 
                     HeaderCell = new TableCell();
-                    HeaderCell.Text = startdate.AddDays(1).ToString("dddd") + ", " + startdate.AddDays(1).ToString("MMMM dd, yyyy");
+                    HeaderCell.Text = startdate.AddDays(1).ToString("ddd") + ", " + startdate.AddDays(1).ToString("MMMM dd, yyyy");
                     ViewState["TueDate"] = startdate.AddDays(1);
                     HeaderCell.Style["text-align"] = "center";
                     HeaderCell.ColumnSpan = 3;
@@ -2220,60 +2181,68 @@ namespace Attendance
                     {
                         HeaderCell.CssClass="Current";
                     }
-
-
                     HeaderCell = new TableCell();
-                    HeaderCell.Text = startdate.AddDays(2).ToString("dddd") + ", " + startdate.AddDays(2).ToString("MMMM dd, yyyy");
+                    HeaderCell.Text = startdate.AddDays(2).ToString("ddd") + ", " + startdate.AddDays(2).ToString("MMMM dd, yyyy");
                     ViewState["WedDate"] = startdate.AddDays(2);
                     HeaderCell.Style["text-align"] = "center";
                     HeaderCell.ColumnSpan = 3;
                     HeaderGridRow.Cells.Add(HeaderCell);
 
+                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["WedDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        HeaderCell.CssClass = "Current";
+                    }
                     HeaderCell = new TableCell();
-                    HeaderCell.Text = startdate.AddDays(3).ToString("dddd") + ", " + startdate.AddDays(3).ToString("MMMM dd, yyyy");
+                    HeaderCell.Text = startdate.AddDays(3).ToString("ddd") + ", " + startdate.AddDays(3).ToString("MMMM dd, yyyy");
                     ViewState["ThuDate"] = startdate.AddDays(3);
                     HeaderCell.Style["text-align"] = "center";
                     HeaderCell.ColumnSpan = 3;
                     HeaderGridRow.Cells.Add(HeaderCell);
+                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["ThuDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        HeaderCell.CssClass = "Current";
+                    }
 
                     HeaderCell = new TableCell();
-                    HeaderCell.Text = startdate.AddDays(4).ToString("dddd") + ", " + startdate.AddDays(4).ToString("MMMM dd, yyyy");
+                    HeaderCell.Text = startdate.AddDays(4).ToString("ddd") + ", " + startdate.AddDays(4).ToString("MMMM dd, yyyy");
                     ViewState["FriDate"] = startdate.AddDays(4);
                     HeaderCell.Style["text-align"] = "center";
                     HeaderCell.ColumnSpan = 3;
                     HeaderGridRow.Cells.Add(HeaderCell);
+                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["FriDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        HeaderCell.CssClass = "Current";
+                    }
 
                     HeaderCell = new TableCell();
-                    HeaderCell.Text = startdate.AddDays(5).ToString("dddd") + ", " + startdate.AddDays(5).ToString("MMMM dd, yyyy");
+                    HeaderCell.Text = startdate.AddDays(5).ToString("ddd") + ", " + startdate.AddDays(5).ToString("MMMM dd, yyyy");
                     ViewState["SatDate"] = startdate.AddDays(5);
                     HeaderCell.Style["text-align"] = "center";
                     HeaderCell.ColumnSpan = 3;
                     HeaderGridRow.Cells.Add(HeaderCell);
-
+                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["SatDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        HeaderCell.CssClass = "Current";
+                    }
 
                     HeaderCell = new TableCell();
-                    HeaderCell.Text = startdate.AddDays(6).ToString("dddd") + ", " + startdate.AddDays(6).ToString("MMMM dd, yyyy");
+                    HeaderCell.Text = startdate.AddDays(6).ToString("ddd") + ", " + startdate.AddDays(6).ToString("MMMM dd, yyyy");
                     ViewState["SunDate"] = startdate.AddDays(6);
                     HeaderCell.Style["text-align"] = "center";
                     HeaderCell.ColumnSpan = 3;
+                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["SunDate"])).ToString("MM/dd/yyyy")))
+                    {
+                        HeaderCell.CssClass = "Current";
+                    }
 
 
                     HeaderGridRow.Cells.Add(HeaderCell);
-
-
-
                     HeaderCell = new TableCell();
                     HeaderCell.Text = "Total";
                     HeaderCell.ColumnSpan = 2;
                     HeaderCell.Style["text-align"] = "center";
                     HeaderGridRow.Cells.Add(HeaderCell);
-
-
                     grdAttandence.Controls[0].Controls.AddAt(0, HeaderGridRow);
-
-                    
-                   
-
                 }
             }
             catch (Exception ex)
@@ -4299,8 +4268,7 @@ namespace Attendance
         }
         protected void btnFreezeOk_Click(object sender, EventArgs e)
         {
-
-
+            
         }
         protected void grdMonthlyAttendance_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -4317,8 +4285,10 @@ namespace Attendance
 
                 Label lblStartDt = (Label)e.Row.FindControl("lblStartDt");
                 lblStartDt.Text = lblStartDt.Text == "" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy");
+
                 Label lblTermDt = (Label)e.Row.FindControl("lblTermDt");
                 lblTermDt.Text = lblTermDt.Text == "" ? "" : Convert.ToDateTime(lblTermDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblTermDt.Text).ToString("MM/dd/yyyy");
+                
                 Label lblTotal = (Label)e.Row.FindControl("lblTotal");
                 lblTotal.Text = lblTotal.Text == "0" ? "" : lblTotal.Text;
 
@@ -4359,7 +4329,6 @@ namespace Attendance
 
                 Label lblDays6 = (Label)e.Row.FindControl("lblDays6");
                 lblDays6.Text = lblDays6.Text == "0" ? "" : lblDays6.Text;
-
 
             }
 
@@ -4561,7 +4530,6 @@ namespace Attendance
                     HeaderCell.ColumnSpan = 1;
                     HeaderGridRow.Cells.Add(HeaderCell);
 
-
                     HeaderCell = new TableCell();
                     HeaderCell.Text = "";
                     HeaderCell.Style["text-align"] = "center";
@@ -4573,7 +4541,6 @@ namespace Attendance
                     HeaderCell.Style["text-align"] = "center";
                     HeaderCell.ColumnSpan = 1;
                     HeaderGridRow.Cells.Add(HeaderCell);
-
 
                     HeaderCell = new TableCell();
                     HeaderCell.Text = Convert.ToDateTime(hdnMonthlyStartDt.Value).ToString("MMM") + "-" + Convert.ToDateTime(hdnMonthlyStartDt.Value).ToString("yyyy");
@@ -4861,7 +4828,7 @@ namespace Attendance
                     int LocationId = Convert.ToInt32(ddlLocation.SelectedItem.Value.ToString());
                     DateTime todayDate = Convert.ToDateTime(Session["TodayDate1"]);
 
-                    // DateTime startOfMonth = new DateTime(todayDate.Year, todayDate.Month, 1);
+                  
                     DateTime startDate = GeneralFunction.GetFirstDayOfWeekDate(todayDate);
                     DateTime StartDate = startDate.AddDays(-21);
                     ViewState["TodayDate1"] = StartDate;
@@ -4917,11 +4884,7 @@ namespace Attendance
                     lblFreeze.Visible = false;
 
                     int LocationId = Convert.ToInt32(ddlLocation.SelectedItem.Value.ToString());
-
-
                     DateTime todayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
-
-                    // DateTime startOfMonth = new DateTime(todayDate.Year, todayDate.Month, 1);
                     DateTime startDate = todayDate;
                     DateTime StartDate = startDate.AddDays(1 - startDate.Day);
                     ViewState["StartMonth"] = StartDate.AddMonths(-6);
@@ -4969,8 +4932,7 @@ namespace Attendance
                         grdMonthlyAttendance.DataSource = null;
                         grdMonthlyAttendance.DataBind();
                     }
-                }
-
+               }
 
             }
             catch (Exception ex)
@@ -4993,8 +4955,7 @@ namespace Attendance
         {
             try
             {
-                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
-                        
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true); 
             }
             catch (Exception ex)
             {
@@ -5003,10 +4964,8 @@ namespace Attendance
 
         protected void grdAttandence_Load(object sender, EventArgs e)
         {
-
-
            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
-                       
+                    
         }
       
     }

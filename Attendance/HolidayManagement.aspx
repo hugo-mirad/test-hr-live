@@ -186,16 +186,47 @@
        
      }
       function Holidaypop(e){
+      debugger
              $this = e;
+             
+             if($this.attr('isHoliday')!=null)
+             {
+              if($this.attr('isHoliday')=="true")
+              {
+                $("#rdHoliday").prop("checked",true);
+                $("#rdWorkingday").prop("checked",false);
+                $('#trHol').show();
+              }
+              else
+              {
+                 $("#rdWorkingday").prop("checked",true);
+                 $("#rdHoliday").prop("checked",false);
+                  $('#trHol').hide();
+              }
+             }
+             else
+             {
+                  $("#rdWorkingday").prop("checked",true);
+                  $("#rdHoliday").prop("checked",false);
+                  $('#trHol').hide();
+             }
+                       
+             
              $('.lblHDay').text($this.attr('currentdate'));     
              $('#hdnHolidayDt').val($this.attr('currentdate'));      
-             $("#rdHoliday").prop("checked",false);
-             $("#rdWorkingday").prop("checked",false);
+           
              $("#rdAll").prop("checked",false);
              $("#rdSelected").prop("checked",false) ;
              $('#ddlPopLoc').val('Select');
              $('#ddlPopDept').val('Select');
-             $('#txtHolidayName').val('');
+             if($this.attr('Hname')!=null)
+             {
+              $('#txtHolidayName').val($this.attr('Hname'));
+             }
+             else
+             {
+              $('#txtHolidayName').val('');
+             }
              
               $find('mdlHoliday').show();              
               hideSpinner();  

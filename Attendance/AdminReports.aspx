@@ -434,6 +434,122 @@
     </script>
 
     <script type="text/javascript">
+    
+    
+       function addCssAfterBind()
+        {
+          $('.atnHoliday').each(function(){
+                $(this).prev().addClass('atnHoliday')
+                $(this).next().addClass('atnHoliday')
+                
+           });
+           
+           $('.atnSun').each(function(){
+                $(this).prev().addClass('atnSun')
+                $(this).next().addClass('atnSun')
+           });
+           
+           $('.atnUnLeave').each(function(){
+                $(this).prev().addClass('atnUnLeave')
+                $(this).next().addClass('atnUnLeave')
+           });
+           
+           $('.atnEdit').each(function(){
+                $(this).prev().addClass('atnEdit')
+                $(this).next().addClass('atnEdit')
+           });
+           
+           $('.atnLeave').each(function(){
+                $(this).prev().addClass('atnLeave')
+                $(this).next().addClass('atnLeave')
+           });
+           
+         
+         
+          
+           
+           
+           
+           
+           
+           
+         
+        
+        
+           $('.hideColumn').each(function(){              
+                $(this).prev().hide();
+                $(this).prev().prev().hide();                  
+           });
+           
+            var dd = 0;
+            $('th.hideColumn').each(function(){
+            
+                $(this).prepend('<span class="ui-icon ui-icon-arrowthickstop-1-e"></span>');
+            
+                var indx = ($(this).index())-(2+dd);
+                var indx2 = $(this).index();
+                
+                //console.log(indx)                
+                $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','1');                  
+                
+                $(this).click(function(){
+                    if($('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan') == '1'){
+                        $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','3')   
+                    }else{
+                        $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','1')  
+                    }                
+                                     
+                    $('.table1 tr').each(function(){
+                        if($(this).index() > 0 ){
+                            $(this).children().eq(indx2).children('span.ui-icon').toggleClass('ui-icon-arrowthickstop-1-w')                        
+                            $(this).children().eq(indx2).prev().toggle();
+                            $(this).children().eq(indx2).prev().prev().toggle(); 
+                           
+                        }
+                    });                   
+                })                
+                dd += 2;  
+                
+                
+                
+                          
+            });   
+            
+            
+            
+            
+            
+            // var currentIndex  = ($('.table1 td.Current').index()*3)-2;
+            
+            var currentIndex  = ($('.table1 td.Current').index()*3)-2;
+            
+           
+           
+           
+             $('.table1 td.Current').attr('colspan','3') 
+            
+           
+           if(currentIndex > 0){
+            $('.table1 tr').each(function(){
+                if($(this).index() > 0 ){
+                
+                    if($(this).index()==1){
+                        $(this).children().eq(currentIndex).unbind();
+                    }
+                
+                    $(this).children().eq(currentIndex).children('span.ui-icon').remove();
+                    $(this).children().eq(currentIndex).removeClass('hideColumn') ; 
+                    $(this).children().eq(currentIndex).prev().show();
+                    $(this).children().eq(currentIndex).prev().prev().show();                  
+                }
+            }); 
+            }
+                
+            
+            
+        }
+    
+    
       function validPwd()
       {
        debugger
@@ -574,7 +690,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server">
+    <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server" ScriptMode="Release">
     </cc1:ToolkitScriptManager>
     
 
@@ -1937,58 +2053,16 @@ function clearDisposableItems( sender , args ) {
         
         
         $('#spinner').hide();
-            //  $('.table1 tr:last-child').remove();
+         
             $('.table2 tr:last-child').remove();
-            // $('.table3 tr:last-child').remove();
-            
-        
+          
             var start = 2;
             var totalRO = $(".table1 tr").length;
             var totalTD = $('.table1 tr:eq(1) th').length;
-            //console.log(start, totalRO, totalTD)
-            
-            
-           
-           /*
-            $('.atnHoliday').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnHoliday')
-                $(this).next().removeAttr('class').addClass('atnHoliday')
-           });
-           
-            $('.atnSun').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnSun')
-                $(this).next().removeAttr('class').addClass('atnSun')
-           });
-           
-            $('.atnUnLeave').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnUnLeave')
-                $(this).next().removeAttr('class').addClass('atnUnLeave')
-           });
-           
-            $('.atnEdit').each(function(){
-                $(this).prev().removeAttr('class').addClass('atnEdit')
-                $(this).next().removeAttr('class').addClass('atnEdit')
-           });
-           
-           
-             $('.atnLeave').each(function(){
-             $(this).prev().removeAttr('class').addClass('atnLeave')
-             $(this).next().removeAttr('class').addClass('atnLeave')
-           });
-            
-           */
-           
-           
-           
-            
+         
            style1('table1')
-           //style1('table2')
-            
-           
-            
-           
-           
-              var arr = [2,5,8,11,14,17,20];
+ 
+          var arr = [2,5,8,11,14,17,20];
            
            for(kk=0;kk<arr.length; kk++){
                 //var eval('count'+arr[kk]) = 0;
@@ -2007,9 +2081,6 @@ function clearDisposableItems( sender , args ) {
             })
             
             var $lastRow = $('.table1 tr:last-child');
-            //console.log('Hi');
-            
-            
             $lastRow.addClass('bold1')
             
             for(kk=0; kk<arr.length; kk++){
@@ -2289,117 +2360,7 @@ function clearDisposableItems( sender , args ) {
             minuteMax = parseInt(mMax);
         }
         
-      function addCssAfterBind()
-        {
-          $('.atnHoliday').each(function(){
-                $(this).prev().addClass('atnHoliday')
-                $(this).next().addClass('atnHoliday')
-           });
-           
-           $('.atnSun').each(function(){
-                $(this).prev().addClass('atnSun')
-                $(this).next().addClass('atnSun')
-           });
-           
-           $('.atnUnLeave').each(function(){
-                $(this).prev().addClass('atnUnLeave')
-                $(this).next().addClass('atnUnLeave')
-           });
-           
-           $('.atnEdit').each(function(){
-                $(this).prev().addClass('atnEdit')
-                $(this).next().addClass('atnEdit')
-           });
-           
-           $('.atnLeave').each(function(){
-                $(this).prev().addClass('atnLeave')
-                $(this).next().addClass('atnLeave')
-           });
-           
-         
-         
-          
-           
-           
-           
-           
-           
-           
-         
-        
-        
-           $('.hideColumn').each(function(){              
-                $(this).prev().hide();
-                $(this).prev().prev().hide();                  
-           });
-           
-            var dd = 0;
-            $('th.hideColumn').each(function(){
-            
-                $(this).prepend('<span class="ui-icon ui-icon-arrowthickstop-1-e"></span>');
-            
-                var indx = ($(this).index())-(2+dd);
-                var indx2 = $(this).index();
-                
-                //console.log(indx)                
-                $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','1');                  
-                
-                $(this).click(function(){
-                    if($('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan') == '1'){
-                        $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','3')   
-                    }else{
-                        $('.table1 tr:eq(0) td:eq('+indx+')').attr('colspan','1')  
-                    }                
-                                     
-                    $('.table1 tr').each(function(){
-                        if($(this).index() > 0 ){
-                            $(this).children().eq(indx2).children('span.ui-icon').toggleClass('ui-icon-arrowthickstop-1-w')                        
-                            $(this).children().eq(indx2).prev().toggle();
-                            $(this).children().eq(indx2).prev().prev().toggle(); 
-                           
-                        }
-                    });                   
-                })                
-                dd += 2;  
-                
-                
-                
-                          
-            });   
-            
-            
-            
-            
-            
-            // var currentIndex  = ($('.table1 td.Current').index()*3)-2;
-            
-            var currentIndex  = ($('.table1 td.Current').index()*3)-2;
-            
-           
-           
-           
-             $('.table1 td.Current').attr('colspan','3') 
-            
-           
-           if(currentIndex > 0){
-            $('.table1 tr').each(function(){
-                if($(this).index() > 0 ){
-                
-                    if($(this).index()==1){
-                        $(this).children().eq(currentIndex).unbind();
-                    }
-                
-                    $(this).children().eq(currentIndex).children('span.ui-icon').remove();
-                    $(this).children().eq(currentIndex).removeClass('hideColumn') ; 
-                    $(this).children().eq(currentIndex).prev().show();
-                    $(this).children().eq(currentIndex).prev().prev().show();                  
-                }
-            }); 
-            }
-                
-            
-            
-        }
+    
         
         
         
@@ -2419,14 +2380,10 @@ function clearDisposableItems( sender , args ) {
                  $('#txtSignOut').timepicker({                    
 	                timeFormat: "hh:mm TT"	                
                 });
-                
-                 
-           // $('.table1 tr:last-child').remove();
             $('.table2 tr:last-child').remove();
           
            style1('table1')
-          // style1('table2')
-           
+        
            
            // Counter    start     
            
@@ -2858,7 +2815,7 @@ function clearDisposableItems( sender , args ) {
          hideSpinner();        
          
         
-         return true;
+         return false;
          }
          
          

@@ -602,10 +602,23 @@ namespace Attendance
                         dv.RowFilter = "HolidayDate='" +Convert.ToDateTime(lblSun.Text).ToString("MM/dd/yyyy") + "'";
                         DataTable dtDay = dv.ToTable();
                         dv.RowFilter = null;
-                        if (dtDay.Rows.Count > 0 && dtDay.Rows[0]["IsDefault"].ToString().Trim()=="True")
+                        if (dtDay.Rows.Count > 0 )  
                         {
-                            lblSun.CssClass += " DefaultHoliday";
+                            if (dtDay.Rows[0]["IsDefault"].ToString().Trim() == "True")
+                            {
+                                lblSun.CssClass += " DefaultHoliday";
+                            }
+                            else
+                            {
+                                string cs = lblSun.CssClass == "" ? "holiday tooltip2" : "holiday tooltip2";
+                                string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
+                                lblSun.Attributes.Add("class", cs);
+                                lblSun.Attributes.Add("title", HName);
+                                lblSun.Attributes.Add("Hname", HName);
+                            }
+                            lblSun.Attributes.Add("isHoliday", "true");
                         }
+                       
                         lblSun.Attributes.Add("currentdate", Convert.ToDateTime(lblSun.Text).ToString("MM/dd/yyyy"));
                         lblSun.Text = Convert.ToDateTime(lblSun.Text).ToString("dd");
                     }
@@ -632,7 +645,9 @@ namespace Attendance
                                 string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
                                 lblMon.Attributes.Add("class", cs);
                                 lblMon.Attributes.Add("title", HName);
+                                lblMon.Attributes.Add("Hname", HName);
                             }
+                            lblMon.Attributes.Add("isHoliday", "true");
                         }
                         lblMon.Attributes.Add("currentdate", Convert.ToDateTime(lblMon.Text).ToString("MM/dd/yyyy"));
                         lblMon.Text = Convert.ToDateTime(lblMon.Text).ToString("dd");
@@ -661,7 +676,9 @@ namespace Attendance
                                 string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
                                 lblTue.Attributes.Add("class", "holiday tooltip2");
                                 lblTue.Attributes.Add("title", HName);
+                                lblTue.Attributes.Add("Hname", HName);
                             }
+                            lblTue.Attributes.Add("isHoliday", "true");
                         }
                         lblTue.Attributes.Add("currentdate", Convert.ToDateTime(lblTue.Text).ToString("MM/dd/yyyy"));
                         lblTue.Text = Convert.ToDateTime(lblTue.Text).ToString("dd");
@@ -691,7 +708,9 @@ namespace Attendance
                                 string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
                                 lblWed.Attributes.Add("class", "holiday tooltip2");
                                 lblWed.Attributes.Add("title", HName);
+                                lblWed.Attributes.Add("Hname", HName);
                             }
+                            lblWed.Attributes.Add("isHoliday", "true");
                         }
                         lblWed.Attributes.Add("currentdate", Convert.ToDateTime(lblWed.Text).ToString("MM/dd/yyyy"));
                         lblWed.Text = Convert.ToDateTime(lblWed.Text).ToString("dd");
@@ -719,7 +738,9 @@ namespace Attendance
                                 string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
                                 lblThu.Attributes.Add("class", "holiday tooltip2");
                                 lblThu.Attributes.Add("title", HName);
+                                lblThu.Attributes.Add("Hname", HName);
                             }
+                            lblThu.Attributes.Add("isHoliday", "true");
                         }
                         lblThu.Attributes.Add("currentdate", Convert.ToDateTime(lblThu.Text).ToString("MM/dd/yyyy"));
                         lblThu.Text = Convert.ToDateTime(lblThu.Text).ToString("dd");
@@ -748,7 +769,9 @@ namespace Attendance
                                 string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
                                 lblFri.Attributes.Add("class", "holiday tooltip2");
                                 lblFri.Attributes.Add("title", HName);
+                                lblFri.Attributes.Add("Hname", HName);
                             }
+                            lblFri.Attributes.Add("isHoliday", "true");
                         }
                         lblFri.Attributes.Add("currentdate", Convert.ToDateTime(lblFri.Text).ToString("MM/dd/yyyy"));
                         lblFri.Text = Convert.ToDateTime(lblFri.Text).ToString("dd");
@@ -776,7 +799,9 @@ namespace Attendance
                                 string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
                                 lblSat.Attributes.Add("class", "holiday tooltip2");
                                 lblSat.Attributes.Add("title", HName);
+                                lblSat.Attributes.Add("Hname", HName);
                             }
+                            lblSat.Attributes.Add("isHoliday", "true");
                         }
                         lblSat.Attributes.Add("currentdate", Convert.ToDateTime(lblSat.Text).ToString("MM/dd/yyyy"));
                         lblSat.Text = Convert.ToDateTime(lblSat.Text).ToString("dd");

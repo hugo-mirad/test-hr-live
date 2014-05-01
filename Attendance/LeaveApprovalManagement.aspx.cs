@@ -119,12 +119,12 @@ namespace Attendance
             {
                 EmployeeBL obj = new EmployeeBL();
                 DataTable dt = obj.GetLeaveDetailsByLoction(p, startdate, Enddate, AppovedStatusID,shiftID);
+                lblMonthRep.Text = "(" + startdate.ToString("MM/dd/yyyy") + " - " + Enddate.ToString("MM/dd/yyyy") + ")";
                 if (dt.Rows.Count > 0)
                 {
 
                     grdUsers.DataSource = dt;
                     grdUsers.DataBind();
-                    lblMonthRep.Text = "(" + startdate.ToString("MM/dd/yyyy") + " - " + Enddate.ToString("MM/dd/yyyy") + ")";
                     Session["AllLeaveRequestData"] = dt;
                     lblError.Visible = false;
                 }

@@ -88,10 +88,8 @@ namespace Attendance
                                     shiftID = GetCurrentShiftBytime(CurentDatetime, LocationName);
                                 }
                                 Session["ShiftID"] = shiftID;
-                              
-
                                 ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(shiftID.ToString()));
-                                                                BindAttendanceData(LocationName, CurentDatetime);
+                                  BindAttendanceData(LocationName, CurentDatetime);
                             }
                             else
                             {

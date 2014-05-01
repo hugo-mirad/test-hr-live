@@ -87,6 +87,7 @@ namespace Attendance
                             lblNodata.Visible = true;
                             dvlblNodata.Style["display"] = "block";
                             lblNodata.Text = "No data found";
+                            lblTotal.Text = "";
                             grdUsers.DataSource = null;
                             grdUsers.DataBind();
                         }
@@ -96,6 +97,7 @@ namespace Attendance
                         lblNodata.Visible = true;
                         dvlblNodata.Style["display"] = "block";
                         lblNodata.Text = "No data found";
+                        lblTotal.Text = "";
                         grdUsers.DataSource = null;
                         grdUsers.DataBind();
                     }
@@ -124,6 +126,7 @@ namespace Attendance
                     lblNodata.Visible = true;
                     dvlblNodata.Style["display"] = "block";
                     lblNodata.Text = "No data found";
+                    lblTotal.Text = "";
                     grdUsers.DataSource = null;
                     grdUsers.DataBind();
                 }
