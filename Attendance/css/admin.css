@@ -862,4 +862,11 @@ div.picker.calender span{ color:#555; }
 .table1 th.hideColumn .ui-icon.ui-icon-arrowthickstop-1-w{  display:inline-block; vertical-align:middle; position:relative; margin-top:-3px; }
  
    
+ul.defHoliday
+{
+	list-style:none; padding-left:10px;
+	}
 
+ul.defHoliday li input[type=checkbox]{ margin-right:6px; }
+
+ul.defHoliday li label { display:inline-block;  }

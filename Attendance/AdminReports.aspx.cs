@@ -44,20 +44,9 @@ namespace Attendance
                     hdnTodaydt.Value = CurentDatetime.ToString("MM/dd/yyyy");
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
-                    lblShiftName.Text = "-"+Session["ShiftName"].ToString();
+                    lblShiftName.Text = "-" + Session["ShiftName"].ToString();
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
                     getLocations();
-
-                    //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                    //{
-                    //    lnkLeavemangement.Enabled = false;
-                    //    lnkLeavemangement.Style["Color"] = "Gray";
-                    //}
-                    //else
-                    //{
-                    //    lnkLeavemangement.Enabled = true;
-                        
-                    //}
 
                     ViewState["Location"] = Session["LocationName"].ToString();
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
@@ -120,7 +109,7 @@ namespace Attendance
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
                         //System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
-                        
+
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -139,7 +128,7 @@ namespace Attendance
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
                         grdMonthlyAttendance.DataBind();
-                   }
+                    }
                 }
             }
             else
@@ -307,8 +296,7 @@ namespace Attendance
             dtAttandence.Columns.Add("MonMultiple", typeof(string));
             dtAttandence.Columns.Add("MonLunch", typeof(string));
             dtAttandence.Columns.Add("MonLvStatus", typeof(string));
-
-
+            dtAttandence.Columns.Add("Monoffset", typeof(string));
 
             dtAttandence.Columns.Add("TueSchIn", typeof(string));
             dtAttandence.Columns.Add("TueSchOut", typeof(string));
@@ -324,7 +312,7 @@ namespace Attendance
             dtAttandence.Columns.Add("TueMultiple", typeof(string));
             dtAttandence.Columns.Add("TueLunch", typeof(string));
             dtAttandence.Columns.Add("TueLvStatus", typeof(string));
-
+            dtAttandence.Columns.Add("Tueoffset", typeof(string));
 
             dtAttandence.Columns.Add("WedSchIn", typeof(string));
             dtAttandence.Columns.Add("WedSchOut", typeof(string));
@@ -340,7 +328,7 @@ namespace Attendance
             dtAttandence.Columns.Add("WedMultiple", typeof(string));
             dtAttandence.Columns.Add("WedLunch", typeof(string));
             dtAttandence.Columns.Add("WedLvStatus", typeof(string));
-
+            dtAttandence.Columns.Add("Wedoffset", typeof(string));
 
             dtAttandence.Columns.Add("ThuSchIn", typeof(string));
             dtAttandence.Columns.Add("ThuSchOut", typeof(string));
@@ -356,6 +344,7 @@ namespace Attendance
             dtAttandence.Columns.Add("ThuMultiple", typeof(string));
             dtAttandence.Columns.Add("ThuLunch", typeof(string));
             dtAttandence.Columns.Add("ThuLvStatus", typeof(string));
+            dtAttandence.Columns.Add("Thuoffset", typeof(string));
 
             dtAttandence.Columns.Add("FriSchIn", typeof(string));
             dtAttandence.Columns.Add("FriSchOut", typeof(string));
@@ -371,7 +360,7 @@ namespace Attendance
             dtAttandence.Columns.Add("FriMultiple", typeof(string));
             dtAttandence.Columns.Add("FriLunch", typeof(string));
             dtAttandence.Columns.Add("FriLvStatus", typeof(string));
-
+            dtAttandence.Columns.Add("Frioffset", typeof(string));
 
             dtAttandence.Columns.Add("SatSchIn", typeof(string));
             dtAttandence.Columns.Add("SatSchOut", typeof(string));
@@ -387,7 +376,7 @@ namespace Attendance
             dtAttandence.Columns.Add("SatMultiple", typeof(string));
             dtAttandence.Columns.Add("SatLunch", typeof(string));
             dtAttandence.Columns.Add("SatLvStatus", typeof(string));
-
+            dtAttandence.Columns.Add("Satoffset", typeof(string));
 
             dtAttandence.Columns.Add("SunSchIn", typeof(string));
             dtAttandence.Columns.Add("SunSchOut", typeof(string));
@@ -403,14 +392,11 @@ namespace Attendance
             dtAttandence.Columns.Add("SunMultiple", typeof(string));
             dtAttandence.Columns.Add("SunLunch", typeof(string));
             dtAttandence.Columns.Add("SunLvStatus", typeof(string));
+            dtAttandence.Columns.Add("Sunoffset", typeof(string));
 
             dtAttandence.Columns.Add("PresentDays", typeof(string));
             dtAttandence.Columns.Add("TotalHours", typeof(string));
-
-
             dtAttandence.Rows.Add();
-
-
             try
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
@@ -474,9 +460,6 @@ namespace Attendance
                             dvSch.RowFilter = "empid='" + ds.Tables[0].Rows[j]["empid"].ToString() + "'";
                             dtSchedules = dvSch.ToTable();
 
-
-
-
                             if (dtSchedules.Rows.Count > 0)
                             {
                                 dtAttandence.Rows[j]["SunSchIn"] = dtSchedules.Rows[0]["startTime"].ToString();
@@ -508,6 +491,15 @@ namespace Attendance
                             dtAttandence.Rows[j]["PEmpname"] = ds.Tables[0].Rows[j]["PfirstName"].ToString() + " " + ds.Tables[0].Rows[j]["Plastname"].ToString();
                             dtAttandence.Rows[j]["Termdate"] = ds.Tables[0].Rows[j]["Termdate"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : ds.Tables[0].Rows[j]["Termdate"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(Convert.ToDateTime(ds.Tables[0].Rows[j]["Termdate"]).ToString("MM/dd/yyyy"));
                             dtAttandence.Rows[j]["Startdate"] = ds.Tables[0].Rows[j]["Startdate"].ToString() == "NULL" ? Convert.ToDateTime("01/01/1900") : ds.Tables[0].Rows[j]["Startdate"].ToString() == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(Convert.ToDateTime(ds.Tables[0].Rows[j]["Startdate"]).ToString("MM/dd/yyyy"));
+
+
+                            dtAttandence.Rows[j]["Sunoffset"] = ds.Tables[0].Rows[j]["offset"];
+                            dtAttandence.Rows[j]["Monoffset"] = ds.Tables[0].Rows[j]["offset"];
+                            dtAttandence.Rows[j]["Tueoffset"] = ds.Tables[0].Rows[j]["offset"];
+                            dtAttandence.Rows[j]["Wedoffset"] = ds.Tables[0].Rows[j]["offset"];
+                            dtAttandence.Rows[j]["Thuoffset"] = ds.Tables[0].Rows[j]["offset"];
+                            dtAttandence.Rows[j]["Frioffset"] = ds.Tables[0].Rows[j]["offset"];
+                            dtAttandence.Rows[j]["Satoffset"] = ds.Tables[0].Rows[j]["offset"];
 
 
                             if (dtLeave.Rows.Count > 0)
@@ -799,31 +791,29 @@ namespace Attendance
                                     {
                                         DayOfWeek GetDay = Convert.ToDateTime(dt1.Rows[0]["Logindate"]).DayOfWeek;
 
-                                        presentdays = presentdays + 1;
+
                                         switch (GetDay)
                                         {
                                             case DayOfWeek.Sunday:
 
                                                 SunSignInCnt = SunSignInCnt + 1;
-                                                dtAttandence.Rows[j]["SunSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[0]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
+                                                dtAttandence.Rows[j]["SunSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[0]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
                                                 dtAttandence.Rows[j]["SunSchIn"] = dt1.Rows[0]["startTime"].ToString();
                                                 dtAttandence.Rows[j]["SunSchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                                 dtAttandence.Rows[j]["SunLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
+                                                dtAttandence.Rows[j]["Sunoffset"] = dt1.Rows[0]["offset"].ToString();
 
                                                 if (dtAttandence.Rows[j]["SunSignOut"].ToString() != "" && dtAttandence.Rows[j]["SunSignOut"].ToString() != "N/A")
                                                 {
-
                                                     SunSignOutCnt = SunSignOutCnt + 1;
-
-
                                                 }
 
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
                                                     dtAttandence.Rows[j]["SunLoginNotes"] = dtAttandence.Rows[j]["SunLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
-                                                    dtAttandence.Rows[j]["SunSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                    dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["SunSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                    dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
                                                     if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString() == "True")
                                                     {
                                                         dtAttandence.Rows[j]["SunLoginFlag"] = dt1.Rows[k]["loginflag"].ToString();
@@ -857,7 +847,10 @@ namespace Attendance
 
                                                 }
 
-                                                // dtAttandence.Rows[j]["SunHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
+                                                if (dtAttandence.Rows[j]["SunHrs"].ToString() != "" && dtAttandence.Rows[j]["SunHrs"].ToString() != "N/A")
+                                                {
+                                                    presentdays = presentdays + 1;
+                                                }
                                                 dtAttandence.Rows[j]["SunLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 dtAttandence.Rows[j]["SunFreeze"] = dt1.Rows[0]["Freeze"].ToString();
 
@@ -868,9 +861,9 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["MonSchIn"] = dt1.Rows[0]["startTime"].ToString();
                                                 dtAttandence.Rows[j]["MonSchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                                 dtAttandence.Rows[j]["MonLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
-                                                dtAttandence.Rows[j]["MonSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                dtAttandence.Rows[j]["MonSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
-
+                                                dtAttandence.Rows[j]["MonSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["MonSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["Monoffset"] = dt1.Rows[0]["offset"].ToString();
                                                 if (dtAttandence.Rows[j]["MonSignOut"].ToString() != "" && dtAttandence.Rows[j]["MonSignOut"].ToString() != "N/A")
                                                 {
 
@@ -881,8 +874,8 @@ namespace Attendance
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
                                                     dtAttandence.Rows[j]["MonLoginNotes"] = dtAttandence.Rows[j]["MonLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
-                                                    dtAttandence.Rows[j]["MonSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                    dtAttandence.Rows[j]["MonSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["MonSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                    dtAttandence.Rows[j]["MonSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
 
                                                     if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString() == "True")
                                                     {
@@ -916,7 +909,10 @@ namespace Attendance
                                                     }
 
                                                 }
-
+                                                if (dtAttandence.Rows[j]["MonHrs"].ToString() != "" && dtAttandence.Rows[j]["MonHrs"].ToString() != "N/A")
+                                                {
+                                                    presentdays = presentdays + 1;
+                                                }
 
                                                 //  dtAttandence.Rows[j]["MonHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["MonLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
@@ -931,8 +927,9 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["TueSchIn"] = dt1.Rows[0]["startTime"].ToString();
                                                 dtAttandence.Rows[j]["TueSchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                                 dtAttandence.Rows[j]["TueLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
-                                                dtAttandence.Rows[j]["TueSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                dtAttandence.Rows[j]["TueSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
+                                                dtAttandence.Rows[j]["TueSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["TueSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["Tueoffset"] = dt1.Rows[0]["offset"].ToString();
                                                 if (dtAttandence.Rows[j]["TueSignOut"].ToString() != "" && dtAttandence.Rows[j]["TueSignOut"].ToString() != "N/A")
                                                 {
                                                     TueSignOutCnt = TueSignOutCnt + 1;
@@ -940,8 +937,8 @@ namespace Attendance
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
                                                     dtAttandence.Rows[j]["TueLoginNotes"] = dtAttandence.Rows[j]["TueLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
-                                                    dtAttandence.Rows[j]["TueSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                    dtAttandence.Rows[j]["TueSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["TueSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                    dtAttandence.Rows[j]["TueSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
 
                                                     if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString() == "True")
                                                     {
@@ -973,7 +970,10 @@ namespace Attendance
                                                         }
                                                     }
                                                 }
-
+                                                if (dtAttandence.Rows[j]["TueHrs"].ToString() != "" && dtAttandence.Rows[j]["TueHrs"].ToString() != "N/A")
+                                                {
+                                                    presentdays = presentdays + 1;
+                                                }
                                                 //dtAttandence.Rows[j]["TueHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["TueLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 // dtAttandence.Rows[j]["TueLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n\n" + dt1.Rows[0]["logoutnotes"].ToString();
@@ -986,9 +986,9 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["WedSchIn"] = dt1.Rows[0]["startTime"].ToString();
                                                 dtAttandence.Rows[j]["WedSchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                                 dtAttandence.Rows[j]["WedLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
-                                                dtAttandence.Rows[j]["WedSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                dtAttandence.Rows[j]["WedSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
-
+                                                dtAttandence.Rows[j]["WedSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["WedSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["Wedoffset"] = dt1.Rows[0]["offset"].ToString();
                                                 if (dtAttandence.Rows[j]["WedSignOut"].ToString() != "" && dtAttandence.Rows[j]["WedSignOut"].ToString() != "N/A")
                                                 {
 
@@ -998,8 +998,8 @@ namespace Attendance
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
                                                     dtAttandence.Rows[j]["WedLoginNotes"] = dtAttandence.Rows[j]["WedLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
-                                                    dtAttandence.Rows[j]["WedSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                    dtAttandence.Rows[j]["WedSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["WedSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                    dtAttandence.Rows[j]["WedSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
 
                                                     if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString() == "True")
                                                     {
@@ -1031,13 +1031,13 @@ namespace Attendance
                                                             dtAttandence.Rows[j]["WedHrs"] = ((Convert.ToDouble(dtAttandence.Rows[j]["WedHrs"])) + (Convert.ToDouble(dt1.Rows[k]["total hours worked"].ToString().Trim()))).ToString();
                                                         }
                                                     }
-
                                                 }
-
-                                                // dtAttandence.Rows[j]["WedHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
+                                                if (dtAttandence.Rows[j]["WedHrs"].ToString() != "" && dtAttandence.Rows[j]["WedHrs"].ToString() != "N/A")
+                                                {
+                                                    presentdays = presentdays + 1;
+                                                }
                                                 dtAttandence.Rows[j]["WedLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-                                                //  dtAttandence.Rows[j]["WedLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
-                                                //   dtAttandence.Rows[j]["WedLogoutNotes"] = dt1.Rows[0]["logoutnotes"].ToString();
+
 
                                                 dtAttandence.Rows[j]["WedFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
@@ -1046,8 +1046,9 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["ThuSchIn"] = dt1.Rows[0]["startTime"].ToString();
                                                 dtAttandence.Rows[j]["ThuSchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                                 dtAttandence.Rows[j]["ThuLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
-                                                dtAttandence.Rows[j]["ThuSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                dtAttandence.Rows[j]["ThuSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
+                                                dtAttandence.Rows[j]["ThuSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["ThuSignOut"] = dt1.Rows[0]["Logoutdate"].ToString() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["Thuoffset"] = dt1.Rows[0]["offset"].ToString();
                                                 if (dtAttandence.Rows[j]["ThuSignOut"].ToString() != "" && dtAttandence.Rows[j]["ThuSignOut"].ToString() != "N/A")
                                                 {
                                                     ThuSignOutCnt = ThuSignOutCnt + 1;
@@ -1055,8 +1056,8 @@ namespace Attendance
 
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
-                                                    dtAttandence.Rows[j]["ThuSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                    dtAttandence.Rows[j]["ThuSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["ThuSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                    dtAttandence.Rows[j]["ThuSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
                                                     dtAttandence.Rows[j]["ThuLoginNotes"] = dtAttandence.Rows[j]["ThuLoginNotes"].ToString() + "<br>" + dt1.Rows[k]["loginnotes"].ToString() + "<br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString() == "True")
                                                     {
@@ -1091,6 +1092,10 @@ namespace Attendance
                                                     }
 
                                                 }
+                                                if (dtAttandence.Rows[j]["ThuHrs"].ToString() != "" && dtAttandence.Rows[j]["ThuHrs"].ToString() != "N/A")
+                                                {
+                                                    presentdays = presentdays + 1;
+                                                }
                                                 //dtAttandence.Rows[j]["ThuHrs"] = dt1.Rows[0]["total hours worked"].ToString() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["ThuLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 dtAttandence.Rows[j]["ThuLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
@@ -1102,8 +1107,9 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["FriSchIn"] = dt1.Rows[0]["startTime"].ToString();
                                                 dtAttandence.Rows[j]["FriSchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                                 dtAttandence.Rows[j]["FriLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
-                                                dtAttandence.Rows[j]["FriSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                dtAttandence.Rows[j]["FriSignOut"] = dt1.Rows[0]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
+                                                dtAttandence.Rows[j]["FriSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["FriSignOut"] = dt1.Rows[0]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["Frioffset"] = dt1.Rows[0]["offset"].ToString();
                                                 if (dtAttandence.Rows[j]["FriSignOut"].ToString() != "" && dtAttandence.Rows[j]["FriSignOut"].ToString() != "N/A")
                                                 {
                                                     FriSignOutCnt = FriSignOutCnt + 1;
@@ -1111,8 +1117,8 @@ namespace Attendance
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
                                                     dtAttandence.Rows[j]["FriLoginNotes"] = dtAttandence.Rows[j]["FriLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
-                                                    dtAttandence.Rows[j]["FriSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                    dtAttandence.Rows[j]["FriSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["FriSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                    dtAttandence.Rows[j]["FriSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
                                                     if (dt1.Rows[0]["loginflag"].ToString() == "True" || dt1.Rows[0]["logoutflag"].ToString() == "True")
                                                     {
                                                         dtAttandence.Rows[j]["FriLoginFlag"] = dt1.Rows[0]["loginflag"].ToString();
@@ -1146,7 +1152,10 @@ namespace Attendance
                                                     }
 
                                                 }
-
+                                                if (dtAttandence.Rows[j]["FriHrs"].ToString() != "" && dtAttandence.Rows[j]["FriHrs"].ToString() != "N/A")
+                                                {
+                                                    presentdays = presentdays + 1;
+                                                }
                                                 //dtAttandence.Rows[j]["FriHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
                                                 dtAttandence.Rows[j]["FriLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
                                                 //dtAttandence.Rows[j]["FriLoginNotes"] = dt1.Rows[0]["loginnotes"].ToString() + "\n" + dt1.Rows[0]["logoutnotes"].ToString();
@@ -1159,9 +1168,9 @@ namespace Attendance
                                                 dtAttandence.Rows[j]["SatSchIn"] = dt1.Rows[0]["startTime"].ToString();
                                                 dtAttandence.Rows[j]["SatSchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                                 dtAttandence.Rows[j]["SatLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
-                                                dtAttandence.Rows[j]["SatSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                dtAttandence.Rows[j]["SatSignOut"] = dt1.Rows[0]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["Logoutdate"].ToString().Trim();
-
+                                                dtAttandence.Rows[j]["SatSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                dtAttandence.Rows[j]["SatSignOut"] = dt1.Rows[0]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                            //    dtAttandence.Rows[j]["Satoffset"] = dt1.Rows[0]["offset"].ToString();
                                                 if (dtAttandence.Rows[j]["SatSignOut"].ToString() != "" && dtAttandence.Rows[j]["SatSignOut"].ToString() != "N/A")
                                                 {
 
@@ -1172,8 +1181,8 @@ namespace Attendance
                                                 for (int k = 0; k < dt1.Rows.Count; k++)
                                                 {
                                                     dtAttandence.Rows[j]["SatLoginNotes"] = dtAttandence.Rows[j]["SatLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
-                                                    dtAttandence.Rows[j]["SatSignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                                    dtAttandence.Rows[j]["SatSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                                    dtAttandence.Rows[j]["SatSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
+                                                    dtAttandence.Rows[j]["SatSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
 
                                                     if (dt1.Rows[k]["loginflag"].ToString() == "True" || dt1.Rows[k]["logoutflag"].ToString() == "True")
                                                     {
@@ -1207,24 +1216,19 @@ namespace Attendance
                                                     }
 
                                                 }
-
-                                                //dtAttandence.Rows[j]["SatHrs"] = dt1.Rows[0]["total hours worked"].ToString().Trim() == "" ? "N/A" : dt1.Rows[0]["total hours worked"].ToString().Trim();
+                                                if (dtAttandence.Rows[j]["SatHrs"].ToString() != "" && dtAttandence.Rows[j]["SatHrs"].ToString() != "N/A")
+                                                {
+                                                    presentdays = presentdays + 1;
+                                                }
                                                 dtAttandence.Rows[j]["SatLogUserID"] = Convert.ToInt32(dt1.Rows[0]["LogUserID"]);
-
-
                                                 dtAttandence.Rows[j]["SatFreeze"] = dt1.Rows[0]["Freeze"].ToString();
                                                 break;
                                         }
                                     }
 
+                                    //holiday block
 
-//holiday block
-                                    
-
-//leave block
-                                   
-
-
+                                    //leave block
                                     dL.RowFilter = null;
                                     dH.RowFilter = null;
                                     dv1.RowFilter = null;
@@ -1242,16 +1246,8 @@ namespace Attendance
                                 dtAttandence.Rows[j]["TotalHours"] = (SumHours).ToString();
 
                             }
-
-
                             //leave block 
-
                             //holiday block
-                         
-
-
-
-
                             Double ToHours = (dtAttandence.Rows[j]["SunHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SunHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SunHrs"])));
                             ToHours = ToHours + (dtAttandence.Rows[j]["MonHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["MonHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["MonHrs"])));
                             ToHours = ToHours + (dtAttandence.Rows[j]["TueHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["TueHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["TueHrs"])));
@@ -1285,7 +1281,6 @@ namespace Attendance
                             WeeklySumSatHrs += (dtAttandence.Rows[j]["SatHrs"].ToString() == "" ? 0 : dtAttandence.Rows[j]["SatHrs"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["SatHrs"])));
                             WeeklyTotalHrs += (dtAttandence.Rows[j]["TotalHours"].ToString() == "" ? 0 : dtAttandence.Rows[j]["TotalHours"].ToString() == "N/A" ? 0 : (Convert.ToDouble(dtAttandence.Rows[j]["TotalHours"])));
                             totalPresent += Convert.ToInt32(dtAttandence.Rows[j]["PresentDays"].ToString());
-
                         }
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["SatSignIn"] = SatSignInCnt.ToString() == "0" ? "" : "<b>" + SatSignInCnt.ToString() + "</b>";
                         dtAttandence.Rows[dtAttandence.Rows.Count - 1]["MonSignIn"] = MonSignInCnt.ToString() == "0" ? "" : "<b>" + MonSignInCnt.ToString() + "</b>";
@@ -1396,22 +1391,17 @@ namespace Attendance
                         lblMonScOut.Attributes.Add("class", "tooltip2");
                         lblMonScOut.Attributes.Add("title", lunchTip1);
 
-
-
                         lunchTip1 = CreateLunchTable(hdnTueLunch.Value.Trim());
                         lblTueScIn.Attributes.Add("class", "tooltip2");
                         lblTueScIn.Attributes.Add("title", lunchTip1);
                         lblTueScOut.Attributes.Add("class", "tooltip2");
                         lblTueScOut.Attributes.Add("title", lunchTip1);
 
-
                         lunchTip1 = CreateLunchTable(hdnWedLunch.Value.Trim());
                         lblWedScIn.Attributes.Add("class", "tooltip2");
                         lblWedScIn.Attributes.Add("title", lunchTip1);
                         lblWedScOut.Attributes.Add("class", "tooltip2");
                         lblWedScOut.Attributes.Add("title", lunchTip1);
-
-
 
                         lunchTip1 = CreateLunchTable(hdnSatLunch.Value.Trim());
                         lblSatScIn.Attributes.Add("class", "tooltip2");
@@ -1430,81 +1420,63 @@ namespace Attendance
                         lblFriScIn.Attributes.Add("title", lunchTip1);
                         lblFriScOut.Attributes.Add("class", "tooltip2");
                         lblFriScOut.Attributes.Add("title", lunchTip1);
-
-
-
-
                         string empid = lblID.Text.Trim();
-
 
                         if ((Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["MonDate"]) < Convert.ToDateTime(lblStartDate.Text)))
                         {
-
                             lblMonScIn.Text = "";
                             lblMonScOut.Text = "";
                         }
                         if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["TueDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-
                             lblTueScIn.Text = "";
                             lblTueScOut.Text = "";
                         }
 
                         if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["WedDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-
                             lblWedScIn.Text = "";
                             lblWedScOut.Text = "";
                         }
-
                         if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["ThuDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-
                             lblThuScIn.Text = "";
                             lblThuScOut.Text = "";
                         }
                         if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["FriDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-
                             lblFriScIn.Text = "";
                             lblFriScOut.Text = "";
                         }
                         if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SatDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-
                             lblSatScIn.Text = "";
                             lblSatScOut.Text = "";
                         }
                         if (Convert.ToDateTime(lblStartDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SunDate"]) < Convert.ToDateTime(lblStartDate.Text))
                         {
-
                             lblSunScIn.Text = "";
                             lblSunScOut.Text = "";
                         }
-
                         if ((Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["MonDate"]) > Convert.ToDateTime(lblTermDate.Text)))
                         {
-
                             lblMonScIn.Text = "";
                             lblMonScOut.Text = "";
                         }
                         if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["TueDate"]) > Convert.ToDateTime(lblTermDate.Text))
                         {
-
                             lblTueScIn.Text = "";
                             lblTueScOut.Text = "";
                         }
 
                         if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["WedDate"]) > Convert.ToDateTime(lblTermDate.Text))
                         {
-
                             lblWedScIn.Text = "";
                             lblWedScOut.Text = "";
                         }
 
                         if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["ThuDate"]) > Convert.ToDateTime(lblTermDate.Text))
                         {
-
                             lblThuScIn.Text = "";
                             lblThuScOut.Text = "";
                         }
@@ -1515,7 +1487,6 @@ namespace Attendance
                         }
                         if (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") != "01/01/1900" && Convert.ToDateTime(ViewState["SatDate"]) > Convert.ToDateTime(lblTermDate.Text))
                         {
-
                             lblSatScIn.Text = "";
                             lblSatScOut.Text = "";
                         }
@@ -1529,6 +1500,7 @@ namespace Attendance
 
                         lblMonIn.Attributes.Add("date", Convert.ToDateTime(ViewState["MonDate"]).ToString("MM/dd/yyyy"));
 
+
                         if (lblMonIn.Text == "")
                         {
                             if ((Convert.ToDateTime(ViewState["MonDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["MonDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
@@ -1539,20 +1511,15 @@ namespace Attendance
                                 }
                             }
                         }
-
                         HiddenField hdnMonSignInFlag = (HiddenField)e.Row.FindControl("hdnMonSignInFlag");
                         HiddenField hdnMonSignOutFlag = (HiddenField)e.Row.FindControl("hdnMonSignOutFlag");
                         if (hdnMonSignInFlag.Value == "True" || hdnMonSignOutFlag.Value == "True")
                         {
                             e.Row.Cells[3].CssClass += " atnEdit ";
                             lblMonIn.CssClass.Replace("greenTag", "");
-                            //lblMonIn.ForeColor = System.Drawing.Color.Moccasin ;
                         }
                         HiddenField hdnMonSigninNotes = (HiddenField)e.Row.FindControl("hdnMonSigninNotes");
-
                         HiddenField hdnMonMultiple = (HiddenField)e.Row.FindControl("hdnMonMultiple");
-
-
                         if (hdnMonMultiple.Value == "True")
                         {
                             lblMonIn.CssClass = "multipleLogin";
@@ -1581,7 +1548,6 @@ namespace Attendance
                                 {
                                     lblMonIn.Text = lblMonIn.Text == "" ? "" : lblMonIn.Text == "L" ? "L" : lblMonIn.Text == "H" ? "H" : lblMonIn.Text + " - N/A";
                                 }
-
                             }
                         }
                         HiddenField hdnMonFreeze = (HiddenField)e.Row.FindControl("hdnMonFreeze");
@@ -1592,10 +1558,6 @@ namespace Attendance
                             lblMonOut.Enabled = false;
                             lblMonOut.ForeColor = System.Drawing.Color.Black;
                         }
-
-
-
-
                         LinkButton lblTueIn = (LinkButton)e.Row.FindControl("lblTueIn");
                         lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text == "L" ? "L" : Convert.ToDateTime(lblTueIn.Text).ToString("hh:mm tt");
 
@@ -1603,21 +1565,17 @@ namespace Attendance
                         {
                             if ((Convert.ToDateTime(ViewState["TueDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["TueDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
                             {
-
                                 if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) && (Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")) >= Convert.ToDateTime((Convert.ToDateTime(ViewState["FreezeDate"])).ToString("MM/dd/yyyy"))))
                                 {
                                     lblTueIn.Text = "N/A";
                                 }
                             }
                         }
-
-
                         HiddenField hdnTueSignInFlag = (HiddenField)e.Row.FindControl("hdnTueSignInFlag");
                         HiddenField hdnTueSignOutFlag = (HiddenField)e.Row.FindControl("hdnTueSignOutFlag");
                         if (hdnTueSignInFlag.Value == "True" || hdnTueSignOutFlag.Value == "True")
                         {
                             e.Row.Cells[6].CssClass += " atnEdit ";
-
                         }
                         HiddenField hdnTueSigninNotes = (HiddenField)e.Row.FindControl("hdnTueSigninNotes");
                         HiddenField hdnTueMultiple = (HiddenField)e.Row.FindControl("hdnTueMultiple");
@@ -1630,7 +1588,6 @@ namespace Attendance
                             sTueMultiple = CreateMultipleString(dt);
                             dt = null;
                         }
-
                         sTable = CreateSignInTable(lblName.Text, (hdnTueSigninNotes.Value), s);
                         s = "";
                         if (sTable != "")
@@ -1639,14 +1596,10 @@ namespace Attendance
                             lblTueIn.Attributes.Add("title", sTable);
                             e.Row.Cells[6].CssClass += " greenTag";
                         }
-
-
                         lblTueIn.Attributes.Add("sMultiple", sTueMultiple);
                         lblTueIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["TueDate"].ToString()).ToString("MM/dd/yyyy"));
-
                         LinkButton lblTueOut = (LinkButton)e.Row.FindControl("lblTueOut");
                         lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text == "L" ? "L" : lblTueIn.Text + (lblTueOut.Text == "" ? "" : lblTueOut.Text == "N/A" ? " - N/A" : " - " + Convert.ToDateTime(lblTueOut.Text).ToString("hh:mm tt"));
-
                         if (lblTueOut.Text == "")
                         {
                             if ((Convert.ToDateTime(ViewState["TueDate"]) >= Convert.ToDateTime(lblStartDate.Text)) && (Convert.ToDateTime(lblTermDate.Text).ToString("MM/dd/yyyy") == "01/01/1900" || Convert.ToDateTime(ViewState["TueDate"]) <= Convert.ToDateTime(lblTermDate.Text)))
@@ -1655,11 +1608,8 @@ namespace Attendance
                                 {
                                     lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text == "L" ? "L" : lblTueIn.Text == "H" ? "H" : lblTueIn.Text + " - N/A";
                                 }
-
                             }
                         }
-
-
                         HiddenField hdnTueFreeze = (HiddenField)e.Row.FindControl("hdnTueFreeze");
                         if (hdnTueFreeze.Value == "True")
                         {
@@ -1668,10 +1618,7 @@ namespace Attendance
 
                             lblTueOut.Enabled = false;
                             lblTueOut.ForeColor = System.Drawing.Color.Black;
-
                         }
-
-
                         LinkButton lblWedIn = (LinkButton)e.Row.FindControl("lblWedIn");
                         lblWedIn.Text = lblWedIn.Text == "" ? "" : lblWedIn.Text == "H" ? "H" : lblWedIn.Text == "L" ? "L" : Convert.ToDateTime(lblWedIn.Text).ToString("hh:mm tt");
                         if (lblWedIn.Text == "")
@@ -1682,19 +1629,15 @@ namespace Attendance
                                 {
                                     lblWedIn.Text = "N/A";
                                 }
-
                             }
                         }
-
                         HiddenField hdnWedSignInFlag = (HiddenField)e.Row.FindControl("hdnWedSignInFlag");
                         HiddenField hdnWedSignOutFlag = (HiddenField)e.Row.FindControl("hdnWedSignOutFlag");
                         if (hdnWedSignInFlag.Value == "True" || hdnWedSignOutFlag.Value == "True")
                         {
                             e.Row.Cells[9].CssClass += " atnEdit ";
                             lblWedIn.CssClass.Replace("greenTag", "");
-
                         }
-
                         HiddenField hdnWedSignInNotes = (HiddenField)e.Row.FindControl("hdnWedSignInNotes");
                         HiddenField hdnWedMultiple = (HiddenField)e.Row.FindControl("hdnWedMultiple");
                         if (hdnWedMultiple.Value == "True")
@@ -1705,7 +1648,6 @@ namespace Attendance
                             sWedMultiple = CreateMultipleString(dt);
                             dt = null;
                         }
-
                         sTable = CreateSignInTable(lblName.Text, (hdnWedSignInNotes.Value), s);
                         s = "";
                         if (sTable != "")
@@ -1713,7 +1655,6 @@ namespace Attendance
                             lblWedIn.Attributes.Add("rel", "tooltip");
                             lblWedIn.Attributes.Add("title", sTable);
                             e.Row.Cells[9].CssClass += " greenTag ";
-
                         }
                         lblWedIn.Attributes.Add("sMultiple", sWedMultiple);
                         lblWedIn.Attributes.Add("Date", Convert.ToDateTime(ViewState["WedDate"].ToString()).ToString("MM/dd/yyyy"));
@@ -1741,9 +1682,6 @@ namespace Attendance
                             lblWedOut.Enabled = false;
                             lblWedOut.ForeColor = System.Drawing.Color.Black;
                         }
-
-
-
                         LinkButton lblThuIn = (LinkButton)e.Row.FindControl("lblThuIn");
                         lblThuIn.Text = lblThuIn.Text == "" ? "" : lblThuIn.Text == "H" ? "H" : lblThuIn.Text == "L" ? "L" : Convert.ToDateTime(lblThuIn.Text).ToString("hh:mm tt");
                         if (lblThuIn.Text == "")
@@ -1758,9 +1696,7 @@ namespace Attendance
                             }
                         }
 
-
                         HiddenField hdnThuSignInFlag = (HiddenField)e.Row.FindControl("hdnThuSignInFlag");
-
                         HiddenField hdnThuSignOutFlag = (HiddenField)e.Row.FindControl("hdnThuSignOutFlag");
                         if (hdnThuSignInFlag.Value == "True" || hdnThuSignOutFlag.Value == "True")
                         {
@@ -1774,7 +1710,6 @@ namespace Attendance
                         if (hdnThuMultiple.Value == "True")
                         {
                             lblThuIn.CssClass = "multipleLogin";
-                            //   lblMonIn.CssClass = "multipleLogin";
                             dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(ViewState["ThuDate"]), empid);
                             s = CreateMultipleTable(dt);
                             sThuMultiple = CreateMultipleString(dt);
@@ -1804,9 +1739,6 @@ namespace Attendance
 
                             }
                         }
-
-
-
                         HiddenField hdnThuFreeze = (HiddenField)e.Row.FindControl("hdnThuFreeze");
                         if (hdnThuFreeze.Value == "True")
                         {
@@ -2080,51 +2012,70 @@ namespace Attendance
                     {
                         LinkButton lblMonIn = (LinkButton)e.Row.FindControl("lblMonIn");
                         LinkButton lblMonOut = (LinkButton)e.Row.FindControl("lblMonOut");
-                        lblMonIn.Text = lblMonIn.Text==""?"":lblMonIn.Text + " - " + lblMonOut.Text;
+                        lblMonIn.Text = lblMonIn.Text == "" ? "" : lblMonIn.Text + " - " + lblMonOut.Text;
 
 
                         LinkButton lblTueIn = (LinkButton)e.Row.FindControl("lblTueIn");
                         LinkButton lblTueOut = (LinkButton)e.Row.FindControl("lblTueOut");
-                        lblTueIn.Text =lblTueIn.Text==""?"":lblTueIn.Text + " - " + lblTueOut.Text;
+                        lblTueIn.Text = lblTueIn.Text == "" ? "" : lblTueIn.Text + " - " + lblTueOut.Text;
 
                         LinkButton lblWedIn = (LinkButton)e.Row.FindControl("lblWedIn");
                         LinkButton lblWedOut = (LinkButton)e.Row.FindControl("lblWedOut");
-                        lblWedIn.Text =lblWedIn.Text==""?"": lblWedIn.Text + " - " + lblWedOut.Text;
+                        lblWedIn.Text = lblWedIn.Text == "" ? "" : lblWedIn.Text + " - " + lblWedOut.Text;
 
                         LinkButton lblThuIn = (LinkButton)e.Row.FindControl("lblThuIn");
                         LinkButton lblThuOut = (LinkButton)e.Row.FindControl("lblThuOut");
-                        lblThuIn.Text =lblThuIn.Text==""?"": lblThuIn.Text + " - " + lblThuOut.Text;
+                        lblThuIn.Text = lblThuIn.Text == "" ? "" : lblThuIn.Text + " - " + lblThuOut.Text;
 
                         LinkButton lblFriIn = (LinkButton)e.Row.FindControl("lblFriIn");
                         LinkButton lblFriOut = (LinkButton)e.Row.FindControl("lblFriOut");
-                        lblFriIn.Text =lblFriIn.Text==""?"":lblFriIn.Text + " - " + lblFriOut.Text;
+                        lblFriIn.Text = lblFriIn.Text == "" ? "" : lblFriIn.Text + " - " + lblFriOut.Text;
 
                         LinkButton lblSatIn = (LinkButton)e.Row.FindControl("lblSatIn");
                         LinkButton lblSatOut = (LinkButton)e.Row.FindControl("lblSatOut");
-                        lblSatIn.Text =lblSatIn.Text==""?"":lblSatIn.Text +" - " +lblSatOut.Text;
+                        lblSatIn.Text = lblSatIn.Text == "" ? "" : lblSatIn.Text + " - " + lblSatOut.Text;
 
                         LinkButton lblSunIn = (LinkButton)e.Row.FindControl("lblSunIn");
                         LinkButton lblSunOut = (LinkButton)e.Row.FindControl("lblSunOut");
-                        lblSunIn.Text =lblSunIn.Text==""?"":lblSunIn.Text + " - " + lblSunOut.Text;
+                        lblSunIn.Text = lblSunIn.Text == "" ? "" : lblSunIn.Text + " - " + lblSunOut.Text;
                     }
-                    
+
                 }
             }
             catch (Exception ex)
             {
             }
         }
-        private string CreateMultipleString(List<Attendance.Entities.MultipleLogininfo> dt)
+        private string CreateMultipleString(List<Attendance.Entities.MultipleLogininfo> obj)
         {
 
             string s = "";
+            string login = "";
+            string logout = "";
             try
             {
-                if (dt.Count > 0)
+                if (obj.Count > 0)
                 {
-                    for (int i = 0; i < dt.Count; i++)
+                    for (int i = 0; i < obj.Count; i++)
                     {
-                        s += dt[i].Loguserid.ToString() + "*" + dt[i].LoginDate.ToString() + "*" + dt[i].LogoutDate.ToString() + ",";
+                        if (obj[i].LoginDate.ToString() != "")
+                        {
+                            login = Convert.ToDateTime(obj[i].LoginDate.ToString()).AddHours(obj[i].Offset).ToString("MM/dd/yyyy hh:mm tt");
+                        }
+                        else
+                        {
+                            login = "";
+                        }
+                        if (obj[i].LogoutDate.ToString() != "")
+                        {
+                            logout = Convert.ToDateTime(obj[i].LogoutDate.ToString()).AddHours(obj[i].Offset).ToString("MM/dd/yyyy hh:mm tt");
+                        }
+                        else
+                        {
+                            logout = "";
+                        }
+
+                        s += obj[i].Loguserid.ToString() + "*" + login + "*" + logout + ",";
                     }
                 }
             }
@@ -2177,9 +2128,9 @@ namespace Attendance
                     HeaderCell.Style["font-weight"] = "bold";
                     HeaderGridRow.Cells.Add(HeaderCell);
 
-                    if((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")))
+                    if ((Convert.ToDateTime(Convert.ToDateTime(Session["TodayBannerDate"]).ToString("MM/dd/yyyy"))) == Convert.ToDateTime((Convert.ToDateTime(ViewState["TueDate"])).ToString("MM/dd/yyyy")))
                     {
-                        HeaderCell.CssClass="Current";
+                        HeaderCell.CssClass = "Current";
                     }
                     HeaderCell = new TableCell();
                     HeaderCell.Text = startdate.AddDays(2).ToString("ddd") + ", " + startdate.AddDays(2).ToString("MMMM dd, yyyy");
@@ -2331,7 +2282,7 @@ namespace Attendance
                         grdMonthlyAttendance.DataSource = null;
                         grdMonthlyAttendance.DataBind();
                     }
-                    
+
                 }
                 else if (ddlReportType.SelectedItem.Value == "1")
                 {
@@ -2359,7 +2310,7 @@ namespace Attendance
                     lblFreeze.Visible = false;
 
 
-                    DataTable dt = GetWeeklyReport(StartDate, endDate,Convert.ToInt32(ddlShift.SelectedItem.Value));
+                    DataTable dt = GetWeeklyReport(StartDate, endDate, Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                     if (dt.Rows.Count > 1)
                     {
@@ -2547,7 +2498,7 @@ namespace Attendance
                         btnNext.Enabled = true;
                     }
 
-                    DataTable dt = GetWeeklyReport(StartDate, endDate,Convert.ToInt32(ddlShift.SelectedItem.Value));
+                    DataTable dt = GetWeeklyReport(StartDate, endDate, Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                     if (dt.Rows.Count > 1)
                     {
@@ -2582,7 +2533,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.ToString();
                     DateTime endDate = StartDate.AddMonths(6).AddSeconds(-1);
                     ViewState["StartMonth"] = StartDate;
-                    DataTable dt = GetMonthlyreport(StartDate, endDate,Convert.ToInt32(ddlShift.SelectedItem.Value));
+                    DataTable dt = GetMonthlyreport(StartDate, endDate, Convert.ToInt32(ddlShift.SelectedItem.Value));
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -3313,7 +3264,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
-                       // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+                        // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -3333,7 +3284,7 @@ namespace Attendance
                         grdMonthlyAttendance.DataSource = null;
                         grdMonthlyAttendance.DataBind();
                     }
- 
+
                 }
 
                 else if (ddlReportType.SelectedItem.Value == "1")
@@ -3503,7 +3454,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
-                       // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+                        // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -3559,7 +3510,7 @@ namespace Attendance
                         btnNext.Enabled = true;
 
                     }
-                    DataTable dt = GetWeeklyReport(StartDate, endDate,0);
+                    DataTable dt = GetWeeklyReport(StartDate, endDate, 0);
                     if (dt.Rows.Count > 1)
                     {
                         grdAttandence.DataSource = null;
@@ -3608,7 +3559,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.AddMonths(-6).ToString();
                     DateTime endDate = StartDate.AddSeconds(-1);
                     ViewState["CrntMonthEnd"] = endDate;
-                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate,0);
+                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate, 0);
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -3750,7 +3701,7 @@ namespace Attendance
             {
             }
         }
-        private DataTable GetWeeklyReport(DateTime startdate, DateTime enddate,int ShiftID)
+        private DataTable GetWeeklyReport(DateTime startdate, DateTime enddate, int ShiftID)
         {
             DataTable dtAttandence = new DataTable();
             try
@@ -3760,18 +3711,18 @@ namespace Attendance
                 lblWeekReport.Text = "( Wk of " + startdate.ToString("MM/dd/yyyy") + " - Wk of " + endOfMonth.ToString("MM/dd/yyyy") + " )";
                 dtAttandence.Columns.Add("empid", typeof(string));
                 dtAttandence.Columns.Add("Empname", typeof(string));
-                dtAttandence.Columns.Add("PEmpName", typeof(string)); 
+                dtAttandence.Columns.Add("PEmpName", typeof(string));
                 dtAttandence.Columns.Add("StatingDate", typeof(string));
                 dtAttandence.Columns.Add("TermDate", typeof(string));
                 dtAttandence.Columns.Add("TermReason", typeof(string));
 
                 dtAttandence.Rows.Add();
                 Attendance.BAL.Report obj = new Report();
-                DataSet ds = obj.GetActiveUsersAdmin(startdate, enddate, ViewState["Location"].ToString().Trim(),Convert.ToInt32(ddlShift.SelectedItem.Value));
+                DataSet ds = obj.GetActiveUsersAdmin(startdate, enddate, ViewState["Location"].ToString().Trim(), Convert.ToInt32(ddlShift.SelectedItem.Value));
 
                 for (int j = 0; j < 4; j++)
                 {
-                    DataSet dsResult = obj.GetWeeklyReportAdmin(startdate, startdate.AddDays(7).AddSeconds(-1), ViewState["Location"].ToString().Trim(),ShiftID);
+                    DataSet dsResult = obj.GetWeeklyReportAdmin(startdate, startdate.AddDays(7).AddSeconds(-1), ViewState["Location"].ToString().Trim(), ShiftID);
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         dtAttandence.Columns.Add("Week" + (j + 1), typeof(string));
@@ -3866,7 +3817,7 @@ namespace Attendance
             }
             return dtAttandence;
         }
-        private DataTable GetMonthlyreport(DateTime startdate, DateTime endMonth,int shiftID)
+        private DataTable GetMonthlyreport(DateTime startdate, DateTime endMonth, int shiftID)
         {
             DataTable dtAttandence = new DataTable();
             try
@@ -3876,7 +3827,7 @@ namespace Attendance
                 lblWeekReport.Text = "( " + startdate.ToString("MM/dd/yyyy") + " - " + endMonth.ToString("MM/dd/yyyy") + " )";
                 dtAttandence.Columns.Add("empid", typeof(string));
                 dtAttandence.Columns.Add("Empname", typeof(string));
-                dtAttandence.Columns.Add("PEmpName", typeof(string)); 
+                dtAttandence.Columns.Add("PEmpName", typeof(string));
                 dtAttandence.Columns.Add("StatingDate", typeof(string));
                 dtAttandence.Columns.Add("TermDate", typeof(string));
                 dtAttandence.Columns.Add("TermReason", typeof(string));
@@ -3887,12 +3838,12 @@ namespace Attendance
 
                 DateTime enddate = startdate.AddMonths(1).AddSeconds(-1);
 
-                DataSet ds = obj.GetActiveUsersAdmin(startdate, endMonth, ViewState["Location"].ToString().Trim(),shiftID);
+                DataSet ds = obj.GetActiveUsersAdmin(startdate, endMonth, ViewState["Location"].ToString().Trim(), shiftID);
 
                 for (int j = 0; j < 6; j++)
                 {
 
-                    DataSet dsResult = obj.GetWeeklyReportAdmin(startdate, enddate, ViewState["Location"].ToString().Trim(),shiftID);
+                    DataSet dsResult = obj.GetWeeklyReportAdmin(startdate, enddate, ViewState["Location"].ToString().Trim(), shiftID);
 
                     if (ds.Tables[0].Rows.Count > 0)
                     {
@@ -4017,7 +3968,7 @@ namespace Attendance
             try
             {
                 int userid = Convert.ToInt32(Session["UserID"]);
-               if (ddlReportType.SelectedItem.Value == "2")
+                if (ddlReportType.SelectedItem.Value == "2")
                 {
                     DateTime todayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
                     DateTime startDate = todayDate;
@@ -4027,7 +3978,7 @@ namespace Attendance
                     hdnMonthlyStartDt.Value = StartDate.AddMonths(-6).ToString();
                     DateTime endDate = StartDate.AddSeconds(-1);
                     ViewState["CrntMonthEnd"] = endDate;
-                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate,Convert.ToInt32(ddlShift.SelectedItem.Value));
+                    DataTable dt = GetMonthlyreport(StartDate.AddMonths(-6), endDate, Convert.ToInt32(ddlShift.SelectedItem.Value));
                     btnFreeze.Visible = false;
                     lblFreeze.Visible = false;
 
@@ -4151,7 +4102,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
-                       // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+                        // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -4185,12 +4136,12 @@ namespace Attendance
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
 
-                    Label lblEmpname=(Label)e.Row.FindControl("lblEmpname");
-                    Label lblName=(Label)e.Row.FindControl("lblName");
+                    Label lblEmpname = (Label)e.Row.FindControl("lblEmpname");
+                    Label lblName = (Label)e.Row.FindControl("lblName");
 
                     string s = CreateNameTable(lblEmpname.Text.ToString().Trim(), lblName.Text.Trim(), "", "");
                     lblEmpname.Attributes.Add("class", "tooltip2");
-                    lblEmpname.Attributes.Add("title", s);    
+                    lblEmpname.Attributes.Add("title", s);
 
                     Label lblStartDt = (Label)e.Row.FindControl("lblStartDt");
                     lblStartDt.Text = lblStartDt.Text == "" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy");
@@ -4242,7 +4193,7 @@ namespace Attendance
                 // DateTime TodayDate = Convert.ToDateTime(Session["TodayDate"]);
                 //  DateTime StartOfMonth = GeneralFunction.GetFirstDayOfWeekDate(TodayDate);
                 DateTime FreezeDate = Convert.ToDateTime(hdnFreeze.Value);
-                bool bnew = obj.UpdateFreeze(userid, location, FreezeDate,Convert.ToInt32(ddlShift.SelectedValue));
+                bool bnew = obj.UpdateFreeze(userid, location, FreezeDate, Convert.ToInt32(ddlShift.SelectedValue));
 
                 if (bnew)
                 {
@@ -4268,7 +4219,7 @@ namespace Attendance
         }
         protected void btnFreezeOk_Click(object sender, EventArgs e)
         {
-            
+
         }
         protected void grdMonthlyAttendance_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -4281,14 +4232,14 @@ namespace Attendance
 
                 string s = CreateNameTable(lblEmpname.Text.ToString().Trim(), lblName.Text.Trim(), "", "");
                 lblEmpname.Attributes.Add("class", "tooltip2");
-                lblEmpname.Attributes.Add("title", s);    
+                lblEmpname.Attributes.Add("title", s);
 
                 Label lblStartDt = (Label)e.Row.FindControl("lblStartDt");
                 lblStartDt.Text = lblStartDt.Text == "" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblStartDt.Text).ToString("MM/dd/yyyy");
 
                 Label lblTermDt = (Label)e.Row.FindControl("lblTermDt");
                 lblTermDt.Text = lblTermDt.Text == "" ? "" : Convert.ToDateTime(lblTermDt.Text).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(lblTermDt.Text).ToString("MM/dd/yyyy");
-                
+
                 Label lblTotal = (Label)e.Row.FindControl("lblTotal");
                 lblTotal.Text = lblTotal.Text == "0" ? "" : lblTotal.Text;
 
@@ -4409,7 +4360,17 @@ namespace Attendance
                 strTransaction += "<ul>";
                 for (int i = 0; i < obj.Count; i++)
                 {
-                    strTransaction += "<li>" + (i + 1) + ". Sign in/out group : " + obj[i].LoginDate.ToString().Trim() + " - " + obj[i].LogoutDate.ToString().Trim();
+                    string login = "";
+                    string logout = "";
+                    if (obj[i].LoginDate.ToString() != "")
+                    {
+                        login = Convert.ToDateTime(obj[i].LoginDate.ToString()).AddHours(obj[i].Offset).ToString("hh:mm tt");
+                    }
+                    if (obj[i].LogoutDate.ToString() != "")
+                    {
+                        logout = Convert.ToDateTime(obj[i].LogoutDate.ToString()).AddHours(obj[i].Offset).ToString("hh:mm tt");
+                    }
+                    strTransaction += "<li>" + (i + 1) + ". Sign in/out group : " + login + " - " + logout;
                     strTransaction += "</li>";
 
                 }
@@ -4594,7 +4555,7 @@ namespace Attendance
                     HeaderCell.CssClass = "bL bR";
                     HeaderGridRow.Cells.Add(HeaderCell);
                     grdMonthlyAttendance.Controls[0].Controls.AddAt(0, HeaderGridRow);
-               }
+                }
             }
             catch (Exception ex)
             {
@@ -4608,6 +4569,7 @@ namespace Attendance
                 Business obj = new Business();
 
                 string EmpID = hdnMultipleEmpID.Value.ToString().Trim();
+                int offset = Convert.ToInt32(hdnMultipleOffset.Value.Trim());
 
                 DateTime StartDate = GeneralFunction.GetFirstDayOfWeekDate(Convert.ToDateTime(Session["TodayDate"].ToString()));
                 DateTime EndDate = GeneralFunction.GetLastDayOfWeekDate(Convert.ToDateTime(Session["TodayDate"].ToString()));
@@ -4639,23 +4601,23 @@ namespace Attendance
                         if (loguserId != 0)
                         {
                             signInnotes = "Sign in time changed by " + empname + " at -" + ISTTime.ToString("MM/dd/yyyy hh:mm:ss") + "\n";
-
-                            signinTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + txtMultipleSignIn.Text;
+                            signinTime = Convert.ToDateTime(txtMultipleSignIn.Text).AddHours(-offset).ToString().Trim();
+                           // signinTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + txtMultipleSignIn.Text;
                         }
                         else
                         {
-                            signinTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + txtMultipleSignIn.Text;
-                            signInnotes = "Sign in time added by " + empname + " at -" + ISTTime.ToString("MM/dd/yyyy hh:mm:ss") + "\n to " + signinTime;
+                            signinTime = Convert.ToDateTime(txtMultipleSignIn.Text).AddHours(-offset).ToString().Trim();
+                            //signinTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + txtMultipleSignIn.Text;
+                            signInnotes = "Sign in time added by " + empname + " at -" + ISTTime.ToString("MM/dd/yyyy hh:mm:ss") + "\n to " + txtMultipleSignIn.Text;
                         }
 
                         string Signoutnotes = "Sign out time changed by " + empname + " at -" + ISTTime.ToString("MM/dd/yyyy hh:mm:ss") + "\n";
-
                         string signOutTime = "01/01/1900";
                         if (txtMultipleSignOut.Text != "")
                         {
-                            signOutTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + txtMultipleSignOut.Text;
+                           // signOutTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + txtMultipleSignOut.Text;
+                            signOutTime = Convert.ToDateTime(txtMultipleSignOut.Text).AddHours(-offset).ToString();
                         }
-
                         bool bnew = obj.UpdateSignInSignOut(EmpID, loguserId, signinTime, signOutTime, signInnotes, Signoutnotes);
                     }
                     else
@@ -4665,7 +4627,6 @@ namespace Attendance
                 }
                 else
                 {
-                    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "GetMultiple();", true);
                     string multiplesignIns = hdnMultipleSignIns.Value;
                     string[] multipleSet = multiplesignIns.Split('*');
 
@@ -4681,18 +4642,20 @@ namespace Attendance
                         string Signoutnotes = "";
                         if (signIn != "N/A" && signIn != "")
                         {
-                            signInTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + signIn;
+                           // signInTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + signIn;
+
+                            signInTime = Convert.ToDateTime(signIn).AddHours(-offset).ToString().Trim();
                             signInnotes = "Sign in time changed by " + empname + " at -" + ISTTime.ToString("MM/dd/yyyy hh:mm:ss") + "\n";
 
                             string signOutTime = "01/01/1900";
                             if (signOut != "N/A")
                             {
-                                signOutTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + signOut;
+                                //signOutTime = Convert.ToDateTime(hdnMultipleSignInTime.Value).ToString("MM/dd/yyyy") + " " + signOut;
+
+                                signOutTime = Convert.ToDateTime(signOut).AddHours(-offset).ToString().Trim();
                                 Signoutnotes = "Sign out time changed by " + empname + " at -" + ISTTime.ToString("MM/dd/yyyy hh:mm:ss") + "\n";
                             }
-
                             bool bnew = obj.UpdateSignInSignOut(EmpID, loguserID, signInTime, signOutTime, signInnotes, Signoutnotes);
-
                         }
                         else
                         {
@@ -4732,12 +4695,11 @@ namespace Attendance
 
             }
         }
-
         protected void ddlShift_SelectedIndexChanged(object sender, EventArgs e)
         {
 
             ViewState["Location"] = ddlLocation.SelectedItem.Text.Trim();
-           try
+            try
             {
                 if (ddlReportType.SelectedItem.Value == "0")
                 {
@@ -4792,7 +4754,7 @@ namespace Attendance
                         Session["AtnAdminDetails"] = ds;
                         grdAttandence.DataSource = ds;
                         grdAttandence.DataBind();
-                      //  System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+                        //  System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
                         grdWeeklyAttendance.DataSource = null;
                         grdWeeklyAttendance.DataBind();
                         grdMonthlyAttendance.DataSource = null;
@@ -4828,7 +4790,7 @@ namespace Attendance
                     int LocationId = Convert.ToInt32(ddlLocation.SelectedItem.Value.ToString());
                     DateTime todayDate = Convert.ToDateTime(Session["TodayDate1"]);
 
-                  
+
                     DateTime startDate = GeneralFunction.GetFirstDayOfWeekDate(todayDate);
                     DateTime StartDate = startDate.AddDays(-21);
                     ViewState["TodayDate1"] = StartDate;
@@ -4932,7 +4894,7 @@ namespace Attendance
                         grdMonthlyAttendance.DataSource = null;
                         grdMonthlyAttendance.DataBind();
                     }
-               }
+                }
 
             }
             catch (Exception ex)
@@ -4950,23 +4912,21 @@ namespace Attendance
             ddlShift.DataBind();
             ddlShift.Items.Insert(0, new ListItem("ALL", "0"));
         }
-
         protected void grdAttandence_DataBound(object sender, EventArgs e)
         {
             try
             {
-                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true); 
+                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
             }
             catch (Exception ex)
             {
             }
         }
-
         protected void grdAttandence_Load(object sender, EventArgs e)
         {
-           // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
-                    
+            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addCssAfterBind();", true);
+
         }
-      
+
     }
 }

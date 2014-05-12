@@ -95,26 +95,26 @@ namespace Attendance
                             {
                                 lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                             }
-                            bool final = obj.GetFinalPayrollDate(MonthStart,Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
-                            if (final)
-                            {
-                                btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                                btnSave.CssClass = "btn btn-small btn-warning disabled";
-                                btnFinal.Enabled = false;
-                                btnSave.Enabled = false;
-                                hdnFreeze.Value = "true"; ;
-                               // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                            }
-                            else
-                            {
-                                btnFinal.CssClass = "btn btn-small btn-warning";
-                                btnSave.CssClass = "btn btn-small btn-warning";
-                                btnFinal.Enabled = true;
-                                btnSave.Enabled = true;
-                                hdnFreeze.Value = "false";
-                               // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                            }
-                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
+                            //bool final = obj.GetFinalPayrollDate(MonthStart,Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
+                            //if (final)
+                            //{
+                            //    btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                            //    btnSave.CssClass = "btn btn-small btn-warning disabled";
+                            //    btnFinal.Enabled = false;
+                            //    btnSave.Enabled = false;
+                            //    hdnFreeze.Value = "true"; ;
+                            //   // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                            //}
+                            //else
+                            //{
+                            //    btnFinal.CssClass = "btn btn-small btn-warning";
+                            //    btnSave.CssClass = "btn btn-small btn-warning";
+                            //    btnFinal.Enabled = true;
+                            //    btnSave.Enabled = true;
+                            //    hdnFreeze.Value = "false";
+                            //   // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                            //}
+                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
                             lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                             GetEditHistory(MonthStart, MonthEnd);
 
@@ -127,8 +127,6 @@ namespace Attendance
                                 Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
                                 grdPayRoll.DataSource = null;
                                 grdPayRoll.DataBind();
-                                btnSave.Visible = true;
-                                btnFinal.Visible = true;
                                 btnPrint.Visible = true;
                                 lblGrdNodata.Text = "";
                                 dvNodata.Style["display"] = "none";
@@ -168,8 +166,7 @@ namespace Attendance
                             ViewState["StartRptDt"] = EndDate;
                             ViewState["EndRptDt"] = StartDate.AddDays(-1);
                             GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(),Convert.ToInt32(ddlShift.SelectedValue));
-                            btnSave.Visible = false;
-                            btnFinal.Visible = false;
+                          
                             btnPrint.Visible = false;
                             rppayslip.DataSource = null;
                             rppayslip.DataBind();
@@ -200,27 +197,27 @@ namespace Attendance
                             {
                                 lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                             }
-                            bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
-                            if (final)
-                            {
-                                btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                                btnSave.CssClass = "btn btn-small btn-warning disabled";
-                                btnFinal.Enabled = false;
-                                btnSave.Enabled = false;
-                                hdnFreeze.Value = "true"; ;
-                                // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                            }
-                            else
-                            {
-                                btnFinal.CssClass = "btn btn-small btn-warning";
-                                btnSave.CssClass = "btn btn-small btn-warning";
-                                btnFinal.Enabled = true;
-                                btnSave.Enabled = true;
-                                hdnFreeze.Value = "false";
-                                // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                            }
+                            //bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                            //if (final)
+                            //{
+                            //    btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                            //    btnSave.CssClass = "btn btn-small btn-warning disabled";
+                            //    btnFinal.Enabled = false;
+                            //    btnSave.Enabled = false;
+                            //    hdnFreeze.Value = "true"; ;
+                            //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                            //}
+                            //else
+                            //{
+                            //    btnFinal.CssClass = "btn btn-small btn-warning";
+                            //    btnSave.CssClass = "btn btn-small btn-warning";
+                            //    btnFinal.Enabled = true;
+                            //    btnSave.Enabled = true;
+                            //    hdnFreeze.Value = "false";
+                            //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                            //}
 
-                            DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                            DataTable dt = GetReportIndia(MonthStart, MonthEnd,0, ddlLocation.SelectedItem.Text, Convert.ToInt32(ddlShift.SelectedValue));
                             lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                             GetEditHistory(MonthStart, MonthEnd);
 
@@ -234,8 +231,7 @@ namespace Attendance
                                 Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
                                 grdPayRoll.DataSource = null;
                                 grdPayRoll.DataBind();
-                                btnSave.Visible = true;
-                                btnFinal.Visible = true;
+                              
                                 btnPrint.Visible = true;
                                 lblGrdNodata.Text = "";
                                 dvNodata.Style["display"] = "none";
@@ -271,8 +267,7 @@ namespace Attendance
                             ViewState["StartRptDt"] = EndDate;
                             ViewState["EndRptDt"] = StartDate.AddDays(-1);
                             GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
-                            btnSave.Visible = false;
-                            btnFinal.Visible = false;
+                            
                             btnPrint.Visible = false;
                             rppayslip.DataSource = null;
                             rppayslip.DataBind();
@@ -442,26 +437,26 @@ namespace Attendance
                     {
                         txtFromDate.Text = StartDate.ToString("MM/dd/yyyy");
                         txtToDate.Text = EndTime.ToString("MM/dd/yyyy");
-                        bool final = obj.GetFinalPayrollDate(StartDate, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
-                        if (final)
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                            btnSave.CssClass = "btn btn-small btn-warning disabled";
-                            btnFinal.Enabled = false;
-                            btnSave.Enabled = false;
-                            hdnFreeze.Value = "true"; ;
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                        }
-                        else
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning";
-                            btnSave.CssClass = "btn btn-small btn-warning";
-                            btnFinal.Enabled = true;
-                            btnSave.Enabled = true;
-                            hdnFreeze.Value = "false";
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                        }
-                        DataTable dt = GetReportIndia(StartDate, EndTime, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        //bool final = obj.GetFinalPayrollDate(StartDate, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        //if (final)
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnSave.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnFinal.Enabled = false;
+                        //    btnSave.Enabled = false;
+                        //    hdnFreeze.Value = "true"; ;
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                        //}
+                        //else
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning";
+                        //    btnSave.CssClass = "btn btn-small btn-warning";
+                        //    btnFinal.Enabled = true;
+                        //    btnSave.Enabled = true;
+                        //    hdnFreeze.Value = "false";
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                        //}
+                        DataTable dt = GetReportIndia(StartDate, EndTime,0,ddlLocation.SelectedItem.Text, Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + StartDate.ToString("MM/dd/yyyy") + " - " + EndTime.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(StartDate, EndTime);
 
@@ -474,8 +469,7 @@ namespace Attendance
                             Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
                             grdPayRoll.DataSource = null;
                             grdPayRoll.DataBind();
-                            btnSave.Visible = true;
-                            btnFinal.Visible = true;
+                           
                             btnPrint.Visible = true;
                             lblGrdNodata.Text = "";
                             dvNodata.Style["display"] = "none";
@@ -497,8 +491,7 @@ namespace Attendance
                         txtFromDate.Text = StartDate.AddDays(-1).ToString("MM/dd/yyyy");
                         txtToDate.Text = EndTime.ToString("MM/dd/yyyy");
                         GetReport( StartDate.AddDays(-1),EndTime,0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
-                        btnSave.Visible = false;
-                        btnFinal.Visible = false;
+                       
                         btnPrint.Visible = false;
                         rppayslip.DataSource = null;
                         rppayslip.DataBind();
@@ -511,8 +504,7 @@ namespace Attendance
                     GetReport(StartDate, EndTime, userid, "", Convert.ToInt32(ddlShift.SelectedValue));
                     lblGrdLocaton.Visible = false;
                     ddlLocation.Visible = false;
-                    btnSave.Visible = false;
-                    btnFinal.Visible = false;
+                    
                     btnPrint.Visible = false;
                     rppayslip.DataSource = null;
                     rppayslip.DataBind();
@@ -766,7 +758,7 @@ namespace Attendance
 
             }
         }
-        protected void btnPDF_Click1(object sender, EventArgs e)
+        protected void btnPDF_Click2(object sender, EventArgs e)
         {
             try
             {
@@ -998,6 +990,49 @@ namespace Attendance
             {
             }
         }
+        protected void btnPDF_Click1(object sender, EventArgs e)
+        {
+            try
+            {
+
+                //lnkDwnloadPDF.Enabled = true;
+                string CurrentDate = Convert.ToDateTime(lblDate2.Text).ToString("MM-dd-yyyy") + Convert.ToDateTime(lblDate2.Text).ToString("hhmmsstt");
+                string Location = Session["LocationName"].ToString();
+                string PayrollDate = "PAYROLL REPORT " + lblWeekPayrollReport.Text;
+                string filepath = Server.MapPath("~/Payroll/" + Location + "/" + CurrentDate + "/");
+                if (!System.IO.Directory.Exists(filepath))
+                {
+                    System.IO.Directory.CreateDirectory(filepath);
+                }
+                StringWriter sw = new StringWriter();
+                HtmlTextWriter hw = new HtmlTextWriter(sw);
+                dvpayrollreport.RenderControl(hw);
+                StringReader sr = new StringReader(sw.ToString());
+                Document pdfDoc = new Document(new Rectangle(1200f, 1800f));
+                HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+                PdfWriter.GetInstance(pdfDoc, new FileStream(filepath + "Payroll.pdf", FileMode.Create));
+                Session["FilePath"] = filepath + "Payroll.pdf";
+                pdfDoc.Open();
+
+                iTextSharp.text.Font georgia = FontFactory.GetFont("georgia", 20f, 1, new BaseColor(System.Drawing.Color.Brown));
+                //georgia.Color = Color.Gray;
+                Chunk beginning = new Chunk(PayrollDate, georgia);
+                Phrase p1 = new Phrase(beginning);
+                Phrase p2 = new Phrase();
+                pdfDoc.Add(new Paragraph(p1));
+                //pdfDoc.Add(new Paragraph(30f, "Created at" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + " by " + Session["EmpName"].ToString().Trim()));
+                //pdfDoc.AddTitle(PayrollDate);
+                htmlparser.Parse(sr);
+                pdfDoc.Close();
+                Response.Write(pdfDoc);
+                showpdf(Session["FilePath"].ToString());
+                Response.End();
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         public override void VerifyRenderingInServerForm(Control control)
         {
             /* Verifies that the control is rendered */
@@ -1013,7 +1048,7 @@ namespace Attendance
             {
             }
         }
-        protected void btnDoc_Click1(object sender, EventArgs e)
+        protected void btnDoc_Click2(object sender, EventArgs e)
         {
             try
             {
@@ -1037,6 +1072,39 @@ namespace Attendance
                 dvpayrollreport.RenderControl(htw);
                 Response.Write("<h2 style=\"font-size:12px; font-weight:normal; font-family:\"Century Gothic\">"+PayrollDate+"</br>"+lblWeekPayrollReport.Text+"</h2>");
                 Response.Write(sw.ToString());
+                Response.End();
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void btnDoc_Click1(object sender, EventArgs e)
+        {
+            try
+            {
+
+                //lnkDwnloadPDF.Enabled = true;
+                string CurrentDate = Convert.ToDateTime(lblDate2.Text).ToString("MM-dd-yyyy") + Convert.ToDateTime(lblDate2.Text).ToString("hhmmsstt");
+                string Location = Session["LocationName"].ToString();
+                string PayrollDate = "PAYROLL REPORT ";
+                //string filepath = Server.MapPath("~/Payroll/" + Location + "/" + CurrentDate + "/");
+                //if (!System.IO.Directory.Exists(filepath))
+                //{
+                //    System.IO.Directory.CreateDirectory(filepath);
+                //}
+
+                Response.ClearContent();
+                Response.AddHeader("content-disposition", string.Format("attachment; filename={0}", CurrentDate + ".doc"));
+                Response.Charset = "";
+                Response.ContentType = "application/ms-word";
+                StringWriter sw = new StringWriter();
+                HtmlTextWriter htw = new HtmlTextWriter(sw);
+                dvpayrollreport.RenderControl(htw);
+                Response.Write("<h2 style=\"font-size:12px; font-weight:normal; font-family:\"Century Gothic\">" + PayrollDate + "</br>" + lblWeekPayrollReport.Text + "</h2>");
+                Response.Write(sw.ToString());
+
                 Response.End();
 
             }
@@ -1179,27 +1247,27 @@ namespace Attendance
                             lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                         }
 
-                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        //bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
-                        if (final)
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                            btnSave.CssClass = "btn btn-small btn-warning disabled";
-                            btnFinal.Enabled = false;
-                            btnSave.Enabled = false;
-                            hdnFreeze.Value = "true"; ;
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                        }
-                        else
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning";
-                            btnSave.CssClass = "btn btn-small btn-warning";
-                            btnFinal.Enabled = true;
-                            btnSave.Enabled = true;
-                            hdnFreeze.Value = "false";
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                        }
-                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue));
+                        //if (final)
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnSave.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnFinal.Enabled = false;
+                        //    btnSave.Enabled = false;
+                        //    hdnFreeze.Value = "true"; ;
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                        //}
+                        //else
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning";
+                        //    btnSave.CssClass = "btn btn-small btn-warning";
+                        //    btnFinal.Enabled = true;
+                        //    btnSave.Enabled = true;
+                        //    hdnFreeze.Value = "false";
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                        //}
+                        DataTable dt = GetReportIndia(MonthStart, MonthEnd,0,ddlLocation.SelectedItem.Text,Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
                         if (dt.Rows.Count > 0)
@@ -1212,8 +1280,7 @@ namespace Attendance
 
                             grdPayRoll.DataSource = null;
                             grdPayRoll.DataBind();
-                            btnSave.Visible = true;
-                            btnFinal.Visible = true;
+                           
                             btnPrint.Visible = true;
                             lblGrdNodata.Text = "";
                             dvNodata.Style["display"] = "none";
@@ -1250,8 +1317,7 @@ namespace Attendance
                         ViewState["StartRptDt"] = EndDate;
                         ViewState["EndRptDt"] = StartDate.AddDays(-1);
                         GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
-                        btnSave.Visible = false;
-                        btnFinal.Visible = false;
+                       
                         btnPrint.Visible = false;
                         rppayslip.DataSource = null;
                         rppayslip.DataBind();
@@ -1286,29 +1352,29 @@ namespace Attendance
                             lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                         }
 
-                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        //bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
-                        if (final)
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                            btnSave.CssClass = "btn btn-small btn-warning disabled";
-                            btnFinal.Enabled = false;
-                            btnSave.Enabled = false;
-                            hdnFreeze.Value = "true"; ;
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                        }
-                        else
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning";
-                            btnSave.CssClass = "btn btn-small btn-warning";
-                            btnFinal.Enabled = true;
-                            btnSave.Enabled = true;
-                            hdnFreeze.Value = "false";
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                        }
+                        //if (final)
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnSave.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnFinal.Enabled = false;
+                        //    btnSave.Enabled = false;
+                        //    hdnFreeze.Value = "true"; ;
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                        //}
+                        //else
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning";
+                        //    btnSave.CssClass = "btn btn-small btn-warning";
+                        //    btnFinal.Enabled = true;
+                        //    btnSave.Enabled = true;
+                        //    hdnFreeze.Value = "false";
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                        //}
 
 
-                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        DataTable dt = GetReportIndia(MonthStart, MonthEnd,0,ddlLocation.SelectedItem.Text, Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
                         if (dt.Rows.Count > 0)
@@ -1320,8 +1386,7 @@ namespace Attendance
                             Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
                             grdPayRoll.DataSource = null;
                             grdPayRoll.DataBind();
-                            btnSave.Visible = true;
-                            btnFinal.Visible = true;
+                           
                             btnPrint.Visible = true;
                             lblGrdNodata.Text = "";
                             dvNodata.Style["display"] = "none";
@@ -1360,8 +1425,7 @@ namespace Attendance
                         ViewState["StartRptDt"] = EndDate;
                         ViewState["EndRptDt"] = StartDate.AddDays(-1);
                         GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
-                        btnSave.Visible = false;
-                        btnFinal.Visible = false;
+                       
                         btnPrint.Visible = false;
                         rppayslip.DataSource = null;
                         rppayslip.DataBind();
@@ -1441,358 +1505,358 @@ namespace Attendance
             {
             }
         }
-        protected void btnSave_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                DateTime dt = Convert.ToDateTime(ViewState["StartRptDt"]);
-                DateTime EndDate = Convert.ToDateTime(ViewState["EndRptDt"]);
-                Report obj = new Report();
-                for (int i = 0; i < grdPayRollIndia.Rows.Count; i++)
-                {
+        //protected void btnSave_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        DateTime dt = Convert.ToDateTime(ViewState["StartRptDt"]);
+        //        DateTime EndDate = Convert.ToDateTime(ViewState["EndRptDt"]);
+        //        Report obj = new Report();
+        //        for (int i = 0; i < grdPayRollIndia.Rows.Count; i++)
+        //        {
                    
-                    comanyname.Text = CommonFiles.ComapnyName;
-                    string timezone = "";
-                    if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
-                    {
-                        timezone = "Eastern Standard Time";
-                    }
-                    else
-                    {
-                        timezone = "India Standard Time";
-                    }
-                    DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+        //            comanyname.Text = CommonFiles.ComapnyName;
+        //            string timezone = "";
+        //            if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+        //            {
+        //                timezone = "Eastern Standard Time";
+        //            }
+        //            else
+        //            {
+        //                timezone = "India Standard Time";
+        //            }
+        //            DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
 
-                    //Atndence history
-                    Attendance.Entities.AttendenceInfo objInfo = new Attendance.Entities.AttendenceInfo();
-                    HiddenField hdnEmpuserid = (HiddenField)grdPayRollIndia.Rows[i].FindControl("hdnEmpuserid");
-                    Label lblWorkingDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblWorkingDays");
-                    Label lblAttendDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblAttendDays");
-                    Label lblLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeaves");
-                    Label lblNoshow = (Label)grdPayRollIndia.Rows[i].FindControl("lblNoshow");
-                    Label lblLeavesAvailable = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesAvailable");
-                    Label lblLeavesUsed = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesUsed");
-                    Label lblPaidLeavesBalanced = (Label)grdPayRollIndia.Rows[i].FindControl("lblPaidLeavesBalanced");
-                    Label lblCalLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalLeaves");
+        //            //Atndence history
+        //            Attendance.Entities.AttendenceInfo objInfo = new Attendance.Entities.AttendenceInfo();
+        //            HiddenField hdnEmpuserid = (HiddenField)grdPayRollIndia.Rows[i].FindControl("hdnEmpuserid");
+        //            Label lblWorkingDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblWorkingDays");
+        //            Label lblAttendDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblAttendDays");
+        //            Label lblLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeaves");
+        //            Label lblNoshow = (Label)grdPayRollIndia.Rows[i].FindControl("lblNoshow");
+        //            Label lblLeavesAvailable = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesAvailable");
+        //            Label lblLeavesUsed = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesUsed");
+        //            Label lblPaidLeavesBalanced = (Label)grdPayRollIndia.Rows[i].FindControl("lblPaidLeavesBalanced");
+        //            Label lblCalLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalLeaves");
                    
-                    objInfo.Mnth = Convert.ToInt32(dt.ToString("MM"));
-                    objInfo.Yr = Convert.ToInt32(dt.ToString("yyyy"));
-                    objInfo.EnterBy=Convert.ToInt32(Session["UserID"]);
-                    objInfo.EnterDate = ISTTime;
-                    objInfo.TotalCalLeaves1 = lblCalLeaves.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblCalLeaves.Text.ToString().Trim());
-                    objInfo.PaidLeavesUsed = lblLeavesUsed.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesUsed.Text.ToString().Trim());
-                    objInfo.PaidLeavesBalanced = lblPaidLeavesBalanced.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblPaidLeavesBalanced.Text.ToString().Trim());
-                    objInfo.PaidLeaves = lblLeavesAvailable.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesAvailable.Text.ToString().Trim());
-                    objInfo.NoShow = lblNoshow.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblNoshow.Text.ToString().Trim());
-                    objInfo.Leaves = lblLeaves.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeaves.Text.ToString().Trim());
-                    objInfo.WorkingDays = lblWorkingDays.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblWorkingDays.Text.ToString().Trim());
-                    objInfo.AttendDays = lblAttendDays.Text.ToString().Trim() == "" ? 0: Convert.ToSingle(lblAttendDays.Text.ToString().Trim());
-                    objInfo.Userid = Convert.ToInt32(hdnEmpuserid.Value);
+        //            objInfo.Mnth = Convert.ToInt32(dt.ToString("MM"));
+        //            objInfo.Yr = Convert.ToInt32(dt.ToString("yyyy"));
+        //            objInfo.EnterBy=Convert.ToInt32(Session["UserID"]);
+        //            objInfo.EnterDate = ISTTime;
+        //            objInfo.TotalCalLeaves1 = lblCalLeaves.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblCalLeaves.Text.ToString().Trim());
+        //            objInfo.PaidLeavesUsed = lblLeavesUsed.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesUsed.Text.ToString().Trim());
+        //            objInfo.PaidLeavesBalanced = lblPaidLeavesBalanced.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblPaidLeavesBalanced.Text.ToString().Trim());
+        //            objInfo.PaidLeaves = lblLeavesAvailable.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesAvailable.Text.ToString().Trim());
+        //            objInfo.NoShow = lblNoshow.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblNoshow.Text.ToString().Trim());
+        //            objInfo.Leaves = lblLeaves.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeaves.Text.ToString().Trim());
+        //            objInfo.WorkingDays = lblWorkingDays.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblWorkingDays.Text.ToString().Trim());
+        //            objInfo.AttendDays = lblAttendDays.Text.ToString().Trim() == "" ? 0: Convert.ToSingle(lblAttendDays.Text.ToString().Trim());
+        //            objInfo.Userid = Convert.ToInt32(hdnEmpuserid.Value);
 
-                    int AtnLogID = obj.SaveAttendanceHistory(objInfo);
+        //            int AtnLogID = obj.SaveAttendanceHistory(objInfo);
 
-                    //Salary history
+        //            //Salary history
 
-                    Label lblCalSalary = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalSalary");
-                    TextBox txtBonus = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtBonus");
-                    TextBox txtIncentives = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtIncentives");
-                    TextBox txtPrevUnpaid = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtPrevUnpaid");
-                    TextBox txtAdvancePaid = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtAdvancePaid");
-                    TextBox txtExpenses = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtExpenses");
-                    TextBox txtLoanDeduct = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtLoanDeduct");
-                    Label lblTotal = (Label)grdPayRollIndia.Rows[i].FindControl("lblTotal");
+        //            Label lblCalSalary = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalSalary");
+        //            TextBox txtBonus = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtBonus");
+        //            TextBox txtIncentives = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtIncentives");
+        //            TextBox txtPrevUnpaid = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtPrevUnpaid");
+        //            TextBox txtAdvancePaid = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtAdvancePaid");
+        //            TextBox txtExpenses = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtExpenses");
+        //            TextBox txtLoanDeduct = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtLoanDeduct");
+        //            Label lblTotal = (Label)grdPayRollIndia.Rows[i].FindControl("lblTotal");
 
 
-                    Attendance.Entities.SalaryInfo objSal = new Attendance.Entities.SalaryInfo();
-                    objSal.AtnLogID = AtnLogID;
-                    objSal.CalSalary = lblCalSalary.Text.Trim() == "" ? 0 : Convert.ToSingle(lblCalSalary.Text.Trim());
-                    objSal.Bonus = txtBonus.Text.Trim() == "" ? 0 : Convert.ToSingle(txtBonus.Text.Trim());
-                    objSal.Incentives = txtIncentives.Text.Trim() == "" ? 0 : Convert.ToSingle(txtIncentives.Text.Trim());
-                    objSal.PrevUnpaid = txtPrevUnpaid.Text.Trim() == "" ? 0 : Convert.ToSingle(txtPrevUnpaid.Text.Trim());
-                    objSal.AdvancePaid = txtAdvancePaid.Text.Trim() == "" ? 0 : Convert.ToSingle(txtAdvancePaid.Text.Trim());
-                    objSal.Expenses = txtExpenses.Text.Trim() == "" ? 0 : Convert.ToSingle(txtExpenses.Text.Trim());
-                    objSal.LoanDeduct = txtLoanDeduct.Text.Trim() == "" ? 0 : Convert.ToSingle(txtLoanDeduct.Text.Trim());
-                    objSal.TotalPay = lblTotal.Text.Trim() == "" ? 0 : Convert.ToSingle(lblTotal.Text.Trim());
-                    objSal.Mnth = objInfo.Mnth;
-                    objSal.Years = objInfo.Yr;
-                    objSal.EnterBy = objInfo.EnterBy;
-                    objSal.EnteredDate = objInfo.EnterDate;
+        //            Attendance.Entities.SalaryInfo objSal = new Attendance.Entities.SalaryInfo();
+        //            objSal.AtnLogID = AtnLogID;
+        //            objSal.CalSalary = lblCalSalary.Text.Trim() == "" ? 0 : Convert.ToSingle(lblCalSalary.Text.Trim());
+        //            objSal.Bonus = txtBonus.Text.Trim() == "" ? 0 : Convert.ToSingle(txtBonus.Text.Trim());
+        //            objSal.Incentives = txtIncentives.Text.Trim() == "" ? 0 : Convert.ToSingle(txtIncentives.Text.Trim());
+        //            objSal.PrevUnpaid = txtPrevUnpaid.Text.Trim() == "" ? 0 : Convert.ToSingle(txtPrevUnpaid.Text.Trim());
+        //            objSal.AdvancePaid = txtAdvancePaid.Text.Trim() == "" ? 0 : Convert.ToSingle(txtAdvancePaid.Text.Trim());
+        //            objSal.Expenses = txtExpenses.Text.Trim() == "" ? 0 : Convert.ToSingle(txtExpenses.Text.Trim());
+        //            objSal.LoanDeduct = txtLoanDeduct.Text.Trim() == "" ? 0 : Convert.ToSingle(txtLoanDeduct.Text.Trim());
+        //            objSal.TotalPay = lblTotal.Text.Trim() == "" ? 0 : Convert.ToSingle(lblTotal.Text.Trim());
+        //            objSal.Mnth = objInfo.Mnth;
+        //            objSal.Years = objInfo.Yr;
+        //            objSal.EnterBy = objInfo.EnterBy;
+        //            objSal.EnteredDate = objInfo.EnterDate;
 
-                    string notes = "";
-                    if (txtBonus.Attributes["notes"] != null)
-                    {
-                        if (txtBonus.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes = txtBonus.Attributes["notes"].ToString().Trim();
-                            notes += "<br>....................<br> Bonus enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    if (txtIncentives.Attributes["notes"] != null)
-                    {
-                        if (txtIncentives.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtIncentives.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Incentives enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    if (txtPrevUnpaid.Attributes["notes"] != null)
-                    {
-                        if (txtPrevUnpaid.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtPrevUnpaid.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Previous unpaid enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    if (txtAdvancePaid.Attributes["notes"] != null)
-                    {
-                        if (txtAdvancePaid.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtAdvancePaid.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Advance paid enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    if (txtExpenses.Attributes["notes"] != null)
-                    {
-                        if (txtExpenses.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtExpenses.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Expenses enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
+        //            string notes = "";
+        //            if (txtBonus.Attributes["notes"] != null)
+        //            {
+        //                if (txtBonus.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes = txtBonus.Attributes["notes"].ToString().Trim();
+        //                    notes += "<br>....................<br> Bonus enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            if (txtIncentives.Attributes["notes"] != null)
+        //            {
+        //                if (txtIncentives.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtIncentives.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Incentives enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            if (txtPrevUnpaid.Attributes["notes"] != null)
+        //            {
+        //                if (txtPrevUnpaid.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtPrevUnpaid.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Previous unpaid enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            if (txtAdvancePaid.Attributes["notes"] != null)
+        //            {
+        //                if (txtAdvancePaid.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtAdvancePaid.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Advance paid enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            if (txtExpenses.Attributes["notes"] != null)
+        //            {
+        //                if (txtExpenses.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtExpenses.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Expenses enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
 
-                    if (txtLoanDeduct.Attributes["notes"] != null)
-                    {
-                        if (txtLoanDeduct.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtLoanDeduct.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Loan deduction enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    objSal.InternalNotes = notes;
-                    bool bnew = obj.SaveSalaryHistory(objSal);
-                }
+        //            if (txtLoanDeduct.Attributes["notes"] != null)
+        //            {
+        //                if (txtLoanDeduct.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtLoanDeduct.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Loan deduction enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            objSal.InternalNotes = notes;
+        //            bool bnew = obj.SaveSalaryHistory(objSal);
+        //        }
 
-                bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+        //        bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
-                if (final)
-                {
-                    btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                    btnSave.CssClass = "btn btn-small btn-warning disabled";
-                    btnFinal.Enabled = false;
-                    btnSave.Enabled = false;
-                    hdnFreeze.Value = "true"; ;
-                    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                }
-                else
-                {
-                    btnFinal.CssClass = "btn btn-small btn-warning";
-                    btnSave.CssClass = "btn btn-small btn-warning";
-                    btnFinal.Enabled = true;
-                    btnSave.Enabled = true;
-                    hdnFreeze.Value = "false";
-                    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                }
+        //        if (final)
+        //        {
+        //            btnFinal.CssClass = "btn btn-small btn-warning disabled";
+        //            btnSave.CssClass = "btn btn-small btn-warning disabled";
+        //            btnFinal.Enabled = false;
+        //            btnSave.Enabled = false;
+        //            hdnFreeze.Value = "true"; ;
+        //            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+        //        }
+        //        else
+        //        {
+        //            btnFinal.CssClass = "btn btn-small btn-warning";
+        //            btnSave.CssClass = "btn btn-small btn-warning";
+        //            btnFinal.Enabled = true;
+        //            btnSave.Enabled = true;
+        //            hdnFreeze.Value = "false";
+        //            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+        //        }
 
-                DataTable dst = GetReportIndia(dt, EndDate, Convert.ToInt32(ddlLocation.SelectedValue), Convert.ToInt32(ddlShift.SelectedValue));
-                lblWeekPayrollReport.Text = "( " + dt.ToString("MM/dd/yyyy") + " - " + EndDate.ToString("MM/dd/yyyy") + " )";
-                GetEditHistory(dt, EndDate);
-              //  lblTotal.Text = "Employee record count: " + dst.Rows.Count.ToString().Trim();
-                lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                grdPayRollIndia.DataSource = dst;
-                grdPayRollIndia.DataBind();
-                Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+        //        DataTable dst = GetReportIndia(dt, EndDate, Convert.ToInt32(ddlLocation.SelectedValue), Convert.ToInt32(ddlShift.SelectedValue));
+        //        lblWeekPayrollReport.Text = "( " + dt.ToString("MM/dd/yyyy") + " - " + EndDate.ToString("MM/dd/yyyy") + " )";
+        //        GetEditHistory(dt, EndDate);
+        //      //  lblTotal.Text = "Employee record count: " + dst.Rows.Count.ToString().Trim();
+        //        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+        //        grdPayRollIndia.DataSource = dst;
+        //        grdPayRollIndia.DataBind();
+        //        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
 
-                grdPayRoll.DataSource = null;
-                grdPayRoll.DataBind();
-                btnSave.Visible = true;
-                btnFinal.Visible = true;
-                btnPrint.Visible = true;
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-        protected void btnFinal_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Report obj = new Report();
-                DateTime dt = Convert.ToDateTime(ViewState["StartRptDt"]);
-                DateTime EndDate = Convert.ToDateTime(ViewState["EndRptDt"]);
-                int locationID = Convert.ToInt32(ddlLocation.SelectedValue);
-                for (int i = 0; i < grdPayRollIndia.Rows.Count; i++)
-                {
-                    comanyname.Text = CommonFiles.ComapnyName;
-                    string timezone = "";
-                    if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
-                    {
-                        timezone = "Eastern Standard Time";
-                    }
-                    else
-                    {
-                        timezone = "India Standard Time";
-                    }
-                    DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+        //        grdPayRoll.DataSource = null;
+        //        grdPayRoll.DataBind();
+        //        btnSave.Visible = true;
+        //        btnFinal.Visible = true;
+        //        btnPrint.Visible = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+        //}
+        //protected void btnFinal_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        Report obj = new Report();
+        //        DateTime dt = Convert.ToDateTime(ViewState["StartRptDt"]);
+        //        DateTime EndDate = Convert.ToDateTime(ViewState["EndRptDt"]);
+        //        int locationID = Convert.ToInt32(ddlLocation.SelectedValue);
+        //        for (int i = 0; i < grdPayRollIndia.Rows.Count; i++)
+        //        {
+        //            comanyname.Text = CommonFiles.ComapnyName;
+        //            string timezone = "";
+        //            if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+        //            {
+        //                timezone = "Eastern Standard Time";
+        //            }
+        //            else
+        //            {
+        //                timezone = "India Standard Time";
+        //            }
+        //            DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
 
-                    //Atndence history
-                    Attendance.Entities.AttendenceInfo objInfo = new Attendance.Entities.AttendenceInfo();
-                    HiddenField hdnEmpuserid = (HiddenField)grdPayRollIndia.Rows[i].FindControl("hdnEmpuserid");
-                    Label lblWorkingDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblWorkingDays");
-                    Label lblAttendDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblAttendDays");
-                    Label lblLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeaves");
-                    Label lblNoshow = (Label)grdPayRollIndia.Rows[i].FindControl("lblNoshow");
-                    Label lblLeavesAvailable = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesAvailable");
-                    Label lblLeavesUsed = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesUsed");
-                    Label lblPaidLeavesBalanced = (Label)grdPayRollIndia.Rows[i].FindControl("lblPaidLeavesBalanced");
-                    Label lblCalLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalLeaves");
+        //            //Atndence history
+        //            Attendance.Entities.AttendenceInfo objInfo = new Attendance.Entities.AttendenceInfo();
+        //            HiddenField hdnEmpuserid = (HiddenField)grdPayRollIndia.Rows[i].FindControl("hdnEmpuserid");
+        //            Label lblWorkingDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblWorkingDays");
+        //            Label lblAttendDays = (Label)grdPayRollIndia.Rows[i].FindControl("lblAttendDays");
+        //            Label lblLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeaves");
+        //            Label lblNoshow = (Label)grdPayRollIndia.Rows[i].FindControl("lblNoshow");
+        //            Label lblLeavesAvailable = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesAvailable");
+        //            Label lblLeavesUsed = (Label)grdPayRollIndia.Rows[i].FindControl("lblLeavesUsed");
+        //            Label lblPaidLeavesBalanced = (Label)grdPayRollIndia.Rows[i].FindControl("lblPaidLeavesBalanced");
+        //            Label lblCalLeaves = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalLeaves");
                    
-                    objInfo.Mnth = Convert.ToInt32(dt.ToString("MM"));
-                    objInfo.Yr = Convert.ToInt32(dt.ToString("yyyy"));
-                    objInfo.EnterBy = Convert.ToInt32(Session["UserID"]);
-                    objInfo.EnterDate = ISTTime;
-                    objInfo.TotalCalLeaves1 = lblCalLeaves.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblCalLeaves.Text.ToString().Trim());
-                    objInfo.PaidLeavesUsed = lblLeavesUsed.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesUsed.Text.ToString().Trim());
-                    objInfo.PaidLeavesBalanced = lblPaidLeavesBalanced.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblPaidLeavesBalanced.Text.ToString().Trim());
-                    objInfo.PaidLeaves = lblLeavesAvailable.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesAvailable.Text.ToString().Trim());
-                    objInfo.NoShow = lblNoshow.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblNoshow.Text.ToString().Trim());
-                    objInfo.Leaves = lblLeaves.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeaves.Text.ToString().Trim());
-                    objInfo.WorkingDays = lblWorkingDays.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblWorkingDays.Text.ToString().Trim());
-                    objInfo.AttendDays = lblAttendDays.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblAttendDays.Text.ToString().Trim());
-                    objInfo.Userid = Convert.ToInt32(hdnEmpuserid.Value);
+        //            objInfo.Mnth = Convert.ToInt32(dt.ToString("MM"));
+        //            objInfo.Yr = Convert.ToInt32(dt.ToString("yyyy"));
+        //            objInfo.EnterBy = Convert.ToInt32(Session["UserID"]);
+        //            objInfo.EnterDate = ISTTime;
+        //            objInfo.TotalCalLeaves1 = lblCalLeaves.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblCalLeaves.Text.ToString().Trim());
+        //            objInfo.PaidLeavesUsed = lblLeavesUsed.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesUsed.Text.ToString().Trim());
+        //            objInfo.PaidLeavesBalanced = lblPaidLeavesBalanced.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblPaidLeavesBalanced.Text.ToString().Trim());
+        //            objInfo.PaidLeaves = lblLeavesAvailable.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeavesAvailable.Text.ToString().Trim());
+        //            objInfo.NoShow = lblNoshow.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblNoshow.Text.ToString().Trim());
+        //            objInfo.Leaves = lblLeaves.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblLeaves.Text.ToString().Trim());
+        //            objInfo.WorkingDays = lblWorkingDays.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblWorkingDays.Text.ToString().Trim());
+        //            objInfo.AttendDays = lblAttendDays.Text.ToString().Trim() == "" ? 0 : Convert.ToSingle(lblAttendDays.Text.ToString().Trim());
+        //            objInfo.Userid = Convert.ToInt32(hdnEmpuserid.Value);
 
-                    int AtnLogID = obj.SaveAttendanceHistory(objInfo);
+        //            int AtnLogID = obj.SaveAttendanceHistory(objInfo);
 
-                    String strHostName = Request.UserHostAddress.ToString();
-                    string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
-                    bool bnewp = obj.UpdatePaidLeavesDetAfterFinalPayroll(objInfo, dt, strIp);
-                    //Salary history
+        //            String strHostName = Request.UserHostAddress.ToString();
+        //            string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
+        //            bool bnewp = obj.UpdatePaidLeavesDetAfterFinalPayroll(objInfo, dt, strIp);
+        //            //Salary history
 
-                    Label lblCalSalary = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalSalary");
-                    TextBox txtBonus = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtBonus");
-                    TextBox txtIncentives = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtIncentives");
-                    TextBox txtPrevUnpaid = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtPrevUnpaid");
-                    TextBox txtAdvancePaid = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtAdvancePaid");
-                    TextBox txtExpenses = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtExpenses");
-                    TextBox txtLoanDeduct = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtLoanDeduct");
-                    Label lblTotal = (Label)grdPayRollIndia.Rows[i].FindControl("lblTotal");
+        //            Label lblCalSalary = (Label)grdPayRollIndia.Rows[i].FindControl("lblCalSalary");
+        //            TextBox txtBonus = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtBonus");
+        //            TextBox txtIncentives = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtIncentives");
+        //            TextBox txtPrevUnpaid = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtPrevUnpaid");
+        //            TextBox txtAdvancePaid = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtAdvancePaid");
+        //            TextBox txtExpenses = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtExpenses");
+        //            TextBox txtLoanDeduct = (TextBox)grdPayRollIndia.Rows[i].FindControl("txtLoanDeduct");
+        //            Label lblTotal = (Label)grdPayRollIndia.Rows[i].FindControl("lblTotal");
 
-                    Attendance.Entities.SalaryInfo objSal = new Attendance.Entities.SalaryInfo();
-                    objSal.AtnLogID = AtnLogID;
-                    objSal.CalSalary = lblCalSalary.Text.Trim() == "" ? 0 : Convert.ToSingle(lblCalSalary.Text.Trim());
-                    objSal.Bonus = txtBonus.Text.Trim() == "" ? 0 : Convert.ToSingle(txtBonus.Text.Trim());
-                    objSal.Incentives = txtIncentives.Text.Trim() == "" ? 0 : Convert.ToSingle(txtIncentives.Text.Trim());
-                    objSal.PrevUnpaid = txtPrevUnpaid.Text.Trim() == "" ? 0 : Convert.ToSingle(txtPrevUnpaid.Text.Trim());
-                    objSal.AdvancePaid = txtAdvancePaid.Text.Trim() == "" ? 0 : Convert.ToSingle(txtAdvancePaid.Text.Trim());
-                    objSal.Expenses = txtExpenses.Text.Trim() == "" ? 0 : Convert.ToSingle(txtExpenses.Text.Trim());
-                    objSal.LoanDeduct = txtLoanDeduct.Text.Trim() == "" ? 0 : Convert.ToSingle(txtLoanDeduct.Text.Trim());
-                    objSal.TotalPay = lblTotal.Text.Trim() == "" ? 0 : Convert.ToSingle(lblTotal.Text.Trim());
-                    objSal.Mnth = objInfo.Mnth;
-                    objSal.Years = objInfo.Yr;
-                    objSal.EnterBy = objInfo.EnterBy;
-                    objSal.EnteredDate = objInfo.EnterDate;
+        //            Attendance.Entities.SalaryInfo objSal = new Attendance.Entities.SalaryInfo();
+        //            objSal.AtnLogID = AtnLogID;
+        //            objSal.CalSalary = lblCalSalary.Text.Trim() == "" ? 0 : Convert.ToSingle(lblCalSalary.Text.Trim());
+        //            objSal.Bonus = txtBonus.Text.Trim() == "" ? 0 : Convert.ToSingle(txtBonus.Text.Trim());
+        //            objSal.Incentives = txtIncentives.Text.Trim() == "" ? 0 : Convert.ToSingle(txtIncentives.Text.Trim());
+        //            objSal.PrevUnpaid = txtPrevUnpaid.Text.Trim() == "" ? 0 : Convert.ToSingle(txtPrevUnpaid.Text.Trim());
+        //            objSal.AdvancePaid = txtAdvancePaid.Text.Trim() == "" ? 0 : Convert.ToSingle(txtAdvancePaid.Text.Trim());
+        //            objSal.Expenses = txtExpenses.Text.Trim() == "" ? 0 : Convert.ToSingle(txtExpenses.Text.Trim());
+        //            objSal.LoanDeduct = txtLoanDeduct.Text.Trim() == "" ? 0 : Convert.ToSingle(txtLoanDeduct.Text.Trim());
+        //            objSal.TotalPay = lblTotal.Text.Trim() == "" ? 0 : Convert.ToSingle(lblTotal.Text.Trim());
+        //            objSal.Mnth = objInfo.Mnth;
+        //            objSal.Years = objInfo.Yr;
+        //            objSal.EnterBy = objInfo.EnterBy;
+        //            objSal.EnteredDate = objInfo.EnterDate;
 
-                    string notes = "";
-                    if (txtBonus.Attributes["notes"] != null)
-                    {
-                        if (txtBonus.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes = txtBonus.Attributes["notes"].ToString().Trim();
-                            notes += "<br>....................<br> Bonus enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    if (txtIncentives.Attributes["notes"] != null)
-                    {
-                        if (txtIncentives.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtIncentives.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Incentives enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    if (txtPrevUnpaid.Attributes["notes"] != null)
-                    {
-                        if (txtPrevUnpaid.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtPrevUnpaid.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Previous unpaid enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    if (txtAdvancePaid.Attributes["notes"] != null)
-                    {
-                        if (txtAdvancePaid.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtAdvancePaid.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Advance paid enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    if (txtExpenses.Attributes["notes"] != null)
-                    {
-                        if (txtExpenses.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtExpenses.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Expenses enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
+        //            string notes = "";
+        //            if (txtBonus.Attributes["notes"] != null)
+        //            {
+        //                if (txtBonus.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes = txtBonus.Attributes["notes"].ToString().Trim();
+        //                    notes += "<br>....................<br> Bonus enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            if (txtIncentives.Attributes["notes"] != null)
+        //            {
+        //                if (txtIncentives.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtIncentives.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Incentives enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            if (txtPrevUnpaid.Attributes["notes"] != null)
+        //            {
+        //                if (txtPrevUnpaid.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtPrevUnpaid.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Previous unpaid enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            if (txtAdvancePaid.Attributes["notes"] != null)
+        //            {
+        //                if (txtAdvancePaid.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtAdvancePaid.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Advance paid enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            if (txtExpenses.Attributes["notes"] != null)
+        //            {
+        //                if (txtExpenses.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtExpenses.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Expenses enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
 
-                    if (txtLoanDeduct.Attributes["notes"] != null)
-                    {
-                        if (txtLoanDeduct.Attributes["notes"].ToString().Trim() != "")
-                        {
-                            notes += txtLoanDeduct.Attributes["notes"].ToString();
-                            notes += "<br>....................<br> Loan deduction enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
-                        }
-                    }
-                    objSal.InternalNotes = notes;
-                    bool bnew = obj.SaveSalaryHistory(objSal);
+        //            if (txtLoanDeduct.Attributes["notes"] != null)
+        //            {
+        //                if (txtLoanDeduct.Attributes["notes"].ToString().Trim() != "")
+        //                {
+        //                    notes += txtLoanDeduct.Attributes["notes"].ToString();
+        //                    notes += "<br>....................<br> Loan deduction enter by" + lblEmployyName.Text.Trim() + " at " + objSal.EnteredDate + "<br>";
+        //                }
+        //            }
+        //            objSal.InternalNotes = notes;
+        //            bool bnew = obj.SaveSalaryHistory(objSal);
 
-                }
-                bool bnewf = obj.FinalizePayrollReport(locationID, dt, Convert.ToInt32(Session["UserID"]),Convert.ToInt32(ddlShift.SelectedValue));
-                bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+        //        }
+        //        bool bnewf = obj.FinalizePayrollReport(locationID, dt, Convert.ToInt32(Session["UserID"]),Convert.ToInt32(ddlShift.SelectedValue));
+        //        bool final = obj.GetFinalPayrollDate(dt, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
-                if (final)
-                {
-                    btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                    btnSave.CssClass = "btn btn-small btn-warning disabled";
-                    btnFinal.Enabled = false;
-                    btnSave.Enabled = false;
-                    hdnFreeze.Value = "true"; ;
-                    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                }
-                else
-                {
-                    btnFinal.CssClass = "btn btn-small btn-warning";
-                    btnSave.CssClass = "btn btn-small btn-warning";
-                    btnFinal.Enabled = true;
-                    btnSave.Enabled = true;
-                    hdnFreeze.Value = "false";
-                    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                }
+        //        if (final)
+        //        {
+        //            btnFinal.CssClass = "btn btn-small btn-warning disabled";
+        //            btnSave.CssClass = "btn btn-small btn-warning disabled";
+        //            btnFinal.Enabled = false;
+        //            btnSave.Enabled = false;
+        //            hdnFreeze.Value = "true"; ;
+        //            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+        //        }
+        //        else
+        //        {
+        //            btnFinal.CssClass = "btn btn-small btn-warning";
+        //            btnSave.CssClass = "btn btn-small btn-warning";
+        //            btnFinal.Enabled = true;
+        //            btnSave.Enabled = true;
+        //            hdnFreeze.Value = "false";
+        //            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+        //        }
 
-                DataTable dst = GetReportIndia(dt, EndDate, Convert.ToInt32(ddlLocation.SelectedValue),Convert.ToInt32(ddlShift.SelectedValue));
-                lblWeekPayrollReport.Text = "( " + dt.ToString("MM/dd/yyyy") + " - " + EndDate.ToString("MM/dd/yyyy") + " )";
-                GetEditHistory(dt, EndDate);
+        //        DataTable dst = GetReportIndia(dt, EndDate, Convert.ToInt32(ddlLocation.SelectedValue),Convert.ToInt32(ddlShift.SelectedValue));
+        //        lblWeekPayrollReport.Text = "( " + dt.ToString("MM/dd/yyyy") + " - " + EndDate.ToString("MM/dd/yyyy") + " )";
+        //        GetEditHistory(dt, EndDate);
              
-                //lblTotal.Text = "Employee record count: " + dst.Rows.Count.ToString().Trim();
-                lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
-                grdPayRollIndia.DataSource = dst;
-                grdPayRollIndia.DataBind();
-                Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
+        //        //lblTotal.Text = "Employee record count: " + dst.Rows.Count.ToString().Trim();
+        //        lblReportDate.Text = "Report generated at  <b>" + Convert.ToDateTime(lblDate2.Text).ToString("MM/dd/yyyy hh:mm:ss tt") + "</b>  by  <b>" + Session["EmpName"].ToString().Trim() + "</b>";
+        //        grdPayRollIndia.DataSource = dst;
+        //        grdPayRollIndia.DataBind();
+        //        Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
 
-                btnSave.Visible = true;
-                btnFinal.Visible = true;
-                btnPrint.Visible = true;
-                grdPayRoll.DataSource = null;
-                grdPayRoll.DataBind();
+        //        btnSave.Visible = true;
+        //        btnFinal.Visible = true;
+        //        btnPrint.Visible = true;
+        //        grdPayRoll.DataSource = null;
+        //        grdPayRoll.DataBind();
 
-                //DataTable xmlDt = (DataTable)grdPayRollIndia.DataSource;
-                //xmlDt.TableName = "Payslip";
-                //xmlDt.WriteXml("/myxml.xml", true);
+        //        //DataTable xmlDt = (DataTable)grdPayRollIndia.DataSource;
+        //        //xmlDt.TableName = "Payslip";
+        //        //xmlDt.WriteXml("/myxml.xml", true);
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-        }
+        //    }
+        //}
         private void GetReport(DateTime StartDate, DateTime EndTime, int userid, string Location,int shiftID)
         {
             try
@@ -1829,7 +1893,22 @@ namespace Attendance
             {
             }
         }
-        private DataTable GetReportIndia(DateTime StartDate, DateTime EndTime, int LocationID, int shiftID)
+
+        private DataTable GetReportIndia(DateTime StartDate, DateTime EndTime, int userid, string Location, int shiftID)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                Attendance.BAL.Report obj = new Report();
+                DataSet ds = obj.GetPayrollReport(StartDate, EndTime, userid, Location, shiftID);
+                dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+            }
+            return dt;
+        }
+        private DataTable GetReportIndia1(DateTime StartDate, DateTime EndTime, int LocationID, int shiftID)
         {
 
             DataTable dtPayroll = new DataTable();
@@ -3061,27 +3140,27 @@ namespace Attendance
                             lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                         }
 
-                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        //bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
-                        if (final)
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                            btnSave.CssClass = "btn btn-small btn-warning disabled";
-                            btnFinal.Enabled = false;
-                            btnSave.Enabled = false;
-                            hdnFreeze.Value = "true"; ;
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                        }
-                        else
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning";
-                            btnSave.CssClass = "btn btn-small btn-warning";
-                            btnFinal.Enabled = true;
-                            btnSave.Enabled = true;
-                            hdnFreeze.Value = "false";
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                        }
-                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        //if (final)
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnSave.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnFinal.Enabled = false;
+                        //    btnSave.Enabled = false;
+                        //    hdnFreeze.Value = "true"; ;
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                        //}
+                        //else
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning";
+                        //    btnSave.CssClass = "btn btn-small btn-warning";
+                        //    btnFinal.Enabled = true;
+                        //    btnSave.Enabled = true;
+                        //    hdnFreeze.Value = "false";
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                        //}
+                        DataTable dt = GetReportIndia(MonthStart, MonthEnd,0,ddlLocation.SelectedItem.Text, Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
                         if (dt.Rows.Count > 0)
@@ -3093,8 +3172,7 @@ namespace Attendance
                             Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
                             grdPayRoll.DataSource = null;
                             grdPayRoll.DataBind();
-                            btnSave.Visible = true;
-                            btnFinal.Visible = true;
+                          
                             btnPrint.Visible = true;
                             lblGrdNodata.Text = "";
                             dvNodata.Style["display"] = "none";
@@ -3131,8 +3209,7 @@ namespace Attendance
                         ViewState["StartRptDt"] = EndDate;
                         ViewState["EndRptDt"] = StartDate.AddDays(-1);
                         GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
-                        btnSave.Visible = false;
-                        btnFinal.Visible = false;
+                       
                         btnPrint.Visible = false;
                         rppayslip.DataSource = null;
                         rppayslip.DataBind();
@@ -3167,29 +3244,29 @@ namespace Attendance
                             lblFreeze.Text = "This is tentative attendance report.Some or part of the attendance not yet freezed";
                         }
 
-                        bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        //bool final = obj.GetFinalPayrollDate(MonthStart, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
 
-                        if (final)
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning disabled";
-                            btnSave.CssClass = "btn btn-small btn-warning disabled";
-                            btnFinal.Enabled = false;
-                            btnSave.Enabled = false;
-                            hdnFreeze.Value = "true"; ;
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
-                        }
-                        else
-                        {
-                            btnFinal.CssClass = "btn btn-small btn-warning";
-                            btnSave.CssClass = "btn btn-small btn-warning";
-                            btnFinal.Enabled = true;
-                            btnSave.Enabled = true;
-                            hdnFreeze.Value = "false";
-                            // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
-                        }
+                        //if (final)
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnSave.CssClass = "btn btn-small btn-warning disabled";
+                        //    btnFinal.Enabled = false;
+                        //    btnSave.Enabled = false;
+                        //    hdnFreeze.Value = "true"; ;
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "delEditLabelCss();", true);
+                        //}
+                        //else
+                        //{
+                        //    btnFinal.CssClass = "btn btn-small btn-warning";
+                        //    btnSave.CssClass = "btn btn-small btn-warning";
+                        //    btnFinal.Enabled = true;
+                        //    btnSave.Enabled = true;
+                        //    hdnFreeze.Value = "false";
+                        //    // System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "addEditLabelCss();", true);
+                        //}
 
 
-                        DataTable dt = GetReportIndia(MonthStart, MonthEnd, Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlShift.SelectedValue));
+                        DataTable dt = GetReportIndia(MonthStart, MonthEnd,0, ddlLocation.SelectedItem.Value, Convert.ToInt32(ddlShift.SelectedValue));
                         lblWeekPayrollReport.Text = "( " + MonthStart.ToString("MM/dd/yyyy") + " - " + MonthEnd.ToString("MM/dd/yyyy") + " )";
                         GetEditHistory(MonthStart, MonthEnd);
                         if (dt.Rows.Count > 0)
@@ -3201,8 +3278,7 @@ namespace Attendance
                             Session["Indiapayroll"] = (DataTable)grdPayRollIndia.DataSource;
                             grdPayRoll.DataSource = null;
                             grdPayRoll.DataBind();
-                            btnSave.Visible = true;
-                            btnFinal.Visible = true;
+                           
                             btnPrint.Visible = true;
                             lblGrdNodata.Text = "";
                             dvNodata.Style["display"] = "none";
@@ -3241,8 +3317,7 @@ namespace Attendance
                         ViewState["StartRptDt"] = EndDate;
                         ViewState["EndRptDt"] = StartDate.AddDays(-1);
                         GetReport(EndDate, StartDate.AddDays(-1), 0, ddlLocation.SelectedItem.Text.Trim(), Convert.ToInt32(ddlShift.SelectedValue));
-                        btnSave.Visible = false;
-                        btnFinal.Visible = false;
+                       
                         btnPrint.Visible = false;
                         rppayslip.DataSource = null;
                         rppayslip.DataBind();

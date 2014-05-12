@@ -1184,6 +1184,15 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSignInTime;
         
         /// <summary>
+        /// hdnMultipleSignoutTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSignoutTime;
+        
+        /// <summary>
         /// hdnMultipleSchInTime control.
         /// </summary>
         /// <remarks>
@@ -1200,6 +1209,15 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnMultipleSchOutTime;
+        
+        /// <summary>
+        /// hdnMultipleOffset control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnMultipleOffset;
         
         /// <summary>
         /// hdnMultipleLength control.

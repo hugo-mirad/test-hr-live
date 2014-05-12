@@ -52,11 +52,12 @@ namespace Attendance.BAL
                 while (dr.Read())
                 {
                     Attendance.Entities.MultipleLogininfo objInfo = new Attendance.Entities.MultipleLogininfo();
-                    objInfo.LoginDate = dr["Logindate"].ToString() == "" ? "" : dr["Logindate"].ToString() == "NULL" ? "" : Convert.ToDateTime(dr["Logindate"].ToString()).ToString("MM/dd/yyyy")=="01/01/1900"?"":Convert.ToDateTime(dr["Logindate"].ToString()).ToString("hh:mm tt");
-                    objInfo.LogoutDate = dr["Logoutdate"].ToString() == "" ? "" : dr["Logoutdate"].ToString() == "NULL" ? "" : Convert.ToDateTime(dr["Logoutdate"].ToString()).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(dr["Logoutdate"].ToString()).ToString("hh:mm tt"); ;
+                    objInfo.LoginDate = dr["Logindate"].ToString() == "" ? "" : dr["Logindate"].ToString() == "NULL" ? "" : Convert.ToDateTime(dr["Logindate"].ToString()).ToString("MM/dd/yyyy")=="01/01/1900"?"":Convert.ToDateTime(dr["Logindate"].ToString()).ToString("MM/dd/yyyy hh:mm tt");
+                    objInfo.LogoutDate = dr["Logoutdate"].ToString() == "" ? "" : dr["Logoutdate"].ToString() == "NULL" ? "" : Convert.ToDateTime(dr["Logoutdate"].ToString()).ToString("MM/dd/yyyy") == "01/01/1900" ? "" : Convert.ToDateTime(dr["Logoutdate"].ToString()).ToString("MM/dd/yyyy hh:mm tt"); ;
                     objInfo.Loguserid = Convert.ToInt32(dr["LogUserID"]);
                     objInfo.SchStart = dr["startTime"].ToString();
                     objInfo.SchEnd = dr["EndTime"].ToString();
+                    objInfo.Offset = Convert.ToInt32(dr["offset"].ToString());
                     obj.Add(objInfo);
                 }
                con.Close();

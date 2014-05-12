@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminReports.aspx.cs" Inherits="Attendance.AdminReports" enableEventValidation="false" %>
-
+    
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -466,16 +466,6 @@
            
          
          
-          
-           
-           
-           
-           
-           
-           
-         
-        
-        
            $('.hideColumn').each(function(){              
                 $(this).prev().hide();
                 $(this).prev().prev().hide();                  
@@ -749,7 +739,7 @@ function clearDisposableItems( sender , args ) {
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
                                         </li> 
-                                         <li>
+                                         <li style="display:none;">
                                                 <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management"
                                                     PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
                                             </li>
@@ -943,7 +933,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblMonIn" runat="server" Font-Underline="False" Text='<%#Eval("MonSignIn")%>'
                                    logUid='<%#Eval("MonLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("MonSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("MonSignIn")%>' signout='<%#Eval("MonSignOut")%>' offset='<%#Eval("Monoffset")%>'
                                     schOut='<%#Eval("MonSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                     <asp:HiddenField ID="hdnLoguserID" runat="server" Value='<%#Eval("MonLogUserID")%>' />
                                 <asp:HiddenField ID="hdnMonSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "MonLoginNotes"))%>' />
@@ -986,7 +976,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblTueIn" runat="server" Font-Underline="False" Text='<%#Eval("TueSignIn")%>'
                                      logUid='<%#Eval("TueLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("TueSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("TueSignIn")%>' signout='<%#Eval("TueSignOut")%>' offset='<%#Eval("Tueoffset")%>'
                                     schOut='<%#Eval("TueSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnTueSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "TueLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnTueSignInFlag" runat="server" Value='<%#Eval("TueLoginFlag")%>' />
@@ -1028,7 +1018,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblWedIn" runat="server" Font-Underline="False" Text='<%#Eval("WedSignIn")%>'
                                      logUid='<%#Eval("WedLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("WedSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("WedSignIn")%>' signout='<%#Eval("WedSignOut")%>' offset='<%#Eval("Wedoffset")%>'
                                     schOut='<%#Eval("WedSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnWedSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "WedLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnWedSignInFlag" runat="server" Value='<%#Eval("WedLoginFlag")%>' />
@@ -1072,7 +1062,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblThuIn" runat="server" Font-Underline="False" Text='<%#Eval("ThuSignIn")%>'
                                      logUid='<%#Eval("ThuLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("ThuSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("ThuSignIn")%>' signout='<%#Eval("ThuSignOut")%>' offset='<%#Eval("Thuoffset")%>'
                                     schOut='<%#Eval("ThuSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnThuSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "ThuLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnThuSignInFlag" runat="server" Value='<%#Eval("ThuLoginFlag")%>' />
@@ -1115,7 +1105,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblFriIn" runat="server" Font-Underline="False" Text='<%#Eval("FriSignIn")%>'
                                     logUid='<%#Eval("FriLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("FriSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("FriSignIn")%>' signout='<%#Eval("FriSignOut")%>' offset='<%#Eval("Frioffset")%>'
                                     schOut='<%#Eval("FriSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnFriSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "FriLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnFriSignInFlag" runat="server" Value='<%#Eval("FriLoginFlag")%>' />
@@ -1161,7 +1151,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblSatIn" runat="server" Font-Underline="False" Text='<%#Eval("SatSignIn")%>'
                                     logUid='<%#Eval("SatLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("SatSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("SatSignIn")%>' signout='<%#Eval("SatSignOut")%>' offset='<%#Eval("Satoffset")%>'
                                     schOut='<%#Eval("SatSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnSatSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SatLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSatSignInFlag" runat="server" Value='<%#Eval("SatLoginFlag")%>' />
@@ -1203,7 +1193,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblSunIn" runat="server" Font-Underline="False" Text='<%#Eval("SunSignIn")%>'
                                      logUid='<%#Eval("SunLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("SunSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("SunSignIn")%>' signout='<%#Eval("SunSignOut")%>' offset='<%#Eval("Sunoffset")%>'
                                     schOut='<%#Eval("SunSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnSunSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SunLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSunSignInFlag" runat="server" Value='<%#Eval("SunLoginFlag")%>' />
@@ -1968,9 +1958,10 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnMultipleEmpID" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleEditLogUserID" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleSignInTime" runat="server" />
-                              <%--  <asp:HiddenField ID="hdnMultipleSignoutTime" runat="server" />--%>
+                                <asp:HiddenField ID="hdnMultipleSignoutTime" runat="server" />
                                   <asp:HiddenField ID="hdnMultipleSchInTime" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleSchOutTime" runat="server" />
+                                 <asp:HiddenField ID="hdnMultipleOffset" runat="server" />
                               <%--  <asp:HiddenField ID="hdnMultipleSignInHrs" runat="server" />--%>
                                <%-- <asp:HiddenField ID="hdnMultipleSignOutHrs" runat="server" />--%>
                              
@@ -2108,6 +2099,8 @@ function clearDisposableItems( sender , args ) {
             
                     // txtMultipleSignIn txtMultipleSignOut
                 // For Single  -------------------------------------------------------------------------------
+                  
+                  /*
                     $('#txtMultipleSignIn').live('focus',function(){
                         if($(this).hasClass('hasDatepicker')){
                             $(this).timepicker( "destroy" );
@@ -2150,6 +2143,11 @@ function clearDisposableItems( sender , args ) {
                     })
                     
                     
+                    
+                    
+                    
+                    
+                    
                     $('#txtMultipleSignOut').live('focus',function(){
                         if($(this).hasClass('hasDatepicker')){
                             $(this).timepicker( "destroy" );
@@ -2164,97 +2162,126 @@ function clearDisposableItems( sender , args ) {
                         if( $.trim( $('#txtMultipleSignIn').val() )  == '' ){
                             //var maxTime = popDate+' 12:00 AM';  
                              $(this).val('')
-                        }else{
-                            var maxTime = popDate+' '+$.trim( $('#txtMultipleSignIn').val() );  
-                            
+                      }else{
+                            var minDateTime = popDate+' '+$.trim( $('#txtMultipleSignIn').val() ); 
+                            var maxDateTime = popDate+' 11:59 PM';
+                            if(popDate == $.trim($('#hdnTodaydt').val())){
+                                maxDateTime = $.trim($('#hdnTodaydt').val())+' '+$.trim( $('.cTime b').text() ); 
+                            }
+                             
+                            //console.log(minDateTime, maxDateTime);
                              $(this).timepicker({                   
                                 timeFormat: "hh:mm TT" ,
-                                minDate: new Date(maxTime)                       
+                                 minDateTime: new Date(minDateTime),
+                                 maxDateTime: new Date(maxDateTime)                          
                             });
-                        }                                         
-                           
-                        
-                        
-                        
-                                               
+                        }                                          
+                    
                     });
                     
-                    
-                    
+                    */
                     
            // For Multiple  ----------------------------------------------------------------
-                    $('.sIn').live('focus',function(){
-                    
-                        if($(this).hasClass('hasDatepicker')){
-                            $(this).timepicker( "destroy" );
-                            $(this).removeClass("hasDatepicker")
-                        }
+           
+                    $('.sIn').live('click',function(e){             
+                       e.stopPropagation();
+                       e.preventDefault();
+                             
+                             
+                              $('.sIn, .sOut').datetimepicker('destroy');
+                               $('.sIn, .sOut').removeClass('hasDatepicker');               
                         
-                    
                         if($(this).closest('tr').index() > 1){    
                             var cDate = $.trim($(this).attr('date'))                    
-                            var minTime = cDate+' '+$(this).closest('tr').prev().children('td:eq(2)').children('input.sOut').val();
+                            var minTime = $(this).closest('tr').prev().children('td:eq(2)').children('input.sOut').val();
                             //var maxTime = cDate+' '+$(this).parent().next().children('input.sOut').val(); 
                             
+                            if(!minTime || minTime == null || minTime == ''){
+                                var minTime = cDate+' 12:00 AM';
+                            }
                             
-                             if($.trim($(this).parent().next().children('input.sOut').val()) == '' ){
-                                var maxTime = cDate+' 11:59 PM';  
+                            
+                           
+                            
+                            if($.trim($(this).parent().next().children('input.sOut').val()) == '' ){
+                                // var maxTime = cDate+' 11:59 PM';    -----------------------------------------------                            
+                                var maxTime = new Date(cDate+' 11:59 PM');               
+                                maxTime.setDate(maxTime.getDate()+1);
+            
                            }else{
-                                var maxTime = cDate+' '+$(this).parent().next().children('input.sOut').val();  
+                                var maxTime = $(this).parent().next().children('input.sOut').val();  
                            }
-                                                  
-                            $(this).timepicker({
-                                timeOnly: true,                   
+                           
+                          
+                            var th =   $(this);             
+                            $(this).datetimepicker({                                                 
                                 timeFormat: "hh:mm TT",                            
-                                minDate: new Date(minTime),
-                                maxDate: new Date(maxTime)             
+                                minDateTime: new Date(minTime),
+                                maxDateTime: new Date(maxTime)            
                             }); 
+                            th.focus();
                             
                         }else{
                            var cDate = $.trim($(this).attr('date'))  
                            
-                           if($.trim($(this).parent().next().children('input.sOut').val()) == '' ){
-                                var maxTime = cDate+' 11:59 PM';  
+                           if($.trim($(this).parent().next().children('input.sOut').val()) == '' ){                                
+                                var maxTime = new Date(cDate+' 11:59 PM');               
+                                maxTime.setDate(maxTime.getDate()+1);
+                                  
                            }else{
-                                var maxTime = cDate+' '+$(this).parent().next().children('input.sOut').val();  
+                                var maxTime = $(this).parent().next().children('input.sOut').val();  
                            }                                         
                            
-                           $(this).timepicker({                   
+                         
+                           var th =   $(this); 
+                           $(this).datetimepicker({                   
                                 timeFormat: "hh:mm TT" ,
-                                maxDate: new Date(maxTime)                       
+                                minDateTime: new Date(cDate),
+                                maxDateTime: new Date(maxTime)                     
                             }); 
+                            th.focus();
                         }
-                       
+                        
                    })
                
                     
                
-                    $('.sOut').live('focus',function(){ 
+                    $('.sOut').live('click',function(e){ 
+                     
+                        e.stopPropagation();
+                       e.preventDefault();
+                        
+                        $('.sIn, .sOut').datetimepicker('destroy');
+                               $('.sIn, .sOut').removeClass('hasDatepicker');     
+                        
                         
                         if($.trim($(this).parent().prev().children('input.sIn').val()) == ''){
                             $(this).val('')
                         }
-                        
-                        
-                         if($(this).hasClass('hasDatepicker')){
-                            $(this).timepicker( "destroy" );
-                            $(this).removeClass("hasDatepicker")
-                        }                  
+                                                                                       
                         if($(this).closest('tr').index() <  ($(this).closest('table').find('tr').length-1)){    
                             var cDate = $.trim($(this).attr('date'));  
                             
                             if($.trim($(this).parent().prev().children('input.sIn').val()) == ''){
                                 $(this).val('')
-                            }else{  
-                                              
-                                var minTime = cDate+' '+$(this).parent().prev().children('input.sIn').val();
-                                var maxTime = cDate+' '+$(this).closest('tr').next().children('td:eq(1)').children('input.sIn').val();                      
-                                $(this).timepicker({
-                                    timeOnly: true,                   
+                            }else{                                            
+                                var minTime = $(this).parent().prev().children('input.sIn').val();
+                                var maxTime = $(this).closest('tr').next().children('td:eq(1)').children('input.sIn').val();                                 
+                                
+                                
+                                 if(!maxTime || maxTime == null || maxTime == ''){                                        
+                                    var maxTime = new Date(cDate+' 11:59 PM');               
+                                    maxTime.setDate(maxTime.getDate()+1);
+                                 }
+                               
+                               
+                                 var th =   $(this);                    
+                                $(this).datetimepicker({                                                    
                                     timeFormat: "hh:mm TT",                            
-                                    minDate: new Date(minTime),
-                                    maxDate: new Date(maxTime)             
+                                    minDateTime: new Date(minTime),
+                                    maxDateTime: new Date(maxTime)           
                                 }); 
+                                th.focus();
                             }
                             
                         }else{
@@ -2262,31 +2289,28 @@ function clearDisposableItems( sender , args ) {
                            if($.trim($(this).parent().prev().children('input.sIn').val()) == ''){
                                 $(this).val('')
                             }else{               
-                               var minTime = cDate+' '+$.trim($(this).parent().prev().children('input.sIn').val());                              
+                               var minTime = $.trim($(this).parent().prev().children('input.sIn').val());                              
+                               var maxTime = new Date(cDate+' 11:59 PM');               
+                               maxTime.setDate(maxTime.getDate()+1);
                                
-                               $(this).timepicker({   
-                                    minDate: new Date(minTime),                
+                               
+                              
+                               var th =   $(this); 
+                               $(this).datetimepicker({   
+                                    minDateTime: new Date(minTime), 
+                                    maxDateTime: new Date(maxTime) ,               
                                     timeFormat: "hh:mm TT"                     
                                 }); 
+                                th.focus();
+                                
                             }
                         } 
+                       
+                        
                    })
-                
-            
-            
-        })
-          
-            //$('#grdAttandence tr').last().children().css({ 'background':'#CCC'})
-            // $('#grdAttendanceSingle tr').last().children().css({ 'background':'#CCC'})
-        
+            })
         function style1(class1){
-           // console.log(class1)
-            
-            
-            
-            
-               var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];
-           
+           var arr = [2,3,5,6,8,9,11,12,14,15,17,18,20,21];        
            for(kk=0;kk<arr.length; kk++){
                 //var eval('count'+arr[kk]) = 0;
                 eval('var count'+arr[kk]+' = ' + 0 + ';');
@@ -2316,12 +2340,7 @@ function clearDisposableItems( sender , args ) {
             
             
             $lastRow.children('td').children('a').removeAttr('href');
-            
-            
-            
-            
-            
-            
+         
              for(i=2; i<9; i++){
                 $('.table1 tr:eq(0) td:eq('+i+')').css({'border':'#888 1px solid'})
             } 
@@ -2707,20 +2726,17 @@ function clearDisposableItems( sender , args ) {
         function editPopup(e)
         {
         
-             $this = e;
+          $this = e;
          /*
-          hdnMultipleSchInTime,hdnMultipleSchOutTime,
-          
+          hdnMultipleSchInTime,hdnMultipleSchOutTime,        
           hdnMultipleSignInTime,hdnMultipleSignInHrs,
-          
-         hdnMultipleSignoutTime,hdnMultipleSignOutHrs,
-         txtMultipleSignIn,
-         txtMultipleSignOut,
-         lblMultipleEditPopName,lblMultipleEditDay
+          hdnMultipleSignoutTime,hdnMultipleSignOutHrs,
+          txtMultipleSignIn,
+          txtMultipleSignOut,
+          lblMultipleEditPopName,lblMultipleEditDay
          */
          
          if($this.attr('disabled') != 'disabled'){
-         
          var empid= $this.attr('empid');
          var empName = $this.attr('empname');
          var logUid = $this.attr('loguid');
@@ -2728,31 +2744,38 @@ function clearDisposableItems( sender , args ) {
          var scOut = $this.attr('schout')
          var cDate =  $this.attr('date')
          var dum = $this.attr('smultiple');
+         var offset=$this.attr('offset');
+         
+         var signin = $this.attr('signin');
+         var signout = $this.attr('signout');
+         $('#txtMultipleSignIn, #txtMultipleSignOut').val('') ;
+         
          popDate = cDate;
          
          //$('#txtMultipleSignOut, #txtMultipleSignIn').attr('date',cDate );
          
          $('.lblMultipleEditPopName').text(empName);
-          $('.lblMultipleEditDay').text(cDate);
+         $('.lblMultipleEditDay').text(cDate);
          $('#hdnMultipleSignInTime').val(cDate);
          $('#hdnMultipleSchInTime').val(scIn);
          $('#hdnMultipleSchOutTime').val(scOut);
+         $('#hdnMultipleOffset').val(offset);
+           
+         var dum2 = [];    
+         // Multiple Edit   -------------------------------------------------
+         if(dum != '0'){       
          
-         var dum2 = [];
-         if(dum != '0'){
-             $('.singleEdit').hide();
+            $('.singleEdit').hide();
               $('.editSignIn').show();
             var dum2 = dum.split(',');
             smultiple = [];
             for(i=0; i<dum2.length-1; i++){
                 var dd= dum2[i].split('*')
                 smultiple.push(dd);
-            }
-            
-            
-            
-            
+            }                     
             // DIV editSignIn
+                    
+         
           
              var obj=[];
             var li = '<table class="tablePop"><tr><th style="width:40px;">&nbsp;</th><th>Sign in time</th><th>Sign out time</th></tr>';           
@@ -2761,15 +2784,12 @@ function clearDisposableItems( sender , args ) {
                 //smultiple[i][0];
                 //smultiple[i][1];
                 //smultiple[i][2];
-
                 li += '<tr>';
                 li += '<td>'+(i+1)+'</td>';  
-                //var id = "txtMultipleSignIn";
-               
+                //var id = "txtMultipleSignIn";        
                 li += '<td><input type="text" class="timeInput sIn" date="'+cDate+'" logId="'+smultiple[i][0]+'" id="txtMultipleSignIn'+i+'" value="'+smultiple[i][1]+'"  /></td>' 
                 li += '<td><input type="text" class="timeInput sOut" date="'+cDate+'" logId="'+smultiple[i][0]+'" id="txtMultipleSignOut'+i+'" value="'+smultiple[i][2]+'"/></td>'  
-                li += '</tr>';      
-                
+                li += '</tr>';                     
             }
             
             $('#hdnMultipleLength').val(smultiple.length)
@@ -2782,6 +2802,10 @@ function clearDisposableItems( sender , args ) {
             //editSignIn mdlMultipleEditEditPopUp                
            
          }else{
+         
+         // Single Edit   -------------------------------------------------
+         
+         
             $('#hdnMultipleLength').val(0)
              $('.singleEdit').show();
               $('.editSignIn').hide();
@@ -2790,22 +2814,103 @@ function clearDisposableItems( sender , args ) {
                 var dum = $this.text().split('-');
                 dum[0] = $.trim(dum[0]);
                 dum[1] = $.trim(dum[1]);
-                $('#txtMultipleSignIn').val(dum[0]);
+                //$('#txtMultipleSignIn').val(dum[0]);
                 
-                if(dum[1] != 'N/A')
-                $('#txtMultipleSignOut').val(dum[1])
-                else
-                $('#txtMultipleSignOut').val('')
+                
+                
+                if(signin && signin != '' && signin != null && signin != 'N/A'){                
+                    $('#txtMultipleSignIn').val(signin) ; 
+                }else{
+                    $('#txtMultipleSignIn').val('') ;
+                }         
+                               
+                
+                
+                if(signout && signout != '' && signout != null && signout != 'N/A'){
+                    //$('#txtMultipleSignOut').val(dum[1])
+                    $('#txtMultipleSignOut').val(signout);
+                }else{
+                    $('#txtMultipleSignOut').val('');
+                }
                 $('#hdnMultipleEditLogUserID').val(logUid);
                
                 
-             }else{
-                $('#txtMultipleSignOut').val('');
+             }else{                
                 $('#txtMultipleSignOut').val('');
                 $('#hdnMultipleEditLogUserID').val(0);
                
                 $('#hdnMultipleEmpID').val(empid); 
-             }
+             }            
+             
+             
+          //-------------------------------- 5-12-2014--- Start
+         
+            
+            
+            var minDateTime =popDate+' 12:00 AM' ;            
+            var maxDateTime = new Date(popDate+' 11:59 PM');               
+            maxDateTime.setDate(maxDateTime.getDate()+1);	        
+
+            var startDateTextBox = $('#txtMultipleSignIn');
+            var endDateTextBox = $('#txtMultipleSignOut');
+            
+            startDateTextBox.datetimepicker('destroy');
+            endDateTextBox.datetimepicker('destroy');          
+            
+            if(signout && signout != '' && signout != 'N/A' && signout != null ){
+    		   var maxDateTime2 = new Date($.trim(endDateTextBox.val()));
+    		}else{
+    		    var maxDateTime2 = maxDateTime;
+    		}
+    		
+            startDateTextBox.datetimepicker({ 
+	            timeFormat: "hh:mm TT",	            
+	            minDateTime: new Date(minDateTime) ,
+	            maxDateTime: maxDateTime2,
+	            onSelect: function (selectedDateTime){					
+		            endDateTextBox.datetimepicker('option', {'minDate':new Date(selectedDateTime), 'minDateTime': new Date(selectedDateTime) } );
+    								
+	            }
+            });
+    		
+    		
+    		if(signin && signin != '' && signin != 'N/A' && signin != null  ){
+    		   var minDateTime2 = $.trim(startDateTextBox.val());
+    		}else{
+    		   var minDateTime2 = minDateTime;
+    		}
+    		
+    		
+            endDateTextBox.datetimepicker({ 
+	            timeFormat: "hh:mm TT",	            
+	            minDateTime: new Date(minDateTime2) ,
+	            maxDateTime: maxDateTime,
+	            onSelect: function (selectedDateTime){ 
+	                     
+	                //startDateTextBox.datetimepicker('option', {'maxDate':new Date(selectedDateTime), 'maxDateTime': new Date(selectedDateTime) } );
+	                
+	                startDateTextBox.datetimepicker('destroy');
+	                
+	                startDateTextBox.datetimepicker({ 
+	                    timeFormat: "hh:mm TT",	            
+	                    minDateTime: new Date(minDateTime) ,
+	                    maxDateTime: new Date(selectedDateTime),
+	                    onSelect: function (selectedDateTime){					
+		                    endDateTextBox.datetimepicker('option', {'minDate':new Date(selectedDateTime), 'minDateTime': new Date(selectedDateTime) } );
+            								
+	                    }
+                    });
+    				
+	            }
+            });
+            
+           
+        
+             //-------------------------------- 5-12-2014--- End 
+             
+             
+             
+             
              
              
             
@@ -2813,6 +2918,9 @@ function clearDisposableItems( sender , args ) {
          
          $find('mdlMultipleEditEditPopUp').show();
          hideSpinner();        
+         
+         
+         
          
         
          return false;

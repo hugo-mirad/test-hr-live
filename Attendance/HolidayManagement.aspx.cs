@@ -18,7 +18,7 @@ namespace Attendance
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["IsAdmin"] != null && Session["UserID"]!=null)
+            if (Session["IsAdmin"] != null && Session["UserID"] != null)
             {
 
                 if (!IsPostBack)
@@ -35,7 +35,6 @@ namespace Attendance
 
                     }
                     DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-
                     var CurentDatetime = ISTTime;
 
                     lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
@@ -45,12 +44,16 @@ namespace Attendance
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
                     lblShiftName.Text = "-" + Session["ShiftName"].ToString();
-                    
+
                     DateTime TodayDate = Convert.ToDateTime(Session["TodayBannerDate"]);
-                    Getdepartments();
                     GetYear();
                     getLocations();
+                    GetshiftByLoc(lblLocation.Text);
+                    ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByText(Session["ShiftName"].ToString().Trim()));
+                    GetDepartments(Session["ShiftName"].ToString(), Convert.ToInt32(ddlLocation.SelectedValue));
                     ddlLocation.SelectedIndex = ddlLocation.Items.IndexOf(ddlLocation.Items.FindByText(lblLocation.Text.Trim()));
+                    GetShifts(Convert.ToInt32(ddlLocation.SelectedValue));
+                    GetdepartmentsByshiftLoc(ddlShift.SelectedItem.Text.ToString(), Convert.ToInt32(ddlLocation.SelectedValue));
 
                     DateTime CurrentDate = Convert.ToDateTime(ISTTime.ToString("MM/dd/yyyy"));
                     DateTime MonthStart = CurrentDate.AddDays(1 - CurrentDate.Day);
@@ -58,15 +61,6 @@ namespace Attendance
                     int locationID = Convert.ToInt32(ddlLocation.SelectedItem.Value);
                     Session["HCurrentDay"] = TodayDate;
 
-                    //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                    //{
-                    //    lnkLeavemangement.Enabled = false;
-                    //    lnkLeavemangement.Style["Color"] = "Gray";
-                    //}
-                    //else
-                    //{
-                    //    lnkLeavemangement.Enabled = true;
-                    //}
                     if (Session["IsAdmin"].ToString() == "True")
                     {
                         ddlLocation.Enabled = true;
@@ -75,24 +69,21 @@ namespace Attendance
                     {
                         ddlLocation.Enabled = false;
                     }
-
                     Session["MonthHolStart"] = MonthStart;
                     Session["MonthHolEnd"] = MonthEnd;
                     Session["CurntHolStart"] = MonthStart;
                     Session["CurntHolEnd"] = MonthEnd;
-                    GetCalender(MonthStart, MonthEnd,locationID);
-                  
+                    GetCalender(MonthStart, MonthEnd, locationID,Convert.ToInt32(ddlShift.SelectedValue),0);
+
                 }
             }
         }
-        private void GetCalender(DateTime MonthStart, DateTime MonthEnd,int locationID)
+        private void GetCalender(DateTime MonthStart, DateTime MonthEnd, int locationID,int shiftID,int DepartmentID)
         {
             EmployeeBL obj = new EmployeeBL();
             DataTable dtAttandence = new DataTable();
             try
             {
-                DataTable dt = obj.GetHolidayDetByLoc(MonthStart, MonthEnd, locationID);
-                Session["HolidayMgmt"] = dt;
                 dtAttandence.Columns.Add("Sunday", typeof(string));
                 dtAttandence.Columns.Add("Monday", typeof(string));
                 dtAttandence.Columns.Add("Tuesday", typeof(string));
@@ -100,12 +91,11 @@ namespace Attendance
                 dtAttandence.Columns.Add("Thursday", typeof(string));
                 dtAttandence.Columns.Add("Friday", typeof(string));
                 dtAttandence.Columns.Add("Saturday", typeof(string));
-              
+
                 DateTime current = Convert.ToDateTime("01/01/1900");
                 bool first = true;
                 DayOfWeek GetDay = Convert.ToDateTime(MonthStart).DayOfWeek;
                 int days = 1;
-
                 for (int j = 0; j < 7; j++)
                 {
                     dtAttandence.Rows.Add();
@@ -213,7 +203,6 @@ namespace Attendance
                                 days++;
                                 break;
                         }
-
                     }
                     else
                     {
@@ -221,52 +210,52 @@ namespace Attendance
                         {
                             current = current.AddDays(1);
                             dtAttandence.Rows[j]["Sunday"] = current;
-                                days++;
+                            days++;
                         }
                         if (days <= Convert.ToInt32(MonthEnd.ToString("dd")))
                         {
                             current = current.AddDays(1);
                             dtAttandence.Rows[j]["Monday"] = current;
-                                days++;
+                            days++;
                         }
                         if (days <= Convert.ToInt32(MonthEnd.ToString("dd")))
                         {
                             current = current.AddDays(1);
                             dtAttandence.Rows[j]["Tuesday"] = current;
-                                days++;
+                            days++;
                         }
                         if (days <= Convert.ToInt32(MonthEnd.ToString("dd")))
                         {
                             current = current.AddDays(1);
                             dtAttandence.Rows[j]["Wednesday"] = current;
-                                days++;
+                            days++;
                         }
                         if (days <= Convert.ToInt32(MonthEnd.ToString("dd")))
                         {
                             current = current.AddDays(1);
                             dtAttandence.Rows[j]["Thursday"] = current;
-                                days++;
+                            days++;
                         }
                         if (days <= Convert.ToInt32(MonthEnd.ToString("dd")))
                         {
                             current = current.AddDays(1);
                             dtAttandence.Rows[j]["Friday"] = current;
-                                days++;
+                            days++;
                         }
                         if (days <= Convert.ToInt32(MonthEnd.ToString("dd")))
                         {
                             current = current.AddDays(1);
                             dtAttandence.Rows[j]["Saturday"] = current;
-                                days++;
+                            days++;
                         }
-
                         if (days >= Convert.ToInt32(MonthEnd.ToString("dd")))
                         {
                             j = 6;
                         }
                     }
-
                 }
+                DataTable dt = obj.GetHolidayDetByLoc(MonthStart, MonthEnd, locationID, shiftID, DepartmentID);
+                Session["HolidayMgmt"] = dt;
                 lblMonth.Text = MonthStart.ToString("MMMM") + " " + MonthStart.ToString("yyyy");
                 grdholiday.DataSource = dtAttandence;
                 grdholiday.DataBind();
@@ -274,8 +263,6 @@ namespace Attendance
             catch (Exception ex)
             {
             }
-          
- 
         }
         protected void btnLogout_Click(object sender, EventArgs e)
         {
@@ -412,44 +399,6 @@ namespace Attendance
                 Response.Redirect("Reports.aspx");
             }
         }
-        protected void ddlPopDept_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-
-                if (rdSelected.Checked)
-                {
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-        private void Getdepartments()
-        {
-            try
-            {
-                Attendance.BAL.Report obj = new Report();
-                DataTable dt = obj.GetAllDepartments();
-                ddlPopDept.DataSource = dt;
-                ddlPopDept.DataTextField = "Deptname";
-                ddlPopDept.DataValueField = "DeptID";
-                ddlPopDept.DataBind();
-                ddlPopDept.Items.Insert(0, new ListItem("Select", "Select"));
-                ddlPopDept.Items.Insert(1, new ListItem("ALL", "0"));
-
-                ddlDefaultDept.DataSource = dt;
-                ddlDefaultDept.DataTextField = "Deptname";
-                ddlDefaultDept.DataValueField = "DeptID";
-                ddlDefaultDept.DataBind();
-                ddlDefaultDept.Items.Insert(0, new ListItem("Select", "Select"));
-                ddlDefaultDept.Items.Insert(1, new ListItem("ALL", "0"));
-              
-            }
-            catch (Exception ex)
-            {
-            }
-        }
         private void getLocations()
         {
             try
@@ -460,7 +409,7 @@ namespace Attendance
                 ddlLocation.DataTextField = "LocationName";
                 ddlLocation.DataValueField = "LocationId";
                 ddlLocation.DataBind();
-             //   ddlLocation.Items.Insert(0, new ListItem("Select", "0"));
+                //   ddlLocation.Items.Insert(0, new ListItem("Select", "0"));
 
                 ddlPopLoc.DataSource = dt;
                 ddlPopLoc.DataTextField = "LocationName";
@@ -475,17 +424,16 @@ namespace Attendance
                 ddlDefaultlocation.DataBind();
                 ddlDefaultlocation.Items.Insert(0, new ListItem("Select", "Select"));
                 ddlDefaultlocation.Items.Insert(1, new ListItem("ALL", "0"));
-
             }
             catch (Exception ex)
             {
-
             }
         }
         protected void btnApply_Click(object sender, EventArgs e)
         {
             try
             {
+                int holidayID =hdnHolidayID.Value==""?0:Convert.ToInt32(hdnHolidayID.Value);
                 DateTime HolidayDt = Convert.ToDateTime(hdnHolidayDt.Value);
                 string Holidayname =GeneralFunction.ToProper(txtHolidayName.Text.Trim());
                 bool IsHoliday = true;
@@ -494,17 +442,21 @@ namespace Attendance
                     IsHoliday = false;
                 }
                 int DeptID = 0;
-                if (ddlPopDept.SelectedItem.Value != "Select")
+                if (ddlPopDept.SelectedItem.Value != "0")
                 {
                     DeptID = Convert.ToInt32(ddlPopDept.SelectedItem.Value);
                 }
                 int LocationID = 0;
-                if (ddlPopLoc.SelectedItem.Value != "Select")
+                if (ddlPopLoc.SelectedItem.Value != "0")
                 {
                     LocationID = Convert.ToInt32(ddlPopLoc.SelectedItem.Value);
                 }
+                string shiftName ="0";
+                if (ddlHolshift.SelectedItem.Value != "0")
+                {
+                    shiftName = ddlHolshift.SelectedItem.Value.ToString();
+                }
                 int EnterBy = Convert.ToInt32(Session["UserID"]);
-
                 string timezone = "";
                 if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
                 {
@@ -513,74 +465,26 @@ namespace Attendance
                 else
                 {
                     timezone = "India Standard Time";
-
                 }
                 DateTime Enterdate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                 String strHostName = Request.UserHostAddress.ToString();
                 string IpAddress = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
 
                 EmployeeBL obj = new EmployeeBL();
-                if (rdAll.Checked)
+                if (holidayID == 0)
                 {
-                    int ForAll = 0;
-                    bool bnew = obj.SaveandGetHolidayDet(IsHoliday, HolidayDt, LocationID, DeptID, ForAll, EnterBy, Enterdate, IpAddress, Holidayname,false);
-                    
+                    bool bnew = obj.SaveandGetHolidayDet(IsHoliday, HolidayDt, LocationID, DeptID, shiftName, EnterBy, Enterdate, IpAddress, Holidayname, false);
                 }
-                else if (rdSelected.Checked)
+                else
                 {
-                    string Records = hdnChkRecords.Value.ToString().Trim();
-                    if (Records != "")
-                    {
-                        string[] selectedRec = Records.Split(',');
-                        for (int i = 0; i < selectedRec.Length - 1; i++)
-                        {
-                            int SelectID = Convert.ToInt32(selectedRec[i].Trim());
-                            bool bnew = obj.SaveandGetHolidayDet(IsHoliday, HolidayDt, LocationID, DeptID, SelectID, EnterBy, Enterdate, IpAddress, Holidayname,false);
-                        }
-                    }
+                    bool bnew = obj.UpdateHolidayDet(IsHoliday, holidayID, LocationID, DeptID, shiftName, EnterBy, Enterdate, IpAddress);
                 }
-                GetCalender(Convert.ToDateTime(Session["MonthHolStart"]),Convert.ToDateTime(Session["MonthHolEnd"]),Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                GetCalender(Convert.ToDateTime(Session["MonthHolStart"]),Convert.ToDateTime(Session["MonthHolEnd"]),Convert.ToInt32(ddlLocation.SelectedItem.Value),Convert.ToInt32(ddlShift.SelectedValue),Convert.ToInt32(ddlDepartment.SelectedValue));
                 mdlHoliday.Hide();
             }
             catch (Exception ex)
             {
             }
-        }
-        protected void rdSelected_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (rdSelected.Checked)
-                {
-                    EmployeeBL obj = new EmployeeBL();
-                    string Location = ddlPopLoc.SelectedItem.Value;
-                    string Dept = ddlPopDept.SelectedItem.Text;
-                    DataTable dt = obj.GetSelectedEmpByLocDept(Location, Dept);
-                    if (dt.Rows.Count > 0)
-                    {
-                        grdSelectEmp.DataSource = dt;
-                        grdSelectEmp.DataBind();
-                        dvSelectError.Visible = false;
-                        lblSelectError.Text = "";
-                    }
-                    else
-                    {
-                        dvSelectError.Visible = true;
-                        lblSelectError.Text = "No Employee(s) found";
-                        grdSelectEmp.DataSource = null;
-                        grdSelectEmp.DataBind();
-                    }
-                    mdlEmpSelect.Show();
-                }
-                else
-                {
-
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-
         }
         protected void grdholiday_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -599,10 +503,10 @@ namespace Attendance
                             lblSun.CssClass = "currentDate";
                         }
 
-                        dv.RowFilter = "HolidayDate='" +Convert.ToDateTime(lblSun.Text).ToString("MM/dd/yyyy") + "'";
+                        dv.RowFilter = "HolidayDate='" + Convert.ToDateTime(lblSun.Text).ToString("MM/dd/yyyy") + "'";
                         DataTable dtDay = dv.ToTable();
                         dv.RowFilter = null;
-                        if (dtDay.Rows.Count > 0 )  
+                        if (dtDay.Rows.Count > 0)
                         {
                             if (dtDay.Rows[0]["IsDefault"].ToString().Trim() == "True")
                             {
@@ -615,10 +519,12 @@ namespace Attendance
                                 lblSun.Attributes.Add("class", cs);
                                 lblSun.Attributes.Add("title", HName);
                                 lblSun.Attributes.Add("Hname", HName);
+                               
                             }
                             lblSun.Attributes.Add("isHoliday", "true");
+                            lblSun.Attributes.Add("holidayID", dtDay.Rows[0]["holidayID"].ToString());
                         }
-                       
+
                         lblSun.Attributes.Add("currentdate", Convert.ToDateTime(lblSun.Text).ToString("MM/dd/yyyy"));
                         lblSun.Text = Convert.ToDateTime(lblSun.Text).ToString("dd");
                     }
@@ -646,7 +552,9 @@ namespace Attendance
                                 lblMon.Attributes.Add("class", cs);
                                 lblMon.Attributes.Add("title", HName);
                                 lblMon.Attributes.Add("Hname", HName);
+                                
                             }
+                            lblMon.Attributes.Add("holidayID", dtDay.Rows[0]["holidayID"].ToString());
                             lblMon.Attributes.Add("isHoliday", "true");
                         }
                         lblMon.Attributes.Add("currentdate", Convert.ToDateTime(lblMon.Text).ToString("MM/dd/yyyy"));
@@ -672,12 +580,12 @@ namespace Attendance
                             }
                             else
                             {
-
                                 string HName = dtDay.Rows[0]["Holidayname"].ToString().Trim();
                                 lblTue.Attributes.Add("class", "holiday tooltip2");
                                 lblTue.Attributes.Add("title", HName);
                                 lblTue.Attributes.Add("Hname", HName);
                             }
+                            lblTue.Attributes.Add("holidayID", dtDay.Rows[0]["holidayID"].ToString());
                             lblTue.Attributes.Add("isHoliday", "true");
                         }
                         lblTue.Attributes.Add("currentdate", Convert.ToDateTime(lblTue.Text).ToString("MM/dd/yyyy"));
@@ -691,8 +599,6 @@ namespace Attendance
                         {
                             lblWed.CssClass = "currentDate";
                         }
-
-
                         dv.RowFilter = "HolidayDate='" + Convert.ToDateTime(lblWed.Text).ToString("MM/dd/yyyy") + "'";
                         DataTable dtDay = dv.ToTable();
                         dv.RowFilter = null;
@@ -710,6 +616,7 @@ namespace Attendance
                                 lblWed.Attributes.Add("title", HName);
                                 lblWed.Attributes.Add("Hname", HName);
                             }
+                            lblWed.Attributes.Add("holidayID", dtDay.Rows[0]["holidayID"].ToString());
                             lblWed.Attributes.Add("isHoliday", "true");
                         }
                         lblWed.Attributes.Add("currentdate", Convert.ToDateTime(lblWed.Text).ToString("MM/dd/yyyy"));
@@ -740,6 +647,7 @@ namespace Attendance
                                 lblThu.Attributes.Add("title", HName);
                                 lblThu.Attributes.Add("Hname", HName);
                             }
+                            lblThu.Attributes.Add("holidayID", dtDay.Rows[0]["holidayID"].ToString());
                             lblThu.Attributes.Add("isHoliday", "true");
                         }
                         lblThu.Attributes.Add("currentdate", Convert.ToDateTime(lblThu.Text).ToString("MM/dd/yyyy"));
@@ -772,6 +680,7 @@ namespace Attendance
                                 lblFri.Attributes.Add("Hname", HName);
                             }
                             lblFri.Attributes.Add("isHoliday", "true");
+                            lblFri.Attributes.Add("holidayID", dtDay.Rows[0]["holidayID"].ToString());
                         }
                         lblFri.Attributes.Add("currentdate", Convert.ToDateTime(lblFri.Text).ToString("MM/dd/yyyy"));
                         lblFri.Text = Convert.ToDateTime(lblFri.Text).ToString("dd");
@@ -801,6 +710,7 @@ namespace Attendance
                                 lblSat.Attributes.Add("title", HName);
                                 lblSat.Attributes.Add("Hname", HName);
                             }
+                            lblSat.Attributes.Add("holidayID", dtDay.Rows[0]["holidayID"].ToString());
                             lblSat.Attributes.Add("isHoliday", "true");
                         }
                         lblSat.Attributes.Add("currentdate", Convert.ToDateTime(lblSat.Text).ToString("MM/dd/yyyy"));
@@ -823,21 +733,10 @@ namespace Attendance
                 Session["MonthHolStart"] = PrevMnthStart;
                 Session["MonthHolEnd"] = PrevMnthEnd;
                 int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
-                //if (PrevMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
-                //{
-                //    btnNext.CssClass = "btn btn-danger btn-small disabled";
-                //    btnNext.Enabled = false;
-                //}
-                //else
-                //{
-                //    btnNext.CssClass = "btn btn-danger btn-small enabled";
-                //    btnNext.Enabled = true;
-                //}
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
 
-
-                GetCalender(PrevMnthStart, PrevMnthEnd, location);
-
-
+                GetCalender(PrevMnthStart, PrevMnthEnd, location, shiftID, departmentID);
             }
             catch (Exception ex)
             {
@@ -847,23 +746,15 @@ namespace Attendance
         {
             try
             {
-             //   DateTime MonthStart = Convert.ToDateTime(Session["MonthHolStart"]);
+                //   DateTime MonthStart = Convert.ToDateTime(Session["MonthHolStart"]);
                 DateTime CrtMnthStart = Convert.ToDateTime(Session["CurntHolStart"]);
-                DateTime CrtMnthEnd = Convert.ToDateTime( Session["CurntHolEnd"]);
+                DateTime CrtMnthEnd = Convert.ToDateTime(Session["CurntHolEnd"]);
                 Session["MonthHolStart"] = CrtMnthStart;
                 Session["MonthHolEnd"] = CrtMnthEnd;
                 int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
-                //if (CrtMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
-                //{
-                //    btnNext.CssClass = "btn btn-danger btn-small disabled";
-                //    btnNext.Enabled = false;
-                //}
-                //else
-                //{
-                //    btnNext.CssClass = "btn btn-danger btn-small enabled";
-                //    btnNext.Enabled = true;
-                //}
-                GetCalender(CrtMnthStart, CrtMnthEnd, location);
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
+                GetCalender(CrtMnthStart, CrtMnthEnd, location,shiftID,departmentID);
             }
             catch (Exception ex)
             {
@@ -879,19 +770,9 @@ namespace Attendance
                 Session["MonthHolStart"] = NxtMnthStart;
                 Session["MonthHolEnd"] = NxtMnthEnd;
                 int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
-                //if (NxtMnthStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(Session["CurntHolStart"]).ToString("MM/dd/yyyy"))
-                //{
-                //    btnNext.CssClass = "btn btn-danger btn-small disabled";
-                //    btnNext.Enabled = false;
-                //}
-                //else
-                //{
-                //    btnNext.CssClass = "btn btn-danger btn-small enabled";
-                //    btnNext.Enabled = true;
-                //}
-
-
-                GetCalender(NxtMnthStart, NxtMnthEnd, location);
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
+                GetCalender(NxtMnthStart, NxtMnthEnd, location,shiftID,departmentID);
 
             }
             catch (Exception ex)
@@ -904,10 +785,14 @@ namespace Attendance
             try
             {
                 int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
-                DateTime Start=Convert.ToDateTime(Session["MonthHolStart"]);
-                DateTime EndDt =Convert.ToDateTime(Session["MonthHolEnd"]) ;
-                GetCalender(Start, EndDt, location);
-                   
+                DateTime Start = Convert.ToDateTime(Session["MonthHolStart"]);
+                DateTime EndDt = Convert.ToDateTime(Session["MonthHolEnd"]);
+                GetshiftByLoc(ddlLocation.SelectedItem.Text);
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                GetdepartmentsByshiftLoc(ddlShift.SelectedItem.Text, location);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
+                GetCalender(Start, EndDt, location,shiftID,departmentID);
+
             }
             catch (Exception ex)
             {
@@ -917,19 +802,7 @@ namespace Attendance
         {
             try
             {
-                rdAll.Checked = false;
-                rdSelected.Checked = false;
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-        protected void ddlPopDept_SelectedIndexChanged1(object sender, EventArgs e)
-        {
-            try
-            {
-                rdAll.Checked = false;
-                rdSelected.Checked = false;
+                GetShifts(Convert.ToInt32(ddlPopLoc.SelectedValue));
             }
             catch (Exception ex)
             {
@@ -947,7 +820,6 @@ namespace Attendance
                 ddlFromYear.Items.Insert(0, new ListItem("Select", "Select"));
                 ddlFromYear.SelectedIndex = ddlFromYear.Items.IndexOf(ddlFromYear.Items.FindByText(System.DateTime.Now.ToString("yyyy")));
 
-
                 ddlToYear.DataSource = obj.GetYear();
                 ddlToYear.DataTextField = "year";
                 ddlToYear.DataValueField = "year";
@@ -964,14 +836,13 @@ namespace Attendance
             try
             {
                 string DefaultDay = ddlDay.SelectedItem.Text;
-                int fromYr=Convert.ToInt32(ddlFromYear.SelectedItem.Text.ToString().Trim());
-                int toYr=Convert.ToInt32(ddlToYear.SelectedItem.Text.ToString().Trim());
+                int fromYr = Convert.ToInt32(ddlFromYear.SelectedItem.Text.ToString().Trim());
+                int toYr = Convert.ToInt32(ddlToYear.SelectedItem.Text.ToString().Trim());
                 int LocationID = Convert.ToInt32(ddlDefaultlocation.SelectedItem.Value);
-                int DeptID = Convert.ToInt32(ddlDefaultDept.SelectedItem.Value);
+                string shiftName = ddlDefaultShift.SelectedItem.Value;
 
                 DateTime startDate = new DateTime(fromYr, 1, 1);
                 DateTime endDate = new DateTime(toYr, 12, 31);
-
                 int EnterBy = Convert.ToInt32(Session["UserID"]);
 
                 string timezone = "";
@@ -987,43 +858,261 @@ namespace Attendance
                 DateTime Enterdate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                 String strHostName = Request.UserHostAddress.ToString();
                 string IpAddress = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
-
-
-                TimeSpan diff = endDate - startDate;
-                int days = diff.Days;
+                
+                //TimeSpan diff = endDate - startDate;
+                //int days = diff.Days;
                 EmployeeBL obj = new EmployeeBL();
-                for (var i = 0; i <= days; i++)
-                {
-                    var testDate = startDate.AddDays(i);
-                    if (testDate.DayOfWeek.ToString()==DefaultDay)
-                    {
-                        bool bnew = obj.SaveandGetHolidayDet(true, testDate, LocationID, DeptID, 0, EnterBy, Enterdate, IpAddress, "Default",true);
-                    
-                    }
-                }
-                mdlDefaultmgmt.Hide();
+                //for (var i = 0; i <= days; i++)
+                //{
+                //    var testDate = startDate.AddDays(i);
+                //    if (testDate.DayOfWeek.ToString() == DefaultDay)
+                //    {
+                //        bool bnew = obj.SaveandGetHolidayDet(true, testDate, LocationID, 0, shiftName, EnterBy, Enterdate, IpAddress, "Default", true);
+                //    }
+                //}
+                bool bnew = obj.SaveDefaultHolidayDet(startDate, endDate, true, LocationID, 0, shiftName, EnterBy, Enterdate, IpAddress, DefaultDay, true, DefaultDay);
+                mdlAddDefault.Hide();
                 System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Default holidays updated successfully..');", true);
-                GetCalender(Convert.ToDateTime(Session["MonthHolStart"]), Convert.ToDateTime(Session["MonthHolEnd"]), Convert.ToInt32(ddlLocation.SelectedItem.Value));
+                EmployeeBL objemp = new EmployeeBL();
+                GetDeafualtHolidays(Convert.ToInt32(ddlShift.SelectedValue), Convert.ToInt32(ddlLocation.SelectedItem.Value), Convert.ToInt32(ddlDepartment.SelectedValue));
+
+                DateTime Start = Convert.ToDateTime(Session["MonthHolStart"]);
+                DateTime EndDt = Convert.ToDateTime(Session["MonthHolEnd"]);
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                int Location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
+                GetCalender(Start, EndDt, Location, shiftID, departmentID);
+                
+                mdlDefaultmgmt.Show();          
             }
             catch (Exception ex)
             {
             }
+
+          
         }
         protected void btnDefaultMgmt_Click(object sender, EventArgs e)
         {
             try
             {
-                ddlDay.SelectedIndex = 0;
-                ddlDefaultlocation.SelectedIndex = 0;
-                ddlDefaultDept.SelectedIndex = 0;
-                ddlFromYear.SelectedIndex = ddlFromYear.Items.IndexOf(ddlFromYear.Items.FindByText(System.DateTime.Now.ToString("yyyy")));
-                ddlToYear.SelectedIndex = ddlToYear.Items.IndexOf(ddlToYear.Items.FindByText(System.DateTime.Now.ToString("yyyy")));
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                int locationID = Convert.ToInt32(ddlLocation.SelectedValue);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
+                GetDeafualtHolidays(shiftID, locationID, departmentID);
                 mdlDefaultmgmt.Show();
             }
             catch (Exception ex)
             {
-            }   
+            }
         }
-     
+
+        private void GetDeafualtHolidays(int shiftID, int locationID, int departmentID)
+        {
+            try
+            {
+                EmployeeBL objemp = new EmployeeBL();
+                DataTable dt = objemp.GetDefaultHolidays(shiftID, locationID, departmentID);
+                if (dt.Rows.Count > 0)
+                {
+                    rptDefaultHoliday.DataSource = dt;
+                    rptDefaultHoliday.DataBind();
+                    lblDefLoc1.Text = ddlLocation.SelectedItem.Text;
+                    lblDefShift1.Text = ddlShift.SelectedItem.Text;
+                    lblNoDefault.Text = "";
+                    divNodefault.Style["display"] = "none";
+                }
+                else
+                {
+                    lblDefLoc1.Text = ddlLocation.SelectedItem.Text;
+                    lblDefShift1.Text = ddlShift.SelectedItem.Text;
+                    lblNoDefault.Text = "No default holidays found";
+                    divNodefault.Style["display"] = "block";
+                    rptDefaultHoliday.DataSource = null;
+                    rptDefaultHoliday.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        private void GetshiftByLoc(string LocationName)
+        {
+            Business business = new Business();
+            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+            ddlShift.DataSource = dsShifts;
+            ddlShift.DataTextField = "shiftname";
+            ddlShift.DataValueField = "shiftID";
+            ddlShift.DataBind();
+            ddlShift.Items.Insert(0, new ListItem("ALL", "0"));
+        }
+
+        private void GetShifts(int LocationID)
+        {
+            try
+            {
+                Business business = new Business();
+                DataSet dsShifts = business.GetShiftsByLocationIdToHoliday(LocationID);
+                ddlHolshift.DataSource = dsShifts;
+                ddlHolshift.DataTextField = "shiftname";
+                ddlHolshift.DataValueField = "shiftname";
+                ddlHolshift.DataBind();
+                ddlHolshift.Items.Insert(0, new ListItem("Select", "Select"));
+                ddlHolshift.Items.Insert(1, new ListItem("ALL", "0"));
+
+                ddlDefaultShift.DataSource = dsShifts;
+                ddlDefaultShift.DataTextField = "shiftname";
+                ddlDefaultShift.DataValueField = "shiftname";
+                ddlDefaultShift.DataBind();
+                ddlDefaultShift.Items.Insert(0, new ListItem("Select", "Select"));
+                ddlDefaultShift.Items.Insert(1, new ListItem("ALL", "0"));
+            }
+            catch (Exception ex)
+            {
+            }
+       }
+
+        protected void ddlHolshift_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+               GetdepartmentsByshiftLoc(ddlHolshift.SelectedValue.ToString(), Convert.ToInt32(ddlPopLoc.SelectedValue));
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private void GetdepartmentsByshiftLoc(string shiftname, int locationID)
+        {
+            try
+            {
+                EmployeeBL obj = new EmployeeBL();
+                DataTable dt = obj.GetDepartmentByShifts(shiftname, locationID);
+                ddlPopDept.DataSource = dt;
+                ddlPopDept.DataTextField = "Deptname";
+                ddlPopDept.DataValueField = "DeptID";
+                ddlPopDept.DataBind();
+                ddlPopDept.Items.Insert(0, new ListItem("Select", "Select"));
+                ddlPopDept.Items.Insert(1, new ListItem("ALL", "0"));
+            }
+            catch (Exception ex)
+            {
+            }
+           
+        }
+
+        private void GetDepartments(string shiftname, int locationID)
+        {
+            try
+            {
+                EmployeeBL obj = new EmployeeBL();
+                DataTable dt = obj.GetDepartmentByShifts(shiftname, locationID);
+                ddlPopDept.DataSource = dt;
+                ddlDepartment.DataSource = dt;
+                ddlDepartment.DataTextField = "Deptname";
+                ddlDepartment.DataValueField = "DeptID";
+                ddlDepartment.DataBind();
+                ddlDepartment.Items.Insert(0, new ListItem("ALL", "0"));
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        protected void ddlShift_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            { 
+                int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
+                DateTime Start = Convert.ToDateTime(Session["MonthHolStart"]);
+                DateTime EndDt = Convert.ToDateTime(Session["MonthHolEnd"]);
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                GetdepartmentsByshiftLoc(ddlLocation.SelectedItem.Text, location);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
+                GetCalender(Start, EndDt, location, shiftID, departmentID);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void ddlDepartment_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int location = Convert.ToInt32(ddlLocation.SelectedItem.Value);
+                DateTime Start = Convert.ToDateTime(Session["MonthHolStart"]);
+                DateTime EndDt = Convert.ToDateTime(Session["MonthHolEnd"]);
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
+                GetCalender(Start, EndDt, location, shiftID, departmentID);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void btnAddDefault_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                mdlAddDefault.Show();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void btnSaveDefault_Click(object sender, EventArgs e)
+        {
+            EmployeeBL obj = new EmployeeBL();
+            try
+            {
+                int LocationID=Convert.ToInt32(ddlLocation.SelectedValue);
+                int deptID=0;
+                string shiftName=ddlShift.SelectedItem.Text;
+                int EnterBy = Convert.ToInt32(Session["UserID"]);
+
+                string timezone = "";
+                if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
+                {
+                    timezone = "Eastern Standard Time";
+                }
+                else
+                {
+                    timezone = "India Standard Time";
+                }
+                DateTime Enterdate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                String strHostName = Request.UserHostAddress.ToString();
+                string IpAddress = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
+
+                for (int i = 0; i<rptDefaultHoliday.Items.Count; i++)
+                {
+                    CheckBox chkDefaultDay = (CheckBox)rptDefaultHoliday.Items[i].FindControl("chkDefaultDay");
+                    if (!chkDefaultDay.Checked)
+                    {
+                        int fromYr =Convert.ToInt32(chkDefaultDay.Attributes["FromYr"]);
+                        int toyr = Convert.ToInt32(chkDefaultDay.Attributes["ToYr"]);
+                        DateTime startDate = new DateTime(fromYr, 1, 1);
+                        DateTime endDate = new DateTime(toyr, 12, 31);
+
+                        obj.UpdateDefaultHolidayDet(startDate,endDate,false, chkDefaultDay.Text.Trim(), LocationID, deptID, shiftName, EnterBy, Enterdate, IpAddress);
+                    }
+                }
+
+                GetDeafualtHolidays(Convert.ToInt32(ddlShift.SelectedValue), LocationID, deptID);
+                DateTime Start = Convert.ToDateTime(Session["MonthHolStart"]);
+                DateTime EndDt = Convert.ToDateTime(Session["MonthHolEnd"]);
+                int shiftID = Convert.ToInt32(ddlShift.SelectedValue);
+                int departmentID = Convert.ToInt32(ddlDepartment.SelectedValue);
+                GetCalender(Start, EndDt, LocationID, shiftID, departmentID);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

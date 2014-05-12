@@ -100,7 +100,7 @@
                                             <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
                                                 PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
                                         </li>
-                                        <li>
+                                        <li style="display:none;">
                                             <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
                                         </li>
                                         <li>

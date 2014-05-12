@@ -457,18 +457,7 @@
                 $(this).next().addClass('atnLeave')
            });
            
-         
-         
-          
-           
-           
-           
-           
-           
-           
-         
-        
-        
+                 
            $('.hideColumn').each(function(){              
                 $(this).prev().hide();
                 $(this).prev().prev().hide();                  
@@ -682,7 +671,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server">
+    <cc1:ToolkitScriptManager ID="ScriptManager1" runat="server" ScriptMode="Release">
     </cc1:ToolkitScriptManager>
 
   <%--  <script type="text/javascript" language="javascript">
@@ -740,7 +729,7 @@ function clearDisposableItems( sender , args ) {
                                         <li>
                                             <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management" PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
                                         </li> 
-                                         <li>
+                                         <li style="display:none;">
                                                 <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management"
                                                     PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
                                             </li>
@@ -1744,6 +1733,7 @@ function clearDisposableItems( sender , args ) {
                                 <asp:HiddenField ID="hdnMultipleEmpID" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleEditLogUserID" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleSignInTime" runat="server" />
+                                <asp:HiddenField ID="hdnMultipleOffset" runat="server" />
                               <%--  <asp:HiddenField ID="hdnMultipleSignoutTime" runat="server" />--%>
                                   <asp:HiddenField ID="hdnMultipleSchInTime" runat="server" />
                                 <asp:HiddenField ID="hdnMultipleSchOutTime" runat="server" />
@@ -2110,6 +2100,7 @@ function clearDisposableItems( sender , args ) {
   
   
            // For Single  -------------------------------------------------------------------------------
+                  /*
                     $('#txtMultipleSignIn').live('focus',function(){
                         if($(this).hasClass('hasDatepicker')){
                             $(this).timepicker( "destroy" );
@@ -2166,22 +2157,26 @@ function clearDisposableItems( sender , args ) {
                         if( $.trim( $('#txtMultipleSignIn').val() )  == '' ){
                             //var maxTime = popDate+' 12:00 AM';  
                              $(this).val('')
-                        }else{
-                            var maxTime = popDate+' '+$.trim( $('#txtMultipleSignIn').val() );  
-                            
+                       }else{
+                            var minDateTime = popDate+' '+$.trim( $('#txtMultipleSignIn').val() ); 
+                            var maxDateTime = popDate+' 11:59 PM';
+                            if(popDate == $.trim($('#hdnTodaydt').val())){
+                                maxDateTime = $.trim($('#hdnTodaydt').val())+' '+$.trim( $('.cTime b').text() ); 
+                            }
+                             
+                            //console.log(minDateTime, maxDateTime);
                              $(this).timepicker({                   
                                 timeFormat: "hh:mm TT" ,
-                                minDate: new Date(maxTime)                       
+                                 minDateTime: new Date(minDateTime),
+                                 maxDateTime: new Date(maxDateTime)                          
                             });
-                        }                                         
+                        }                                          
                            
-                        
-                        
-                        
+                                               
                                                
                     });
                     
-                    
+                    */
                     
                     
            // For Multiple  ----------------------------------------------------------------
@@ -2278,9 +2273,7 @@ function clearDisposableItems( sender , args ) {
             
         })
           
-          
-            //$('#grdAttandence tr').last().children().css({ 'background':'#CCC'})
-            // $('#grdAttendanceSingle tr').last().children().css({ 'background':'#CCC'})
+      
         
         function style1(class1){
            // console.log(class1)
@@ -2714,18 +2707,18 @@ function clearDisposableItems( sender , args ) {
        var popDate=''; 
           function editPopup(e)
         {
-        debugger
-             $this = e;
+        
+          $this = e;
          /*
-          hdnMultipleSchInTime,hdnMultipleSchOutTime,
-          
+          hdnMultipleSchInTime,hdnMultipleSchOutTime,        
           hdnMultipleSignInTime,hdnMultipleSignInHrs,
-          
-         hdnMultipleSignoutTime,hdnMultipleSignOutHrs,
-         txtMultipleSignIn,
-         txtMultipleSignOut,
-         lblMultipleEditPopName,lblMultipleEditDay
+          hdnMultipleSignoutTime,hdnMultipleSignOutHrs,
+          txtMultipleSignIn,
+          txtMultipleSignOut,
+          lblMultipleEditPopName,lblMultipleEditDay
          */
+         
+         if($this.attr('disabled') != 'disabled'){
          var empid= $this.attr('empid');
          var empName = $this.attr('empname');
          var logUid = $this.attr('loguid');
@@ -2733,30 +2726,38 @@ function clearDisposableItems( sender , args ) {
          var scOut = $this.attr('schout')
          var cDate =  $this.attr('date')
          var dum = $this.attr('smultiple');
+         var offset=$this.attr('offset');
+         
+         var signin = $this.attr('signin');
+         var signout = $this.attr('signout');
+         $('#txtMultipleSignIn, #txtMultipleSignOut').val('') ;
+         
          popDate = cDate;
          
+         //$('#txtMultipleSignOut, #txtMultipleSignIn').attr('date',cDate );
          
          $('.lblMultipleEditPopName').text(empName);
-          $('.lblMultipleEditDay').text(cDate);
+         $('.lblMultipleEditDay').text(cDate);
          $('#hdnMultipleSignInTime').val(cDate);
          $('#hdnMultipleSchInTime').val(scIn);
          $('#hdnMultipleSchOutTime').val(scOut);
+         $('#hdnMultipleOffset').val(offset);
+           
+         var dum2 = [];    
+         // Multiple Edit   -------------------------------------------------
+         if(dum != '0'){       
          
-         var dum2 = [];
-         if(dum != '0'){
-             $('.singleEdit').hide();
+            $('.singleEdit').hide();
               $('.editSignIn').show();
             var dum2 = dum.split(',');
             smultiple = [];
             for(i=0; i<dum2.length-1; i++){
                 var dd= dum2[i].split('*')
                 smultiple.push(dd);
-            }
-            
-            
-            
-            
+            }                     
             // DIV editSignIn
+                    
+         
           
              var obj=[];
             var li = '<table class="tablePop"><tr><th style="width:40px;">&nbsp;</th><th>Sign in time</th><th>Sign out time</th></tr>';           
@@ -2765,15 +2766,12 @@ function clearDisposableItems( sender , args ) {
                 //smultiple[i][0];
                 //smultiple[i][1];
                 //smultiple[i][2];
-
                 li += '<tr>';
                 li += '<td>'+(i+1)+'</td>';  
-                //var id = "txtMultipleSignIn";
-               
+                //var id = "txtMultipleSignIn";        
                 li += '<td><input type="text" class="timeInput sIn" date="'+cDate+'" logId="'+smultiple[i][0]+'" id="txtMultipleSignIn'+i+'" value="'+smultiple[i][1]+'"  /></td>' 
                 li += '<td><input type="text" class="timeInput sOut" date="'+cDate+'" logId="'+smultiple[i][0]+'" id="txtMultipleSignOut'+i+'" value="'+smultiple[i][2]+'"/></td>'  
-                li += '</tr>';      
-                
+                li += '</tr>';                     
             }
             
             $('#hdnMultipleLength').val(smultiple.length)
@@ -2786,6 +2784,10 @@ function clearDisposableItems( sender , args ) {
             //editSignIn mdlMultipleEditEditPopUp                
            
          }else{
+         
+         // Single Edit   -------------------------------------------------
+         
+         
             $('#hdnMultipleLength').val(0)
              $('.singleEdit').show();
               $('.editSignIn').hide();
@@ -2794,30 +2796,117 @@ function clearDisposableItems( sender , args ) {
                 var dum = $this.text().split('-');
                 dum[0] = $.trim(dum[0]);
                 dum[1] = $.trim(dum[1]);
-                $('#txtMultipleSignIn').val(dum[0]);
+                //$('#txtMultipleSignIn').val(dum[0]);
                 
-                if(dum[1] != 'N/A')
-                $('#txtMultipleSignOut').val(dum[1])
-                else
-                $('#txtMultipleSignOut').val('')
+                
+                
+                if(signin && signin != '' && signin != null && signin != 'N/A'){                
+                    $('#txtMultipleSignIn').val(signin) ; 
+                }else{
+                    $('#txtMultipleSignIn').val('') ;
+                }         
+                               
+                
+                
+                if(signout && signout != '' && signout != null && signout != 'N/A'){
+                    //$('#txtMultipleSignOut').val(dum[1])
+                    $('#txtMultipleSignOut').val(signout);
+                }else{
+                    $('#txtMultipleSignOut').val('');
+                }
                 $('#hdnMultipleEditLogUserID').val(logUid);
                
                 
-             }else{
-                $('#txtMultipleSignOut').val('');
+             }else{                
                 $('#txtMultipleSignOut').val('');
                 $('#hdnMultipleEditLogUserID').val(0);
                
                 $('#hdnMultipleEmpID').val(empid); 
-             }
+             }            
+             
+             
+          //-------------------------------- 5-12-2014--- Start
+         
+            
+            
+            var minDateTime =popDate+' 12:00 AM' ;            
+            var maxDateTime = new Date(popDate+' 11:59 PM');               
+            maxDateTime.setDate(maxDateTime.getDate()+1);	        
+
+            var startDateTextBox = $('#txtMultipleSignIn');
+            var endDateTextBox = $('#txtMultipleSignOut');
+            
+            startDateTextBox.datetimepicker('destroy');
+            endDateTextBox.datetimepicker('destroy');          
+            
+            if(signout && signout != '' && signout != 'N/A' && signout != null ){
+    		   var maxDateTime2 = new Date($.trim(endDateTextBox.val()));
+    		}else{
+    		    var maxDateTime2 = maxDateTime;
+    		}
+    		
+            startDateTextBox.datetimepicker({ 
+	            timeFormat: "hh:mm TT",	            
+	            minDateTime: new Date(minDateTime) ,
+	            maxDateTime: maxDateTime2,
+	            onSelect: function (selectedDateTime){					
+		            endDateTextBox.datetimepicker('option', {'minDate':new Date(selectedDateTime), 'minDateTime': new Date(selectedDateTime) } );
+    								
+	            }
+            });
+    		
+    		
+    		if(signin && signin != '' && signin != 'N/A' && signin != null  ){
+    		   var minDateTime2 = $.trim(startDateTextBox.val());
+    		}else{
+    		   var minDateTime2 = minDateTime;
+    		}
+    		
+    		
+            endDateTextBox.datetimepicker({ 
+	            timeFormat: "hh:mm TT",	            
+	            minDateTime: new Date(minDateTime2) ,
+	            maxDateTime: maxDateTime,
+	            onSelect: function (selectedDateTime){ 
+	                     
+	                //startDateTextBox.datetimepicker('option', {'maxDate':new Date(selectedDateTime), 'maxDateTime': new Date(selectedDateTime) } );
+	                
+	                startDateTextBox.datetimepicker('destroy');
+	                
+	                startDateTextBox.datetimepicker({ 
+	                    timeFormat: "hh:mm TT",	            
+	                    minDateTime: new Date(minDateTime) ,
+	                    maxDateTime: new Date(selectedDateTime),
+	                    onSelect: function (selectedDateTime){					
+		                    endDateTextBox.datetimepicker('option', {'minDate':new Date(selectedDateTime), 'minDateTime': new Date(selectedDateTime) } );
+            								
+	                    }
+                    });
+    				
+	            }
+            });
+            
+           
+        
+             //-------------------------------- 5-12-2014--- End 
+             
+             
+             
+             
+             
+             
+            
          }
          
          $find('mdlMultipleEditEditPopUp').show();
          hideSpinner();        
          
-        
-         return true;
          
+         
+         
+        
+         return false;
+         }
          
          
         }

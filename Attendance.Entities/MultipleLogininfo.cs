@@ -47,5 +47,13 @@ namespace Attendance.Entities
             get { return _SchEnd; }
             set { _SchEnd = value; }
         }
+        private int _offset;
+
+        public int Offset
+        {
+            get { return _offset; }
+            set { _offset = value; }
+        }
+
     }
 }

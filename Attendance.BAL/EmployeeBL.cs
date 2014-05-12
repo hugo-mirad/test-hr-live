@@ -330,29 +330,26 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-        public bool SaveandGetHolidayDet(bool ISHoliday, DateTime HolidayDt, int locID, int DeptID, int userid, int EnterBy, DateTime EnterDt, string IP, string Holidayname,bool IsDefault)
+        public bool SaveandGetHolidayDet(bool ISHoliday, DateTime HolidayDt, int locID, int DeptID, string shiftName, int EnterBy, DateTime EnterDt, string IP, string Holidayname,bool IsDefault)
         {
-
             bool success = false;
             try
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
                 con.Open();
-                SqlCommand command = new SqlCommand("[USP_SaveHolidayDetails]", con);
+                SqlCommand command = new SqlCommand("[USP_SaveHolidayDetails]", con);//USP_UpdateHolidayDetails
                 command.CommandType = CommandType.StoredProcedure;
-
-
                 command.Parameters.Add(new SqlParameter("@Holidayname", Holidayname));
                 command.Parameters.Add(new SqlParameter("@IsHoliday", ISHoliday));
                 command.Parameters.Add(new SqlParameter("@HolidayDate", HolidayDt));
                 command.Parameters.Add(new SqlParameter("@LocationID", locID));
                 command.Parameters.Add(new SqlParameter("@DeptID", DeptID));
-                command.Parameters.Add(new SqlParameter("@userid", userid));
+                command.Parameters.Add(new SqlParameter("@shiftName", shiftName));
                 command.Parameters.Add(new SqlParameter("@EnteredBy", EnterBy));
                 command.Parameters.Add(new SqlParameter("@EnteredDate", EnterDt));
                 command.Parameters.Add(new SqlParameter("@Ipaddress", IP));
                 command.Parameters.Add(new SqlParameter("@IsDefault", IsDefault));
-                
+              //  command.Parameters.Add(new SqlParameter("@HolidayID", HolidayID));
                 command.ExecuteNonQuery();
                 con.Close();
                 success = true;
@@ -363,7 +360,38 @@ namespace Attendance.BAL
 
             return success;
         }
-        public DataTable GetHolidayDetByLoc(DateTime startDt,DateTime EndDt,int locationID)
+
+        public bool UpdateHolidayDet(bool ISHoliday, int HolidayID, int locID, int DeptID, string shiftName, int EnterBy, DateTime EnterDt, string IP)
+        {
+            bool success = false;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                con.Open();
+                SqlCommand command = new SqlCommand("[USP_UpdateHolidayDetails]", con);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@holidayID", HolidayID));
+                command.Parameters.Add(new SqlParameter("@IsHoliday", ISHoliday));
+                command.Parameters.Add(new SqlParameter("@LocationID", locID));
+                command.Parameters.Add(new SqlParameter("@DeptID", DeptID));
+                command.Parameters.Add(new SqlParameter("@updateby", EnterBy));
+                command.Parameters.Add(new SqlParameter("@updatedDate", EnterDt));
+                command.Parameters.Add(new SqlParameter("@Ipaddress", IP));
+                command.Parameters.Add(new SqlParameter("@shiftName", shiftName));
+               
+                command.ExecuteNonQuery();
+                con.Close();
+                success = true;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return success;
+        }
+
+
+        public DataTable GetHolidayDetByLoc(DateTime startDt,DateTime EndDt,int locationID,int shiftID,int DepartmentID)
         {
             DataSet ds = new DataSet();
 
@@ -372,27 +400,23 @@ namespace Attendance.BAL
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
                 SqlCommand cmd = new SqlCommand();
                 SqlDataAdapter da = new SqlDataAdapter("[USP_GetHolidayDet]", con);
-
                 da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", locationID));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@DepartmentID", DepartmentID));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@StartDate", startDt));
-                da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));
-              
+                da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));           
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
-
                 DataTable dt = ds.Tables[0];
-
             }
             catch (Exception ex)
             {
             }
-
             return ds.Tables[0];
         }
         public DataTable GetLeaveRequestDetByUserID(int userid,DateTime startdate,DateTime endDate)
         {
             DataSet ds = new DataSet();
-
             try
             {
                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
@@ -402,6 +426,29 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@Startdate", startdate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@Enddate", endDate));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@userid", userid));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+            }
+            return ds.Tables[0];
+        }
+
+        public DataTable GetDepartmentByShifts(string shiftName,int locationID)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetDepartmentsByShifts]", con);
+
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftname", shiftName));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@locationID", locationID));
+          
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
 
@@ -433,5 +480,101 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
+
+
+        public DataTable GetDefaultHolidays(int shiftID, int locationID,int DepartmentID)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetDefaultHolidays]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@LocationID", locationID));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@DepartmentID", DepartmentID));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
+
+
+        public bool SaveDefaultHolidayDet(DateTime fromdate ,DateTime todate,bool ISHoliday,int locID, int DeptID, string shiftName, int EnterBy, DateTime EnterDt, string IP, string Holidayname, bool IsDefault,string dayname)
+        {
+            bool success = false;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                con.Open();
+                SqlCommand command = new SqlCommand("[USP_SaveDefaultHolidays]", con);//USP_UpdateHolidayDetails
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Holidayname", Holidayname));
+                command.Parameters.Add(new SqlParameter("@dayname", dayname));
+                command.Parameters.Add(new SqlParameter("@IsHoliday", ISHoliday));
+                command.Parameters.Add(new SqlParameter("@Fromdate", fromdate));
+                command.Parameters.Add(new SqlParameter("@todate", todate));
+                command.Parameters.Add(new SqlParameter("@LocationID", locID));
+                command.Parameters.Add(new SqlParameter("@DeptID", DeptID));
+                command.Parameters.Add(new SqlParameter("@shiftName", shiftName));
+                command.Parameters.Add(new SqlParameter("@EnteredBy", EnterBy));
+                command.Parameters.Add(new SqlParameter("@EnteredDate", EnterDt));
+                command.Parameters.Add(new SqlParameter("@Ipaddress", IP));
+                command.Parameters.Add(new SqlParameter("@IsDefault", IsDefault));
+                //  command.Parameters.Add(new SqlParameter("@HolidayID", HolidayID));
+                command.ExecuteNonQuery();
+                con.Close();
+                success = true;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return success;
+        }
+
+
+
+        public bool UpdateDefaultHolidayDet(DateTime fromdate, DateTime todate, bool ISHoliday, string deafaultday, int locID, int DeptID, string shiftName, int EnterBy, DateTime EnterDt, string IP)
+        {
+            bool success = false;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                con.Open();
+                SqlCommand command = new SqlCommand("[USP_UpdateDefaulDet]", con);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@fromdate", fromdate));
+                command.Parameters.Add(new SqlParameter("@todate", todate));
+                command.Parameters.Add(new SqlParameter("@deafaultday", deafaultday));
+                command.Parameters.Add(new SqlParameter("@IsHoliday", ISHoliday));
+                command.Parameters.Add(new SqlParameter("@LocationID", locID));
+                command.Parameters.Add(new SqlParameter("@DeptID", DeptID));
+                command.Parameters.Add(new SqlParameter("@updateby", EnterBy));
+                command.Parameters.Add(new SqlParameter("@updatedDate", EnterDt));
+                command.Parameters.Add(new SqlParameter("@Ipaddress", IP));
+                command.Parameters.Add(new SqlParameter("@shiftName", shiftName));
+
+                command.ExecuteNonQuery();
+                con.Close();
+                success = true;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return success;
+        }
+
+
+        //USP_GetDefaultHolidays
     }
 }

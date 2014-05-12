@@ -334,7 +334,7 @@
                                             <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
                                                 PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
                                         </li>
-                                        <li>
+                                        <li style="display:none;">
                                             <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
                                         </li>
                                         <li>
@@ -554,17 +554,16 @@
             <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" 
                Style="width: 70px;" onselectedindexchanged="ddlShift_SelectedIndexChanged">
              </asp:DropDownList>
-                    
-                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="btn btn-small btn-warning" />
-                    <asp:Button ID="btnFinal" runat="server" Text="Freeze" CssClass="btn btn-small btn-warning"
-                        OnClientClick="return validFinal();" OnClick="btnFinal_Click" />
+                 
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
         <div style="display:inline-block;">
             <asp:UpdatePanel ID="upbnt" runat="server">
                 <ContentTemplate>
+                <div style="display:none;">
                     <asp:Button ID="btnPrint" runat="server" OnClick="btnPrint_Click" Text="Print" CssClass="btn btn-small btn-group" />
+                </div>
                     <asp:Button ID="btnPDF" runat="server" Text="DownLoadToPDF" CssClass="btn btn-small btn-success"
                         OnClick="btnPDF_Click1" OnClientClick="return linkdis();"></asp:Button>
                     <asp:Button ID="btnDoc" runat="server" Text="DownLoadToWord" CssClass="btn btn-small btn-success"
@@ -662,191 +661,69 @@
                             
                             <asp:GridView runat="server" AutoGenerateColumns="false" ID="grdPayRollIndia" CssClass="table1 grdPayRollIndia"
                                 OnRowDataBound="grdPayRollIndia_RowDataBound" BorderWidth="1" CellPadding="0"
-                                CellSpacing="0" Width="800px" OnRowCreated="grdPayRollIndia_RowCreated">
+                                CellSpacing="0" Width="800px">
                                 <Columns>
-                                    <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
-                                        <ItemTemplate>
+                                 <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
+                                      <ItemTemplate>
                                             <asp:HiddenField ID="hdnUserID" runat="server" Value='<%#Eval("empid")%>' />
-                                            <asp:HiddenField ID="hdnEmpuserid" runat="server" Value='<%#Eval("userid")%>' />
+                                            <asp:HiddenField ID="hdnEmpuserid" runat="server" Value='<%#Eval("UserID")%>' />
                                             <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>'></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bL bT" />
-                                        <ItemStyle CssClass="bL" />
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("PEmpname")%>'></asp:Label>
-                                            <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("Empname")%>' Visible="false"></asp:Label>
+                                            <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("FirstName")+" "+ Eval("LastName")%>'></asp:Label>
+                                            <asp:Label ID="lblEmpLastname" runat="server" Text='<%#Eval("LastName")%>' Visible="false"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("Startdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                            <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("StartDate", "{0:MM/dd/yyyy}") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("Termdate","{0:MM/dd/yyyy}") %>'></asp:Label>
+                                           <ItemTemplate>
+                                            <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}") %>'></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="DeptName" HeaderText="Department">
-                                        <ItemTemplate>
+                                              <ItemTemplate>
                                             <asp:Label ID="lblDept" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="EmployeeType" HeaderText="Type">
                                         <ItemTemplate>
                                             <asp:Label ID="lblEmployeetype" runat="server" Text='<%#Eval("MasterEmpType")%>'></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="Location" HeaderText="Location">
                                         <ItemTemplate>
                                             <asp:Label ID="lblLocation" runat="server" Text='<%#Eval("LocationName")%>'></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Salary" SortExpression="Salary">
+                                    <asp:TemplateField SortExpression="TotalHours" HeaderText="Hrs">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblSalary" runat="server" Text='<%#Eval("Salary")%>'></asp:Label>
+                                            <asp:Label ID="lblTotal" runat="server" Text='<%#Eval("TotalHours")%>'></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bR" />
-                                        <ItemStyle CssClass="bR" />
                                     </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="Workingdays" HeaderText="WorkingDays">
+                                    
+                                    <asp:TemplateField SortExpression="MaritalStatus" HeaderText="FilingStatus">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblWorkingDays" runat="server" Text='<%#Eval("Workingdays")%>'></asp:Label>
+                                            <asp:Label ID="lblFilingStatus" runat="server" Text='<%#Eval("MaritalStatus")%>'></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="Present" HeaderText="AttendDays">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblAttendDays" runat="server" Text='<%#Eval("Present")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="Leaves" HeaderText="Leaves">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblLeaves" runat="server" Text='<%#Eval("Leaves")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="Noshow" HeaderText="NoShow">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblNoshow" runat="server" Text='<%#Eval("Noshow")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="bR" />
-                                        <HeaderStyle CssClass="bT bR" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="LeavesAvailable" HeaderText="Earned">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblLeavesAvailable" runat="server" Text='<%#Eval("LeavesAvailable")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="LeavesUsed" HeaderText="Used">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblLeavesUsed" runat="server" Text='<%#Eval("PaidLeavesUsed")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="PaidLeavesBalanced" HeaderText="Balanced">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblPaidLeavesBalanced" runat="server" Text='<%#Eval("PaidLeavesBalanced")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle CssClass="bT bR" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="CalLeaves" HeaderText="AbsentDays">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblCalLeaves" runat="server" Text='<%#Eval("CalLeaves")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="bR" />
-                                        <HeaderStyle CssClass="bT bR" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="CalSalary" SortExpression="CalculatedSalary">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblCalSalary" runat="server" Text='<%#Eval("CalSalary")%>' CssClass="sal"></asp:Label>
-                                        </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Bonus">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblBonus" runat="server" CssClass="lblBonus Editlabel" Text='<%#Eval("Bonus")%>'></asp:Label>
-                                            <asp:TextBox ID="txtBonus" runat="server" Text='<%#Eval("Bonus")%>' onkeypress="return isNumberKeyWithDot(event)"
-                                                CssClass="editInputBlur add"></asp:TextBox>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="editInput" />
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Incentives">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblIncentives" runat="server" CssClass="lblIncentives Editlabel" Text='<%#Eval("Incentives")%>'></asp:Label>
-                                            <asp:TextBox ID="txtIncentives" runat="server" Text='<%#Eval("Incentives")%>' onkeypress="return isNumberKeyWithDot(event)"
-                                                CssClass="editInputBlur add"></asp:TextBox>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="editInput" />
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="PrevUnpaid">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblPrevUnpaid" runat="server" CssClass="lblPrevUnpaid Editlabel" Text='<%#Eval("PrevUnpaid")%>'></asp:Label>
-                                            <asp:TextBox ID="txtPrevUnpaid" runat="server" Text='<%#Eval("PrevUnpaid")%>' onkeypress="return isNumberKeyWithDot(event)"
-                                                CssClass="editInputBlur add"></asp:TextBox>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="editInput" />
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="AdvancePaid">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblAdvancePaid" runat="server" CssClass="lblAdvancePaid Editlabel"
-                                                Text='<%#Eval("AdvancePaid")%>'></asp:Label>
-                                            <asp:TextBox ID="txtAdvancePaid" runat="server" Text='<%#Eval("AdvancePaid")%>' onkeypress="return isNumberKeyWithDot(event)"
-                                                CssClass="editInputBlur sub"></asp:TextBox>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="editInput" />
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Expenses">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblExpenses" runat="server" CssClass="lblExpenses Editlabel" Text='<%#Eval("Expenses")%>'></asp:Label>
-                                            <asp:TextBox ID="txtExpenses" runat="server" Text='<%#Eval("Expenses")%>' onkeypress="return isNumberKeyWithDot(event)"
-                                                CssClass="editInputBlur add"></asp:TextBox>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="editInput" />
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="LoanDeduct">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblLoanDeduct" runat="server" CssClass="lblLoanDeduct Editlabel" Text='<%#Eval("LoanDeduct")%>'></asp:Label>
-                                            <asp:TextBox ID="txtLoanDeduct" runat="server" Text='<%#Eval("LoanDeduct")%>' onkeypress="return isNumberKeyWithDot(event)"
-                                                CssClass="editInputBlur sub"></asp:TextBox>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="editInput" />
-                                        <HeaderStyle CssClass="bT" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="TotalPay">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblTotal" runat="server" CssClass="totalPay" Text='<%#Eval("TotalPay")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle CssClass="bR" />
-                                        <HeaderStyle CssClass="bT bR" />
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="Isnew" HeaderText="IsNew">
                                         <ItemTemplate>
                                             <asp:Label ID="lblIsNew" runat="server"></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bT" />
                                     </asp:TemplateField>
                                     <asp:TemplateField SortExpression="IsChanges" HeaderText="IsChanges">
                                         <ItemTemplate>
                                             <asp:Label ID="lblIsChanges" runat="server"></asp:Label>
                                         </ItemTemplate>
-                                        <HeaderStyle CssClass="bR" />
-                                        <ItemStyle CssClass="bR" />
                                     </asp:TemplateField>
-                                </Columns>
+                                
+                               </Columns>
                             </asp:GridView>
                             <table cellpadding="0" cellspacing="0" width="900">
                                 <tr>
@@ -962,7 +839,7 @@
                         </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="btnGo" EventName="Click" />
-                            <asp:AsyncPostBackTrigger ControlID="btnSave" EventName="Click" />
+                            
                             <asp:AsyncPostBackTrigger ControlID="btnPrint" EventName="Click" />
                         </Triggers>
                     </asp:UpdatePanel>

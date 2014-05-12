@@ -23,7 +23,6 @@ namespace Attendance
         SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
         Business business = new Business();
         int value = 0;
-
         Attendance.Entities.Entities entities = new Attendance.Entities.Entities();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,8 +34,7 @@ namespace Attendance
             SqlCommand cmd = null;
             try
             {
-              
-                    if (!IsPostBack)
+                if (!IsPostBack)
                     {
                         DataSet dsLocation = new DataSet();
                         String strHostName = Request.UserHostAddress.ToString();
@@ -46,7 +44,6 @@ namespace Attendance
                         {
                             if (dsLocation.Tables[0].Rows.Count > 0)
                             {
-
                                 int TimeZoneId = Convert.ToInt32(dsLocation.Tables[0].Rows[0]["TimeZoneId"].ToString());
                                 Session["TimeZoneID"] = TimeZoneId;
                                 string timezone = "";
@@ -59,16 +56,13 @@ namespace Attendance
                                     timezone = "India Standard Time";
                                 }
                                 DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-
                                 var CurentDatetime = ISTTime;
-
                                 lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
                                 lblDate.Text = CurentDatetime.TimeOfDay.TotalSeconds.ToString();
                                 Session["TimeZoneName"] = dsLocation.Tables[0].Rows[0]["TimeZoneName"].ToString();
                                 lblTimeZoneName.Text = dsLocation.Tables[0].Rows[0]["TimeZoneName"].ToString();
                                 lblLocation.Text = dsLocation.Tables[0].Rows[0]["LocationName"].ToString();
                                 Session["LocationName"] = dsLocation.Tables[0].Rows[0]["LocationName"].ToString().Trim();
-
                                 string LocationName = lblLocation.Text;
                                 GetShifts(LocationName);
                                 int shiftID = 0;
@@ -88,8 +82,9 @@ namespace Attendance
                                     shiftID = GetCurrentShiftBytime(CurentDatetime, LocationName);
                                 }
                                 Session["ShiftID"] = shiftID;
+                                setShiftOffset(shiftID);
                                 ddlShifts.SelectedIndex = ddlShifts.Items.IndexOf(ddlShifts.Items.FindByValue(shiftID.ToString()));
-                                  BindAttendanceData(LocationName, CurentDatetime);
+                                BindAttendanceData(LocationName, CurentDatetime, Convert.ToInt32(Session["offSet"].ToString()));
                             }
                             else
                             {
@@ -102,7 +97,6 @@ namespace Attendance
                         }
                     }
                 }
-           
             catch (Exception ex)
             {
             }
@@ -181,7 +175,7 @@ namespace Attendance
                 entities.LocationName = lblLocation.Text;
                 entities.passcode = userPass.Value.ToString().Trim();
 
-                DataSet ds = business.SaveLogDetails(entities);
+                DataSet ds = business.SaveLogDetails(entities,Convert.ToInt32(Session["offSet"].ToString()));
                 if (ds.Tables.Count > 0)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
@@ -192,7 +186,7 @@ namespace Attendance
                         logintin1.Text = ds.Tables[0].Rows[0]["Logindate"].ToString();
                         DataSet dsImages1 = new DataSet();
 
-                        dsImages1 = business.BindLogin(LocationName, entities.LoginDate,Convert.ToInt32(ddlShifts.SelectedItem.Value));
+                        dsImages1 = business.BindLogin(LocationName, entities.LoginDate,Convert.ToInt32(ddlShifts.SelectedItem.Value),Convert.ToInt32(Session["offSet"].ToString()));
                         rpLogin.DataSource = dsImages1;
                         rpLogin.DataBind();
                         mdlLoginpopup.Hide();
@@ -225,7 +219,6 @@ namespace Attendance
                         mdlLoginpopup.Show();
                         userPass.Focus();
                     }
-
                 }
                 else
                 {
@@ -256,9 +249,7 @@ namespace Attendance
                     mdlLoginpopup.Show();
                     userPass.Focus();
                 }
-              //  BindAttendanceData(LocationName, entities.LoginDate);
-                System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "changeSuccess1(" + bnew + ");", true);
-               
+              System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "changeSuccess1(" + bnew + ");", true);
             }
             else
             {
@@ -273,7 +264,6 @@ namespace Attendance
                 dr = cmd.ExecuteReader();
                 if (dr.Read())
                 {
-
                     Duplicate.Text = "true";
                     lblLIError.Text = "You are already Signed In.You cannot signed in again.";
                 }
@@ -284,18 +274,17 @@ namespace Attendance
                     entities.LocationName = lblLocation.Text;
                     entities.passcode = userPass.Value.ToString().Trim();
 
-                    DataSet ds = business.SaveLogDetails(entities);
+                    DataSet ds = business.SaveLogDetails(entities,Convert.ToInt32(Session["offSet"].ToString()));
                     if (ds.Tables.Count > 0)
                     {
                         if (ds.Tables[0].Rows.Count > 0)
                         {
                             id = ds.Tables[0].Rows[0]["LogUserID"].ToString();
-
                             loginID.Text = ds.Tables[0].Rows[0]["LogUserID"].ToString();
                             logintin1.Text = ds.Tables[0].Rows[0]["Logindate"].ToString();
                             DataSet dsImages1 = new DataSet();
 
-                            dsImages1 = business.BindLogin(LocationName, entities.LoginDate,Convert.ToInt32(ddlShifts.SelectedItem.Value));
+                            dsImages1 = business.BindLogin(LocationName, entities.LoginDate,Convert.ToInt32(ddlShifts.SelectedItem.Value),Convert.ToInt32(Session["offSet"].ToString()));
                             rpLogin.DataSource = dsImages1;
                             rpLogin.DataBind();
                             mdlLoginpopup.Hide();
@@ -315,7 +304,6 @@ namespace Attendance
                             }
                             else
                             {
-                               
                                 dv = dsEmp.Tables[1].DefaultView;
                                 dv.RowFilter = "userid=" + entities.UserID;
                                 dt = dv.ToTable();
@@ -328,7 +316,6 @@ namespace Attendance
                             mdlLoginpopup.Show();
                             userPass.Focus();
                         }
-
                     }
                     else
                     {
@@ -356,7 +343,6 @@ namespace Attendance
                         mdlLoginpopup.Show();
                         userPass.Focus();
                     }
-                   // BindAttendanceData(LocationName, entities.LoginDate);
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "changeSuccess1(" + bnew + ");", true);
                 }
                 dr.Close();
@@ -364,13 +350,11 @@ namespace Attendance
         }
         public void logout_Click(object sender, EventArgs e)
         {
-
             logout.Enabled = false;
             string LocationName = lblLocation.Text;
             string logintin = ""; // logouttime = "", scdloStartTime = "", scdloEndTime = "";
             int bnew = 0;
             entities.UserID = Convert.ToInt32(txtUserID2.Text);
-          
             string timezone = "";
             if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
             {
@@ -381,11 +365,8 @@ namespace Attendance
                 timezone = "India Standard Time";
 
             }
-
-
             DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
             entities.LogOutDate = ISTTime;
-            
             DataSet dslogout = Session["LoginEmployee"] as DataSet;
             DataTable dt = new DataTable();
             DataView dv = new DataView();
@@ -393,7 +374,6 @@ namespace Attendance
             dv.RowFilter = "userid=" + entities.UserID;
             dt = dv.ToTable();
             int UserLogId = Convert.ToInt32(dt.Rows[0]["LogUserID"].ToString().Trim());
-
             if (cn.State != ConnectionState.Open)
             cn.Open();
             SqlCommand cmd = new SqlCommand();
@@ -402,7 +382,6 @@ namespace Attendance
             cmd.Parameters.AddWithValue("@CurrenDate", entities.LogOutDate);
             cmd.Parameters.AddWithValue("@LogUserid", UserLogId);
             cmd.CommandType = CommandType.StoredProcedure;
-
             dr = cmd.ExecuteReader();
             if (dr.Read())
             {
@@ -414,7 +393,7 @@ namespace Attendance
                 entities.LogOutDate = ISTTime;
                 entities.LogOutNotes = txtNpte2.Text;
                 entities.passcode = userPass2.Value.ToString().Trim();
-                DataSet ds = business.SaveLogDetails1(entities, UserLogId);
+                DataSet ds = business.SaveLogDetails1(entities, UserLogId,Convert.ToInt32(Session["offSet"].ToString()));
                 if (ds.Tables.Count > 0)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
@@ -424,49 +403,40 @@ namespace Attendance
                         mdlLogoutPopup.Hide();
 
                         DataSet dsImages2 = new DataSet();
-                        dsImages2 = business.BindLogout(LocationName, entities.LogOutDate,Convert.ToInt32(ddlShifts.SelectedItem.Value));
+                        dsImages2 = business.BindLogout(LocationName, entities.LogOutDate,Convert.ToInt32(ddlShifts.SelectedItem.Value),Convert.ToInt32(Session["offSet"].ToString()));
                         rplogout.DataSource = dsImages2;
                         rplogout.DataBind();
                         bnew = 1;
                     }
                     else
                     {
-
                         lblLOName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                         lblLOError.Text = "Invalid passcode";
                         mdlLogoutPopup.Show();
                         userPass2.Focus();
                     }
-
                 }
 
                 else
                 {
-
                     lblLOName.Text = dt.Rows[0]["FirstName"].ToString().Trim() + " " + dt.Rows[0]["LastName"].ToString().Trim();
                     lblLOError.Text = "Invalid passcode";
                     mdlLogoutPopup.Show();
                     userPass2.Focus();
                 }
             }
-         //   BindAttendanceData(LocationName, entities.LoginDate);
             System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "changeSuccess2(" + bnew + ");", true);
-           
         }
         protected void rpEmp_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-
                 HiddenField hdnFirstName = (HiddenField)e.Item.FindControl("hdnFirstName");
                 HiddenField hdnUserID = (HiddenField)e.Item.FindControl("hdnUserID");
                 HiddenField hdnscStartTime = (HiddenField)e.Item.FindControl("hdnStartTime1");
                 HiddenField hdnscEndTime = (HiddenField)e.Item.FindControl("hdnEndTime1");
                 Label lblBind = (Label)e.Item.FindControl("hdnDeptName1");
                 Label hdnDesg = (Label)e.Item.FindControl("hdnDesignation");
-
-
                 Image imgAgent = (Image)e.Item.FindControl("imgPicture");
                 if (imgAgent.ImageUrl == "")
                 {
@@ -618,9 +588,9 @@ namespace Attendance
         }
         private void GetShifts(string LocationName)
         {
-         
             DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
             ddlShifts.DataSource = dsShifts;
+            Session["shiftData"] = dsShifts;
             ddlShifts.DataTextField = "shiftname";
             ddlShifts.DataValueField = "shiftID";
             ddlShifts.DataBind(); 
@@ -630,32 +600,51 @@ namespace Attendance
             int shiftIDs=0;
             try
             {
-                
-
-                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-
-                for (int i = 0; i < dsShifts.Tables[0].Rows.Count; i++)
+                DataSet dsShifts = Session["shiftData"] as DataSet;
+                DataView dv = dsShifts.Tables[0].DefaultView;
+                dv.Sort = "shiftStime Desc";
+                DataTable dt = dv.ToTable();
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    DateTime stime = Convert.ToDateTime(dsShifts.Tables[0].Rows[i]["shiftStime"].ToString());
-                    DateTime eTime = Convert.ToDateTime(dsShifts.Tables[0].Rows[i]["shiftendtime"].ToString());
-
+                    DateTime stime = Convert.ToDateTime(dt.Rows[i]["shiftStime"].ToString());
+                    DateTime eTime = CurentDatetime;
+                    if (dt.Rows[i]["Crossover"].ToString() == "True")
+                    {
+                        eTime = Convert.ToDateTime(CurentDatetime.AddDays(1).ToString("MM/dd/yyyy") + " " + dt.Rows[i]["shiftendtime"].ToString());
+                    }
+                    else
+                    {
+                        eTime = Convert.ToDateTime(dt.Rows[i]["shiftendtime"].ToString());
+                    }
                     if (stime <= CurentDatetime && eTime >= CurentDatetime)
                     {
-                        shiftIDs = Convert.ToInt32(dsShifts.Tables[0].Rows[i]["shiftID"].ToString());
-                        
+                        shiftIDs = Convert.ToInt32(dt.Rows[i]["shiftID"].ToString());
+                        break;
                     }
                 }
-
+                if (shiftIDs == 0)
+                {
+                    shiftIDs = Convert.ToInt32(dsShifts.Tables[0].Rows[0]["shiftID"].ToString());
+                }
             }
             catch (Exception ex)
             {
             }
             return shiftIDs;
         }
+        private void setShiftOffset(int shiftID)
+        {
+            DataSet dsShifts = Session["shiftData"] as DataSet;
+            DataView dv = dsShifts.Tables[0].DefaultView;
+            dv.RowFilter = "shiftID=" + shiftID;
+            DataTable dt = dv.ToTable();
+            Session["offSet"] = dt.Rows[0]["offSet"].ToString() == "" ? "0" : dt.Rows[0]["offSet"].ToString() == "NULL" ? "0" : dt.Rows[0]["offSet"].ToString();
+        }
         protected void ddlShifts_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
+                setShiftOffset(Convert.ToInt32(ddlShifts.SelectedValue.ToString()));
                 string LocationName = Session["LocationName"].ToString();
                 var timezone = "";
                 if (Convert.ToInt32(Session["TimeZoneID"]) == 2)
@@ -668,35 +657,32 @@ namespace Attendance
                 }
                 DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                 var CurentDatetime = ISTTime;
-                BindAttendanceData(LocationName, CurentDatetime);
+                BindAttendanceData(LocationName, CurentDatetime, Convert.ToInt32(Session["offSet"]));
                 Session["ShiftID"] = ddlShifts.SelectedValue.ToString();
             }
             catch (Exception ex)
             {
             }
         }
-        private void BindAttendanceData(string LocationName, DateTime CurentDatetime)
+        private void BindAttendanceData(string LocationName, DateTime CurentDatetime,int offset)
         {
             try
             {
                 int shiftID = Convert.ToInt32(ddlShifts.SelectedItem.Value);
                 DataSet dsImages = new DataSet();
-                dsImages = business.BindData(LocationName, CurentDatetime,shiftID);
+                dsImages = business.BindData(LocationName, CurentDatetime,shiftID,offset);
                 Session["Employee"] = dsImages;
                 rpEmp.DataSource = dsImages;
                 rpEmp.DataBind();
-
                 rpLeave.DataSource = dsImages.Tables[1];
                 rpLeave.DataBind();
-             
                 DataSet dsImages1 = new DataSet();
-                dsImages1 = business.BindLogin(LocationName, CurentDatetime,shiftID);
+                dsImages1 = business.BindLogin(LocationName, CurentDatetime, shiftID, offset);
                 Session["LoginEmployee"] = dsImages1;
                 rpLogin.DataSource = dsImages1;
                 rpLogin.DataBind();
-
                 DataSet dsImages2 = new DataSet();
-                dsImages2 = business.BindLogout(LocationName, CurentDatetime,shiftID);
+                dsImages2 = business.BindLogout(LocationName, CurentDatetime, shiftID, offset);
                 Session["LogoutEmployee"] = dsImages2;
                 rplogout.DataSource = dsImages2;
                 rplogout.DataBind();

@@ -55,7 +55,7 @@ namespace Attendance.BAL
             }
         }
        
-        public DataSet BindData(string LocationName,DateTime CurentDatetime,int shiftID)
+        public DataSet BindData(string LocationName,DateTime CurentDatetime,int shiftID,int offset)
         {
             try
             {
@@ -66,6 +66,7 @@ namespace Attendance.BAL
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@locationname", LocationName));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@CurrentDate", CurentDatetime));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
+                daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@offset", offset));
                 daPhotos.SelectCommand.CommandType = CommandType.StoredProcedure;
 
                 daPhotos.Fill(dsImage);
@@ -76,7 +77,7 @@ namespace Attendance.BAL
                 throw ex;
             }
         }
-        public DataSet BindLogin(string LocationName, DateTime CurentDatetime,int shiftID)
+        public DataSet BindLogin(string LocationName, DateTime CurentDatetime,int shiftID,int offset)
         {
             try
             {
@@ -84,6 +85,7 @@ namespace Attendance.BAL
                  daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@locationname", LocationName));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@CurrentDate", CurentDatetime));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
+                daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@offset", offset));
                 daPhotos.SelectCommand.CommandType = CommandType.StoredProcedure;
                 DataSet dsImage = new DataSet();
                 daPhotos.Fill(dsImage);
@@ -94,7 +96,7 @@ namespace Attendance.BAL
                 throw ex;
             }
         }
-        public DataSet BindLogout(string LocationName, DateTime CurentDatetime, int shiftID)
+        public DataSet BindLogout(string LocationName, DateTime CurentDatetime, int shiftID,int offset)
         {
             try
             {
@@ -103,6 +105,7 @@ namespace Attendance.BAL
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@locationname", LocationName));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@CurrentDate", CurentDatetime));
                 daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
+                daPhotos.SelectCommand.Parameters.Add(new SqlParameter("@offset", offset));
                 daPhotos.SelectCommand.CommandType = CommandType.StoredProcedure;
                 DataSet dsImage = new DataSet();
                 daPhotos.Fill(dsImage);
@@ -113,7 +116,7 @@ namespace Attendance.BAL
                 throw ex;
             }
         }
-        public DataSet SaveLogDetails(Attendance.Entities.Entities entities)
+        public DataSet SaveLogDetails(Attendance.Entities.Entities entities,int offset)
         {
             DataSet dsLoginDet = new DataSet();
             try
@@ -123,6 +126,7 @@ namespace Attendance.BAL
                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@passcode", entities.passcode));
                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@LoginDate", Convert.ToDateTime((entities.LoginDate))));
                 daLogin.SelectCommand.Parameters.Add(new SqlParameter("@LoginNotes", entities.LoginNotes));
+                daLogin.SelectCommand.Parameters.Add(new SqlParameter("@offset", offset));
                 daLogin.SelectCommand.CommandType = CommandType.StoredProcedure;
                 daLogin.Fill(dsLoginDet);
                 return dsLoginDet;
@@ -136,7 +140,7 @@ namespace Attendance.BAL
 
 
         }
-        public DataSet SaveLogDetails1(Attendance.Entities.Entities entities, int UserLogID)
+        public DataSet SaveLogDetails1(Attendance.Entities.Entities entities, int UserLogID,int offset)
         {
             DataSet dsLogoutDet = new DataSet();
             try
@@ -147,6 +151,7 @@ namespace Attendance.BAL
                 daLogout.SelectCommand.Parameters.Add(new SqlParameter("@passcode", entities.passcode));
                 daLogout.SelectCommand.Parameters.Add(new SqlParameter("@LogOutDate", entities.LogOutDate));
                 daLogout.SelectCommand.Parameters.Add(new SqlParameter("@LogOutNotes", entities.LogOutNotes));
+                daLogout.SelectCommand.Parameters.Add(new SqlParameter("@offset", offset));
                 daLogout.SelectCommand.CommandType = CommandType.StoredProcedure;
                 daLogout.Fill(dsLogoutDet);
                 return dsLogoutDet;
@@ -508,6 +513,27 @@ namespace Attendance.BAL
                  SqlDataAdapter daLocation = new SqlDataAdapter("USP_GetShiftsByLocationName", connectionString);
                  daLocation.SelectCommand.CommandType = CommandType.StoredProcedure;
                  daLocation.SelectCommand.Parameters.Add(new SqlParameter("@locationName", LocationName));
+                 DataSet dsLocation = new DataSet();
+                 daLocation.Fill(dsLocation);
+                 return dsLocation;
+             }
+             catch (Exception ex)
+             {
+                 throw ex;
+             }
+
+
+         }
+
+
+         public DataSet GetShiftsByLocationIdToHoliday(int LocationID)
+         {
+             try
+             {
+                 SqlCommand cmd = new SqlCommand();
+                 SqlDataAdapter daLocation = new SqlDataAdapter("USP_getshiftsByLocationID", connectionString);
+                 daLocation.SelectCommand.CommandType = CommandType.StoredProcedure;
+                 daLocation.SelectCommand.Parameters.Add(new SqlParameter("@locationID", LocationID));
                  DataSet dsLocation = new DataSet();
                  daLocation.Fill(dsLocation);
                  return dsLocation;

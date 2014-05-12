@@ -463,8 +463,8 @@ namespace Attendance
 
                                         for (int k = 0; k < dt1.Rows.Count; k++)
                                         {
-                                            dtAttandence.Rows[i]["SignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                            dtAttandence.Rows[i]["SignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                            dtAttandence.Rows[i]["SignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString().Trim();
+                                            dtAttandence.Rows[i]["SignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString().Trim(); 
 
                                             dtAttandence.Rows[i]["LoginNotes"] = dtAttandence.Rows[i]["LoginNotes"] + "</br>" + (dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString());
 
@@ -581,8 +581,8 @@ namespace Attendance
                         dvSingle.Style["display"] = "block";
                         dvMonthrep.Style["display"] = "none";
 
-                        //grdSingleLeaveReq.DataSource = ds1;
-                        //grdSingleLeaveReq.DataBind();
+                        grdSingleLeaveReq.DataSource = null;
+                        grdSingleLeaveReq.DataBind();
 
                     }
                 }
@@ -593,9 +593,8 @@ namespace Attendance
                     ViewState["MonthSatrt"] = monthStart;
 
                     GetCalender(monthStart, monthEnd, 1);
-                  //  DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
-                  //  grdSingleLeaveReq.DataSource = ds1;
-                  //  grdSingleLeaveReq.DataBind();
+                    grdSingleLeaveReq.DataSource = null;
+                    grdSingleLeaveReq.DataBind();
                     dvSingle.Style["display"] = "none";
                     dvMonthrep.Style["display"] = "block";
 
@@ -642,12 +641,12 @@ namespace Attendance
                     }
                     DateTime NextWeekStart = GeneralFunction.GetFirstDayOfWeekDate(NextWeek);
                     DateTime NextWeekEnd = GeneralFunction.GetLastDayOfWeekDate(NextWeek);
-                    //  DataTable ds = GetReport(NextWeekStart, NextWeekEnd, userid);
+                  
                     string Ismanage = Session["IsManage"].ToString();
                     string IsAdmin = Session["IsAdmin"].ToString();
                     DataTable ds = new DataTable();
                     ds = GetReportSingle(NextWeekStart, NextWeekEnd, userid);
-                    //DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, NextWeekStart, NextWeekEnd);
+                   
                     Session["AtnDetails"] = ds;
                     if (ds.Rows.Count > 0)
                     {
@@ -656,8 +655,8 @@ namespace Attendance
                         dvSingle.Style["display"] = "block";
                         dvMonthrep.Style["display"] = "none";
 
-                        //grdSingleLeaveReq.DataSource = ds1;
-                        //grdSingleLeaveReq.DataBind();
+                       grdSingleLeaveReq.DataSource = null;
+                       grdSingleLeaveReq.DataBind();
                     }
                 }
                 else
@@ -667,9 +666,9 @@ namespace Attendance
                     ViewState["MonthSatrt"] = monthStart;
 
                     GetCalender(monthStart, monthEnd, 1);
-                    //DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
-                    //grdSingleLeaveReq.DataSource = ds1;
-                    //grdSingleLeaveReq.DataBind();
+
+                    grdSingleLeaveReq.DataSource = null;
+                    grdSingleLeaveReq.DataBind();
                     dvSingle.Style["display"] = "none";
                     dvMonthrep.Style["display"] = "block";
 
@@ -719,16 +718,15 @@ namespace Attendance
                     DataTable ds = new DataTable();
                     ds = GetReportSingle(StartDate, EndDate, userid);
                     Session["AtnDetails"] = ds;
-                   
-                   // DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, StartDate, EndDate);
+
                     if (ds.Rows.Count > 0)
                     {
                         grdAttendanceSingle.DataSource = ds;
                         grdAttendanceSingle.DataBind();
                         dvSingle.Style["display"] = "block";
                         dvMonthrep.Style["display"] = "none";
-                        //grdSingleLeaveReq.DataSource = ds1;
-                        //grdSingleLeaveReq.DataBind();
+                        grdSingleLeaveReq.DataSource = null;
+                        grdSingleLeaveReq.DataBind();
                     }
                 }
                 else
@@ -738,9 +736,9 @@ namespace Attendance
                     ViewState["MonthSatrt"] = monthStart;
 
                     GetCalender(monthStart, monthEnd, 1);
-                    //DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
-                    //grdSingleLeaveReq.DataSource = ds1;
-                    //grdSingleLeaveReq.DataBind();
+
+                    grdSingleLeaveReq.DataSource = null;
+                    grdSingleLeaveReq.DataBind();
                     dvSingle.Style["display"] = "none";
                     dvMonthrep.Style["display"] = "block";
 
@@ -805,67 +803,70 @@ namespace Attendance
                     string sTable = string.Empty;
 
                     Label lblDay = (Label)e.Row.FindControl("lblDay");
-                    string[] Day1 = lblDay.Text.ToString().Split('(');
-
-                    string TodayDt = Day1[1].Substring(0, Day1[1].Length - 2);
-
-
-                    Label lblScIn = (Label)e.Row.FindControl("lblScIn");
-                    lblScIn.Text = lblScIn.Text.ToString().Trim() == "-" ? "" : lblScIn.Text.ToString();
-                    if (lblScIn.Text.Trim() == "-")
+                    if (lblDay.Text.ToString() != "<b>Total Hours</b>" && lblDay.Text.ToString()!="")
                     {
-                        lblScIn.Text = "";
+                        string[] Day1 = lblDay.Text.ToString().Split('(');
+
+                        string TodayDt = Day1[1].Substring(0, Day1[1].Length - 2);
+
+
+                        Label lblScIn = (Label)e.Row.FindControl("lblScIn");
+                        lblScIn.Text = lblScIn.Text.ToString().Trim() == "-" ? "" : lblScIn.Text.ToString();
+                        if (lblScIn.Text.Trim() == "-")
+                        {
+                            lblScIn.Text = "";
+                        }
+
+                        Label lblSignIn = (Label)e.Row.FindControl("lblSignIn");
+                        lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "S" ? "S" : Convert.ToDateTime(lblSignIn.Text).ToString("hh:mm tt");
+
+                        HiddenField hdnSignInFlag = (HiddenField)e.Row.FindControl("hdnSignInFlag");
+                        if (hdnSignInFlag.Value == "True")
+                        {
+                            e.Row.Cells[2].CssClass += "atnEdit ";
+                        }
+
+                        HiddenField hdnSignOutFlag = (HiddenField)e.Row.FindControl("hdnSignOutFlag");
+                        if (hdnSignOutFlag.Value == "True")
+                        {
+                            e.Row.Cells[2].CssClass += "atnEdit ";
+                        }
+
+                        Label lblSignOut = (Label)e.Row.FindControl("lblSignOut");
+                        lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "S" ? "S" : (lblSignIn.Text + " - " + (lblSignOut.Text == "" ? "" : lblSignOut.Text == "N/A" ? "N/A" : lblSignOut.Text == "L" ? "" : lblSignOut.Text == "H" ? "" : lblSignOut.Text == "S" ? "" : Convert.ToDateTime(lblSignOut.Text).ToString("hh:mm tt")));
+
+                        HiddenField hdnSigninNotes = (HiddenField)e.Row.FindControl("hdnSigninNotes");
+                        HiddenField hdnMultiple = (HiddenField)e.Row.FindControl("hdnMultiple");
+
+
+
+
+                        if (hdnMultiple.Value == "True")
+                        {
+                            lblSignIn.CssClass += "SinglemultipleLogin ";
+                            dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(TodayDt), lblID.Text);
+                            s = CreateMultipleTable(dt);
+                            dt = null;
+                        }
+                        sTable = CreateSignInTable(lblName.Text, (hdnSigninNotes.Value), s);
+                        s = "";
+                        if (sTable != "")
+                        {
+                            lblSignIn.Attributes.Add("rel", "tooltip");
+                            lblSignIn.Attributes.Add("title", sTable);
+                            e.Row.Cells[2].CssClass += "greenTag ";
+                        }
+                        Label lblMonHours = (Label)e.Row.FindControl("lblMonHours");
+                        lblMonHours.Text = lblMonHours.Text == "N/A" ? "" : lblMonHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblMonHours.Text)));
+                        if (lblMonHours.Text.Trim() == "-")
+                        {
+                            lblMonHours.Text = "";
+                        }
+
+                        HiddenField hdnLvStatus = (HiddenField)e.Row.FindControl("hdnLvStatus");
+                        e.Row.Cells[2].CssClass += GeneralFunction.GetColor(lblSignIn.Text.Trim(), hdnLvStatus.Value.Trim());
+
                     }
-
-                    Label lblSignIn = (Label)e.Row.FindControl("lblSignIn");
-                    lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "S" ? "S" : Convert.ToDateTime(lblSignIn.Text).ToString("hh:mm tt");
-
-                    HiddenField hdnSignInFlag = (HiddenField)e.Row.FindControl("hdnSignInFlag");
-                    if (hdnSignInFlag.Value == "True")
-                    {
-                        e.Row.Cells[2].CssClass += "atnEdit ";
-                    }
-
-                    HiddenField hdnSignOutFlag = (HiddenField)e.Row.FindControl("hdnSignOutFlag");
-                    if (hdnSignOutFlag.Value == "True")
-                    {
-                        e.Row.Cells[2].CssClass += "atnEdit ";
-                    }
-
-                    Label lblSignOut = (Label)e.Row.FindControl("lblSignOut");
-                    lblSignIn.Text = lblSignIn.Text == "" ? "" : lblSignIn.Text == "H" ? "H" : lblSignIn.Text == "L" ? "L" : lblSignIn.Text == "S" ? "S" : (lblSignIn.Text + " - " + (lblSignOut.Text == "" ? "" : lblSignOut.Text == "N/A" ? "N/A" : lblSignOut.Text == "L" ? "" : lblSignOut.Text == "H" ? "" : lblSignOut.Text == "S" ? "" : Convert.ToDateTime(lblSignOut.Text).ToString("hh:mm tt")));
-
-                    HiddenField hdnSigninNotes = (HiddenField)e.Row.FindControl("hdnSigninNotes");
-                    HiddenField hdnMultiple = (HiddenField)e.Row.FindControl("hdnMultiple");
-
-
-
-
-                    if (hdnMultiple.Value == "True")
-                    {
-                        lblSignIn.CssClass += "SinglemultipleLogin ";
-                        dt = obj.GetMultipleDetailsByEmpID(Convert.ToDateTime(TodayDt), lblID.Text);
-                        s = CreateMultipleTable(dt);
-                        dt = null;
-                    }
-                    sTable = CreateSignInTable(lblName.Text, (hdnSigninNotes.Value), s);
-                    s = "";
-                    if (sTable != "")
-                    {
-                        lblSignIn.Attributes.Add("rel", "tooltip");
-                        lblSignIn.Attributes.Add("title", sTable);
-                        e.Row.Cells[2].CssClass += "greenTag ";
-                    }
-                    Label lblMonHours = (Label)e.Row.FindControl("lblMonHours");
-                    lblMonHours.Text = lblMonHours.Text == "N/A" ? "" : lblMonHours.Text == "" ? "" : GeneralFunction.CalDoubleToTime((Convert.ToDouble(lblMonHours.Text)));
-                    if (lblMonHours.Text.Trim() == "-")
-                    {
-                        lblMonHours.Text = "";
-                    }
-
-                    HiddenField hdnLvStatus = (HiddenField)e.Row.FindControl("hdnLvStatus");
-                    e.Row.Cells[2].CssClass += GeneralFunction.GetColor(lblSignIn.Text.Trim(), hdnLvStatus.Value.Trim());
-
                 }
             }
             catch (Exception ex)
@@ -997,7 +998,7 @@ namespace Attendance
             DataTable dtAttandence = new DataTable();
             try
             {
-                DataTable dt = obj.GetHolidayDetByLoc(MonthStart, MonthEnd, locationID);
+                DataTable dt = obj.GetHolidayDetByLoc(MonthStart, MonthEnd, locationID,0,0);
                 Session["HolidayMgmt"] = dt;
                 dtAttandence.Columns.Add("Sunday", typeof(string));
                 dtAttandence.Columns.Add("Monday", typeof(string));
@@ -1329,8 +1330,8 @@ namespace Attendance
 
                                         for (int k = 0; k < dt1.Rows.Count; k++)
                                         {
-                                            dtAttandence.Rows[i]["SignIn"] = dt1.Rows[0]["Logindate"].ToString().Trim();
-                                            dtAttandence.Rows[i]["SignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim();
+                                            dtAttandence.Rows[i]["SignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString().Trim();
+                                            dtAttandence.Rows[i]["SignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString().Trim(); 
 
                                             dtAttandence.Rows[i]["LoginNotes"] = dtAttandence.Rows[i]["LoginNotes"] + "</br>" + (dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString());
 
@@ -1564,9 +1565,9 @@ namespace Attendance
                     DateTime monthEnd = monthStart.AddMonths(1).AddSeconds(-1);
                    
                     GetCalender(monthStart, monthEnd, 1);
-                    //DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, monthStart, monthEnd);
-                    //grdSingleLeaveReq.DataSource = ds1;
-                    //grdSingleLeaveReq.DataBind();
+                  
+                    grdSingleLeaveReq.DataSource = null;
+                    grdSingleLeaveReq.DataBind();
                     dvSingle.Style["display"] = "none";
                     dvMonthrep.Style["display"] = "block";
 
@@ -1602,7 +1603,7 @@ namespace Attendance
                     DataTable ds = new DataTable();
                     ds = GetReportSingle(Start, End, userid);
                   
-                   // DataTable ds1 = obj.GetLeaveRequestDetByUserID(userid, Start, End);
+                
                     Session["AtnDetails"] = ds;
                     if (ds.Rows.Count > 0)
                     {
@@ -1610,8 +1611,8 @@ namespace Attendance
                         grdAttendanceSingle.DataBind();
                         dvSingle.Style["display"] = "block";
                         dvMonthrep.Style["display"] = "none";
-                        //grdSingleLeaveReq.DataSource = ds1;
-                        //grdSingleLeaveReq.DataBind();
+                        grdSingleLeaveReq.DataSource = null;
+                        grdSingleLeaveReq.DataBind();
 
                     }
 

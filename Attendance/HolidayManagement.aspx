@@ -76,15 +76,28 @@
         $('.tooltip2').tipsy({html: true, gravity:'sw' });
       });
      
-     
+          
      
      $(function(){
-     
-     
-  
-          $('.btnDefaultCancel').click(function(){
          
-            $find('mdlDefaultmgmt').hide();
+         
+           
+    
+    
+    $('.defHoliday input[type=checkbox]').live('change', function() {
+        if($('.defHoliday input[type=checkbox]:checked').length != $('.defHoliday input[type=checkbox]').length){
+            $('.defAction').removeAttr('disabled');
+        }else{
+            $('.defAction').attr('disabled','disabled');
+        }
+                       
+    });
+         
+         
+         
+         
+          $('.btnDefaultCancel').click(function(){
+            $find('mdlAddDefault').hide();
           });
        
          $('.tooltip2').tipsy({html: true, gravity:'sw' });
@@ -100,7 +113,6 @@
               $('#btnSelectOK').click(function(){   
               var str = '';
                var len = 0;         
-               
               var rowsCount = $("#grdSelectEmp tr").length;
                if(rowsCount>0)
                {
@@ -155,26 +167,8 @@
                 else{
                 $('#trHol').hide();
                 }
-             
              })
-             
-           
-            
-             $('#rdSelected').live('change',function(e){
-                e.preventDefault();
-                e.stopPropagation(true);
-               if($('#ddlPopLoc').val()=='Select'){
-                    alert('Please select location');
-                    return false;
-               }else if($('#ddlPopDept').val()=='Select'){
-                    alert('Please select department');
-                    return false;
-               }else{
-                    return true;
-               }               
-             })
-     
-     });
+      });
       function pageLoad(){
        $('[rel=tooltip]').tooltip();
         $('.tooltip2').tipsy({html: true, gravity:'sw' });
@@ -183,7 +177,6 @@
        }else{
             $('#scrollBlock').removeClass('scrollBlock')
        }
-       
      }
       function Holidaypop(e){
       debugger
@@ -210,15 +203,15 @@
                   $("#rdHoliday").prop("checked",false);
                   $('#trHol').hide();
              }
-                       
-             
+  
+             $('#hdnHolidayID').val($this.attr('holidayID'));
              $('.lblHDay').text($this.attr('currentdate'));     
              $('#hdnHolidayDt').val($this.attr('currentdate'));      
-           
-             $("#rdAll").prop("checked",false);
-             $("#rdSelected").prop("checked",false) ;
-             $('#ddlPopLoc').val('Select');
-             $('#ddlPopDept').val('Select');
+
+             $("#ddlPopLoc option:contains("+$('#ddlLocation option:selected').text()+")").attr('selected', 'selected');
+             $("#ddlHolshift option:contains("+$('#ddlShift option:selected').text()+")").attr('selected', 'selected');
+             $("#ddlPopDept option:contains("+$('#ddlDepartment option:selected').text()+")").attr('selected', 'selected');
+             
              if($this.attr('Hname')!=null)
              {
               $('#txtHolidayName').val($this.attr('Hname'));
@@ -253,14 +246,7 @@
            $('#ddlPopDept').focus();
            return false;
           }
-    
-          
-         if(($("#rdAll").prop("checked")==false)&&($("#rdSelected").prop("checked")==false))
-        {
-         alert('Please choose employee(s)');
-         $('#rdAll').focus();
-          return false;
-        }
+
         
         if($('#trHol').css('display') != 'none')
         {
@@ -292,12 +278,11 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                 </h4>
+                </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    
-    <asp:UpdateProgress ID="UpdateProgress3" runat="server" AssociatedUpdatePanelID="upDefaultmgmt"
+    <asp:UpdateProgress ID="UpdateProgress3" runat="server" AssociatedUpdatePanelID="uprptDf"
         DisplayAfter="0">
         <ProgressTemplate>
             <div id="spinner">
@@ -306,11 +291,10 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                 </h4>
+                </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upbtns"
         DisplayAfter="0">
         <ProgressTemplate>
@@ -320,25 +304,42 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                     </h4>
+                </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    <%--  <div id="spinner">
-        <h4>
-            <div>
-                Processing
-                <img src="images/loading.gif" />
+    <asp:UpdateProgress ID="UpdateProgress4" runat="server" AssociatedUpdatePanelID="uphol"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+                </h4>
             </div>
-        </h4>
-    </div>--%>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <asp:UpdateProgress ID="UpdateProgress5" runat="server" AssociatedUpdatePanelID="upDefaultmgmt"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+                </h4>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
     <div class="headder">
         <a href="#" class="logo">
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
             <asp:Label ID="lblLocation" runat="server"></asp:Label>
             <asp:Label ID="lblShiftName" runat="server"></asp:Label>
         </a>
-      
         <div class="right">
             <div class="wel">
                 <table style="width: auto; margin-left: 20px; float: right; border-collapse: collapse">
@@ -367,7 +368,7 @@
                                             <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
                                                 PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
                                         </li>
-                                        <li>
+                                        <li style="display: none;">
                                             <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
                                         </li>
                                         <li>
@@ -398,7 +399,7 @@
                                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px; float: left; display: inline-block">
                                 </span>
                                 <div class="cTime" style="display: inline-block; float: right; margin-left: 10px;">
-                                    <b>--:--:-- AM </b><strong> (<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
+                                    <b>--:--:-- AM </b><strong>(<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
                                 </div>
 
                                 <script src="js/clock.js" type="text/javascript"></script>
@@ -541,7 +542,6 @@
                         <asp:Button ID="btnCancelPasscode" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPasscode_Click" />
                     </td>
                 </tr>
-                %
             </table>
         </div>
     </div>
@@ -551,10 +551,19 @@
     </h2>
     <asp:UpdatePanel ID="updd" runat="server">
         <ContentTemplate>
-            <asp:Label ID="lblGrdLocaton" runat="server" Text="Location"></asp:Label></b>&nbsp;&nbsp;
+            <b>
+                <asp:Label ID="lblGrdLocaton" runat="server" Text="Location"></asp:Label></b>&nbsp;&nbsp;
             <asp:DropDownList ID="ddlLocation" runat="server" AutoPostBack="true" AppendDataBoundItems="true"
                 OnSelectedIndexChanged="ddlLocation_SelectedIndexChanged" Style="width: 70px;">
-                <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                <asp:ListItem Text="ALL" Value="0"></asp:ListItem>
+            </asp:DropDownList>
+            &nbsp;&nbsp;<b>Shift</b>&nbsp;&nbsp;
+            <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" Style="width: 70px;"
+                OnSelectedIndexChanged="ddlShift_SelectedIndexChanged">
+            </asp:DropDownList>
+            &nbsp;&nbsp;<b>Department </b>&nbsp;&nbsp;
+            <asp:DropDownList ID="ddlDepartment" runat="server" AutoPostBack="true" AppendDataBoundItems="true"
+                Style="width: 155px;" OnSelectedIndexChanged="ddlDepartment_SelectedIndexChanged">
             </asp:DropDownList>
         </ContentTemplate>
     </asp:UpdatePanel>
@@ -568,10 +577,10 @@
                         OnClick="btnCurrent_Click" />&nbsp;
                     <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
                         OnClick="btnNext_Click" />&nbsp;
-                    <div style="float:right">
-                    <asp:Button ID="btnDefaultMgmt" runat="server" Text="Default holiday management" 
-                            CssClass="btn-link" onclick="btnDefaultMgmt_Click"/></div>
-                    <%-- <input type="button" name="btnDefaultMgmt" runat="server" value="Default holiday management" class="btn-link"  />--%>  
+                    <div style="float: right">
+                        <asp:Button ID="btnDefaultMgmt" runat="server" Text="Default holiday management"
+                            CssClass="btn-link" OnClick="btnDefaultMgmt_Click" /></div>
+                    <%-- <input type="button" name="btnDefaultMgmt" runat="server" value="Default holiday management" class="btn-link"  />--%>
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
@@ -648,6 +657,7 @@
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
                     <asp:HiddenField ID="hdnHolidayDt" runat="server" />
+                    <asp:HiddenField ID="hdnHolidayID" runat="server" />
                 </ContentTemplate>
             </asp:UpdatePanel>
             <span class="close">
@@ -657,7 +667,7 @@
             <table style="width: 95%; margin: 20px 5px; border-collapse: collapse;" class="holidayCalPo">
                 <tr>
                     <td style="width: 95px;">
-                        Declare as <span class="must"> *</span>
+                        Declare as
                     </td>
                     <td>
                         <asp:RadioButton ID="rdHoliday" runat="server" GroupName="Holiday" />&nbsp;Holiday
@@ -681,12 +691,13 @@
                 </tr>
                 <tr>
                     <td>
-                        Department<span class="must"> *</span>
+                        Shift<span class="must"> *</span>
                     </td>
                     <td>
-                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                        <asp:UpdatePanel ID="UpdatePanel7" runat="server">
                             <ContentTemplate>
-                                <asp:DropDownList ID="ddlPopDept" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPopDept_SelectedIndexChanged1">
+                                <asp:DropDownList ID="ddlHolshift" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlHolshift_SelectedIndexChanged">
+                                    <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
                                 </asp:DropDownList>
                             </ContentTemplate>
                         </asp:UpdatePanel>
@@ -694,22 +705,21 @@
                 </tr>
                 <tr>
                     <td>
-                        Employee(s)<span class="must"> *</span>
+                        Department <span class="must">*</span>
                     </td>
                     <td>
-                        <asp:UpdatePanel ID="uprd" runat="server">
+                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                             <ContentTemplate>
-                                <asp:RadioButton ID="rdAll" runat="server" GroupName="Emp" AutoPostBack="true" />&nbsp;ALL
-                                &nbsp; &nbsp; &nbsp;
-                                <asp:RadioButton ID="rdSelected" runat="server" GroupName="Emp" AutoPostBack="true"
-                                    OnCheckedChanged="rdSelected_CheckedChanged" />&nbsp;Selected
+                                <asp:DropDownList ID="ddlPopDept" runat="server" AutoPostBack="true">
+                                    <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                </asp:DropDownList>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </td>
                 </tr>
                 <tr id="trHol" runat="server">
                     <td>
-                        Holiday name <span class="must"> *</span>
+                        Holiday name <span class="must">*</span>
                     </td>
                     <td>
                         <asp:TextBox ID="txtHolidayName" runat="server" MaxLength="250" Width="220"></asp:TextBox>
@@ -791,52 +801,123 @@
             float: right;" value="OK" runat="server" />&nbsp;
         <br />
     </div>
-    
-    
-    
-    
-    
-     <cc1:ModalPopupExtender ID="mdlDefaultmgmt" runat="server" BackgroundCssClass="popupHolder"
+    <cc1:ModalPopupExtender ID="mdlDefaultmgmt" runat="server" BackgroundCssClass="popupHolder"
         CancelControlID="lnkDefault" TargetControlID="hdnDefault" PopupControlID="dvDefault">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnDefault" runat="server" />
     <div id="dvDefault" runat="server" class="popContent" style="width: 400px; display: none">
         <h2>
-            Default holiday management
-            <span class="close">
+            Default holiday management <span class="close">
                 <asp:LinkButton ID="lnkDefault" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-            <table style="width: 95%; margin: 20px 5px; border-collapse: collapse;" class="holidayCalPo">
+            <asp:UpdatePanel ID="uprptDf" runat="server">
+                <ContentTemplate>
+                    <div style="min-height: 200px;">
+                        <div style="float: right">
+                            <asp:Button ID="btnAddDefault" runat="server" Text="Add default" CssClass="btn btn-danger btn-small"
+                                OnClick="btnAddDefault_Click" />
+                        </div>
+                        <br />
+                        <br />
+                        <div style=" padding: 10px;">
+                            <b>Location : </b>
+                            <asp:Label ID="lblDefLoc1" runat="server"></asp:Label>
+                            &nbsp;&nbsp;&nbsp; <b>Shift : </b>
+                            <asp:Label ID="lblDefShift1" runat="server"></asp:Label>
+                        </div>
+                        <br />
+                       
+                        <fieldset class="popupFieldSet">
+                            <legend>Default Holidays</legend>
+                             <div style="padding: 75px; padding-left: 70px; font-size: 15px" runat="server" id="divNodefault">
+                            <b>
+                                <asp:Label ID="lblNoDefault" runat="server"></asp:Label></b>
+                        </div>
+                            <asp:Repeater ID="rptDefaultHoliday" runat="server">
+                                <HeaderTemplate>
+                                    <ul class="defHoliday">
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <li>
+                                        <asp:CheckBox ID="chkDefaultDay" runat="server" type="checkbox" FromYr='<%#Eval("frmyr") %>'  toyr='<%#Eval("frmyr") %>' 
+                                            Checked="true" Text='<%#Eval("dayname") %>' />
+                                        <%--<asp:Label  runat="server" Text='<%#Eval("dayname") %>'></asp:Label>--%>
+                                    </li>
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    </ul>
+                                </FooterTemplate>
+                            </asp:Repeater>
+                            <div style="text-align: right">
+                                <asp:UpdatePanel ID="upDefSave" runat="server">
+                                    <ContentTemplate>
+                                        <asp:Button runat="server" ID="btnSaveDefault" Text="Save" CssClass="btn btn-danger btn-small defAction"
+                                            Enabled="false" OnClick="btnSaveDefault_Click" />
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </fieldset>
+                        <br />
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </div>
+    </div>
+    <asp:UpdateProgress ID="UpdateProgress6" runat="server" AssociatedUpdatePanelID="upDefSave"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+                </h4>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    <cc1:ModalPopupExtender ID="mdlAddDefault" runat="server" BackgroundCssClass="popupHolder2"
+        CancelControlID="lnkDefaultAdd" TargetControlID="hdnDefaultAdd" PopupControlID="dvDefaultAdd">
+    </cc1:ModalPopupExtender>
+    <asp:HiddenField ID="hdnDefaultAdd" runat="server" />
+    <div id="dvDefaultAdd" runat="server" class="popContent popupContent2" style="width: 400px;
+        display: none">
+        <h2>
+            Add/update Default Holiday<span class="close">
+            <asp:LinkButton ID="lnkDefaultAdd" runat="server"></asp:LinkButton></span>
+        </h2>
+        <div class="inner">
+            <table>
                 <tr>
                     <td style="width: 95px;">
-                        Default holiday <span class="must"> *</span>
+                        Default holiday <span class="must">*</span>
                     </td>
                     <td>
-                    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                        <asp:UpdatePanel ID="UpdatePanel5" runat="server">
                             <ContentTemplate>
-                        <asp:DropDownList ID="ddlDay" runat="server" AutoPostBack="true" >
-                        <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
-                        <asp:ListItem Text="Sunday" Value="0"></asp:ListItem>
-                        <asp:ListItem Text="Monday" Value="1"></asp:ListItem>
-                        <asp:ListItem Text="Tuesday" Value="2"></asp:ListItem>
-                        <asp:ListItem Text="Wednesday" Value="3"></asp:ListItem>
-                        <asp:ListItem Text="Thursday" Value="4"></asp:ListItem>
-                        <asp:ListItem Text="Friday" Value="5"></asp:ListItem>
-                        <asp:ListItem Text="Saturday" Value="6"></asp:ListItem>
-                        </asp:DropDownList>
-                        </ContentTemplate>
+                                <asp:DropDownList ID="ddlDay" runat="server" AutoPostBack="true">
+                                    <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                    <asp:ListItem Text="Sunday" Value="0"></asp:ListItem>
+                                    <asp:ListItem Text="Monday" Value="1"></asp:ListItem>
+                                    <asp:ListItem Text="Tuesday" Value="2"></asp:ListItem>
+                                    <asp:ListItem Text="Wednesday" Value="3"></asp:ListItem>
+                                    <asp:ListItem Text="Thursday" Value="4"></asp:ListItem>
+                                    <asp:ListItem Text="Friday" Value="5"></asp:ListItem>
+                                    <asp:ListItem Text="Saturday" Value="6"></asp:ListItem>
+                                </asp:DropDownList>
+                            </ContentTemplate>
                         </asp:UpdatePanel>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        From <span class="must"> *</span>
+                        From
                     </td>
                     <td>
                         <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                             <ContentTemplate>
-                                <asp:DropDownList ID="ddlFromYear" runat="server" AutoPostBack="true" >
+                                <asp:DropDownList ID="ddlFromYear" runat="server" AutoPostBack="true">
                                 </asp:DropDownList>
                             </ContentTemplate>
                         </asp:UpdatePanel>
@@ -844,20 +925,18 @@
                 </tr>
                 <tr>
                     <td>
-                        Upto<span class="must"> *</span>
+                        Upto
                     </td>
-                  
                     <td>
-                          <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                        <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                             <ContentTemplate>
-                                <asp:DropDownList ID="ddlToYear" runat="server" AutoPostBack="true" >
+                                <asp:DropDownList ID="ddlToYear" runat="server" AutoPostBack="true">
                                 </asp:DropDownList>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </td>
                 </tr>
-                
-                 <tr>
+                <tr>
                     <td>
                         Location<span class="must"> *</span>
                     </td>
@@ -872,19 +951,17 @@
                 </tr>
                 <tr>
                     <td>
-                        Department<span class="must"> *</span>
+                        shift<span class="must"> *</span>
                     </td>
                     <td>
                         <asp:UpdatePanel ID="UpdatePanel10" runat="server">
                             <ContentTemplate>
-                                <asp:DropDownList ID="ddlDefaultDept" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPopDept_SelectedIndexChanged1">
+                                <asp:DropDownList ID="ddlDefaultShift" runat="server" AutoPostBack="true">
                                 </asp:DropDownList>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </td>
                 </tr>
-                
-                
                 <tr>
                     <td>
                     </td>
@@ -893,20 +970,20 @@
                             <asp:UpdatePanel ID="upDefaultmgmt" runat="server">
                                 <ContentTemplate>
                                     <asp:Button ID="btnSubmit" runat="server" Text="Apply" CssClass="btn btn-danger btn-small"
-                                        OnClientClick="return ValidDefault();" onclick="btnSubmit_Click" />
+                                        OnClientClick="return ValidDefault();" OnClick="btnSubmit_Click" />
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
                         &nbsp;&nbsp;
-                        <input type="button" name="btnDefaultCancel" runat="server" class="btnDefaultCancel btn btn-small" value="Cancel" />
+                        <input id="btnDefaultCancel" type="button" name="btnDefaultCancel" runat="server"
+                            class="btnDefaultCancel btn btn-small" value="Cancel" />
                     </td>
                 </tr>
             </table>
         </div>
-    </div>
-    
+        </div>
     </form>
-    
+
     <script type="text/javascript" language="javascript">
     function  ValidDefault()
     {
@@ -924,9 +1001,9 @@
        
         return false;
       }
-      if($('#ddlDefaultDept').val()=='Select')
+      if($('#ddlDefaultShift').val()=='Select')
       {
-       alert('Please select department'); 
+       alert('Please select shift'); 
        $('#ddlDefaultDept').focus();
         return false;
       }
@@ -934,7 +1011,6 @@
     }
     
     </script>
-    
-    
+
 </body>
 </html>

@@ -21,11 +21,21 @@ namespace Attendance
             {
                 string filepath = Session["FilePath"].ToString();
                 string documentPath = string.Format(filepath);
-                string attachmentHeader = String.Format("attachment; filename={0}.pdf",  Session["filename"].ToString());
+                string attachmentHeader = String.Format("attachment; filename={0}.pdf", filepath);
+
                 Response.AppendHeader("content-disposition", attachmentHeader);
                 Response.ContentType = "application/octet-stream";
                 Response.WriteFile(documentPath);
+
+
                 Response.End();
+                //string filepath = Session["FilePath"].ToString();
+                //string documentPath = string.Format(filepath);
+                //string attachmentHeader = String.Format("attachment; filename={0}.pdf",  Session["filename"].ToString());
+                //Response.AppendHeader("content-disposition", attachmentHeader);
+                //Response.ContentType = "application/octet-stream";
+                //Response.WriteFile(documentPath);
+                //Response.End();
             }
             catch (Exception ex)
             {

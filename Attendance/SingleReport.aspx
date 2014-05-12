@@ -470,7 +470,7 @@
 });
       $(window).load(function(){
                    $('[rel=tooltip]').tooltip();
-           $('.table2 tr:last-child').remove();
+           
      })
     </script>
 
