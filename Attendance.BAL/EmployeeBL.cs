@@ -575,6 +575,27 @@ namespace Attendance.BAL
         }
 
 
-        //USP_GetDefaultHolidays
+        public DataTable GetEffectivedataByLocation(int location, DateTime StartDt, DateTime EndDt, int shiftID)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetEffectiveDtData]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@startDate", StartDt));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@locationID", location));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+            }
+            return ds.Tables[0];
+        }
     }
 }

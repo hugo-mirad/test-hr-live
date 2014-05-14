@@ -692,7 +692,7 @@ namespace Attendance
 
                                                 SunSignInCnt = SunSignInCnt + 1;
                                                 dtAttandence.Rows[j]["SunSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
-                                                dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[0]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["Logoutdate"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim(); 
+                                                dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[0]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim(); 
                                                 dtAttandence.Rows[j]["SunSchIn"] = dt1.Rows[0]["startTime"].ToString();
                                                 dtAttandence.Rows[j]["SunSchOut"] = dt1.Rows[0]["EndTime"].ToString();
                                                 dtAttandence.Rows[j]["SunLunch"] = dt1.Rows[0]["Lnchstm"].ToString().Trim() + "-" + dt1.Rows[0]["lnchendtm"].ToString().Trim();
@@ -706,7 +706,7 @@ namespace Attendance
                                                 {
                                                     dtAttandence.Rows[j]["SunLoginNotes"] = dtAttandence.Rows[j]["SunLoginNotes"].ToString() + "</br>" + dt1.Rows[k]["loginnotes"].ToString() + "</br>" + dt1.Rows[k]["logoutnotes"].ToString();
                                                     dtAttandence.Rows[j]["SunSignIn"] = Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[0]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim();
-                                                    dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[0]["Logindate"].ToString()).AddHours(Convert.ToInt32(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim(); 
+                                                    dtAttandence.Rows[j]["SunSignOut"] = dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"].ToString().Trim() == "" ? "N/A" : Convert.ToDateTime(dt1.Rows[dt1.Rows.Count - 1]["Logoutdate"]).AddHours(Convert.ToInt32(dt1.Rows[dt1.Rows.Count - 1]["offset"].ToString())).ToString("MM/dd/yyyy hh:mm tt").Trim(); 
                                                     if (dt1.Rows.Count > 1)
                                                     {
                                                         dtAttandence.Rows[j]["SunMultiple"] = "True";

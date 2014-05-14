@@ -47,10 +47,10 @@ namespace Attendance
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
                     lblShiftName.Text = "-" + Session["ShiftName"].ToString();
-                    
+
 
                     DateTime startdate = Convert.ToDateTime(CurentDatetime.ToString("MM/dd/yyyy")).AddDays(1 - Convert.ToDateTime(CurentDatetime.ToString("MM/dd/yyyy")).Day);
-                    DateTime Enddate=startdate.AddMonths(1).AddSeconds(-1);
+                    DateTime Enddate = startdate.AddMonths(1).AddSeconds(-1);
 
                     ViewState["StartMonth"] = startdate;
                     ViewState["EndMonth"] = Enddate;
@@ -59,7 +59,7 @@ namespace Attendance
                     getLocations();
                     GetShifts(lblLocation.Text.ToString());
                     ddlShift.SelectedIndex = ddlShift.Items.IndexOf(ddlShift.Items.FindByValue(Session["ShiftID"].ToString()));
-                    if(Session["IsAdmin"].ToString()=="True")
+                    if (Session["IsAdmin"].ToString() == "True")
                     {
                         ddlGrdLocation.Enabled = true;
                     }
@@ -69,7 +69,7 @@ namespace Attendance
                     }
                     ddlGrdLocation.SelectedIndex = ddlGrdLocation.Items.IndexOf(ddlGrdLocation.Items.FindByText(lblLocation.Text.ToString()));
                     GetStatus();
-                    GetLeavesDetails(lblLocation.Text, startdate, Enddate, AppovedStatusID,Convert.ToInt32(ddlShift.SelectedValue));
+                    GetLeavesDetails(lblLocation.Text, startdate, Enddate, AppovedStatusID, Convert.ToInt32(ddlShift.SelectedValue));
                     if (startdate.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentMonth"]).ToString("MM/dd/yyyy"))
                     {
                         btnNext.CssClass = "btn btn-danger btn-small disabled";
@@ -91,6 +91,11 @@ namespace Attendance
                     //    lnkLeavemangement.Enabled = true;
                     //}
                 }
+
+            }
+            else
+            {
+                Response.Redirect("Default.aspx");
             }
         }
         private void GetStatus()

@@ -88,6 +88,7 @@
     <Content Include="css\tipsy.css" />
     <Content Include="css\UI.css" />
     <Content Include="Default.aspx" />
+    <Content Include="EffectiveManagement.aspx" />
     <Content Include="EmployeDetails.aspx" />
     <Content Include="EmployeeList.aspx" />
     <Content Include="encryptpwd.aspx" />
@@ -325,6 +326,13 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="EditHistory.cs" />
+    <Compile Include="EffectiveManagement.aspx.cs">
+      <DependentUpon>EffectiveManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EffectiveManagement.aspx.designer.cs">
+      <DependentUpon>EffectiveManagement.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EmployeDetails.aspx.cs">
       <DependentUpon>EmployeDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

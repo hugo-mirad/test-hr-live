@@ -820,7 +820,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    My Pass code<span class="must">*</span> <br />
+                                    My Passcode<span class="must">*</span> <br />
                                     <asp:TextBox ID="txtLeavePassCode" runat="server" TextMode="Password" Style="width: 150px;"></asp:TextBox>
                                 </td>
                             </tr>

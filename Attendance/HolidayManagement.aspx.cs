@@ -77,6 +77,10 @@ namespace Attendance
 
                 }
             }
+            else
+            {
+                Response.Redirect("Default.aspx");
+            }
         }
         private void GetCalender(DateTime MonthStart, DateTime MonthEnd, int locationID,int shiftID,int DepartmentID)
         {
@@ -264,11 +268,8 @@ namespace Attendance
             {
             }
         }
-        protected void btnLogout_Click(object sender, EventArgs e)
-        {
-            Session.Abandon();
-            Response.Redirect("Default.aspx");
-        }
+       
+   
         protected void lnkChangepwd_Click(object sender, EventArgs e)
         {
             try

@@ -490,8 +490,13 @@
                         Notes
                     </td>
                     <td style="text-align: right">
+                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                      <ContentTemplate>
                         <asp:TextBox ID="txtLeaveNotes" runat="server" MaxLength="250" TextMode="MultiLine"
                             Width="243" Rows="5"></asp:TextBox>
+                       </ContentTemplate>
+                     </asp:UpdatePanel>
+                            
                     </td>
                 </tr>
                 <tr>

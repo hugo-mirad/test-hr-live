@@ -923,7 +923,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblMonIn" runat="server" Font-Underline="False" Text='<%#Eval("MonSignIn")%>'
                                    logUid='<%#Eval("MonLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("MonSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("MonSignIn")%>' signout='<%#Eval("MonSignOut")%>' offset='<%#Eval("Monoffset")%>'
                                     schOut='<%#Eval("MonSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                     <asp:HiddenField ID="hdnLoguserID" runat="server" Value='<%#Eval("MonLogUserID")%>' />
                                 <asp:HiddenField ID="hdnMonSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "MonLoginNotes"))%>' />
@@ -968,7 +968,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblTueIn" runat="server" Font-Underline="False" Text='<%#Eval("TueSignIn")%>'
                                      logUid='<%#Eval("TueLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("TueSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("TueSignIn")%>' signout='<%#Eval("TueSignOut")%>' offset='<%#Eval("Tueoffset")%>'
                                     schOut='<%#Eval("TueSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnTueSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "TueLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnTueSignInFlag" runat="server" Value='<%#Eval("TueLoginFlag")%>' />
@@ -1011,7 +1011,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblWedIn" runat="server" Font-Underline="False" Text='<%#Eval("WedSignIn")%>'
                                      logUid='<%#Eval("WedLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("WedSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("WedSignIn")%>' signout='<%#Eval("WedSignOut")%>' offset='<%#Eval("Wedoffset")%>'
                                     schOut='<%#Eval("WedSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnWedSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "WedLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnWedSignInFlag" runat="server" Value='<%#Eval("WedLoginFlag")%>' />
@@ -1055,7 +1055,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblThuIn" runat="server" Font-Underline="False" Text='<%#Eval("ThuSignIn")%>'
                                      logUid='<%#Eval("ThuLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("ThuSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("ThuSignIn")%>' signout='<%#Eval("ThuSignOut")%>' offset='<%#Eval("Thuoffset")%>'
                                     schOut='<%#Eval("ThuSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnThuSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "ThuLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnThuSignInFlag" runat="server" Value='<%#Eval("ThuLoginFlag")%>' />
@@ -1098,7 +1098,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblFriIn" runat="server" Font-Underline="False" Text='<%#Eval("FriSignIn")%>'
                                     logUid='<%#Eval("FriLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("FriSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("FriSignIn")%>' signout='<%#Eval("FriSignOut")%>' offset='<%#Eval("Frioffset")%>'
                                     schOut='<%#Eval("FriSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnFriSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "FriLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnFriSignInFlag" runat="server" Value='<%#Eval("FriLoginFlag")%>' />
@@ -1142,7 +1142,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblSatIn" runat="server" Font-Underline="False" Text='<%#Eval("SatSignIn")%>'
                                     logUid='<%#Eval("SatLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("SatSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("SatSignIn")%>' signout='<%#Eval("SatSignOut")%>' offset='<%#Eval("Satoffset")%>'
                                     schOut='<%#Eval("SatSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnSatSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SatLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSatSignInFlag" runat="server" Value='<%#Eval("SatLoginFlag")%>' />
@@ -1187,7 +1187,7 @@ function clearDisposableItems( sender , args ) {
                             <ItemTemplate>
                                 <asp:LinkButton ID="lblSunIn" runat="server" Font-Underline="False" Text='<%#Eval("SunSignIn")%>'
                                      logUid='<%#Eval("SunLogUserID")%>' empName='<%#Eval("Empname")%>' schIn='<%#Eval("SunSchIn").ToString().Trim()%>' 
-                                    empid='<%#Eval("empid")%>'
+                                    empid='<%#Eval("empid")%>' signIn='<%#Eval("SunSignIn")%>' signout='<%#Eval("SunSignOut")%>' offset='<%#Eval("Sunoffset")%>'
                                     schOut='<%#Eval("SunSchOut").ToString().Trim()%>'  OnClientClick="return editPopup($(this))"></asp:LinkButton>
                                 <asp:HiddenField ID="hdnSunSigninNotes" runat="server" Value='<%# objFun.ToProperHtml(DataBinder.Eval(Container.DataItem, "SunLoginNotes"))%>' />
                                 <asp:HiddenField ID="hdnSunSignInFlag" runat="server" Value='<%#Eval("SunLoginFlag")%>' />

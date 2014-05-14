@@ -103,6 +103,10 @@ namespace Attendance
                     }
                 }
             }
+            else
+            {
+                Response.Redirect("Default.aspx");
+            }
         }
         private void GetpaidLeavesData(int locationID, DateTime startDt, DateTime EndDt,int shiftID)
         {
