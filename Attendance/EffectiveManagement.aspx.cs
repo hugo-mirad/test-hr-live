@@ -43,6 +43,14 @@ namespace Attendance
                     ViewState["StartMonth"] = startdate;
                     ViewState["EndMonth"] = Enddate;
                     ViewState["CurrentMonth"] = startdate;
+                    if (Session["IsAdmin"].ToString() == "True")
+                    {
+                        ddlLocation.Enabled = true;
+                    }
+                    else
+                    {
+                        ddlLocation.Enabled = false;
+                    }
 
                     lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
