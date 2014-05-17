@@ -174,9 +174,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
-                    </h4>
-                </h4>
+               </h4>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
@@ -189,8 +187,6 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
-                    </h4>
                 </h4>
             </div>
         </ProgressTemplate>
@@ -204,8 +200,6 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
-                    </h4>
                 </h4>
             </div>
         </ProgressTemplate>

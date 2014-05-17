@@ -19,10 +19,7 @@ namespace Attendance
             string Proper = "";
             try
             {
-
-              
-
-                if (fieldname == "SSN" || fieldname == "Deductions" || fieldname == "County" || fieldname == "Address1" || fieldname == "Address2" || fieldname == "StateID" || fieldname == "Zip" || fieldname == "firstname" ||
+               if (fieldname == "SSN" || fieldname == "Deductions" || fieldname == "County" || fieldname == "Address1" || fieldname == "Address2" || fieldname == "StateID" || fieldname == "Zip" || fieldname == "firstname" ||
                     fieldname == "Lastname" || fieldname == "Date of birth" || fieldname == "EmpTypeID" || fieldname == "Salary")
                 {
 
@@ -425,7 +422,85 @@ namespace Attendance
             }
             return old;
         }
-        
+
+        private string GetLocations(string value)
+        {
+            try
+            {
+                Attendance.BAL.Report obj = new Attendance.BAL.Report();
+                DataTable dt = obj.GetLocations();
+                DataTable dt1 = new DataTable();
+                DataView dv = dt.DefaultView;
+                dv.RowFilter = "locationID=" + Convert.ToInt32(value);
+                dt1 = dv.ToTable();
+                value = dt1.Rows[0]["LocationName"].ToString();
+            }
+            catch (Exception ex)
+            {
+            }
+            return value;
+        }
+
+        public string GetName(string Fieldname,string value)
+        {
+            
+            if (Fieldname == "Location")
+            {
+                value = GetLocations(value);
+            }
+            else if (Fieldname == "Schedule")
+            {
+                value = GetSchedule(value);
+            }
+
+            else if (Fieldname == "State")
+            {
+                value = getStateName(value);
+            }
+            else if (Fieldname == "Wage")
+            {
+                value = GetWages(value);
+            }
+            else if (Fieldname == "Employee type")
+            {
+                value = GetEmployeetype(value);
+            }
+            else if (Fieldname == "Shift")
+            {
+                value = GetShifts(value);
+            }
+            else if (Fieldname == "Filling status")
+            {
+                if (value == "1")
+                {
+                    value = "Single";
+                }
+                else if (value == "2")
+                {
+                    value = "Married";
+                }
+            }
+         
+            return value;
+        }
+
+        private string GetShifts(string value)
+        {
+            try
+            {
+                Attendance.BAL.EmployeeBL obj = new Attendance.BAL.EmployeeBL();
+                DataTable dt = obj.GetShifts();
+                DataView dv = dt.DefaultView;
+                DataTable dt1 = new DataTable();
+                dv.RowFilter = "shiftID=" + Convert.ToInt32(value);
+                dt1 = dv.ToTable();
+                value = dt1.Rows[0]["Shiftname"].ToString();
+
+            }
+            catch (Exception ex) { }
+            return value;
+        }
+
 
     }
 }

@@ -68,6 +68,27 @@
   
           });  
           
+             var Current=new Date($('#lblDate2').text());
+             var mindt=(Current.getMonth()+1)+"/" +Current.getDate() +"/"+Current.getFullYear();
+  
+          
+            $('#txtPerEffectiveDt').datepicker({
+             dateFormat: "mm/dd/yy",
+             minDate:mindt    
+          });  
+          
+          
+          $('#txtEffectDt').datepicker({
+            dateFormat: "mm/dd/yy",
+               minDate:mindt   
+          });  
+          
+           $('#txtSalEffectDt').datepicker({
+            dateFormat: "mm/dd/yy",
+            minDate:mindt   
+  
+          });  
+          
           
            $('#txtSheduleStart').timepicker({
             timeFormat:"hh:mmTT"      
@@ -591,6 +612,11 @@
          
         
     </script>
+    
+    <style>
+     .table1 td,th{ font-size:12px;}
+    
+    </style>
 
 </head>
 <body>
@@ -614,8 +640,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
-                    </h4>
+                  
                 </h4>
             </div>
         </ProgressTemplate>
@@ -629,8 +654,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
-                    </h4>
+                 
                 </h4>
             </div>
         </ProgressTemplate>
@@ -644,8 +668,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
-                    </h4>
+                   
                 </h4>
             </div>
         </ProgressTemplate>
@@ -659,8 +682,7 @@
                         Processing
                         <img src="images/loading.gif" />
                     </div>
-                    <h4>
-                    </h4>
+                   
                 </h4>
             </div>
         </ProgressTemplate>
@@ -699,7 +721,7 @@
                                             <asp:LinkButton runat="server" ID="lnkLeaveApproval" Text="Leave Approval Management"
                                                 PostBackUrl="LeaveApprovalManagement.aspx"></asp:LinkButton>
                                         </li>
-                                        <li style="display:none;">
+                                        <li style="display: none;">
                                             <asp:LinkButton runat="server" ID="lnkLeavemangement" Text="Leave Management" PostBackUrl="LeaveManagement.aspx"></asp:LinkButton>
                                         </li>
                                         <li>
@@ -730,7 +752,7 @@
                                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px; float: left; display: inline-block">
                                 </span>
                                 <div class="cTime" style="display: inline-block; float: right; margin-left: 10px;">
-                                    <b>--:--:-- AM </b><strong> (<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
+                                    <b>--:--:-- AM </b><strong>(<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
                                 </div>
 
                                 <script src="js/clock.js" type="text/javascript"></script>
@@ -822,8 +844,8 @@
                                                                 <b>Shift</b>
                                                             </td>
                                                             <td>
-                                                            <asp:Label ID="lblShift" runat="server"></asp:Label>
-                                                            <asp:HiddenField ID="hdnShiftID" runat="server" />
+                                                                <asp:Label ID="lblShift" runat="server"></asp:Label>
+                                                                <asp:HiddenField ID="hdnShiftID" runat="server" />
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -1264,6 +1286,59 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td colspan="3">
+                                <h4 class="ppHed" style="margin-bottom: 0">
+                                    Effective changes history
+                                </h4>
+                                <div style="border: #ccc 1px solid; max-height:200px;">
+                                    <div class="ppHedContent" style="margin: 0 10px;max-height:200px;">
+                                    <div style="overflow-y:scroll;height:120px; ">
+                                        <asp:GridView ID="grdEffectChanges" runat="server" AutoGenerateColumns="false" Style="min-width: 70%" CssClass="table1"
+                                            OnRowDataBound="grdEffectChanges_RowDataBound">
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="Field name">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblChangeField" runat="server" Text='<%#Eval("ChangeField")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Old value ">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblOldValue" runat="server" Text='<%#Eval("OldValue")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="New value">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblNewValue" runat="server" Text='<%#Eval("NewValue")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Status">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblChangeStatus" runat="server" Text='<%#Eval("ChangeStatus")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Effect date">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblEffectiveDt" runat="server" Text='<%# Bind("EffectiveDt", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Entered by">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblEnterBy" runat="server" Text='<%#Eval("EnterByName")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Entered date">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblChangedDt" runat="server" Text='<%# Bind("EnteredDt", "{0:MM/dd/yyyy}") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -1292,57 +1367,56 @@
                 <asp:LinkButton ID="lnkPwdClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-        <asp:UpdatePanel ID="uppwddv" runat="server">
-        <ContentTemplate>
-         <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                <tr>
-                    <td>
-                        Old password
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        New password<span class="must">*</span>
-                        <br />
-                        <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtNewPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Confirm password<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtConfirmPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel9" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnUpdatePwd" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validPwd();" OnClick="btnUpdatePwd_Click" />
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnCancelPwd" EventName="Click" />
-                                </Triggers>
-                            </asp:UpdatePanel>
-                        </div>
-                        <asp:Button ID="btnCancelPwd" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPwd_Click" />
-                    </td>
-                </tr>
-            </table>
-        </ContentTemplate>
-        </asp:UpdatePanel>
-           
+            <asp:UpdatePanel ID="uppwddv" runat="server">
+                <ContentTemplate>
+                    <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                Old password
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtOldpwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                New password<span class="must">*</span>
+                                <br />
+                                <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtNewPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Confirm password<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtConfirmPwd" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div style="display: inline-block">
+                                    <asp:UpdatePanel ID="UpdatePanel9" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Button ID="btnUpdatePwd" runat="server" Text="Update" CssClass="btn btn-danger"
+                                                OnClientClick="return validPwd();" OnClick="btnUpdatePwd_Click" />
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="btnCancelPwd" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </div>
+                                <asp:Button ID="btnCancelPwd" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPwd_Click" />
+                            </td>
+                        </tr>
+                    </table>
+                </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--Change password popup End-->
@@ -1362,57 +1436,56 @@
                 <asp:LinkButton ID="lnkPasscodeClose" runat="server"></asp:LinkButton></span>
         </h2>
         <div class="inner">
-        <asp:UpdatePanel ID="uppassdv" runat="server">
-        <ContentTemplate>
-         <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
-                <tr>
-                    <td>
-                        Old passcode<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtOldpasscode" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        New passcode<span class="must">*</span>
-                        <br />
-                        <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtNewPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Confirm passcode<span class="must">*</span>
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtConfirmPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel12" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnUpdatePassCode" runat="server" Text="Update" CssClass="btn btn-danger"
-                                        OnClientClick="return validPasscode();" OnClick="btnUpdatePassCode_Click" />
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnCancelPasscode" EventName="Click" />
-                                </Triggers>
-                            </asp:UpdatePanel>
-                        </div>
-                        <asp:Button ID="btnCancelPasscode" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPasscode_Click" />
-                    </td>
-                </tr>
-            </table>
-        </ContentTemplate>
-        </asp:UpdatePanel>
-           
+            <asp:UpdatePanel ID="uppassdv" runat="server">
+                <ContentTemplate>
+                    <table style="width: 97%; margin: 20px 5px; border-collapse: collapse;">
+                        <tr>
+                            <td>
+                                Old passcode<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtOldpasscode" runat="server" MaxLength="20" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                New passcode<span class="must">*</span>
+                                <br />
+                                <span style="font-size: 10px; color: GrayText">(Maximum 10 characters)</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtNewPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Confirm passcode<span class="must">*</span>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtConfirmPasscode" runat="server" MaxLength="10" TextMode="Password"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div style="display: inline-block">
+                                    <asp:UpdatePanel ID="UpdatePanel12" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Button ID="btnUpdatePassCode" runat="server" Text="Update" CssClass="btn btn-danger"
+                                                OnClientClick="return validPasscode();" OnClick="btnUpdatePassCode_Click" />
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="btnCancelPasscode" EventName="Click" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </div>
+                                <asp:Button ID="btnCancelPasscode" runat="server" Text="Cancel" CssClass="btn" OnClick="btnCancelPasscode_Click" />
+                            </td>
+                        </tr>
+                    </table>
+                </ContentTemplate>
+            </asp:UpdatePanel>
         </div>
     </div>
     <!--Change password popup End-->
@@ -1438,15 +1511,15 @@
                                 <asp:TextBox ID="txtEditEmpID" runat="server" Enabled="false"></asp:TextBox>
                                 <asp:HiddenField ID="hdnToday" runat="server" />
                             </td>
-                            <td >
+                            <td>
                             </td>
                             <td>
-                               Shift<span class="must">*</span>
+                                Shift<span class="must">*</span>
                             </td>
                             <td>
-                            <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" AppendDataBoundItems="true">
-                            <asp:ListItem Text="Select" Value="0"></asp:ListItem>
-                            </asp:DropDownList>
+                                <asp:DropDownList ID="ddlShift" runat="server" AutoPostBack="true" AppendDataBoundItems="true">
+                                    <asp:ListItem Text="Select" Value="0"></asp:ListItem>
+                                </asp:DropDownList>
                             </td>
                         </tr>
                         <tr>
@@ -1629,6 +1702,47 @@
                             </td>
                         </tr>
                         <tr>
+                            <td colspan="5" style="vertical-align: top;">
+                                <table style="width: 80%">
+                                    <tr>
+                                        <td style="vertical-align: top; width: 30%;">
+                                            Changes to be update for
+                                        </td>
+                                        <td style="vertical-align: top;">
+                                            <table style="width: 60%">
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <asp:RadioButton ID="rdNow" runat="server" Checked="true" AutoPostBack="true" GroupName="Now"
+                                                            OnCheckedChanged="rdNow_CheckedChanged" />
+                                                        Now
+                                                    </td>
+                                                    <td>
+                                                        <asp:RadioButton ID="rdFuture" runat="server" GroupName="Now" AutoPostBack="true"
+                                                            OnCheckedChanged="rdFuture_CheckedChanged" />
+                                                        Future
+                                                    </td>
+                                                </tr>
+                                                <tr runat="server" id="trEffect" style="display: none;">
+                                                    <td>
+                                                        Effective date
+                                                    </td>
+                                                    <td>
+                                                        <asp:TextBox ID="txtEffectDt" runat="server"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="divider1">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <td colspan="4">
                             </td>
                             <td style="text-align: right;">
@@ -1644,10 +1758,12 @@
                                             <asp:AsyncPostBackTrigger ControlID="ddlEditDepart" EventName="SelectedIndexChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="ddlSchedule" EventName="SelectedIndexChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="lnkEditClose" EventName="Click" />
-                                             <asp:AsyncPostBackTrigger ControlID="ddlShift" EventName="SelectedIndexChanged" />
+                                            <asp:AsyncPostBackTrigger ControlID="ddlShift" EventName="SelectedIndexChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="btnEditCancel" EventName="Click" />
                                             <asp:AsyncPostBackTrigger ControlID="rdEditActiveFalse" EventName="CheckedChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="rdEditActiveTrue" EventName="CheckedChanged" />
+                                            <asp:AsyncPostBackTrigger ControlID="rdNow" EventName="CheckedChanged" />
+                                            <asp:AsyncPostBackTrigger ControlID="rdFuture" EventName="CheckedChanged" />
                                             <asp:PostBackTrigger ControlID="btnUpdate" />
                                         </Triggers>
                                     </asp:UpdatePanel>
@@ -1668,11 +1784,10 @@
     <asp:HiddenField ID="hdnEditSal" runat="server" />
     <div id="divEditSalTax" runat="server" class="popContent" style="width: 450px; display: none">
         <h2>
-            Edit salary/tax details<span class="close">
-                <asp:LinkButton ID="lnkEditSalClose" runat="server"></asp:LinkButton></span>
-        </h2>
-        <div class="inner" runat="server" id="Div2">
-            <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+            Edit salary/tax details <span class="close">
+                <asp:LinkButton ID="lnkEditSalClose" runat="server"></asp:LinkButton></span></h2>
+        <div>
+            <asp:UpdatePanel ID="upn" runat="server">
                 <ContentTemplate>
                     <table style="width: 90%; margin: 20px auto; border-collapse: collapse;">
                         <tr>
@@ -1724,6 +1839,53 @@
                             </td>
                         </tr>
                         <tr>
+                            <td colspan="2">
+                                <div class="divider1">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top;">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="vertical-align: top; width: 40%">
+                                            Changes to be update for
+                                        </td>
+                                        <td style="vertical-align: top;">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <asp:RadioButton ID="rdSalNow" runat="server" Checked="true" AutoPostBack="true"
+                                                            GroupName="Now" OnCheckedChanged="rdSalNow_CheckedChanged" />
+                                                        Now
+                                                    </td>
+                                                    <td>
+                                                        <asp:RadioButton ID="rdSalFuture" runat="server" GroupName="Now" AutoPostBack="true"
+                                                            OnCheckedChanged="rdSalFuture_CheckedChanged" />
+                                                        Future
+                                                    </td>
+                                                </tr>
+                                                <tr runat="server" id="trsalEf" style="display: none;">
+                                                    <td>
+                                                        Effective date
+                                                    </td>
+                                                    <td>
+                                                        <asp:TextBox ID="txtSalEffectDt" runat="server"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="divider1">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>
                             </td>
                             <td>
@@ -1741,6 +1903,8 @@
                                             <asp:AsyncPostBackTrigger ControlID="btnSalEditCancel" EventName="Click" />
                                             <asp:AsyncPostBackTrigger ControlID="rdSingle" EventName="CheckedChanged" />
                                             <asp:AsyncPostBackTrigger ControlID="rdMarried" EventName="CheckedChanged" />
+                                            <asp:AsyncPostBackTrigger ControlID="rdSalNow" EventName="CheckedChanged" />
+                                            <asp:AsyncPostBackTrigger ControlID="rdSalFuture" EventName="CheckedChanged" />
                                         </Triggers>
                                     </asp:UpdatePanel>
                                 </div>
@@ -1763,9 +1927,8 @@
         display: none">
         <h2>
             Edit Personal details<span class="close">
-                <asp:LinkButton ID="lnkEditPersonClose" runat="server"></asp:LinkButton></span>
-        </h2>
-        <div class="inner" runat="server" id="Div3">
+                <asp:LinkButton ID="lnkEditPersonClose" runat="server"></asp:LinkButton></span></h2>
+        <div>
             <asp:UpdatePanel ID="upper" runat="server">
                 <ContentTemplate>
                     <table style="width: 90%; margin: 20px auto; border-collapse: collapse;">
@@ -1880,6 +2043,53 @@
                             </td>
                         </tr>
                         <tr>
+                            <td colspan="2">
+                                <div class="divider1">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top;">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="vertical-align: top; width: 40%">
+                                            Changes to be update for
+                                        </td>
+                                        <td style="vertical-align: top;">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <asp:RadioButton ID="rdPerNow" runat="server" Checked="true" AutoPostBack="true"
+                                                            GroupName="Now" OnCheckedChanged="rdPerNow_CheckedChanged" />
+                                                        Now
+                                                    </td>
+                                                    <td>
+                                                        <asp:RadioButton ID="rdPerFuture" runat="server" GroupName="Now" AutoPostBack="true"
+                                                            OnCheckedChanged="rdPerFuture_CheckedChanged" />
+                                                        Future
+                                                    </td>
+                                                </tr>
+                                                <tr runat="server" id="trPerEffect" style="display: none;">
+                                                    <td>
+                                                        Effective date
+                                                    </td>
+                                                    <td>
+                                                        <asp:TextBox ID="txtPerEffectiveDt" runat="server"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="divider1">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>
                             </td>
                             <td>
@@ -1918,11 +2128,10 @@
     <div id="divEditEmergency" runat="server" class="popContent" style="width: 800px;
         display: none">
         <h2>
-            Edit Emergency details<span class="close">
-                <asp:LinkButton ID="lnkEditEmergClose" runat="server"></asp:LinkButton></span>
-        </h2>
-        <div class="inner" runat="server">
-            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+            Edit Emergency details <span class="close">
+                <asp:LinkButton ID="lnkEditEmergClose" runat="server"></asp:LinkButton></span></h2>
+        <div>
+            <asp:UpdatePanel ID="UpdatePanel14" runat="server">
                 <ContentTemplate>
                     <table style="width: 99%; border-collapse: collapse; margin-left: 10px;">
                         <tr>

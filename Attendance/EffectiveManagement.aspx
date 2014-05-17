@@ -26,45 +26,18 @@
 
     <script type="text/javascript" language="javascript">
    
-   $(function(){
+   function pageLoad() {
+     
+      var Currentdate=new Date($('#lblDate2').text());
+     
+      var mindate=(Currentdate.getMonth()+1)+"/" +Currentdate.getDate() +"/"+Currentdate.getFullYear();
+  
    
-        $('.popupHolder2').css('z-index','100002')
-            $('.popupContent2').css('z-index','100003')
-   
-      $('#btnAdd').live('click', function(){
-         var str = '';
-         var len = 0;         
-        $('#grdEfUsers input[type=checkbox]').each(function(){
-            if($(this).is(':checked')){
-                str += $(this).attr('LeaveID')+',';
-                len++;
-            }
-            $('#hdnChkRecords').val(str);
-            
-        })
-        
-        if(len>0){
-            $find('mdlEffective1popup').show();
-        }else{
-            alert('Please select an employee');           
-        }
-   });
-   
-     $('.selectAll').live('change',function(){
-         if($(this).is(':checked')){
-           $('#grdEfUsers input[type=checkbox]:not(.selectAll)').each(function(){
-                $(this).attr('checked',true);
-           })
-        }else{
-            $('#grdEfUsers input[type=checkbox]:not(.selectAll)').each(function(){
-                $(this).removeAttr('checked');
-           })
-        }
-    })
-    
-
-   
-   });
+     $('#txtEffectiveDate').datepicker({
+            dateFormat: "mm/dd/yy",
+            minDate:mindate
+        });
+   }
 
    
     </script>
@@ -72,8 +45,51 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <cc1:ToolkitScriptManager ID="Scrpt1" runat="server">
+    <cc1:ToolkitScriptManager ID="Scrpt1" runat="server" ScriptMode="Release">
     </cc1:ToolkitScriptManager>
+    
+     <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="upSelect"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+               </h4>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    
+     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="upbtns"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+                </h4>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+    
+    
+     <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel1"
+        DisplayAfter="0">
+        <ProgressTemplate>
+            <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+                </h4>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
     <div class="headder">
         <a href="#" class="logo">
             <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
@@ -162,22 +178,26 @@
     </div>
     <h2 class="pageHeadding">
         Effective management
+    
+         <asp:UpdatePanel ID="uplvAp" runat="server">
+            <ContentTemplate>
+                <asp:Label ID="lblMonthRep" runat="server" CssClass="lbl"></asp:Label>
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </h2>
     <div>
         <div style="display: inline-block; margin-left: 10px;">
             <asp:UpdatePanel ID="upSelect" runat="server">
                 <ContentTemplate>
                     <b>Status </b>&nbsp;&nbsp;
-                    <asp:DropDownList ID="ddlSelect" runat="server" Width="83px" Height="23px" OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged"
+                    <asp:DropDownList ID="ddlSelect" runat="server" Width="105px" Height="23px" OnSelectedIndexChanged="ddlSelect_SelectedIndexChanged"
                         AutoPostBack="true">
-                        <asp:ListItem Value="2">All</asp:ListItem>
-                        <asp:ListItem Value="1">Active</asp:ListItem>
-                        <asp:ListItem Value="0">Inactive</asp:ListItem>
                     </asp:DropDownList>
                     &nbsp;&nbsp; <b><b>
                         <asp:Label ID="lblGrdLocaton" runat="server" Text="Location"></asp:Label></b>&nbsp;&nbsp;
                         <asp:DropDownList ID="ddlLocation" runat="server" AutoPostBack="true" Width="83px"
-                            Height="23px" AppendDataBoundItems="true">
+                            Height="23px" AppendDataBoundItems="true" 
+                        onselectedindexchanged="ddlLocation_SelectedIndexChanged">
                             <asp:ListItem Text="Select" Value="0"></asp:ListItem>
                         </asp:DropDownList>
                         &nbsp;&nbsp; <b>
@@ -187,64 +207,64 @@
                         </asp:DropDownList>
                 </ContentTemplate>
             </asp:UpdatePanel>
-            <asp:UpdatePanel ID="upef" runat="server">
+        </div>
+    </div>
+    
+    <div style="margin-bottom: 6px;">
+        <div style="display: inline-block; width: 1007px">
+            <asp:UpdatePanel ID="upbtns" runat="server">
                 <ContentTemplate>
-                    <asp:LinkButton ID="lnkAddEffective" runat="server" Text="Add Effective Dates" CssClass="btn btn-danger w996"
-                        Style="margin-left: 840px;" OnClick="lnkAddEffective_Click"></asp:LinkButton>
+                    <asp:Button ID="btnPrevious" runat="server" Text="Previous" CssClass="btn btn-danger btn-small"
+                        OnClick="btnPrevious_Click" />&nbsp;
+                    <asp:Button ID="btnCurrent" runat="server" Text="Current" CssClass="btn btn-danger btn-small"
+                        OnClick="btnCurrent_Click" />&nbsp;
+                    <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn btn-danger btn-small"
+                        OnClick="btnNext_Click" />&nbsp;
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
     </div>
+    
     <asp:UpdatePanel ID="upgrd" runat="server">
         <ContentTemplate>
-            <div>
-                <asp:Label ID="lblNodata" runat="server" Style="font-size: 11px; font-weight: bold;
-                    margin-left: 10px;"></asp:Label>
+            <div style="text-align:center;margin:180px;" runat="server" id="dvNodata"> 
+                <asp:Label ID="lblNodata" runat="server" Style="font-size: 20px; font-weight: bold;
+                    "></asp:Label>
                 &nbsp;
             </div>
             <asp:GridView ID="grdUsers" runat="server" AutoGenerateColumns="false" CssClass="table1"
                 Style="width: 990px;" OnRowDataBound="grdUsers_RowDataBound" AllowSorting="True"
-                OnSorting="grdUsers_Sorting">
+                OnSorting="grdUsers_Sorting" OnRowCommand="grdUsers_RowCommand">
                 <Columns>
                     <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
                         <ItemTemplate>
-                            <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"></asp:Label>
+                            <asp:LinkButton ID="lblEmpID" runat="server" Text='<%#Eval("empID")%>' CommandName="Effective"
+                                CommandArgument='<%#Eval("EffectiveID")%>'></asp:LinkButton>
+                            <asp:HiddenField ID="hdnEffectiveID" runat="server" Value='<%#Eval("EffectiveID") %>' />
                         </ItemTemplate>
                         <ItemStyle Width="50" />
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="Firstname" HeaderText="BusinessName">
                         <ItemTemplate>
-                            <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("empName")%>'></asp:Label>
+                            <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("empname")%>'></asp:Label>
                         </ItemTemplate>
                         <ItemStyle Width="150" />
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
-                        <ItemTemplate>
-                            <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("startdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
-                        </ItemTemplate>
-                        <ItemStyle Width="60" />
-                    </asp:TemplateField>
-                    <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
-                        <ItemTemplate>
-                            <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}") %>'></asp:Label>
-                        </ItemTemplate>
-                        <ItemStyle Width="60" />
-                    </asp:TemplateField>
-                    <asp:TemplateField SortExpression="DeptName" HeaderText="Department">
-                        <ItemTemplate>
-                            <asp:Label ID="lblDept" runat="server" Text='<%#Eval("DeptName")%>'></asp:Label>
-                        </ItemTemplate>
-                        <ItemStyle Width="130" />
-                    </asp:TemplateField>
                     <asp:TemplateField SortExpression="Fieldname" HeaderText="Fieldname">
                         <ItemTemplate>
-                            <asp:Label ID="lblFieldname" runat="server" Text='<%#Eval("FieldName")%>'></asp:Label>
+                            <asp:Label ID="lblFieldname" runat="server" Text='<%#Eval("ChangeField")%>'></asp:Label>
                         </ItemTemplate>
                         <ItemStyle Width="130" />
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="FieldValue" HeaderText="FieldValue">
+                    <asp:TemplateField SortExpression="FieldValue" HeaderText="OldValue">
                         <ItemTemplate>
-                            <asp:Label ID="lblFieldValue" runat="server" Text='<%#Eval("FieldValue")%>'></asp:Label>
+                            <asp:Label ID="lblFieldOldValue" runat="server" Text='<%#Eval("OldValue")%>'></asp:Label>
+                        </ItemTemplate>
+                        <ItemStyle Width="130" />
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="FieldValue" HeaderText="NewValue">
+                        <ItemTemplate>
+                            <asp:Label ID="lblFieldNewValue" runat="server" Text='<%#Eval("NewValue")%>'></asp:Label>
                         </ItemTemplate>
                         <ItemStyle Width="130" />
                     </asp:TemplateField>
@@ -254,9 +274,9 @@
                         </ItemTemplate>
                         <ItemStyle Width="130" />
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="IsActive" HeaderText="Active">
+                    <asp:TemplateField SortExpression="IsActive" HeaderText="Status">
                         <ItemTemplate>
-                            <asp:Label ID="lblEffectiveDt" runat="server" Text='<%#Eval("IsActive")%>'></asp:Label>
+                            <asp:Label ID="lblStatus" runat="server" Text='<%#Eval("ChangeStatus")%>'></asp:Label>
                         </ItemTemplate>
                         <ItemStyle Width="130" />
                     </asp:TemplateField>
@@ -269,15 +289,21 @@
         PopupControlID="AddPopUp" CancelControlID="lnkClose" TargetControlID="hdnAddpopup">
     </cc1:ModalPopupExtender>
     <asp:HiddenField ID="hdnAddpopup" runat="server" />
-    <div id="AddPopUp" runat="server" class="popContent" style="width: 600px; min-height: 400px;
+    <div id="AddPopUp" runat="server" class="popContent" style="width: 360px; height: 290px;
         display: none">
         <h2>
-            Add Effective Dates
-            <asp:Label ID="lbladdLoc" runat="server" Style="font-size: 17px; font-weight: bold"></asp:Label>
+        <asp:UpdatePanel ID="uplbl" runat="server">
+        <ContentTemplate>
+            <asp:Label ID="lblEmpName" runat="server"></asp:Label></ContentTemplate>
+            </asp:UpdatePanel>
             <span class="close">
                 <asp:LinkButton ID="lnkClose" runat="server"></asp:LinkButton></span>
         </h2>
-        <div class="inner">
+        <div class="inner" >
+        <asp:UpdatePanel ID="updv" runat="server">
+        <ContentTemplate>
+        <asp:HiddenField ID="hdnEffectID" runat="server" />
+        <div runat="server" id="dvView">
             <table style="width: 99%;">
                 <tr>
                     <td style="width: 712px;">
@@ -287,60 +313,141 @@
                         <div style="display: inline-block">
                             <asp:UpdatePanel ID="up1" runat="server" UpdateMode="conditional">
                                 <ContentTemplate>
-                                    <asp:Button ID="btnAdd" runat="server" Text="Add Effective" CssClass="btn btn-danger" />
+                                    <asp:Button ID="btnEdit" runat="server" Text="Edit" CssClass="btn btn-danger" 
+                                        onclick="btnEdit_Click" />
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
                     </td>
                 </tr>
             </table>
-            <div class="scrollBlock" style="height: 300px;">
-                <div class="ppHedContent">
+            <div class="ppHedContent">
+                <div style="padding:5px;">
                     <asp:UpdatePanel ID="up" runat="server">
                         <ContentTemplate>
-                            <asp:HiddenField ID="hdnChkRecords" runat="server" />
-                            <asp:GridView ID="grdEfUsers" runat="server" AutoGenerateColumns="false" CssClass="table1"
-                                Style="width: 500px; min-height: 500px;">
-                                <Columns>
-                                    <asp:TemplateField>
-                                        <HeaderTemplate>
-                                            <input id="selectAll" class="selectAll" type="checkbox" runat="server" />
-                                        </HeaderTemplate>
-                                        <ItemTemplate>
-                                            <asp:CheckBox ID="chkRecord" runat="server" LeaveID='<%#Eval("userid")%>' />
-                                        </ItemTemplate>
-                                        <ItemStyle Width="30" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="empid" HeaderText="EmpID">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblEmpID" runat="server" Text='<%#Eval("empid")%>' CommandName="user"></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle Width="50" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="Firstname" HeaderText="Name">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblEmpFirstname" runat="server" Text='<%#Eval("Firstname")+" "+Eval("lastname")%>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle Width="150" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="JoiningDate" HeaderText="StartDt">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblStartedDate" runat="server" Text='<%# Bind("startdate", "{0:MM/dd/yyyy}") %>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle Width="60" />
-                                    </asp:TemplateField>
-                                    <asp:TemplateField SortExpression="TerminatedDt" HeaderText="TermDt">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblTerminatedDate" runat="server" Text='<%#Bind("TermDate","{0:MM/dd/yyyy}") %>'></asp:Label>
-                                        </ItemTemplate>
-                                        <ItemStyle Width="60" />
-                                    </asp:TemplateField>
-                                </Columns>
-                            </asp:GridView>
+                            <table style="width:99%;margin-left:15px;">
+                                <tr>
+                                    <td style="width:30%;padding:2px;vertical-align:top">
+                                        <b>Field name</b>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblFieldname" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30%;padding:2px;vertical-align:top">
+                                       <b> Old value</b>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblOldValue" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30%;padding:2px;vertical-align:top">
+                                       <b> New value</b>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblNewvalue" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30%;padding:2px;vertical-align:top">
+                                        <b>Effective date</b>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblEffectiveDt" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:30%;padding:2px;vertical-align:top">
+                                        <b>Status</b>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblStatus" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                            </table>
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </div>
+                
             </div>
+            </div>
+            <div runat="server" id="dvEdit" style="display:none;">
+              <div class="ppHedContent">
+                <div style="padding:5px;">
+                    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                        <ContentTemplate>
+                            <table style="width:99%">
+                                <tr>
+                                    <td style="width:30%">
+                                        <b>Field name</b>
+                                    </td>
+                                    <td>
+                                        <asp:Label ID="lblEditFieldName" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                       <b> Old value</b>
+                                    </td>
+                                    <td>
+                                       <asp:Label ID="lblEditOldValue" runat="server" ></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                       <b> New value</b>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtEditNewValue" runat="server"></asp:TextBox>
+                                       <asp:DropDownList ID="ddlNewValue" runat="server" Visible=false></asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Effective date</b>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtEffectiveDate" runat="server"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Status</b>
+                                    </td>
+                                    <td>
+                                       <asp:DropDownList ID="ddlEditStatus" runat="server"></asp:DropDownList>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+                
+            </div>
+              <table style="width: 99%;margin-top:-18px;">
+                <tr>
+                <td style="widht:33%">&nbsp;</td>
+                    <td style="float:right;">
+                        <div style="display: inline-block;">
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <ContentTemplate>
+                                    <asp:Button ID="btnUpdate" runat="server" Text="Update" 
+                                        CssClass="btn btn-danger" onclick="btnUpdate_Click" />
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
+                    </td>
+                    <td>
+                     <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn" 
+                            onclick="btnCancel_Click"/>
+                    </td>
+                </tr>
+            </table>
+            </div>
+            </ContentTemplate>
+            </asp:UpdatePanel>
             <br />
             <br />
         </div>
@@ -353,8 +460,7 @@
     <div id="Schedulepop" runat="server" class="popContent popupContent2" style="width: 400px;
         display: none">
         <h2>
-            Add Effective <span class="close">
-                <asp:LinkButton ID="lnkScheduleClose" runat="server"></asp:LinkButton></span>
+            Add Effective n></span>
         </h2>
         <div class="inner">
             <asp:UpdatePanel ID="updd" runat="server">
@@ -400,7 +506,6 @@
                                 &nbsp;
                             </td>
                         </tr>
-                      
                         <tr>
                             <td>
                             </td>

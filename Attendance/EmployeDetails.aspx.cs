@@ -20,6 +20,7 @@ namespace Attendance
 {
     public partial class EmployeDetails : System.Web.UI.Page
     {
+        
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -75,15 +76,6 @@ namespace Attendance
                         GetAllWages();
                         GetShifts(Session["LocationName"].ToString().Trim());
 
-                        //if (lblLocation.Text.Trim() == "USMP" || lblLocation.Text.Trim() == "USWB")
-                        //{
-                        //    lnkLeavemangement.Enabled = false;
-                        //    lnkLeavemangement.Style["Color"] = "Gray";
-                        //}
-                        //else
-                        //{
-                        //    lnkLeavemangement.Enabled = true;
-                        //}
                     }
 
                 }
@@ -260,6 +252,11 @@ namespace Attendance
                 txtCn3Relation.Text = dt.Rows[0]["relation3"].ToString();
                 lblCn3Email.Text = dt.Rows[0]["email3"].ToString();
                 txtCn3Email.Text = dt.Rows[0]["email3"].ToString();
+
+                DataTable dsChange = obj.GetEmpChangesEffectiveData(empid);
+                grdEffectChanges.DataSource = dsChange;
+                grdEffectChanges.DataBind();
+
             }
             catch (Exception ex)
             {
@@ -419,6 +416,9 @@ namespace Attendance
                     txtEditStartDate.Enabled = false;
                 }
                 EdiImg.ImageUrl = imgPhoto.ImageUrl;
+                rdNow.Checked = true;
+                rdFuture.Checked = false;
+                trEffect.Style["display"] = "none";
                 mdlEditPopup.Show();
             }
             catch (Exception ex)
@@ -617,10 +617,17 @@ namespace Attendance
                     objInfo.TermReason = "";
                 }
 
+                DateTime EffectDate = txtEffectDt.Text == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(txtEffectDt.Text);
+                bool Isnow = true;
+                if (rdFuture.Checked)
+                {
+                    Isnow = false;
+                }
+               
                 Attendance.BAL.Report obj = new Report();
                 String strHostName = Request.UserHostAddress.ToString();
                 string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
-                bool bnew = obj.UpdateUser(objInfo, EmployeeID, UserID, PhotoLink, strIp);
+                bool bnew = obj.UpdateUser(objInfo, EmployeeID, UserID, PhotoLink, strIp, EffectDate,Isnow);
                 if (bnew)
                 {
                     btnUpdate.Enabled = true;
@@ -662,7 +669,6 @@ namespace Attendance
             ddlEmpType.SelectedIndex = 0;
             ddlSchedule.SelectedIndex = 0;
         }
-
         protected void btnEditSalaryDetails_Click(object sender, EventArgs e)
         {
 
@@ -684,10 +690,12 @@ namespace Attendance
                 rdSingle.Checked = false;
                 rdMarried.Checked = false;
             }
+            rdSalFuture.Checked = false;
+            rdSalNow.Checked = true;
+            trsalEf.Style["display"] = "none";
 
             mdlEditSalTaxPopup.Show();
         }
-
         protected void btnSalEdit_Click(object sender, EventArgs e)
         {
             try
@@ -710,9 +718,14 @@ namespace Attendance
                 int EmployeeID = Convert.ToInt32(hdnUserID.Value);
                 String strHostName = Request.UserHostAddress.ToString();
                 string strIp = System.Net.Dns.GetHostAddresses(strHostName).GetValue(0).ToString();
-
+                bool isnow = true;
+                if (rdSalFuture.Checked)
+                {
+                    isnow = false;
+                }
+                DateTime EffectDt = txtSalEffectDt.Text == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(txtSalEffectDt.Text);
                 Attendance.BAL.Report obj = new Report();
-                bool bnew = obj.UpdateUserSalTaxDetails(objInfo, EmployeeID, UserID, strIp);
+                bool bnew = obj.UpdateUserSalTaxDetails(objInfo, EmployeeID, UserID, strIp,EffectDt,isnow);
                 ddlDeductions.SelectedIndex = 0;
                 txtEditSal.Text = "";
                 ddlEditWage.SelectedIndex = 0;
@@ -727,7 +740,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnSalEditCancel_Click(object sender, EventArgs e)
         {
             ddlDeductions.SelectedIndex = 0;
@@ -737,7 +749,6 @@ namespace Attendance
             mdlEditSalTaxPopup.Hide();
 
         }
-
         private void GetAllWages()
         {
             try
@@ -754,7 +765,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnEdittaxDet_Click(object sender, EventArgs e)
         {
 
@@ -778,7 +788,6 @@ namespace Attendance
             }
             mdlEditSalTaxPopup.Show();
         }
-
         protected void btnEditPersonalDet_Click(object sender, EventArgs e)
         {
 
@@ -804,17 +813,14 @@ namespace Attendance
             txtSSN.Text = lblSSN.Text;
             mdlEditPersonalDetails.Show();
         }
-
         protected void btnEditEmergencyDet_Click(object sender, EventArgs e)
         {
             mdlEditEmergContactDet.Show();
         }
-
         protected void btnEditEmergCancel_Click(object sender, EventArgs e)
         {
             mdlEditEmergContactDet.Hide();
         }
-
         protected void btnUpdateEmergency_Click(object sender, EventArgs e)
         {
             try
@@ -890,7 +896,6 @@ namespace Attendance
 
             }
         }
-
         protected void btnUpdatePersonal_Click(object sender, EventArgs e)
         {
             try
@@ -938,8 +943,15 @@ namespace Attendance
                 }
                 objInfo.DriverLicense = txtDriving.Text.Trim();
 
+                bool isnow = true;
+                if (rdPerFuture.Checked)
+                {
+                    isnow = false;
+                }
+
+                DateTime EffectDt = txtPerEffectiveDt.Text == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(txtPerEffectiveDt.Text);
                 Attendance.BAL.Report obj = new Report();
-                obj.UpdatePersonalDetails(objInfo, UserID, EmployeeID, strIp);
+                obj.UpdatePersonalDetails(objInfo, UserID, EmployeeID, strIp,EffectDt,isnow);
                 GetEmpDet(EmployeeID);
                 mdlEditPersonalDetails.Hide();
 
@@ -949,7 +961,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnPersonalEditCancel_Click(object sender, EventArgs e)
         {
             mdlEditPersonalDetails.Hide();
@@ -994,7 +1005,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnBack_Click(object sender, EventArgs e)
         {
             if (Session["IsAdmin"].ToString() == "True")
@@ -1006,7 +1016,6 @@ namespace Attendance
                 Response.Redirect("UserManagement.aspx");
             }
         }
-
         protected void lnkReport_Click(object sender, EventArgs e)
         {
             if (Session["IsAdmin"].ToString() == "True")
@@ -1018,7 +1027,6 @@ namespace Attendance
                 Response.Redirect("Reports.aspx");
             }
         }
-
         protected void lnkUserMangement_Click(object sender, EventArgs e)
         {
             if (Session["IsAdmin"].ToString() == "True")
@@ -1030,8 +1038,6 @@ namespace Attendance
                 Response.Redirect("UserManagement.aspx");
             }
         }
-
-
         protected void lnkScheduleAdd_Click(object sender, EventArgs e)
         {
             mdlEditPopup.Show();
@@ -1047,7 +1053,6 @@ namespace Attendance
 
 
         }
-
         protected void btnSchUpdate_Click(object sender, EventArgs e)
         {
             try
@@ -1102,14 +1107,12 @@ namespace Attendance
             }
 
         }
-
         protected void btnCancelSch_Click(object sender, EventArgs e)
         {
 
             mdlSchedulepopup.Hide();
 
         }
-
         protected void lnkResetPasscode_Click(object sender, EventArgs e)
         {
             txtResetNewPasscode.Text = "";
@@ -1117,14 +1120,12 @@ namespace Attendance
             lblResetPasscodeName.Text = lblFirstname.Text.Trim();
             mdlResetPasscode.Show();
         }
-
         protected void btnResetCancelPasscode_Click(object sender, EventArgs e)
         {
             txtResetNewPasscode.Text = "";
             txtResetConfirmPasscode.Text = "";
             mdlResetPasscode.Hide();
         }
-
         protected void btnResetPassCode_Click(object sender, EventArgs e)
         {
             try
@@ -1163,8 +1164,6 @@ namespace Attendance
             }
 
         }
-
-
         protected void btnResetPassword_Click(object sender, EventArgs e)
         {
             try
@@ -1203,8 +1202,6 @@ namespace Attendance
             }
 
         }
-
-
         protected void lnkResetPassword_Click(object sender, EventArgs e)
         {
             txtResetNewPassword.Text = "";
@@ -1212,22 +1209,176 @@ namespace Attendance
             lblResetPasswordName.Text = lblFirstname.Text.Trim();
             mdlResetPassword.Show();
         }
-
         protected void btnResetCancelPassword_Click(object sender, EventArgs e)
         {
             txtResetNewPassword.Text = "";
             txtResetConfirmPassword.Text = "";
             mdlResetPassword.Hide();
         }
-
         private void GetShifts(string LocationName)
         {
-            Business business = new Business();
-            DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
-            ddlShift.DataSource = dsShifts;
-            ddlShift.DataTextField = "shiftname";
-            ddlShift.DataValueField = "shiftID";
-            ddlShift.DataBind();
+            try
+            {
+                Business business = new Business();
+                DataSet dsShifts = business.GetShiftsByLocationName(LocationName);
+                ddlShift.DataSource = dsShifts;
+                ddlShift.DataTextField = "shiftname";
+                ddlShift.DataValueField = "shiftID";
+                ddlShift.DataBind();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void rdNow_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdNow.Checked)
+                {
+                    trEffect.Style["display"] = "none";
+                    trEffect.Style["display"] = "none";
+                }
+                else
+                {
+                    trEffect.Style["display"] = "none";
+                    trEffect.Style["display"] = "table-row";
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void rdFuture_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdFuture.Checked)
+                {
+                    trEffect.Style["display"] = "none";
+                    trEffect.Style["display"] = "table-row";
+                }
+                else
+                {
+                    trEffect.Style["display"] = "none";
+                    trEffect.Style["display"] = "none";
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void rdSalFuture_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdNow.Checked)
+                {
+                    trsalEf.Style["display"] = "none";
+                    trsalEf.Style["display"] = "none";
+                }
+                else
+                {
+                    trsalEf.Style["display"] = "none";
+                    trsalEf.Style["display"] = "table-row";
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void rdSalNow_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdFuture.Checked)
+                {
+                    trsalEf.Style["display"] = "none";
+                    trsalEf.Style["display"] = "table-row";
+                }
+                else
+                {
+                    trsalEf.Style["display"] = "none";
+                    trsalEf.Style["display"] = "none";
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+   
+
+        protected void rdPerNow_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdPerFuture.Checked)
+                {
+                    trPerEffect.Style["display"] = "none";
+                    trPerEffect.Style["display"] = "table-row";
+                }
+                else
+                {
+                    trPerEffect.Style["display"] = "none";
+                    trPerEffect.Style["display"] = "none";
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void rdPerFuture_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdPerFuture.Checked)
+                {
+                    trPerEffect.Style["display"] = "none";
+                    trPerEffect.Style["display"] = "table-row";
+                }
+                else
+                {
+                    trPerEffect.Style["display"] = "none";
+                    trPerEffect.Style["display"] = "none";
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void grdEffectChanges_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                PayrollEditHistory obj=new PayrollEditHistory();
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    Label lblChangeField = (Label)e.Row.FindControl("lblChangeField");
+                    Label lblNewValue = (Label)e.Row.FindControl("lblNewValue");
+                    Label lblOldValue = (Label)e.Row.FindControl("lblOldValue");
+
+
+                    lblNewValue.Text = obj.GetName(lblChangeField.Text, lblNewValue.Text);
+                    lblOldValue.Text = obj.GetName(lblChangeField.Text, lblOldValue.Text);
+
+                    if (lblChangeField.Text == "Salary")
+                    {
+                        lblNewValue.Text = GeneralFunction.FormatCurrency(lblNewValue.Text, ViewState["Location"].ToString());
+                        lblOldValue.Text = GeneralFunction.FormatCurrency(lblOldValue.Text, ViewState["Location"].ToString());
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
     }

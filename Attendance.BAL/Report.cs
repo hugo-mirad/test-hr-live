@@ -240,7 +240,7 @@ namespace Attendance.BAL
             }
             return success;
         }
-        public bool UpdateUser(Attendance.Entities.UserInfo objInfo, int EmployeeID, int EnteredBy,string PhotoLink,string Ipaddress)
+        public bool UpdateUser(Attendance.Entities.UserInfo objInfo, int EmployeeID, int EnteredBy,string PhotoLink,string Ipaddress,DateTime EffectiveDate,bool Isnow)
         {
             bool success = false;
             try
@@ -267,6 +267,8 @@ namespace Attendance.BAL
                 command.Parameters.Add("@ShiftID", SqlDbType.Int).Value = objInfo.ShiftID;
                 command.Parameters.Add("@photoLink", SqlDbType.VarChar).Value = PhotoLink;
                 command.Parameters.Add("@Ipaddress", SqlDbType.VarChar).Value = Ipaddress;
+                command.Parameters.Add("@EffectiveDt", SqlDbType.VarChar).Value = EffectiveDate;
+                command.Parameters.Add("@IsNow", SqlDbType.VarChar).Value = Isnow;
                 command.ExecuteNonQuery();
                 con.Close();
                 success = true;
@@ -276,7 +278,7 @@ namespace Attendance.BAL
             }
             return success;
         }
-        public bool UpdateUserSalTaxDetails(Attendance.Entities.UserInfo objInfo, int EmployeeID, int EnteredBy, string Ipaddress)
+        public bool UpdateUserSalTaxDetails(Attendance.Entities.UserInfo objInfo, int EmployeeID, int EnteredBy, string Ipaddress,DateTime EffectiveDt,bool Isnow)
         {
             bool success = false;
             try
@@ -294,7 +296,8 @@ namespace Attendance.BAL
                 command.Parameters.Add("@MaritalID", SqlDbType.Int).Value = objInfo.MaritalID;
                 command.Parameters.Add("@EnteredBy", SqlDbType.Int).Value = EnteredBy;
                 command.Parameters.Add("@IPAddress", SqlDbType.VarChar).Value = Ipaddress;
-
+                command.Parameters.Add("@EffectiveDt", SqlDbType.VarChar).Value = EffectiveDt;
+                command.Parameters.Add("@IsNow", SqlDbType.VarChar).Value = Isnow;
 
 
                 command.ExecuteNonQuery();
@@ -566,7 +569,7 @@ namespace Attendance.BAL
                 return success;
 
             }
-            public bool UpdatePersonalDetails(Attendance.Entities.UserInfo objInfo,int EnteredBy, int userID,string ipaddress)
+            public bool UpdatePersonalDetails(Attendance.Entities.UserInfo objInfo, int EnteredBy, int userID, string ipaddress, DateTime EffectiveDt, bool Isnow)
             {
                 bool success = false;
                 try
@@ -595,6 +598,8 @@ namespace Attendance.BAL
                     command.Parameters.Add("@zip", SqlDbType.VarChar).Value = objInfo.Zip;
                     command.Parameters.Add("@SSN", SqlDbType.VarChar).Value = objInfo.SSN;
                     command.Parameters.Add("@drivingLicenceNum", SqlDbType.VarChar).Value = objInfo.DriverLicense;
+                    command.Parameters.Add("@EffectiveDt", SqlDbType.VarChar).Value = EffectiveDt;
+                    command.Parameters.Add("@IsNow", SqlDbType.VarChar).Value = Isnow;
 
 
                     command.ExecuteNonQuery();

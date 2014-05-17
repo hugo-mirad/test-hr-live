@@ -779,6 +779,15 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.Label lblCn3Address;
         
         /// <summary>
+        /// grdEffectChanges control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grdEffectChanges;
+        
+        /// <summary>
         /// mdlChangePwd control.
         /// </summary>
         /// <remarks>
@@ -1265,6 +1274,42 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.TextBox txtEdit1TermReason;
         
         /// <summary>
+        /// rdNow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdNow;
+        
+        /// <summary>
+        /// rdFuture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdFuture;
+        
+        /// <summary>
+        /// trEffect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trEffect;
+        
+        /// <summary>
+        /// txtEffectDt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEffectDt;
+        
+        /// <summary>
         /// upEditEmployee control.
         /// </summary>
         /// <remarks>
@@ -1328,22 +1373,13 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.LinkButton lnkEditSalClose;
         
         /// <summary>
-        /// Div2 control.
+        /// upn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div2;
-        
-        /// <summary>
-        /// UpdatePanel3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
+        protected global::System.Web.UI.UpdatePanel upn;
         
         /// <summary>
         /// ddlEditWage control.
@@ -1389,6 +1425,42 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlDeductions;
+        
+        /// <summary>
+        /// rdSalNow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdSalNow;
+        
+        /// <summary>
+        /// rdSalFuture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdSalFuture;
+        
+        /// <summary>
+        /// trsalEf control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trsalEf;
+        
+        /// <summary>
+        /// txtSalEffectDt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSalEffectDt;
         
         /// <summary>
         /// UpdatePanel1 control.
@@ -1452,15 +1524,6 @@ namespace Attendance {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkEditPersonClose;
-        
-        /// <summary>
-        /// Div3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div3;
         
         /// <summary>
         /// upper control.
@@ -1616,6 +1679,42 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.TextBox txtSSN;
         
         /// <summary>
+        /// rdPerNow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdPerNow;
+        
+        /// <summary>
+        /// rdPerFuture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdPerFuture;
+        
+        /// <summary>
+        /// trPerEffect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trPerEffect;
+        
+        /// <summary>
+        /// txtPerEffectiveDt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPerEffectiveDt;
+        
+        /// <summary>
         /// UpdatePanel2 control.
         /// </summary>
         /// <remarks>
@@ -1679,13 +1778,13 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.LinkButton lnkEditEmergClose;
         
         /// <summary>
-        /// UpdatePanel4 control.
+        /// UpdatePanel14 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel14;
         
         /// <summary>
         /// txtCn1Name control.

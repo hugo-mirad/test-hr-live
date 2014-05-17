@@ -252,7 +252,6 @@ namespace Attendance.BAL
             }
             return ds.Tables[0];
         }
-
         public DataTable Usp_GetEmployeePayrollDataByLocation(int location, DateTime StartDt, DateTime EndDt,int shiftID)
         {
             DataSet ds = new DataSet();
@@ -275,7 +274,6 @@ namespace Attendance.BAL
             }
             return ds.Tables[0];
         }
-
         public bool UpdatePaidLeaveByLeaveID(int LeaveAvail,int LeavesUsed,int LeavesBalanced,int paildLeavID,int Enterby, string notes, DateTime CurrentDt,DateTime paidLvsStartDt,string IP,int PaidLeaveUserID,DateTime EnterDate)
         {
             bool success = false;
@@ -360,7 +358,6 @@ namespace Attendance.BAL
 
             return success;
         }
-
         public bool UpdateHolidayDet(bool ISHoliday, int HolidayID, int locID, int DeptID, string shiftName, int EnterBy, DateTime EnterDt, string IP)
         {
             bool success = false;
@@ -389,8 +386,6 @@ namespace Attendance.BAL
 
             return success;
         }
-
-
         public DataTable GetHolidayDetByLoc(DateTime startDt,DateTime EndDt,int locationID,int shiftID,int DepartmentID)
         {
             DataSet ds = new DataSet();
@@ -435,7 +430,6 @@ namespace Attendance.BAL
             }
             return ds.Tables[0];
         }
-
         public DataTable GetDepartmentByShifts(string shiftName,int locationID)
         {
             DataSet ds = new DataSet();
@@ -461,7 +455,6 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-
         public DataTable GetYear()
         {
             DataSet ds = new DataSet();
@@ -480,8 +473,24 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
+        public DataTable GetShifts()
+        {
+            DataSet ds = new DataSet();
 
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetAllShifts]", con);
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+            }
 
+            return ds.Tables[0];
+        }
         public DataTable GetDefaultHolidays(int shiftID, int locationID,int DepartmentID)
         {
             DataSet ds = new DataSet();
@@ -506,8 +515,6 @@ namespace Attendance.BAL
 
             return ds.Tables[0];
         }
-
-
         public bool SaveDefaultHolidayDet(DateTime fromdate ,DateTime todate,bool ISHoliday,int locID, int DeptID, string shiftName, int EnterBy, DateTime EnterDt, string IP, string Holidayname, bool IsDefault,string dayname)
         {
             bool success = false;
@@ -540,9 +547,6 @@ namespace Attendance.BAL
 
             return success;
         }
-
-
-
         public bool UpdateDefaultHolidayDet(DateTime fromdate, DateTime todate, bool ISHoliday, string deafaultday, int locID, int DeptID, string shiftName, int EnterBy, DateTime EnterDt, string IP)
         {
             bool success = false;
@@ -573,9 +577,7 @@ namespace Attendance.BAL
 
             return success;
         }
-
-
-        public DataTable GetEffectivedataByLocation(int location, DateTime StartDt, DateTime EndDt, int shiftID)
+        public DataTable GetEffectivedataByLocation(int location, DateTime StartDt, DateTime EndDt, int shiftID,int statusID)
         {
             DataSet ds = new DataSet();
 
@@ -588,6 +590,7 @@ namespace Attendance.BAL
                 da.SelectCommand.Parameters.Add(new SqlParameter("@EndDate", EndDt));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@locationID", location));
                 da.SelectCommand.Parameters.Add(new SqlParameter("@shiftID", shiftID));
+                da.SelectCommand.Parameters.Add(new SqlParameter("@statusID", statusID));
                 da.SelectCommand.CommandType = CommandType.StoredProcedure;
                 da.Fill(ds);
                 DataTable dt = ds.Tables[0];
@@ -596,6 +599,94 @@ namespace Attendance.BAL
             {
             }
             return ds.Tables[0];
+        }
+        public DataTable GetEmpChangesEffectiveData(int userid)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetEffectiveChangesByEmp]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@UseriD", userid));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+
+                DataTable dt = ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
+        public DataTable GetEmpChangesEffectiveByID(int EffectiveID)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetEffectiveChangeDataByID]", con);
+                da.SelectCommand.Parameters.Add(new SqlParameter("@EffectiveID", EffectiveID));
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+                DataTable dt = ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
+        public DataTable GetEffectiveChangeStatus()
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                SqlCommand cmd = new SqlCommand();
+                SqlDataAdapter da = new SqlDataAdapter("[USP_GetEffectiveChangeStatus]", con);
+               
+                da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                da.Fill(ds);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return ds.Tables[0];
+        }
+
+        public bool UpdateEfectiveChangesByID(DateTime EffectDt,  string oldValue, int StatusID, string newVlue, int EffectID)
+        {
+            bool success = false;
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                con.Open();
+                SqlCommand command = new SqlCommand("[Usp_updateEfectiveChanges]", con);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@oldValue", oldValue));
+                command.Parameters.Add(new SqlParameter("@Newvalue", newVlue));
+                command.Parameters.Add(new SqlParameter("@StatusID", StatusID));
+                command.Parameters.Add(new SqlParameter("@EffectDt", EffectDt));
+                command.Parameters.Add(new SqlParameter("@EffectiveID", EffectID));
+               
+
+                command.ExecuteNonQuery();
+                con.Close();
+                success = true;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return success;
         }
     }
 }
