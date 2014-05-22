@@ -18,11 +18,9 @@ namespace Attendance
 {
     public partial class _Default : System.Web.UI.Page
     {
-        //public string cn = ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString();
-        //public string cn = ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString();
+      
         SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
         Business business = new Business();
-        int value = 0;
         Attendance.Entities.Entities entities = new Attendance.Entities.Entities();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,8 +28,6 @@ namespace Attendance
             hdnBversionM.Value = CommonFiles.MozillaVersion;
             hdnBversionC.Value = CommonFiles.ChromeVersion;
             HttpBrowserCapabilities objBrwInfo = Request.Browser;
-            SqlDataReader dr;
-            SqlCommand cmd = null;
             try
             {
                 if (!IsPostBack)
@@ -57,6 +53,18 @@ namespace Attendance
                                 }
                                 DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                                 var CurentDatetime = ISTTime;
+
+                                if (Convert.ToDateTime(Application["PrevDate"]).ToString("MM/dd/yyyy") != ISTTime.ToString("MM/dd/yyyy"))
+                                {
+                                    Application["count"] = 0;
+                                }
+                                if (Convert.ToInt32(Application["count"]) == 0)
+                                {
+                                    bool bnew = business.UpdateChangesByEffectiveDate(Convert.ToDateTime(ISTTime.ToString("MM/dd/yyyy")));
+                                    Application["count"] = 1;
+                                    Application["PrevDate"] = ISTTime.ToString("MM/dd/yyyy");
+                                }
+
                                 lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
                                 lblDate.Text = CurentDatetime.TimeOfDay.TotalSeconds.ToString();
                                 Session["TimeZoneName"] = dsLocation.Tables[0].Rows[0]["TimeZoneName"].ToString();

@@ -2012,6 +2012,42 @@ namespace Attendance {
         protected global::System.Web.UI.WebControls.TextBox txtCn3Zip;
         
         /// <summary>
+        /// rdEmergNow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdEmergNow;
+        
+        /// <summary>
+        /// rdEmergFuture control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rdEmergFuture;
+        
+        /// <summary>
+        /// trEmergEffectDt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trEmergEffectDt;
+        
+        /// <summary>
+        /// txtEmergEffectiveDt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEmergEffectiveDt;
+        
+        /// <summary>
         /// upPerson control.
         /// </summary>
         /// <remarks>

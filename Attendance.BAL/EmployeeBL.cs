@@ -676,8 +676,6 @@ namespace Attendance.BAL
                 command.Parameters.Add(new SqlParameter("@StatusID", StatusID));
                 command.Parameters.Add(new SqlParameter("@EffectDt", EffectDt));
                 command.Parameters.Add(new SqlParameter("@EffectiveID", EffectID));
-               
-
                 command.ExecuteNonQuery();
                 con.Close();
                 success = true;
@@ -688,5 +686,8 @@ namespace Attendance.BAL
 
             return success;
         }
+
+
+     
     }
 }

@@ -77,6 +77,13 @@
              minDate:mindt    
           });  
           
+            $('#txtEmergEffectiveDt').datepicker({
+             dateFormat: "mm/dd/yy",
+             minDate:mindt    
+          });  
+          
+          
+          
           
           $('#txtEffectDt').datepicker({
             dateFormat: "mm/dd/yy",
@@ -2365,6 +2372,50 @@
                                 </fieldset>
                             </td>
                         </tr>
+                        
+                         <tr>
+                            <td colspan="5">
+                                <div class="divider1">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="vertical-align: top;">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td style="vertical-align: top; width: 30%;">
+                                            Changes to be update for
+                                        </td>
+                                        <td style="vertical-align: top;">
+                                            <table style="width: 60%">
+                                                <tr>
+                                                    <td style="vertical-align: top;">
+                                                        <asp:RadioButton ID="rdEmergNow" runat="server" Checked="true" AutoPostBack="true" GroupName="Now"
+                                                            OnCheckedChanged="rdEmergNow_CheckedChanged" />
+                                                        Now
+                                                    </td>
+                                                    <td>
+                                                        <asp:RadioButton ID="rdEmergFuture" runat="server" GroupName="Now" AutoPostBack="true"
+                                                            OnCheckedChanged="rdEmergFuture_CheckedChanged" />
+                                                        Future
+                                                    </td>
+                                                </tr>
+                                                <tr runat="server" id="trEmergEffectDt" style="display: none;">
+                                                    <td>
+                                                        Effective date
+                                                    </td>
+                                                    <td>
+                                                        <asp:TextBox ID="txtEmergEffectiveDt" runat="server"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                      
+                        
                         <tr>
                             <td colspan="3">
                                 &nbsp;
@@ -2390,6 +2441,11 @@
                                     </asp:UpdatePanel>
                                 </div>
                                 <asp:Button ID="btnEditEmergCancel" CssClass="btn" runat="server" Text="Cancel" OnClick="btnEditEmergCancel_Click" />
+                        </tr>
+                         <tr>
+                            <td colspan="3">
+                                &nbsp;
+                            </td>
                         </tr>
                     </table>
                 </ContentTemplate>

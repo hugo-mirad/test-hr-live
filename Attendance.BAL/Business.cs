@@ -546,6 +546,27 @@ namespace Attendance.BAL
 
          }
 
+         public bool UpdateChangesByEffectiveDate(DateTime EffectDt)
+         {
+             bool success = false;
+             try
+             {
+                 SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["AttendanceConn"].ToString());
+                 con.Open();
+                 SqlCommand command = new SqlCommand("[USP_UpdateChangesByEffectiveDate]", con);
+                 command.CommandType = CommandType.StoredProcedure;
+                 command.Parameters.Add(new SqlParameter("@CurrentDate", EffectDt));
+                 command.ExecuteNonQuery();
+                 con.Close();
+                 success = true;
+             }
+             catch (Exception ex)
+             {
+             }
+
+             return success;
+         }
+
     }
        
 

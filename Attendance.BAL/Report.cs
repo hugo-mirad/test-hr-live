@@ -600,8 +600,6 @@ namespace Attendance.BAL
                     command.Parameters.Add("@drivingLicenceNum", SqlDbType.VarChar).Value = objInfo.DriverLicense;
                     command.Parameters.Add("@EffectiveDt", SqlDbType.VarChar).Value = EffectiveDt;
                     command.Parameters.Add("@IsNow", SqlDbType.VarChar).Value = Isnow;
-
-
                     command.ExecuteNonQuery();
                     con.Close();
                     success = true;
@@ -611,7 +609,7 @@ namespace Attendance.BAL
                 }
                 return success;
             }
-            public bool UpdateEmergencyDetails(Attendance.Entities.EmergencyContactInfo objContactInfo, int EnteredBy,int userid, string ipaddress)
+            public bool UpdateEmergencyDetails(Attendance.Entities.EmergencyContactInfo objContactInfo, int EnteredBy, int userid, string ipaddress, DateTime EffectiveDt, bool Isnow)
             {
                 bool success = false;
                 try
@@ -620,44 +618,35 @@ namespace Attendance.BAL
                     con.Open();
                     SqlCommand command = new SqlCommand("[USP_UpdateEmergencyContactDetails]", con);
                     command.CommandType = CommandType.StoredProcedure;
-
                     command.Parameters.Add("@EnterBy", SqlDbType.Int).Value = EnteredBy;
                     command.Parameters.Add("@UserID", SqlDbType.Int).Value = userid;
                     command.Parameters.Add("@ipaddress", SqlDbType.VarChar).Value = ipaddress;
-                
                     command.Parameters.Add("@Person1", SqlDbType.VarChar).Value = objContactInfo.Person1;
                     command.Parameters.Add("@P1Address1", SqlDbType.VarChar).Value = objContactInfo.P1Address1;
                     command.Parameters.Add("@P1Address2", SqlDbType.VarChar).Value = objContactInfo.P1Address2;
                     command.Parameters.Add("@phone1", SqlDbType.VarChar).Value = objContactInfo.Phone1;
                     command.Parameters.Add("@relation1", SqlDbType.VarChar).Value = objContactInfo.Relation1;
-
-
                     command.Parameters.Add("@person2", SqlDbType.VarChar).Value = objContactInfo.Person2;
                     command.Parameters.Add("@p2Address1", SqlDbType.VarChar).Value = objContactInfo.P2Address1;
                     command.Parameters.Add("@p2Address2", SqlDbType.VarChar).Value = objContactInfo.P2Address2;
                     command.Parameters.Add("@phone2", SqlDbType.VarChar).Value = objContactInfo.Phone2;
                     command.Parameters.Add("@relation2", SqlDbType.VarChar).Value = objContactInfo.Relation2;
-
                     command.Parameters.Add("@email2", SqlDbType.VarChar).Value = objContactInfo.Email2;
                     command.Parameters.Add("@email1", SqlDbType.VarChar).Value = objContactInfo.Email1;
                     command.Parameters.Add("@email3", SqlDbType.VarChar).Value = objContactInfo.Email3;
-
                     command.Parameters.Add("@StateID1", SqlDbType.Int).Value = objContactInfo.StateID1;
                     command.Parameters.Add("@StateID2", SqlDbType.Int).Value = objContactInfo.StateID2;
                     command.Parameters.Add("@StateID3", SqlDbType.Int).Value = objContactInfo.StateID3;
-
                     command.Parameters.Add("@Zip1", SqlDbType.VarChar).Value = objContactInfo.Zip1;
                     command.Parameters.Add("@Zip2", SqlDbType.VarChar).Value = objContactInfo.Zip2;
                     command.Parameters.Add("@Zip3", SqlDbType.VarChar).Value = objContactInfo.Zip3;
-
-
                     command.Parameters.Add("@person3", SqlDbType.VarChar).Value = objContactInfo.Person3;
                     command.Parameters.Add("@p3Address1", SqlDbType.VarChar).Value = objContactInfo.P3Address1;
                     command.Parameters.Add("@p3Address2", SqlDbType.VarChar).Value = objContactInfo.P3Address2;
                     command.Parameters.Add("@phone3", SqlDbType.VarChar).Value = objContactInfo.Phone3;
                     command.Parameters.Add("@relation3", SqlDbType.VarChar).Value = objContactInfo.Relation3;
-
-                 
+                     command.Parameters.Add("@EffectiveDt", SqlDbType.VarChar).Value = EffectiveDt;
+                    command.Parameters.Add("@IsNow", SqlDbType.VarChar).Value = Isnow;
                     command.ExecuteNonQuery();
                     con.Close();
                     success = true;

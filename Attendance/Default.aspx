@@ -6,12 +6,11 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="css/reset.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="css/UI.css" />
     <link rel="stylesheet" href="css/inputs.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
-
     <!-- 
 <link href='http://fonts.googleapis.com/css?family=Aldrich' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Wallpoet' rel='stylesheet' type='text/css'>
@@ -37,7 +36,6 @@
             display: block;
             background: url(../images/close.png) 0 0 no-repeat;
         }
-
         /* css for timepicker */.ui-datepicker .ui-datepicker
         {
             margin-bottom: 8px;
@@ -85,16 +83,39 @@
         {
             margin: 0 45% 10px 10px;
         }
-       
-       .ui-datepicker span{ width:auto; min-width:16px;;  }
-       
-       
-       .ui-widget-content.ui-datepicker {
-	        border: 1px solid #aaaaaa;
-	        background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
-	        color: #222222;
+        .ui-datepicker span
+        {
+            width: auto;
+            min-width: 16px;
         }
-       
+        /* New */
+        .ui-datepicker{ padding:0; box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); }
+        .ui-datepicker table{ margin:0 0 1px 0; }
+        .ui-widget-content.ui-datepicker
+        {
+            border: none;
+            background: #fff;
+            color: #222;
+            border-radius:2px;
+        }
+        
+        .ui-widget-header
+        {
+            border:none; border-radius:1px; border-bottom:#3bafda 2px solid;
+            background:#4fc1e9; color:#fff;	
+        }
+        .ui-datepicker .ui-datepicker-title{ color:#fff; text-transform:uppercase; }
+        .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default
+        { background:#F6F8FA; border:none; }
+        
+        
+        .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{ background:#F0F8FF;  border:none; }
+        .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus{ background:#B7E5F5 }
+        .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{ background:#FFF9AE; border:none; }
+        
+        .ui-datepicker-calendar td, ui-datepicker-calendar th{ width:30px; height:30px; line-height:30px; text-align:center; padding:1px; }
+        
+        .ui-datepicker-calendar td a, .ui-datepicker-calendar td span{ margin:0; display:block; text-align:center; }
         
     </style>
 
@@ -319,12 +340,8 @@
     </script>
 
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-    
-    
 
     <script type="text/javascript" src="js/main.js"></script>
-    
-    
 
 </head>
 <body>
@@ -343,26 +360,24 @@
                 <asp:Label ID="comanyname" runat="server" ForeColor="White"></asp:Label>
                 <asp:Label ID="lblLocation" runat="server"></asp:Label>
             </a>
-            
             <div class="shifts">
-              <asp:DropDownList ID="ddlShifts" runat="server" 
-                    onselectedindexchanged="ddlShifts_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                <asp:DropDownList ID="ddlShifts" runat="server" OnSelectedIndexChanged="ddlShifts_SelectedIndexChanged"
+                    AutoPostBack="true">
+                </asp:DropDownList>
             </div>
             <div class="tDate">
                 <%--  <asp:Label ID="lblPrevTime" runat="server" Text=""></asp:Label>--%>
                 <span class="cDate" style="margin-bottom: 1px; margin-top: 2px;"></span>
                 <div class="cTime">
-                    <b>--:--:-- AM </b><strong> (<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
+                    <b>--:--:-- AM </b><strong>(<asp:Label ID="lblTimeZoneName" runat="server"></asp:Label>)</strong>
                     <a href="javascript:location.reload();" class="refresh btn btn-small btn-mini btn-success">
                         Refresh</a></div>
             </div>
-           
             <div style="display: inline-block; float: right; color: #AAA; font-size: 10px; background: #444;
                 padding: 2px 5px; margin: 22px 14px 0 0;">
                 Last Update: <span style="font-size: 10px; color: #55B355; display: inline-bolck;"
                     id="rTime"></span>
             </div>
-             
             <div style="display: none">
                 <asp:Label ID="lblDate" runat="server"></asp:Label>
                 <asp:Label ID="lblDate2" runat="server"></asp:Label>
@@ -377,8 +392,8 @@
                 <tr>
                     <td style="vertical-align: top;">
                         <!-- Left Total Users List Start  -->
-                        <div class="bor boxC1" style="margin: 0 5px; height:auto; max-height:auto; min-height:auto   ">
-                            <h2 class="one" style="background: #fff; color: #2286c1; border-bottom: #2286c1 1px solid;">
+                        <div class="bor boxC1" style="margin: 0 5px; height: auto; max-height: auto; min-height: auto">
+                            <h2 class="one">
                                 SCHEDULED <span>(<b></b>)</span></h2>
                             <div class="inner ">
                                 <asp:Repeater ID="rpEmp" runat="server" OnItemDataBound="rpEmp_ItemDataBound">
@@ -413,14 +428,14 @@
                         </div>
                         <!-- Left Total Users List End  -->
                         <!-- Left Leave Users Start  -->
-                      <%--  <div style="display:none">--%>
-                        <div class="bor boxC4" style="margin: 10px 5px 0 5px; ">
-                            <h2 class="four" style="background: #fff; color: #888; border-bottom: #888 1px solid;">
+                        <%--  <div style="display:none">--%>
+                        <div class="bor boxC4" style="margin: 10px 5px 0 5px;">
+                            <h2 class="four">
                                 On Leave <span>(<b></b>)</span></h2>
                             <div class="inner ">
-                               <asp:Repeater ID="rpLeave" runat="server" OnItemDataBound="rpEmp_ItemDataBound" >
+                                <asp:Repeater ID="rpLeave" runat="server" OnItemDataBound="rpEmp_ItemDataBound">
                                     <HeaderTemplate>
-                                       <ul class="users ui-droppable" id="drop3">
+                                        <ul class="users ui-droppable" id="drop3">
                                     </HeaderTemplate>
                                     <ItemTemplate>
                                         <li class="user" rel="tooltip">
@@ -433,7 +448,7 @@
                                             <asp:HiddenField ID="hdnStartTime1" runat="server" Value='<%#Eval("StartTime") %>' />
                                             <asp:HiddenField ID="hdnEndTime1" runat="server" Value='<%#Eval("EndTime") %>' />
                                             <asp:HiddenField ID="hdnFromDt" runat="server" Value='<%# Bind("Fromdate", "{0:MM/dd/yyyy}") %>' />
-                                            <asp:HiddenField ID="hdnTodt" runat="server" Value='<%# Bind("Todate", "{0:MM/dd/yyyy}") %>'/>
+                                            <asp:HiddenField ID="hdnTodt" runat="server" Value='<%# Bind("Todate", "{0:MM/dd/yyyy}") %>' />
                                             <asp:HiddenField ID="hdnApprovedStatus" runat="server" Value='<%#Eval("Status") %>' />
                                             <h3 style="display: none">
                                                 <asp:Label ID="hdnDeptName1" runat="server" Text='<%#Eval("DeptName") %>'></asp:Label>
@@ -451,13 +466,13 @@
                             <div class="clear">
                                 &nbsp;</div>
                         </div>
-                      <%--  </div>--%>
+                        <%--  </div>--%>
                         <!-- Left Leave Users End  -->
                     </td>
                     <td style="vertical-align: top;">
                         <!-- Mid Users List Start  -->
                         <div class="bor boxC2" style="margin: 0 5px;">
-                            <h2 class="two" style="background: #fff; color: #82c621; border-bottom: #82c621 1px solid;">
+                            <h2 class="two">
                                 Signed in <span>(<b></b>)</span></h2>
                             <div class="inner ">
                                 <asp:Repeater ID="rpLogin" runat="server" OnItemDataBound="rpLogin_ItemDataBound">
@@ -493,7 +508,7 @@
                     <td style="vertical-align: top;">
                         <!-- Right Users List Start  -->
                         <div class="bor boxC3" style="margin: 0 5px;">
-                            <h2 class="three" style="background: #fff; color: #ee8d1a; border-bottom: #ee8d1a 1px solid;">
+                            <h2 class="three">
                                 Signed out <span>(<b></b>)</span></h2>
                             <div class="inner  ">
                                 <asp:Repeater ID="rplogout" runat="server" OnItemDataBound="rplogout_ItemDataBound">
@@ -734,8 +749,7 @@
             </table>
         </div>
     </div>
-    
-      <asp:UpdateProgress ID="UpdateProgress3" runat="server" AssociatedUpdatePanelID="UpdatePanel4"
+    <asp:UpdateProgress ID="UpdateProgress3" runat="server" AssociatedUpdatePanelID="UpdatePanel4"
         DisplayAfter="0">
         <ProgressTemplate>
             <div id="spinner">
@@ -747,8 +761,6 @@
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-    
-    
     <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="UpdatePanel6"
         DisplayAfter="0">
         <ProgressTemplate>
@@ -808,19 +820,20 @@
                                     <img src="images/defaultUSer.jpg" class="userThumb" style="width: 110px;" />
                                 </td>
                             </tr>
-                             <tr ><%--id="leaveEmp" runat="server" style="display: none;">--%>
+                            <tr>
+                                <%--id="leaveEmp" runat="server" style="display: none;">--%>
                                 <td style="vertical-align: top">
-                                <span style="color:#A0132C;font-size: 14px;">Submitted by</span>
-                                <br />
-                                    <asp:Label ID="lblLeaveEmp" runat="server" Text="My EmpID  <span class='must'>*</span> "></asp:Label>
-                                       
+                                    <span style="color: #A0132C; font-size: 14px;">Submitted by</span>
                                     <br />
-                                    <asp:TextBox ID="txtLeaveEmpID" runat="server"  Style="width: 150px;"></asp:TextBox>
+                                    <asp:Label ID="lblLeaveEmp" runat="server" Text="My EmpID  <span class='must'>*</span> "></asp:Label>
+                                    <br />
+                                    <asp:TextBox ID="txtLeaveEmpID" runat="server" Style="width: 150px;"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    My Passcode<span class="must">*</span> <br />
+                                    My Passcode<span class="must">*</span>
+                                    <br />
                                     <asp:TextBox ID="txtLeavePassCode" runat="server" TextMode="Password" Style="width: 150px;"></asp:TextBox>
                                 </td>
                             </tr>
@@ -840,7 +853,6 @@
                                     <%--<br />--%>
                                     From date <span class="must">*</span><br />
                                     <asp:TextBox ID="txtFromDt" runat="server" Style="width: 223px;"></asp:TextBox>
-                                    
                                 </td>
                             </tr>
                             <tr>
@@ -866,24 +878,22 @@
                                 </td>
                             </tr>
                             <tr>
-                  
-                    <td>
-                        <div style="display: inline-block">
-                            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="LeaveSubmit" runat="server" Text="Submit" Enabled="true" class="btn btn-danger" OnClientClick="return validLeave();"
-                                        OnClick="LeaveSubmit_Click" />
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
-                        </div>
-                        &nbsp;
-                        <input id="LeaveCancel" type="button" value="Cancel" class="btn" runat="server" />
-                    </td>
-                </tr>
+                                <td>
+                                    <div style="display: inline-block">
+                                        <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                            <ContentTemplate>
+                                                <asp:Button ID="LeaveSubmit" runat="server" Text="Submit" Enabled="true" class="btn btn-danger"
+                                                    OnClientClick="return validLeave();" OnClick="LeaveSubmit_Click" />
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </div>
+                                    &nbsp;
+                                    <input id="LeaveCancel" type="button" value="Cancel" class="btn" runat="server" />
+                                </td>
+                            </tr>
                         </table>
                     </td>
                 </tr>
-                
             </table>
         </div>
     </div>

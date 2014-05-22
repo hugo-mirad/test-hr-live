@@ -27,7 +27,7 @@
     <script type="text/javascript" language="javascript">
    
    function pageLoad() {
-     
+      $('#spinner').hide();	
       var Currentdate=new Date($('#lblDate2').text());
      
       var mindate=(Currentdate.getMonth()+1)+"/" +Currentdate.getDate() +"/"+Currentdate.getFullYear();
@@ -47,6 +47,27 @@
     <form id="form1" runat="server">
     <cc1:ToolkitScriptManager ID="Scrpt1" runat="server" ScriptMode="Release">
     </cc1:ToolkitScriptManager>
+    
+    
+     <script type="text/javascript" language="javascript">
+      Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(clearDisposableItems)
+        function clearDisposableItems( sender , args ) {
+            if (Sys.Browser.agent == Sys.Browser.InternetExplorer ) {
+                $('#spinner').show();	
+            } else {
+            $('#spinner').show();
+            
+            }
+        }
+    </script>
+     <div id="spinner">
+                <h4>
+                    <div>
+                        Processing
+                        <img src="images/loading.gif" />
+                    </div>
+               </h4>
+            </div>
     
      <asp:UpdateProgress ID="Progress" runat="server" AssociatedUpdatePanelID="upSelect"
         DisplayAfter="0">

@@ -23,9 +23,7 @@ namespace Attendance
         
         protected void Page_Load(object sender, EventArgs e)
         {
-
             ViewState["Location"] = Request.QueryString["Loc"].ToString();
-
             if (Session["IsAdmin"] != null && Session["UserID"] != null)
             {
                 if (ViewState["Location"] != null)
@@ -41,15 +39,11 @@ namespace Attendance
                         else
                         {
                             timezone = "India Standard Time";
-
                         }
                         DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-
                         var CurentDatetime = ISTTime;
-
                         lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
                         lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
-
                         lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
                         lblLocation.Text = Session["LocationName"].ToString();
                         lblShiftName.Text = "-" + Session["ShiftName"].ToString();
@@ -75,9 +69,7 @@ namespace Attendance
                         GetSchedules();
                         GetAllWages();
                         GetShifts(Session["LocationName"].ToString().Trim());
-
                     }
-
                 }
                 else
                 {
@@ -89,16 +81,13 @@ namespace Attendance
                     {
                         Response.Redirect("UserManagement.aspx");
                     }
-
                 }
             }
             else
             {
                 Response.Redirect("Default.aspx");
             }
-  
         }
-
         private void GetEmpDet(int empid)
         {
             Attendance.BAL.EmployeeBL obj = new EmployeeBL();
@@ -267,7 +256,6 @@ namespace Attendance
             Session.Abandon();
             Response.Redirect("Default.aspx");
         }
-
         protected void lnkChangepwd_Click(object sender, EventArgs e)
         {
             try
@@ -277,12 +265,10 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPwd_Click(object sender, EventArgs e)
         {
             mdlChangePwd.Hide();
         }
-
         protected void btnUpdatePwd_Click(object sender, EventArgs e)
         {
             try
@@ -350,7 +336,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnCancelPasscode_Click(object sender, EventArgs e)
         {
             txtOldpasscode.Text = "";
@@ -358,7 +343,6 @@ namespace Attendance
             txtConfirmPasscode.Text = "";
             mdlChangePasscode.Hide();
         }
-
         protected void lnkChangePasscode_Click(object sender, EventArgs e)
         {
             try
@@ -373,7 +357,6 @@ namespace Attendance
             {
             }
         }
-
         protected void btnEmpEdit_Click(object sender, EventArgs e)
         {
             try
@@ -425,7 +408,6 @@ namespace Attendance
             {
             }
         }
-
         private void GetEmployeeTypes()
         {
             try
@@ -443,7 +425,6 @@ namespace Attendance
             {
             }
         }
-
         private void GetSchedules()
         {
             try
@@ -461,7 +442,6 @@ namespace Attendance
             {
             }
         }
-
         private void Getdepartments()
         {
             try
@@ -479,7 +459,6 @@ namespace Attendance
             {
             }
         }
-
         protected void rdEditActiveTrue_CheckedChanged(object sender, EventArgs e)
         {
             if (rdEditActiveTrue.Checked == true)
@@ -491,7 +470,6 @@ namespace Attendance
             }
 
         }
-
         protected void rdEditActiveFalse_CheckedChanged(object sender, EventArgs e)
         {
             if (rdEditActiveFalse.Checked == true)
@@ -502,7 +480,6 @@ namespace Attendance
                 lblEdit1Termreason.Visible = true;
             }
         }
-
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
             Attendance.Entities.UserInfo objInfo = new UserInfo();
@@ -654,7 +631,6 @@ namespace Attendance
 
             }
         }
-
         protected void btnEditCancel_Click(object sender, EventArgs e)
         {
             mdlEditPopup.Hide();
@@ -848,8 +824,6 @@ namespace Attendance
                 {
                     objContactInfo.Zip1 = txtCn1Zip.Text.Trim();
                 }
-
-
                 objContactInfo.Person2 = txtCn2Name.Text.ToString() == "" ? "" : GeneralFunction.ToProper(txtCn2Name.Text.ToString().Trim());
                 objContactInfo.P2Address1 = GeneralFunction.ToProperNotes((txtCn2Address1.Text.ToString().Trim()));
                 objContactInfo.P2Address2 = GeneralFunction.ToProperNotes(txtCn2Address2.Text.ToString().Trim());
@@ -865,8 +839,6 @@ namespace Attendance
                 {
                     objContactInfo.Zip2 = txtCn2Zip.Text.Trim();
                 }
-
-
                 objContactInfo.Person3 = txtCn3Name.Text.ToString() == "" ? "" : GeneralFunction.ToProper(txtCn3Name.Text.ToString().Trim());
                 objContactInfo.P3Address1 = GeneralFunction.ToProperNotes(txtCn3Address1.Text.ToString().Trim());
                 objContactInfo.P3Address2 = GeneralFunction.ToProperNotes(txtCn3Address2.Text.ToString().Trim());
@@ -883,8 +855,15 @@ namespace Attendance
                     objContactInfo.Zip3 = txtCn3Zip.Text.Trim();
                 }
 
+                bool isnow = true;
+                if (rdEmergFuture.Checked)
+                {
+                    isnow = false;
+                }
+                DateTime effectDt = txtEmergEffectiveDt.Text == "" ? Convert.ToDateTime("01/01/1900") : Convert.ToDateTime(txtEmergEffectiveDt.Text);
+
                 Attendance.BAL.Report obj = new Report();
-                obj.UpdateEmergencyDetails(objContactInfo, UserID, EmployeeID, strIp);
+                obj.UpdateEmergencyDetails(objContactInfo, UserID, EmployeeID, strIp,effectDt,isnow);
                 //Page.Response.Redirect(HttpContext.Current.Request.Url.ToString(), true);
                 GetEmpDet(EmployeeID);
                 mdlEditEmergContactDet.Hide();
@@ -1374,6 +1353,46 @@ namespace Attendance
                         lblOldValue.Text = GeneralFunction.FormatCurrency(lblOldValue.Text, ViewState["Location"].ToString());
 
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void rdEmergNow_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                 if (rdEmergNow.Checked)
+                {
+                    trEmergEffectDt.Style["display"] = "none";
+                    trEmergEffectDt.Style["display"] = "none";
+                }
+                else
+                {
+                    trEmergEffectDt.Style["display"] = "none";
+                    trEmergEffectDt.Style["display"] = "table-row";
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        protected void rdEmergFuture_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdEmergFuture.Checked)
+                {
+                    trEmergEffectDt.Style["display"] = "none";
+                    trEmergEffectDt.Style["display"] = "table-row";
+                }
+                else
+                {
+                    trEmergEffectDt.Style["display"] = "none";
+                    trEmergEffectDt.Style["display"] = "none";
                 }
             }
             catch (Exception ex)

@@ -228,7 +228,7 @@ namespace Attendance
             }
             else
             {
-                strPhoneNumber = "NA";
+                strPhoneNumber = "";
             }
             return strPhoneNumber;
 

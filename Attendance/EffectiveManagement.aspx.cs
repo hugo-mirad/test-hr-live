@@ -425,7 +425,22 @@ namespace Attendance
         {
             try
             {
-                if (Fieldname == "Location")
+
+                if (Fieldname == "Department")
+                {
+                    Attendance.BAL.Report obj = new Report();
+                    DataTable ds = obj.GetAllDepartments();
+
+                    ddlNewValue.DataSource = ds;
+                    ddlNewValue.DataTextField = "DeptName";
+                    ddlNewValue.DataValueField = "DeptID";
+                    ddlNewValue.DataBind();
+                    ddlNewValue.SelectedIndex = ddlNewValue.Items.IndexOf(ddlNewValue.Items.FindByValue(dt.Rows[0]["NewValue"].ToString()));
+                    txtEditNewValue.Visible = false;
+                    ddlNewValue.Visible = true;
+                }
+
+                else if (Fieldname == "Location")
                 {
                     Attendance.BAL.Report obj = new Report();
                     DataTable ds = obj.GetLocations();

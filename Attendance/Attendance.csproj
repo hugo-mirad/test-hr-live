@@ -92,6 +92,7 @@
     <Content Include="EmployeDetails.aspx" />
     <Content Include="EmployeeList.aspx" />
     <Content Include="encryptpwd.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="HolidayManagement.aspx" />
     <Content Include="js\images2\cal.gif" />
     <Content Include="js\images2\cal_close.gif" />
@@ -355,6 +356,9 @@
       <DependentUpon>encryptpwd.aspx</DependentUpon>
     </Compile>
     <Compile Include="GeneralFunction.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="GridSorting.cs" />
     <Compile Include="HolidayManagement.aspx.cs">
       <DependentUpon>HolidayManagement.aspx</DependentUpon>

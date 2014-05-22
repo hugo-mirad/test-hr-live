@@ -39,7 +39,6 @@ namespace Attendance
 
                     DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                     var CurentDatetime = ISTTime;
-
                     lblDate2.Text = CurentDatetime.ToString("dddd MMMM dd yyyy, hh:mm:ss tt ");
                     lblTimeZoneName.Text = Session["TimeZoneName"].ToString().Trim();
                     lblHeadSchedule.Text = Session["ScheduleInOut"].ToString();
@@ -47,11 +46,8 @@ namespace Attendance
                     Photo.Src = Session["Photo"].ToString().Trim();
                     lblLocation.Text = Session["LocationName"].ToString();
                     lblShiftName.Text = "-" + Session["ShiftName"].ToString();
-
-
                     DateTime startdate = Convert.ToDateTime(CurentDatetime.ToString("MM/dd/yyyy")).AddDays(1 - Convert.ToDateTime(CurentDatetime.ToString("MM/dd/yyyy")).Day);
                     DateTime Enddate = startdate.AddMonths(1).AddSeconds(-1);
-
                     ViewState["StartMonth"] = startdate;
                     ViewState["EndMonth"] = Enddate;
                     ViewState["CurrentMonth"] = startdate;
@@ -91,7 +87,6 @@ namespace Attendance
                     //    lnkLeavemangement.Enabled = true;
                     //}
                 }
-
             }
             else
             {
@@ -127,7 +122,6 @@ namespace Attendance
                 lblMonthRep.Text = "(" + startdate.ToString("MM/dd/yyyy") + " - " + Enddate.ToString("MM/dd/yyyy") + ")";
                 if (dt.Rows.Count > 0)
                 {
-
                     grdUsers.DataSource = dt;
                     grdUsers.DataBind();
                     Session["AllLeaveRequestData"] = dt;
@@ -137,7 +131,6 @@ namespace Attendance
                 {
                     lblError.Text = "No records found";
                     lblError.Visible = true;
-                   
                 }
 
                 BizUtility.GridSortInitail("Ascending", "Firstname", grdUsers, 0, dt);
@@ -196,7 +189,6 @@ namespace Attendance
                     System.Web.UI.ScriptManager.RegisterClientScriptBlock(Page, typeof(Page), "Script", "alert('Invalid userid and password..');", true);
                     txtOldpwd.Focus();
                 }
-
             }
             catch (Exception ex)
             {
@@ -245,7 +237,6 @@ namespace Attendance
         {
             try
             {
-
                 txtOldpasscode.Text = "";
                 txtNewPasscode.Text = "";
                 lblPasscodeName.Text = Session["EmpName"].ToString().Trim();
@@ -290,7 +281,6 @@ namespace Attendance
             {
                 DataTable dt = new DataTable();
                 dt = Session["AllLeaveRequestData"] as DataTable;
-
                 if (dt != null)
                 {
                     BizUtility.GridSort(txthdnSortOrder, e, grdUsers, 0, dt);
@@ -325,11 +315,9 @@ namespace Attendance
         }
         protected void grdUsers_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-
         }
         protected void ddlSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             try
             {
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
@@ -338,7 +326,6 @@ namespace Attendance
             catch (Exception ex)
             {
             }
-
         }
         protected void lnkUpdate_Click(object sender, EventArgs e)
         {
@@ -366,11 +353,9 @@ namespace Attendance
                         timezone = "India Standard Time";
                     }
                     DateTime ISTTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-
                     int LeaveID = Convert.ToInt32(recordID[i]);
                     string notes = txtLeaveNotes.Text.Trim() == "" ? "" : GeneralFunction.ToProperNotes(txtLeaveNotes.Text) + "<br>" + " <br>" +
-                                  ddlLeaveApprove.SelectedItem.Text+" by " + Session["EmpName"].ToString().Trim() + " at " + ISTTime + "<br>" + "------------------------------------<br>";  
-                        
+                                  ddlLeaveApprove.SelectedItem.Text+" by " + Session["EmpName"].ToString().Trim() + " at " + ISTTime + "<br>" + "------------------------------------<br>";                         
                     int ApprovedStatusID = Convert.ToInt32(ddlLeaveApprove.SelectedValue);
                     int ApprovedBy = Convert.ToInt32(Session["UserID"]);
                     EmployeeBL obj = new EmployeeBL();
@@ -392,14 +377,10 @@ namespace Attendance
             {
                 DateTime PrevStart=Convert.ToDateTime(ViewState["StartMonth"]).AddMonths(-1);
                 DateTime PrevEnd=PrevStart.AddMonths(1).AddSeconds(-1);
- 
                 ViewState["StartMonth"]=PrevStart;
                 ViewState["EndMonth"]=PrevEnd;
-
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
                 GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), PrevStart, PrevEnd, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
-
-
                 if (PrevStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentMonth"]).ToString("MM/dd/yyyy"))
                 {
                     btnNext.CssClass = "btn btn-danger btn-small disabled";
@@ -409,12 +390,10 @@ namespace Attendance
                 {
                     btnNext.CssClass = "btn btn-danger btn-small enabled";
                     btnNext.Enabled = true;
-
                 }
             }
             catch (Exception ex)
             {
-
             }
         }
         protected void btnCurrent_Click(object sender, EventArgs e)
@@ -436,18 +415,13 @@ namespace Attendance
                 {
                     btnNext.CssClass = "btn btn-danger btn-small enabled";
                     btnNext.Enabled = true;
-
                 }
-
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
                 GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), CurrentStart, CurrentEnd, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
-
             }
             catch (Exception ex)
             {
-
             }
-
         }
         protected void btnNext_Click(object sender, EventArgs e)
         {
@@ -455,10 +429,8 @@ namespace Attendance
             {
                 DateTime NextStart = Convert.ToDateTime(ViewState["StartMonth"]).AddMonths(1);
                 DateTime NextEnd = NextStart.AddMonths(1).AddSeconds(-1);
-
                 ViewState["StartMonth"] = NextStart;
                 ViewState["EndMonth"] = NextEnd;
-
                 if (NextStart.ToString("MM/dd/yyyy") == Convert.ToDateTime(ViewState["CurrentMonth"]).ToString("MM/dd/yyyy"))
                 {
                     btnNext.CssClass = "btn btn-danger btn-small disabled";
@@ -468,27 +440,20 @@ namespace Attendance
                 {
                     btnNext.CssClass = "btn btn-danger btn-small enabled";
                     btnNext.Enabled = true;
-
                 }
-
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
                 GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), NextStart, NextEnd, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
-
             }
             catch (Exception ex)
             {
-
             }
-
         }
         private string CreateSignInTable(string Employeename, string SignInNotes)
         {
-            
             string strTransaction = string.Empty;
             if (SignInNotes.Trim() != "" )
             {
                 strTransaction = "<div style=\"height:143px;overflow-y:scroll;overflow-x:hidden;\">";
-
                 strTransaction += "<table class=\"noPading\"  id=\"SalesStatus\" style=\"display: table; border-collapse:collapse;  width:100%; color:#eee; \">";
                 strTransaction += "<tr id=\"CampaignsTitle1\" >";
                 strTransaction += "<td align=\"center\" colspan=\"2\" >";
@@ -511,7 +476,6 @@ namespace Attendance
                 strTransaction += "</div>";
             }
             return strTransaction;
-
         }
         
         private void getLocations()
@@ -524,11 +488,9 @@ namespace Attendance
                 ddlGrdLocation.DataTextField = "LocationName";
                 ddlGrdLocation.DataValueField = "LocationId";
                 ddlGrdLocation.DataBind();
-             
             }
             catch (Exception ex)
             {
-
             }
         }
 
@@ -551,12 +513,10 @@ namespace Attendance
                 DateTime End = Convert.ToDateTime(ViewState["EndMonth"]);
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
                 GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), Start, End, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
-
             }
             catch (Exception ex)
             {
             }
-
         }
 
         protected void ddlGrdLocation_SelectedIndexChanged(object sender, EventArgs e)
@@ -568,7 +528,6 @@ namespace Attendance
                 DateTime End = Convert.ToDateTime(ViewState["EndMonth"]);
                 int StatusID = Convert.ToInt32(ddlSelect.SelectedValue);
                 GetLeavesDetails(ddlGrdLocation.SelectedItem.Text.ToString().Trim(), Start, End, StatusID, Convert.ToInt32(ddlShift.SelectedValue));
-
             }
             catch (Exception ex)
             {
